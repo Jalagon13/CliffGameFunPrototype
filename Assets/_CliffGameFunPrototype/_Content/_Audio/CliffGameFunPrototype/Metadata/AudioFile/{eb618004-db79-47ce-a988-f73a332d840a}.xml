@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{eb618004-db79-47ce-a988-f73a332d840a}">
+		<property name="assetPath">
+			<value>AMB_Wind_Howling.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>24</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>59.570416666666667</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b0f73c75-6694-43ea-9941-7d37677d3af1}</destination>
+		</relationship>
+	</object>
+</objects>

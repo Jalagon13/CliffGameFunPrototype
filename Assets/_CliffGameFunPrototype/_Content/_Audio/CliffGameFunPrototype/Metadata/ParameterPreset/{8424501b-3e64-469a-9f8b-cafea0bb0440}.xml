@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{8424501b-3e64-469a-9f8b-cafea0bb0440}">
+		<property name="name">
+			<value>WindSeverity</value>
+		</property>
+		<relationship name="folder">
+			<destination>{fd1b94ac-703e-4ce0-b2ff-775aecd620a7}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{2916e8de-89a7-4b97-ab13-66208b4a77b8}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{2916e8de-89a7-4b97-ab13-66208b4a77b8}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<relationship name="automators">
+			<destination>{2d1aed53-3c0b-4eee-b155-19e7e67a3079}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{2d1aed53-3c0b-4eee-b155-19e7e67a3079}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>cursorPosition</value>
+		</property>
+	</object>
+</objects>

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9669e00b01c9c3a4f9f782330feba22e
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 35559
+  packageName: CloudsToy
+  packageVersion: v2.2.5.1
+  assetPath: Assets/CloudsToy/URP Addon/CloudsToy Addon URP.unitypackage
+  uploadId: 757993

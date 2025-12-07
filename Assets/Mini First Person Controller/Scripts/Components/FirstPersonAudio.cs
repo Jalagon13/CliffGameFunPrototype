@@ -1,197 +1,148 @@
-﻿using System.Linq;
+﻿using FMODUnity;
+using FMOD.Studio;
 using UnityEngine;
 
-public class FirstPersonAudio : MonoBehaviour
+namespace CliffGame
 {
-    public FirstPersonMovement character;
-    public GroundCheck groundCheck;
-
-    [Header("Step")]
-    public AudioSource stepAudio;
-    public AudioSource runningAudio;
-    [Tooltip("Minimum velocity for moving audio to play")]
-    /// <summary> "Minimum velocity for moving audio to play" </summary>
-    public float velocityThreshold = .01f;
-    Vector2 lastCharacterPosition;
-    Vector2 CurrentCharacterPosition => new Vector2(character.transform.position.x, character.transform.position.z);
-
-    [Header("Landing")]
-    public AudioSource landingAudio;
-    public AudioClip[] landingSFX;
-
-    [Header("Jump")]
-    public Jump jump;
-    public AudioSource jumpAudio;
-    public AudioClip[] jumpSFX;
-
-    [Header("Crouch")]
-    public Crouch crouch;
-    public AudioSource crouchStartAudio, crouchedAudio, crouchEndAudio;
-    public AudioClip[] crouchStartSFX, crouchEndSFX;
-
-    AudioSource[] MovingAudios => new AudioSource[] { stepAudio, runningAudio, crouchedAudio };
-
-
-    void Reset()
+    public class FirstPersonAudio : MonoBehaviour
     {
-        // Setup stuff.
-        character = GetComponentInParent<FirstPersonMovement>();
-        groundCheck = (transform.parent ?? transform).GetComponentInChildren<GroundCheck>();
-        stepAudio = GetOrCreateAudioSource("Step Audio");
-        runningAudio = GetOrCreateAudioSource("Running Audio");
-        landingAudio = GetOrCreateAudioSource("Landing Audio");
+        public FirstPersonMovement Character;
+        public GroundCheck GroundCheck;
+        public Jump Jump;
 
-        // Setup jump audio.
-        jump = GetComponentInParent<Jump>();
-        if (jump)
+        [Header("Movement")]
+        [Tooltip("Minimum velocity for moving audio to play")]
+        public float VelocityThreshold = 0.01f;
+
+        private Vector2 _lastCharacterPosition;
+        private Vector2 _currentCharacterPosition => new Vector2(Character.transform.position.x, Character.transform.position.z);
+
+        // FMOD EventInstances
+        private EventInstance _stepsInstance;
+        private EventInstance _runningInstance;
+
+        private bool _isMoving = false;
+        private bool _isRunning = false;
+
+        private void Start()
         {
-            jumpAudio = GetOrCreateAudioSource("Jump audio");
+            SubscribeToEvents();
+
+            // Create looping FMOD instances
+            _stepsInstance = RuntimeManager.CreateInstance(FMODEvents.Instance.StepsSFX);
+            _stepsInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
+
+            _runningInstance = RuntimeManager.CreateInstance(FMODEvents.Instance.StepsSFX); // Optional: separate running SFX
+            _runningInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
         }
 
-        // Setup crouch audio.
-        crouch = GetComponentInParent<Crouch>();
-        if (crouch)
+        private void OnDestroy()
         {
-            crouchStartAudio = GetOrCreateAudioSource("Crouch Start Audio");
-            crouchStartAudio = GetOrCreateAudioSource("Crouched Audio");
-            crouchStartAudio = GetOrCreateAudioSource("Crouch End Audio");
+            UnsubscribeToEvents();
+
+            // Stop and release FMOD instances
+            _stepsInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _stepsInstance.release();
+
+            _runningInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _runningInstance.release();
         }
-    }
 
-    void OnEnable() => SubscribeToEvents();
-
-    void OnDisable() => UnsubscribeToEvents();
-
-    void FixedUpdate()
-    {
-        // Play moving audio if the character is moving and on the ground.
-        float velocity = Vector3.Distance(CurrentCharacterPosition, lastCharacterPosition);
-        if (velocity >= velocityThreshold && groundCheck && groundCheck.isGrounded)
+        private void FixedUpdate()
         {
-            if (crouch && crouch.IsCrouched)
+            float velocity = Vector3.Distance(_currentCharacterPosition, _lastCharacterPosition);
+            bool moving = velocity >= VelocityThreshold && GroundCheck && GroundCheck.IsGrounded;
+
+            // Update 3D position each frame
+            if (_isMoving)
             {
-                SetPlayingMovingAudio(crouchedAudio);
+                (_isRunning ? _runningInstance : _stepsInstance)
+                    .set3DAttributes(RuntimeUtils.To3DAttributes(transform));
             }
-            else if (character.IsRunning)
+
+            if (moving && !_isMoving)
             {
-                SetPlayingMovingAudio(runningAudio);
+                // First time starting movement
+                EventInstance instanceToUse = Character.IsRunning ? _runningInstance : _stepsInstance;
+
+                PLAYBACK_STATE state;
+                instanceToUse.getPlaybackState(out state);
+
+                if (state == PLAYBACK_STATE.STOPPED)
+                {
+                    // Start if never started
+                    instanceToUse.start();
+                }
+                else
+                {
+                    // Resume if paused
+                    instanceToUse.setPaused(false);
+                }
+
+                _isRunning = Character.IsRunning;
+                _isMoving = true;
             }
-            else
+            else if (!moving && _isMoving)
             {
-                SetPlayingMovingAudio(stepAudio);
+                // Pause current instance
+                (_isRunning ? _runningInstance : _stepsInstance).setPaused(true);
+                _isMoving = false;
             }
-        }
-        else
-        {
-            SetPlayingMovingAudio(null);
-        }
+            else if (moving && _isMoving)
+            {
+                // Switch between step and running if speed changes
+                if (Character.IsRunning != _isRunning)
+                {
+                    EventInstance previous = _isRunning ? _runningInstance : _stepsInstance;
+                    EventInstance next = Character.IsRunning ? _runningInstance : _stepsInstance;
 
-        // Remember lastCharacterPosition.
-        lastCharacterPosition = CurrentCharacterPosition;
-    }
+                    previous.setPaused(true);
 
+                    PLAYBACK_STATE state;
+                    next.getPlaybackState(out state);
 
-    /// <summary>
-    /// Pause all MovingAudios and enforce play on audioToPlay.
-    /// </summary>
-    /// <param name="audioToPlay">Audio that should be playing.</param>
-    void SetPlayingMovingAudio(AudioSource audioToPlay)
-    {
-        // Pause all MovingAudios.
-        foreach (var audio in MovingAudios.Where(audio => audio != audioToPlay && audio != null))
-        {
-            audio.Pause();
-        }
+                    if (state == PLAYBACK_STATE.STOPPED)
+                        next.start();
+                    else
+                        next.setPaused(false);
 
-        // Play audioToPlay if it was not playing.
-        if (audioToPlay && !audioToPlay.isPlaying)
-        {
-            audioToPlay.Play();
-        }
-    }
+                    _isRunning = Character.IsRunning;
+                }
+            }
 
-    #region Play instant-related audios.
-    void PlayLandingAudio() => PlayRandomClip(landingAudio, landingSFX);
-    void PlayJumpAudio() => PlayRandomClip(jumpAudio, jumpSFX);
-    void PlayCrouchStartAudio() => PlayRandomClip(crouchStartAudio, crouchStartSFX);
-    void PlayCrouchEndAudio() => PlayRandomClip(crouchEndAudio, crouchEndSFX);
-    #endregion
-
-    #region Subscribe/unsubscribe to events.
-    void SubscribeToEvents()
-    {
-        // PlayLandingAudio when Grounded.
-        groundCheck.Grounded += PlayLandingAudio;
-
-        // PlayJumpAudio when Jumped.
-        if (jump)
-        {
-            jump.Jumped += PlayJumpAudio;
+            _lastCharacterPosition = _currentCharacterPosition;
         }
 
-        // Play crouch audio on crouch start/end.
-        if (crouch)
+        private void PlayLandingAudio()
         {
-            crouch.CrouchStart += PlayCrouchStartAudio;
-            crouch.CrouchEnd += PlayCrouchEndAudio;
-        }
-    }
-
-    void UnsubscribeToEvents()
-    {
-        // Undo PlayLandingAudio when Grounded.
-        groundCheck.Grounded -= PlayLandingAudio;
-
-        // Undo PlayJumpAudio when Jumped.
-        if (jump)
-        {
-            jump.Jumped -= PlayJumpAudio;
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.LandingSFX, transform.position);
         }
 
-        // Undo play crouch audio on crouch start/end.
-        if (crouch)
+        private void PlayJumpAudio()
         {
-            crouch.CrouchStart -= PlayCrouchStartAudio;
-            crouch.CrouchEnd -= PlayCrouchEndAudio;
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.JumpSFX, transform.position);
+        }
+        
+        private void SubscribeToEvents()
+        {
+            GroundCheck.Grounded += PlayLandingAudio;
+
+            if (Jump)
+                Jump.Jumped += PlayJumpAudio;
+        }
+
+        private void UnsubscribeToEvents()
+        {
+            GroundCheck.Grounded -= PlayLandingAudio;
+
+            if (Jump)
+                Jump.Jumped -= PlayJumpAudio;
+        }
+
+        private void Reset()
+        {
+            Character = GetComponentInParent<FirstPersonMovement>();
+            GroundCheck = (transform.parent ?? transform).GetComponentInChildren<GroundCheck>();
         }
     }
-    #endregion
-
-    #region Utility.
-    /// <summary>
-    /// Get an existing AudioSource from a name or create one if it was not found.
-    /// </summary>
-    /// <param name="name">Name of the AudioSource to search for.</param>
-    /// <returns>The created AudioSource.</returns>
-    AudioSource GetOrCreateAudioSource(string name)
-    {
-        // Try to get the audiosource.
-        AudioSource result = System.Array.Find(GetComponentsInChildren<AudioSource>(), a => a.name == name);
-        if (result)
-            return result;
-
-        // Audiosource does not exist, create it.
-        result = new GameObject(name).AddComponent<AudioSource>();
-        result.spatialBlend = 1;
-        result.playOnAwake = false;
-        result.transform.SetParent(transform, false);
-        return result;
-    }
-
-    static void PlayRandomClip(AudioSource audio, AudioClip[] clips)
-    {
-        if (!audio || clips.Length <= 0)
-            return;
-
-        // Get a random clip. If possible, make sure that it's not the same as the clip that is already on the audiosource.
-        AudioClip clip = clips[Random.Range(0, clips.Length)];
-        if (clips.Length > 1)
-            while (clip == audio.clip)
-                clip = clips[Random.Range(0, clips.Length)];
-
-        // Play the clip.
-        audio.clip = clip;
-        audio.Play();
-    }
-    #endregion 
 }

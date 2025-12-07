@@ -1,4 +1,5 @@
 using System;
+using SingularityGroup.HotReload;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,8 @@ namespace CliffGame
         public static GameInput Instance { get; private set; }
 
         public event EventHandler<InputAction.CallbackContext> OnMove;
+        public event EventHandler<InputAction.CallbackContext> OnLook;
+        public event EventHandler<InputAction.CallbackContext> OnJump;
 
         private PlayerInput _playerInput;
 
@@ -22,6 +25,10 @@ namespace CliffGame
             _playerInput.Player.Move.started += PlayerInput_OnMove;
             _playerInput.Player.Move.performed += PlayerInput_OnMove;
             _playerInput.Player.Move.canceled += PlayerInput_OnMove;
+            _playerInput.Player.Look.started += PlayerInput_OnLook;
+            _playerInput.Player.Look.performed += PlayerInput_OnLook;
+            _playerInput.Player.Look.canceled += PlayerInput_OnLook;
+            _playerInput.Player.Jump.started += PlayerInput_OnJump;
         }
 
         public void OnDestroy()
@@ -30,10 +37,18 @@ namespace CliffGame
             _playerInput.Dispose();
         }
 
+        private void PlayerInput_OnJump(InputAction.CallbackContext context)
+        {
+            OnJump?.Invoke(this, context);
+        }
+
+        private void PlayerInput_OnLook(InputAction.CallbackContext context)
+        {
+            OnLook?.Invoke(this, context);
+        }
+
         private void PlayerInput_OnMove(InputAction.CallbackContext context)
         {
-            Debug.Log($"Move Input: {context.ReadValue<Vector2>()}");
-        
             OnMove?.Invoke(this, context);
         }
     }

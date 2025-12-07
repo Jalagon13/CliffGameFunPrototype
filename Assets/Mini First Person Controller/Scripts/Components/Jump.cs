@@ -1,33 +1,45 @@
 ﻿using UnityEngine;
+using CliffGame;
+using UnityEngine.InputSystem;
+using System;
 
 public class Jump : MonoBehaviour
 {
-    Rigidbody rigidbody;
+    private Rigidbody _rigidbody;
     public float jumpStrength = 2;
-    public event System.Action Jumped;
+    public event Action Jumped;
 
     [SerializeField, Tooltip("Prevents jumping when the transform is in mid-air.")]
-    GroundCheck groundCheck;
+    private GroundCheck _groundCheck;
 
 
-    void Reset()
+    private void Reset()
     {
         // Try to get groundCheck.
-        groundCheck = GetComponentInChildren<GroundCheck>();
+        _groundCheck = GetComponentInChildren<GroundCheck>();
     }
 
-    void Awake()
+    private void Awake()
     {
         // Get rigidbody.
-        rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
+    }
+    
+    private void Start()
+    {
+        GameInput.Instance.OnJump += GameInput_OnJump;
+    }
+    
+    private void OnDestroy()
+    {
+        GameInput.Instance.OnJump -= GameInput_OnJump;
     }
 
-    void LateUpdate()
+    private void GameInput_OnJump(object sender, InputAction.CallbackContext e)
     {
-        // Jump when the Jump button is pressed and we are on the ground.
-        if (Input.GetButtonDown("Jump") && (!groundCheck || groundCheck.isGrounded))
+        if(!_groundCheck || _groundCheck.IsGrounded)
         {
-            rigidbody.AddForce(Vector3.up * 100 * jumpStrength);
+            _rigidbody.AddForce(100 * jumpStrength * Vector3.up);
             Jumped?.Invoke();
         }
     }

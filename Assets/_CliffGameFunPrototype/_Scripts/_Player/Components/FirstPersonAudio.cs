@@ -128,7 +128,7 @@ namespace CliffGame
             GroundCheck.Grounded += PlayLandingAudio;
 
             if (Jump)
-                Jump.Jumped += PlayJumpAudio;
+                Jump.OnJumped += PlayJumpAudio;
         }
 
         private void UnsubscribeToEvents()
@@ -136,7 +136,7 @@ namespace CliffGame
             GroundCheck.Grounded -= PlayLandingAudio;
 
             if (Jump)
-                Jump.Jumped -= PlayJumpAudio;
+                Jump.OnJumped -= PlayJumpAudio;
         }
 
         private void Reset()

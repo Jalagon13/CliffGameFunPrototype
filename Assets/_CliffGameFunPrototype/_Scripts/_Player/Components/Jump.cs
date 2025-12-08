@@ -5,13 +5,12 @@ using System;
 
 public class Jump : MonoBehaviour
 {
-    private Rigidbody _rigidbody;
-    public float jumpStrength = 2;
-    public event Action Jumped;
+    public float JumpStrength = 2;
+    public event Action OnJumped;
 
     [SerializeField, Tooltip("Prevents jumping when the transform is in mid-air.")]
     private GroundCheck _groundCheck;
-
+    private Rigidbody _rigidbody;
 
     private void Reset()
     {
@@ -39,8 +38,8 @@ public class Jump : MonoBehaviour
     {
         if(!_groundCheck || _groundCheck.IsGrounded)
         {
-            _rigidbody.AddForce(100 * jumpStrength * Vector3.up);
-            Jumped?.Invoke();
+            _rigidbody.AddForce(100 * JumpStrength * Vector3.up);
+            OnJumped?.Invoke();
         }
     }
 }

@@ -389,10 +389,12 @@ GameObject:
   - component: {fileID: 4207293392497186}
   - component: {fileID: 136877096903737240}
   - component: {fileID: 54063890643546284}
+  - component: {fileID: 4791299541788846658}
   - component: {fileID: 114963311885979670}
+  - component: {fileID: 4843991343312101987}
   - component: {fileID: 114497868231759342}
   m_Layer: 0
-  m_Name: First Person Controller
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -467,6 +469,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1
+--- !u!114 &4791299541788846658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773623360729482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 900135bcfd9cd429694eaa5b8e1df7fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Player
 --- !u!114 &114963311885979670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,6 +501,18 @@ MonoBehaviour:
   MaxHorizontalSpeed: 10
   AccelerationRate: 35
   AirMultiplier: 0.65
+--- !u!114 &4843991343312101987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773623360729482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac12f77ebf13046cabd7d80bbb280b88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.FirstPersonClimbMovement
 --- !u!114 &114497868231759342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -499,5 +525,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f977f53412d81140ab13b3fca57cca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpStrength: 2
+  JumpStrength: 2
   _groundCheck: {fileID: 114503055206606986}

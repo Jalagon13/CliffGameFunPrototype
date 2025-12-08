@@ -1,6 +1,5 @@
 ﻿<Solution>
   <Project Path="SingularityGroup.HotReload.Editor.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="FMODUnityResonanceEditor.csproj" />
   <Project Path="FMODUnityEditor.csproj" />
@@ -8,5 +7,6 @@
   <Project Path="FMODUnity.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.Public.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="FMODUnityResonance.csproj" />
 </Solution>

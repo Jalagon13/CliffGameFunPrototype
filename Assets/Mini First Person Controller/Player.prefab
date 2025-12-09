@@ -254,7 +254,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.225
+  near clip plane: 0.25
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec72980442fddac4d86e75ab24b4d027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 4207293392497186}
+  _character: {fileID: 4207293392497186}
   Sensitivity: 0.2
   Smoothing: 1.5
 --- !u!114 &114103969153859672
@@ -439,7 +439,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.35
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
@@ -482,7 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 900135bcfd9cd429694eaa5b8e1df7fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Player
-  _climbRayDistance: 1
+  _climbRayDistance: 1.25
   _climbableLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -518,7 +518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac12f77ebf13046cabd7d80bbb280b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.FirstPersonClimbMovement
-  _fromWallOffsetDistance: 1
+  _fromWallOffsetDistance: 0.225
   _climbableLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -526,6 +526,7 @@ MonoBehaviour:
   _rayDistance: 3
   _horizontalSpreadAngle: 25
   _verticalSpreadAngle: 25
+  _momentumDamping: 6
 --- !u!114 &114497868231759342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,7 +558,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3456069762790994346
 Transform:
   m_ObjectHideFlags: 0
@@ -567,7 +568,7 @@ Transform:
   m_GameObject: {fileID: 7225773153706698257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.522, z: 0.281}
+  m_LocalPosition: {x: 0, y: 0.522, z: 0.259}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []

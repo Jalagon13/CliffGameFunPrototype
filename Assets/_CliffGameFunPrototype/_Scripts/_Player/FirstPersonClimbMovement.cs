@@ -25,6 +25,9 @@ namespace CliffGame
         [SerializeField]
         private float _verticalSpreadAngle = 25f;
 
+        [SerializeField]
+        private float _momentumDamping = 6f;
+
         private Vector2 _desiredDirection;
         private Player _context;
         private Rigidbody _rb;
@@ -33,6 +36,7 @@ namespace CliffGame
         private Vector3 _rightTangent;
         private Vector3 _upTangent;
         private Vector3 _lastWallHitPoint;
+        private Vector3 _climbMomentum;
 
         private void Awake()
         {
@@ -52,10 +56,11 @@ namespace CliffGame
 
         public void EnterState()
         {
-            Debug.Log($"Entered Climb State");
+            Debug.Log($"Entered Climb State with inherited velocity: {_context.FirstPersonMovement.CaptureExitVelocity}");
 
             _rb.linearVelocity = new Vector3(0f, 0f, 0f);
             _rb.useGravity = false;
+            _climbMomentum = _context.FirstPersonMovement.CaptureExitVelocity;
             _wallNormal = transform.forward;
         }
 
@@ -73,6 +78,8 @@ namespace CliffGame
 
             // === 4. Rotate player to face wall ===
             transform.forward = -_wallNormal;
+
+            ApplyClimbMomentum();
 
             // === 5. Move player along the wall based on input ===
             Vector3 move = (_rightTangent * -_desiredDirection.x) + (_upTangent * _desiredDirection.y);
@@ -120,6 +127,26 @@ namespace CliffGame
             }
 
             return (normalSum / normalCount).normalized;
+        }
+
+        private void ApplyClimbMomentum()
+        {
+            // Project inherited momentum onto wall tangents
+            float rightComponent = Vector3.Dot(_climbMomentum, _rightTangent);
+            float upComponent = Vector3.Dot(_climbMomentum, _upTangent);
+
+            Vector3 tangentialMomentum = (rightComponent * _rightTangent) + (upComponent * _upTangent);
+
+            // Apply movement along the wall
+            _rb.MovePosition(_rb.position + tangentialMomentum * Time.fixedDeltaTime);
+
+            // Exponential damping
+            float decay = Mathf.Exp(-_momentumDamping * Time.fixedDeltaTime);
+            _climbMomentum *= decay;
+            if (_climbMomentum.magnitude < 0.1f)
+            {
+                _climbMomentum = Vector3.zero;
+            }
         }
 
         public void ExitState()

@@ -31,16 +31,27 @@ namespace CliffGame
         [SerializeField] 
         private LayerMask _climbableLayer;
         
+        private Rigidbody _rigidbody;
+        
+        private FirstPersonMovement _firstPersonMovement;
+        public FirstPersonMovement FirstPersonMovement => _firstPersonMovement;
+        
+        private FirstPersonClimbMovement _firstPersonClimbMovement;
+        public FirstPersonClimbMovement FirstPersonClimbMovement => _firstPersonClimbMovement;
+        
         private void Awake()
         {
             Instance = this;
-
+            
+            _rigidbody = GetComponent<Rigidbody>();
+            _firstPersonMovement = GetComponent<FirstPersonMovement>();
+            _firstPersonClimbMovement = GetComponent<FirstPersonClimbMovement>();
             _playerCamera = Camera.main;
 
             _states = new Dictionary<PlayerMoveState, IPlayerState>
             {
-                { PlayerMoveState.Walking, GetComponent<FirstPersonMovement>() },
-                { PlayerMoveState.Climbing, GetComponent<FirstPersonClimbMovement>() }
+                { PlayerMoveState.Walking, _firstPersonMovement },
+                { PlayerMoveState.Climbing, _firstPersonClimbMovement }
             };
 
             TransitionState(PlayerMoveState.Walking);

@@ -26,6 +26,9 @@ namespace CliffGame
         private Player _context;
         private Rigidbody _rigidbody;
         private Vector2 _desiredDirection;
+        
+        private Vector3 _captureExitVelocity;
+        public Vector3 CaptureExitVelocity => _captureExitVelocity;
 
         private void Awake()
         {
@@ -77,7 +80,8 @@ namespace CliffGame
 
         public void ExitState()
         {
-            Debug.Log($"Exited Walk State");
+            _captureExitVelocity = _rigidbody.linearVelocity;
+            Debug.Log($"Exited Walk State with velocity: {_captureExitVelocity}");
         }
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)

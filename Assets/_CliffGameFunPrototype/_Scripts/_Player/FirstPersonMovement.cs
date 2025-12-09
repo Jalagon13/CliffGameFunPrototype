@@ -48,7 +48,7 @@ namespace CliffGame
 
         public void EnterState()
         {
-            
+            Debug.Log($"Entered Walk State");
         }
 
         public void StateFixedUpdate()
@@ -77,14 +77,11 @@ namespace CliffGame
 
         public void ExitState()
         {
-            
+            Debug.Log($"Exited Walk State");
         }
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
         {
-            if (!ReferenceEquals(_context.CurrentMoveState, this))
-                return;
-
             _desiredDirection = e.ReadValue<Vector2>();
         }
     }

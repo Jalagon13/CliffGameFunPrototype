@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{d428e654-1977-4a64-badd-6c7b0d24d1cf}">
+	<object class="AudioFile" id="{540a0053-0f44-45cf-b38e-a4467d45f6ad}">
 		<property name="assetPath">
-			<value>Landing/SFX_Landing_3.wav</value>
+			<value>Climbing/SFX_WalkToClimb.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>
 		</property>
 		<property name="channelCount">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<property name="length">
-			<value>0.12408163265306123</value>
+			<value>0.19975056689342405</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{b0f73c75-6694-43ea-9941-7d37677d3af1}</destination>

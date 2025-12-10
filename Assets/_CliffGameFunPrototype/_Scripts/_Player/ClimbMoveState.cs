@@ -27,6 +27,9 @@ namespace CliffGame
 
         [SerializeField]
         private float _momentumDamping = 6f;
+        
+        [SerializeField]
+        private float _downwardMomentumToPlaySlideSFX = 8f;
 
         [Header("Ledge Climb Settings")]
         [SerializeField] private float _ledgeCheckDistance = 0.7f;
@@ -45,6 +48,10 @@ namespace CliffGame
         
         private Timer _ledgeTimer;
         private Transform _bodyVisualsTransform;
+
+        // True when the player is sliding along the wall due to climb momentum
+        private bool _isSliding;
+        public bool IsSliding => _isSliding;
 
         private void Awake()
         {
@@ -65,11 +72,15 @@ namespace CliffGame
 
         public void EnterState()
         {
-            Debug.Log($"Entered Climb State with inherited velocity: {_context.FirstPersonMovement.CaptureExitVelocity}");
+            Debug.Log($"Entered Climb State with inherited velocity: {_context.WalkingMoveState.CaptureExitVelocity}");
 
             _rb.linearVelocity = new Vector3(0f, 0f, 0f);
             _rb.useGravity = false;
-            _climbMomentum = _context.FirstPersonMovement.CaptureExitVelocity;
+            _climbMomentum = _context.WalkingMoveState.CaptureExitVelocity;
+            if (_climbMomentum.y <= -_downwardMomentumToPlaySlideSFX)
+            {
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SlidingSFX, transform.position);
+            }
             _wallNormal = transform.forward;
         }
 
@@ -220,6 +231,9 @@ namespace CliffGame
 
         private void ApplyClimbMomentum()
         {
+            // Set sliding state based on whether momentum is currently active
+            _isSliding = _climbMomentum.magnitude > 0.1f;
+
             // Project inherited momentum onto wall tangents
             float rightComponent = Vector3.Dot(_climbMomentum, _rightTangent);
             float upComponent = Vector3.Dot(_climbMomentum, _upTangent);
@@ -256,7 +270,7 @@ namespace CliffGame
             Vector3 rayOrigin = cameraPos + Vector3.up * 1f + transform.forward * _ledgeCheckDistance;
             Ray ray = new Ray(rayOrigin, Vector3.down);
 
-            if (Physics.Raycast(ray, out RaycastHit ledgeHit, 1.5f, _climbableLayer, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(ray, out RaycastHit ledgeHit, 0.75f, _climbableLayer, QueryTriggerInteraction.Ignore))
             {
                 float minDot = Mathf.Cos(_minLedgeFlatAngle * Mathf.Deg2Rad);
                 bool flatSurface = Vector3.Dot(Vector3.up, ledgeHit.normal) > minDot;
@@ -273,6 +287,9 @@ namespace CliffGame
 
         private void StartLedgeLerp()
         {
+            Debug.Log($"Starting Ledge Lerp to position: {_ledgeTopPosition}");
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.LedgeClimbSFX, transform.position);
+            
             _isLerpingToLedge = true;
             _climbStartPosition = transform.position;
             _ledgeTimer = new Timer(_ledgeClimbDuration);
@@ -290,6 +307,7 @@ namespace CliffGame
 
             if (_ledgeTimer.RemainingSeconds <= 0f)
             {
+                Debug.Log($"Completed Ledge Lerp to position: {_ledgeTopPosition}");
                 _isLerpingToLedge = false;
                 _rb.isKinematic = false;
                 _rb.detectCollisions = true;

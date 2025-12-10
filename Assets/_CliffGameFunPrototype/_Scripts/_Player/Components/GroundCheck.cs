@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SingularityGroup.HotReload;
+using UnityEngine;
 
 [ExecuteInEditMode]
 public class GroundCheck : MonoBehaviour
@@ -18,7 +19,7 @@ public class GroundCheck : MonoBehaviour
     private float _raycastDistance => DistanceThreshold + OriginOffset;
 
 
-    void LateUpdate()
+    private void LateUpdate()
     {
         // Check if we are grounded now.
         bool isGroundedNow = Physics.Raycast(_raycastOrigin, Vector3.down, DistanceThreshold * 2);
@@ -33,7 +34,7 @@ public class GroundCheck : MonoBehaviour
         IsGrounded = isGroundedNow;
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         // Draw a line in the Editor to show whether we are touching the ground.
         Debug.DrawLine(_raycastOrigin, _raycastOrigin + Vector3.down * _raycastDistance, IsGrounded ? Color.white : Color.red);

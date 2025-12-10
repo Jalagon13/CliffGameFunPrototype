@@ -6,111 +6,211 @@ namespace CliffGame
 {
     public class FirstPersonAudio : MonoBehaviour
     {
-        public WalkingMoveState Character;
+        public WalkingMoveState WalkingMoveState;
         public GroundCheck GroundCheck;
         public Jump Jump;
 
         [Header("Movement")]
-        [Tooltip("Minimum velocity for moving audio to play")]
         public float VelocityThreshold = 0.01f;
 
-        private Vector2 _lastCharacterPosition;
-        private Vector2 _currentCharacterPosition => new Vector2(Character.transform.position.x, Character.transform.position.z);
+        private Vector3 _lastCharacterPosition;
+        private Vector3 _currentCharacterPosition => WalkingMoveState.transform.position;
 
-        // FMOD EventInstances
         private EventInstance _stepsInstance;
-        private EventInstance _runningInstance;
+        private EventInstance _climbingInstance;
 
         private bool _isMoving = false;
-        private bool _isRunning = false;
+        private bool _isClimbing = false;
 
         private void Start()
         {
             SubscribeToEvents();
 
-            // Create looping FMOD instances
             _stepsInstance = RuntimeManager.CreateInstance(FMODEvents.Instance.StepsSFX);
             _stepsInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
 
-            _runningInstance = RuntimeManager.CreateInstance(FMODEvents.Instance.StepsSFX); // Optional: separate running SFX
-            _runningInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
+            _climbingInstance = RuntimeManager.CreateInstance(FMODEvents.Instance.ClimbingSFX);
+            _climbingInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
         }
 
         private void OnDestroy()
         {
             UnsubscribeToEvents();
 
-            // Stop and release FMOD instances
             _stepsInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
             _stepsInstance.release();
 
-            _runningInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            _runningInstance.release();
+            _climbingInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _climbingInstance.release();
         }
 
         private void FixedUpdate()
         {
             float velocity = Vector3.Distance(_currentCharacterPosition, _lastCharacterPosition);
-            bool moving = velocity >= VelocityThreshold && GroundCheck && GroundCheck.IsGrounded;
+            bool moving = velocity >= VelocityThreshold;
 
-            // Update 3D position each frame
+            bool grounded = GroundCheck.IsGrounded;
+            bool walking = Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking;
+            bool climbing = Player.Instance.CurrentMoveStateType == PlayerMoveState.Climbing;
+
+            bool shouldPlaySteps = walking && grounded && moving;
+
+            // Update active sound position
             if (_isMoving)
             {
-                (_isRunning ? _runningInstance : _stepsInstance)
+                (_isClimbing ? _climbingInstance : _stepsInstance)
                     .set3DAttributes(RuntimeUtils.To3DAttributes(transform));
             }
 
+            // ----------------------------------------------------------
+            // START MOVEMENT
+            // ----------------------------------------------------------
             if (moving && !_isMoving)
             {
-                // First time starting movement
-                EventInstance instanceToUse = Character.IsRunning ? _runningInstance : _stepsInstance;
-
-                PLAYBACK_STATE state;
-                instanceToUse.getPlaybackState(out state);
-
-                if (state == PLAYBACK_STATE.STOPPED)
+                if (shouldPlaySteps)
                 {
-                    // Start if never started
-                    instanceToUse.start();
+                    StartSteps();
+                }
+                else if (climbing)
+                {
+                    StartClimbing();
                 }
                 else
                 {
-                    // Resume if paused
-                    instanceToUse.setPaused(false);
+                    PauseSteps();
                 }
 
-                _isRunning = Character.IsRunning;
                 _isMoving = true;
             }
+
+            // ----------------------------------------------------------
+            // STOP MOVEMENT
+            // ----------------------------------------------------------
             else if (!moving && _isMoving)
             {
-                // Pause current instance
-                (_isRunning ? _runningInstance : _stepsInstance).setPaused(true);
+                PauseSteps();
+                PauseClimbing();
                 _isMoving = false;
             }
+
+            // ----------------------------------------------------------
+            // SWITCHING MOVEMENT WHILE MOVING
+            // ----------------------------------------------------------
             else if (moving && _isMoving)
             {
-                // Switch between step and running if speed changes
-                if (Character.IsRunning != _isRunning)
+                bool climbingNow = climbing;
+
+                if (climbingNow != _isClimbing)
                 {
-                    EventInstance previous = _isRunning ? _runningInstance : _stepsInstance;
-                    EventInstance next = Character.IsRunning ? _runningInstance : _stepsInstance;
+                    PauseSteps();
+                    PauseClimbing();
 
-                    previous.setPaused(true);
+                    // ---- TRANSITION ONE-SHOTS ----
+                    if (climbingNow && !_isClimbing)
+                    {
+                        // Walking -> Climbing
+                        AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WalkToClimbSFX, transform.position);
+                    }
+                    else if (!climbingNow && _isClimbing)
+                    {
+                        // Climbing -> Walking
+                        AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ClimbToWalkSFX, transform.position);
+                    }
 
-                    PLAYBACK_STATE state;
-                    next.getPlaybackState(out state);
+                    // ---- Start New Loop ----
+                    if (climbingNow)
+                    {
+                        StartClimbing();
+                    }
+                    else if (shouldPlaySteps)
+                    {
+                        StartSteps();
+                    }
 
-                    if (state == PLAYBACK_STATE.STOPPED)
-                        next.start();
+                    _isClimbing = climbingNow;
+                }
+                else
+                {
+                    // ENFORCE footsteps rule EVERY SINGLE FRAME
+                    if (shouldPlaySteps)
+                        StartSteps();
                     else
-                        next.setPaused(false);
-
-                    _isRunning = Character.IsRunning;
+                        PauseSteps(); // absolutely prevents airborne steps
                 }
             }
 
             _lastCharacterPosition = _currentCharacterPosition;
+        }
+
+        // ----------------------------------------------------------
+        // SFX HELPERS
+        // ----------------------------------------------------------
+
+        private void StartSteps()
+        {
+            PLAYBACK_STATE state;
+            _stepsInstance.getPlaybackState(out state);
+
+            if (state == PLAYBACK_STATE.STOPPED)
+                _stepsInstance.start();
+            else
+                _stepsInstance.setPaused(false);
+
+            _isClimbing = false;
+        }
+
+        private void PauseSteps()
+        {
+            _stepsInstance.setPaused(true);
+        }
+
+        private void StartClimbing()
+        {
+            PLAYBACK_STATE state;
+            _climbingInstance.getPlaybackState(out state);
+
+            if (state == PLAYBACK_STATE.STOPPED)
+                _climbingInstance.start();
+            else
+                _climbingInstance.setPaused(false);
+
+            _isClimbing = true;
+        }
+
+        private void PauseClimbing()
+        {
+            _climbingInstance.setPaused(true);
+        }
+
+        // ----------------------------------------------------------
+        // GLOBAL ONE-SHOT EVENTS
+        // ----------------------------------------------------------
+
+        private void SubscribeToEvents()
+        {
+            Player.Instance.OnMoveStateChanged += OnMoveStateChanged;
+            GroundCheck.Grounded += PlayLandingAudio;
+
+            if (Jump)
+                Jump.OnJumped += PlayJumpAudio;
+        }
+
+        private void UnsubscribeToEvents()
+        {
+            Player.Instance.OnMoveStateChanged -= OnMoveStateChanged;
+            GroundCheck.Grounded -= PlayLandingAudio;
+
+            if (Jump)
+                Jump.OnJumped -= PlayJumpAudio;
+        }
+
+        private void OnMoveStateChanged(PlayerMoveState prev, PlayerMoveState next)
+        {
+            if (prev == PlayerMoveState.Climbing && next == PlayerMoveState.Walking)
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ClimbToWalkSFX, transform.position);
+
+            else if (prev == PlayerMoveState.Walking && next == PlayerMoveState.Climbing)
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WalkToClimbSFX, transform.position);
         }
 
         private void PlayLandingAudio()
@@ -122,26 +222,10 @@ namespace CliffGame
         {
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.JumpSFX, transform.position);
         }
-        
-        private void SubscribeToEvents()
-        {
-            GroundCheck.Grounded += PlayLandingAudio;
-
-            if (Jump)
-                Jump.OnJumped += PlayJumpAudio;
-        }
-
-        private void UnsubscribeToEvents()
-        {
-            GroundCheck.Grounded -= PlayLandingAudio;
-
-            if (Jump)
-                Jump.OnJumped -= PlayJumpAudio;
-        }
 
         private void Reset()
         {
-            Character = GetComponentInParent<WalkingMoveState>();
+            WalkingMoveState = GetComponentInParent<WalkingMoveState>();
             GroundCheck = (transform.parent ?? transform).GetComponentInChildren<GroundCheck>();
         }
     }

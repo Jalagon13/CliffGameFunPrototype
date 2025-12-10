@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f45facc01772ba47a9ae17bb7061b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Character: {fileID: 114963311885979670}
+  WalkingMoveState: {fileID: 114963311885979670}
   GroundCheck: {fileID: 114503055206606986}
   Jump: {fileID: 114497868231759342}
   VelocityThreshold: 0.01
@@ -254,7 +254,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.25
+  near clip plane: 0.15
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -305,6 +305,8 @@ MonoBehaviour:
   _character: {fileID: 4207293392497186}
   Sensitivity: 0.2
   Smoothing: 1.5
+  _climbingFOV: 75
+  _fovLerpDuration: 0.25
 --- !u!114 &114103969153859672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,14 +520,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac12f77ebf13046cabd7d80bbb280b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.FirstPersonClimbMovement
-  _fromWallOffsetDistance: 0.225
+  _fromWallOffsetDistance: 0.325
   _climbableLayer:
     serializedVersion: 2
     m_Bits: 64
   _climbSpeed: 2.5
   _rayDistance: 3
   _horizontalSpreadAngle: 40
-  _verticalSpreadAngle: 25
+  _verticalSpreadAngle: 15
   _momentumDamping: 6
   _ledgeCheckDistance: 0.7
   _ledgeClimbDuration: 0.5

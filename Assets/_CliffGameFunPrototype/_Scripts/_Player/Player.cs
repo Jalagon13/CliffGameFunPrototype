@@ -17,6 +17,8 @@ namespace CliffGame
     public class Player : MonoBehaviour
     {
         public static Player Instance;
+        
+        public Action<PlayerMoveState, PlayerMoveState> OnMoveStateChanged;
     
         private Dictionary<PlayerMoveState, IPlayerState> _states;
         
@@ -32,27 +34,24 @@ namespace CliffGame
         [SerializeField] 
         private LayerMask _climbableLayer;
         
-        private Rigidbody _rigidbody;
+        private WalkingMoveState _walkingMoveState;
+        public WalkingMoveState WalkingMoveState => _walkingMoveState;
         
-        private WalkingMoveState _firstPersonMovement;
-        public WalkingMoveState FirstPersonMovement => _firstPersonMovement;
-        
-        private ClimbMoveState _firstPersonClimbMovement;
-        public ClimbMoveState FirstPersonClimbMovement => _firstPersonClimbMovement;
+        private ClimbMoveState _climbMoveState;
+        public ClimbMoveState ClimbMoveState => _climbMoveState;
         
         private void Awake()
         {
             Instance = this;
             
-            _rigidbody = GetComponent<Rigidbody>();
-            _firstPersonMovement = GetComponent<WalkingMoveState>();
-            _firstPersonClimbMovement = GetComponent<ClimbMoveState>();
+            _walkingMoveState = GetComponent<WalkingMoveState>();
+            _climbMoveState = GetComponent<ClimbMoveState>();
             _playerCamera = Camera.main;
 
             _states = new Dictionary<PlayerMoveState, IPlayerState>
             {
-                { PlayerMoveState.Walking, _firstPersonMovement },
-                { PlayerMoveState.Climbing, _firstPersonClimbMovement }
+                { PlayerMoveState.Walking, _walkingMoveState },
+                { PlayerMoveState.Climbing, _climbMoveState }
             };
 
             TransitionState(PlayerMoveState.Walking);
@@ -90,7 +89,7 @@ namespace CliffGame
             }
             else if(CurrentMoveStateType == PlayerMoveState.Climbing)
             {
-                if(e.canceled && !_firstPersonClimbMovement.IsLerpingToLedge)
+                if(e.canceled && !_climbMoveState.IsLerpingToLedge)
                 {
                     // If I am climbing, and i release the toggle climb button, try to switch to walking.
                     TransitionState(PlayerMoveState.Walking);
@@ -100,11 +99,15 @@ namespace CliffGame
 
         public void TransitionState(PlayerMoveState playerMoveState)
         {
+            PlayerMoveState previousState = CurrentMoveStateType;
+
             _currentState?.ExitState();
             _currentState = _states[playerMoveState];
             _currentState?.EnterState();
 
             CurrentMoveStateType = playerMoveState;
+            
+            OnMoveStateChanged?.Invoke(previousState, playerMoveState);
         }
 
         public IPlayerState GetState(PlayerMoveState key)

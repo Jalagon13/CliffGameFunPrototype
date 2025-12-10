@@ -2,6 +2,7 @@
 using CliffGame;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class FirstPersonLook : MonoBehaviour
 {
@@ -16,17 +17,46 @@ public class FirstPersonLook : MonoBehaviour
     private Vector2 _lookInput;
     private Vector3 _offset;
 
+    private Camera _cam;
+    private Tween _fovTween;
+    private float _walkingFOV;
+
+    [SerializeField] 
+    private float _climbingFOV = 70f;
+    
+    [SerializeField] 
+    private float _fovLerpDuration = 0.25f;
+
     private void Start()
     {
+        _cam = GetComponentInChildren<Camera>();
+        _walkingFOV = _cam.fieldOfView;
+
         _offset = new Vector3(0f, transform.localPosition.y, 0f);
 
         Cursor.lockState = CursorLockMode.Locked;
         GameInput.Instance.OnLook += GameInput_OnLook;
+        Player.Instance.OnMoveStateChanged += OnMoveStateChanged;
     }
 
     private void OnDestroy()
     {
         GameInput.Instance.OnLook -= GameInput_OnLook;
+        Player.Instance.OnMoveStateChanged -= OnMoveStateChanged;
+    }
+
+    private void OnMoveStateChanged(PlayerMoveState previous, PlayerMoveState newState)
+    {
+        _fovTween?.Kill();
+
+        float target = newState == PlayerMoveState.Climbing ? _climbingFOV : _walkingFOV;
+
+        _fovTween = DOTween.To(
+            () => _cam.fieldOfView,
+            v => _cam.fieldOfView = v,
+            target,
+            _fovLerpDuration
+        ).SetEase(Ease.OutQuad);
     }
 
     private void Update()
@@ -40,7 +70,7 @@ public class FirstPersonLook : MonoBehaviour
 
         if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking)
         {
-            // Attach camera back to character as child 0
+            // Attach camera back to character
             if (transform.parent != _character)
             {
                 transform.SetParent(_character);
@@ -48,22 +78,19 @@ public class FirstPersonLook : MonoBehaviour
                 transform.SetSiblingIndex(0);
             }
 
-            // Standard first-person rotation
             transform.localRotation = Quaternion.AngleAxis(-_velocity.y, Vector3.right);
             _character.localRotation = Quaternion.AngleAxis(_velocity.x, Vector3.up);
         }
         else if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Climbing)
         {
-            // Detach camera from character
+            // Detach camera
             if (transform.parent != null)
             {
                 transform.SetParent(null);
             }
 
-            // Follow character position
             transform.position = _character.position + _offset;
 
-            // Climbing rotation logic
             Quaternion camRot = Quaternion.Euler(-_velocity.y, _velocity.x, 0f);
             transform.localRotation = camRot;
         }

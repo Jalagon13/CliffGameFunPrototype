@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="EncodableAsset" id="{4892e160-b97c-489c-a0be-7776829df98c}">
+	<object class="EncodableAsset" id="{6b60b19b-5894-48e6-946c-b8a883fec0b0}">
 		<property name="assetPath">
-			<value>Jump/</value>
+			<value>Climbing/</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{b0f73c75-6694-43ea-9941-7d37677d3af1}</destination>

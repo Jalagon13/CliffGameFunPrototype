@@ -12,8 +12,8 @@ namespace CliffGame
         Climbing
     }
 
-    [RequireComponent(typeof(FirstPersonClimbMovement))]
-    [RequireComponent(typeof(FirstPersonMovement))]
+    [RequireComponent(typeof(ClimbMoveState))]
+    [RequireComponent(typeof(WalkingMoveState))]
     public class Player : MonoBehaviour
     {
         public static Player Instance;
@@ -27,25 +27,26 @@ namespace CliffGame
         
         [SerializeField] 
         private float _climbRayDistance = 2f;
+        public float ClimbRayDistance => _climbRayDistance;
         
         [SerializeField] 
         private LayerMask _climbableLayer;
         
         private Rigidbody _rigidbody;
         
-        private FirstPersonMovement _firstPersonMovement;
-        public FirstPersonMovement FirstPersonMovement => _firstPersonMovement;
+        private WalkingMoveState _firstPersonMovement;
+        public WalkingMoveState FirstPersonMovement => _firstPersonMovement;
         
-        private FirstPersonClimbMovement _firstPersonClimbMovement;
-        public FirstPersonClimbMovement FirstPersonClimbMovement => _firstPersonClimbMovement;
+        private ClimbMoveState _firstPersonClimbMovement;
+        public ClimbMoveState FirstPersonClimbMovement => _firstPersonClimbMovement;
         
         private void Awake()
         {
             Instance = this;
             
             _rigidbody = GetComponent<Rigidbody>();
-            _firstPersonMovement = GetComponent<FirstPersonMovement>();
-            _firstPersonClimbMovement = GetComponent<FirstPersonClimbMovement>();
+            _firstPersonMovement = GetComponent<WalkingMoveState>();
+            _firstPersonClimbMovement = GetComponent<ClimbMoveState>();
             _playerCamera = Camera.main;
 
             _states = new Dictionary<PlayerMoveState, IPlayerState>
@@ -89,7 +90,7 @@ namespace CliffGame
             }
             else if(CurrentMoveStateType == PlayerMoveState.Climbing)
             {
-                if(e.canceled)
+                if(e.canceled && !_firstPersonClimbMovement.IsLerpingToLedge)
                 {
                     // If I am climbing, and i release the toggle climb button, try to switch to walking.
                     TransitionState(PlayerMoveState.Walking);

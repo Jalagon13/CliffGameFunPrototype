@@ -7,6 +7,6 @@
   <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="FMODUnity.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.Public.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="FMODUnityResonance.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
 </Solution>

@@ -6,7 +6,7 @@ namespace CliffGame
 {
     public class FirstPersonAudio : MonoBehaviour
     {
-        public FirstPersonMovement Character;
+        public WalkingMoveState Character;
         public GroundCheck GroundCheck;
         public Jump Jump;
 
@@ -141,7 +141,7 @@ namespace CliffGame
 
         private void Reset()
         {
-            Character = GetComponentInParent<FirstPersonMovement>();
+            Character = GetComponentInParent<WalkingMoveState>();
             GroundCheck = (transform.parent ?? transform).GetComponentInChildren<GroundCheck>();
         }
     }

@@ -524,9 +524,12 @@ MonoBehaviour:
     m_Bits: 64
   _climbSpeed: 2.5
   _rayDistance: 3
-  _horizontalSpreadAngle: 25
+  _horizontalSpreadAngle: 40
   _verticalSpreadAngle: 25
   _momentumDamping: 6
+  _ledgeCheckDistance: 0.7
+  _ledgeClimbDuration: 0.5
+  _minLedgeFlatAngle: 45
 --- !u!114 &114497868231759342
 MonoBehaviour:
   m_ObjectHideFlags: 0

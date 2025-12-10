@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 namespace CliffGame
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class FirstPersonMovement : MonoBehaviour, IPlayerState
+    public class WalkingMoveState : MonoBehaviour, IPlayerState
     {
         public float speed = 5f;
 

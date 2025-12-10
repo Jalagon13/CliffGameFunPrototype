@@ -76,6 +76,6 @@ public class FirstPersonLook : MonoBehaviour
 
     private void Reset()
     {
-        _character = GetComponentInParent<FirstPersonMovement>().transform;
+        _character = GetComponentInParent<WalkingMoveState>().transform;
     }
 }

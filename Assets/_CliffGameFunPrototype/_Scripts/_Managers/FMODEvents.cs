@@ -7,6 +7,10 @@ namespace CliffGame
     {
         public static FMODEvents Instance { get; private set; }
 
+        [field: Header("Player SFX")]
+        [field: SerializeField] public EventReference PlayerHurtSFX { get; private set; }
+
+
         [field: Header("Walking SFX")]
         [field: SerializeField] public EventReference JumpSFX { get; private set; }
         [field: SerializeField] public EventReference LandingSFX { get; private set; }

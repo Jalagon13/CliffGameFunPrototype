@@ -36,7 +36,9 @@ namespace CliffGame
         [SerializeField] private float _ledgeClimbDuration = 0.5f;
         [SerializeField] private float _minLedgeFlatAngle = 45f;
 
-        private Vector2 _desiredDirection;
+        [HideInInspector]
+        public Vector2 DesiredMoveDirection;
+        
         private Player _context;
         private Rigidbody _rb;
         
@@ -49,9 +51,7 @@ namespace CliffGame
         private Timer _ledgeTimer;
         private Transform _bodyVisualsTransform;
 
-        // True when the player is sliding along the wall due to climb momentum
-        private bool _isSliding;
-        public bool IsSliding => _isSliding;
+        public bool IsMovingWhileClimbing => DesiredMoveDirection.magnitude > 0.1f && _context.CurrentMoveStateType == PlayerMoveState.Climbing;
 
         private void Awake()
         {
@@ -92,7 +92,7 @@ namespace CliffGame
                 return;
             }
 
-            if (_desiredDirection.y > 0.1f && TryFindLedge())
+            if (DesiredMoveDirection.y > 0.1f && TryFindLedge())
             {
                 StartLedgeLerp();
                 return;
@@ -175,8 +175,8 @@ namespace CliffGame
                 }
             }
 
-            float xInput = _desiredDirection.x;
-            float yInput = _desiredDirection.y;
+            float xInput = DesiredMoveDirection.x;
+            float yInput = DesiredMoveDirection.y;
 
             if (xInput < 0 && !leftHit) xInput = 0f;
             if (xInput > 0 && !rightHit) xInput = 0f;
@@ -231,9 +231,6 @@ namespace CliffGame
 
         private void ApplyClimbMomentum()
         {
-            // Set sliding state based on whether momentum is currently active
-            _isSliding = _climbMomentum.magnitude > 0.1f;
-
             // Project inherited momentum onto wall tangents
             float rightComponent = Vector3.Dot(_climbMomentum, _rightTangent);
             float upComponent = Vector3.Dot(_climbMomentum, _upTangent);
@@ -261,7 +258,7 @@ namespace CliffGame
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
         {
-            _desiredDirection = e.ReadValue<Vector2>();
+            DesiredMoveDirection = e.ReadValue<Vector2>();
         }
 
         private bool TryFindLedge()

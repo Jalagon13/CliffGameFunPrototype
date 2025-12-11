@@ -305,7 +305,7 @@ MonoBehaviour:
   _character: {fileID: 4207293392497186}
   Sensitivity: 0.2
   Smoothing: 1.5
-  _climbingFOV: 75
+  _climbingFOV: 80
   _fovLerpDuration: 0.25
 --- !u!114 &114103969153859672
 MonoBehaviour:
@@ -396,6 +396,7 @@ GameObject:
   - component: {fileID: 114963311885979670}
   - component: {fileID: 4843991343312101987}
   - component: {fileID: 114497868231759342}
+  - component: {fileID: 5662476774981885568}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -508,6 +509,7 @@ MonoBehaviour:
   MaxHorizontalSpeed: 10
   AccelerationRate: 35
   AirMultiplier: 0.65
+  DesiredMoveDirection: {x: 0, y: 0}
 --- !u!114 &4843991343312101987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,14 +526,16 @@ MonoBehaviour:
   _climbableLayer:
     serializedVersion: 2
     m_Bits: 64
-  _climbSpeed: 2.5
+  _climbSpeed: 1.5
   _rayDistance: 3
   _horizontalSpreadAngle: 40
   _verticalSpreadAngle: 15
   _momentumDamping: 6
+  _downwardMomentumToPlaySlideSFX: 8
   _ledgeCheckDistance: 0.7
   _ledgeClimbDuration: 0.5
   _minLedgeFlatAngle: 45
+  DesiredMoveDirection: {x: 0, y: 0}
 --- !u!114 &114497868231759342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,6 +550,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JumpStrength: 2
   _groundCheck: {fileID: 114503055206606986}
+--- !u!114 &5662476774981885568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773623360729482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5889e955a91d3474380e6dd5dd695919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.DeadState
 --- !u!1 &7225773153706698257
 GameObject:
   m_ObjectHideFlags: 0

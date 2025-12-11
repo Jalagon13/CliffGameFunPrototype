@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using SingularityGroup.HotReload;
 using UnityEngine;
@@ -9,24 +10,30 @@ namespace CliffGame
     public enum PlayerMoveState
     {
         Walking,
-        Climbing
+        Climbing,
+        Dead
     }
 
     [RequireComponent(typeof(ClimbMoveState))]
     [RequireComponent(typeof(WalkingMoveState))]
+    [RequireComponent(typeof(DeadState))]
     public class Player : MonoBehaviour
     {
         public static Player Instance;
         
         public Action<PlayerMoveState, PlayerMoveState> OnMoveStateChanged;
-    
+        public event Action OnPlayerRespawn;
+
         private Dictionary<PlayerMoveState, IPlayerState> _states;
         
         private IPlayerState _currentState;
         public PlayerMoveState CurrentMoveStateType { get; private set; }
 
         private Camera _playerCamera;
-        
+
+        [SerializeField]
+        private Transform _respawnTransform;
+
         [SerializeField] 
         private float _climbRayDistance = 2f;
         public float ClimbRayDistance => _climbRayDistance;
@@ -40,18 +47,25 @@ namespace CliffGame
         private ClimbMoveState _climbMoveState;
         public ClimbMoveState ClimbMoveState => _climbMoveState;
         
+        private DeadState _deadState;
+        
+        public Rigidbody RigidBody { get; private set; }
+        
         private void Awake()
         {
             Instance = this;
-            
+
+            RigidBody = GetComponent<Rigidbody>();
             _walkingMoveState = GetComponent<WalkingMoveState>();
             _climbMoveState = GetComponent<ClimbMoveState>();
+            _deadState = GetComponent<DeadState>();
             _playerCamera = Camera.main;
 
             _states = new Dictionary<PlayerMoveState, IPlayerState>
             {
                 { PlayerMoveState.Walking, _walkingMoveState },
-                { PlayerMoveState.Climbing, _climbMoveState }
+                { PlayerMoveState.Climbing, _climbMoveState },
+                { PlayerMoveState.Dead, _deadState }
             };
 
             TransitionState(PlayerMoveState.Walking);
@@ -60,16 +74,46 @@ namespace CliffGame
         private void Start()
         {
             GameInput.Instance.OnToggleClimb += GameInput_OnToggleClimb;
+            HealthManager.Instance.OnPlayerDeath += HealthManager_OnPlayerDeath;
         }
         
         private void OnDestroy()
         {
             GameInput.Instance.OnToggleClimb -= GameInput_OnToggleClimb;
+            HealthManager.Instance.OnPlayerDeath -= HealthManager_OnPlayerDeath;
+        }
+
+        private void HealthManager_OnPlayerDeath()
+        {
+            TransitionState(PlayerMoveState.Dead);
         }
 
         private void FixedUpdate()
         {
             _currentState.StateFixedUpdate();
+        }
+
+        public void RespawnButtonPressed()
+        {
+            TransitionState(PlayerMoveState.Walking);
+        
+            RigidBody.constraints = RigidbodyConstraints.None;
+            RigidBody.freezeRotation = true;
+            RigidBody.linearVelocity = Vector3.zero;
+            RigidBody.angularVelocity = Vector3.zero;
+
+            StartCoroutine(RespawnAtCorrectPosition());
+
+            OnPlayerRespawn?.Invoke();
+        }
+
+        private IEnumerator RespawnAtCorrectPosition()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                yield return null;
+                transform.SetPositionAndRotation(_respawnTransform.position, Quaternion.identity);
+            }
         }
 
         private void GameInput_OnToggleClimb(object sender, InputAction.CallbackContext e)
@@ -78,8 +122,6 @@ namespace CliffGame
             {
                 if(e.started)
                 {
-                    // If I am walking, and i hit the toggle climb button, shoot ray logic
-
                     RaycastHit hit;
                     if(Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out hit, _climbRayDistance, _climbableLayer))
                     {
@@ -91,7 +133,6 @@ namespace CliffGame
             {
                 if(e.canceled && !_climbMoveState.IsLerpingToLedge)
                 {
-                    // If I am climbing, and i release the toggle climb button, try to switch to walking.
                     TransitionState(PlayerMoveState.Walking);
                 }
             }

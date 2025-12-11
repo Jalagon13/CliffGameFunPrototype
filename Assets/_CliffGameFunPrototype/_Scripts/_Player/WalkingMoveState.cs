@@ -25,7 +25,9 @@ namespace CliffGame
 
         private Player _context;
         private Rigidbody _rigidbody;
-        private Vector2 _desiredDirection;
+        
+        [HideInInspector]
+        public Vector2 DesiredMoveDirection;
         
         private Vector3 _captureExitVelocity;
         public Vector3 CaptureExitVelocity => _captureExitVelocity;
@@ -60,7 +62,7 @@ namespace CliffGame
             float targetSpeed = IsRunning ? runSpeed : speed;
 
             // Input direction in world space
-            Vector3 desiredMove = transform.forward * _desiredDirection.y + transform.right * _desiredDirection.x;
+            Vector3 desiredMove = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
             desiredMove *= targetSpeed;
 
             // Only horizontal velocity
@@ -86,7 +88,7 @@ namespace CliffGame
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
         {
-            _desiredDirection = e.ReadValue<Vector2>();
+            DesiredMoveDirection = e.ReadValue<Vector2>();
         }
     }
 }

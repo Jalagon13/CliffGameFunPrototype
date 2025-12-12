@@ -13,6 +13,9 @@ namespace CliffGame
         public event EventHandler<InputAction.CallbackContext> OnLook;
         public event EventHandler<InputAction.CallbackContext> OnJump;
         public event EventHandler<InputAction.CallbackContext> OnToggleClimb;
+        public event EventHandler<InputAction.CallbackContext> OnScrollWheel;
+        public event EventHandler<InputAction.CallbackContext> OnSelectSlot;
+        public event EventHandler<InputAction.CallbackContext> OnToggleCraftingMenu;
 
         private PlayerInput _playerInput;
 
@@ -32,12 +35,21 @@ namespace CliffGame
             _playerInput.Player.Jump.started += PlayerInput_OnJump;
             _playerInput.Player.ToggleClimb.started += PlayerInput_OnToggleClimb;
             _playerInput.Player.ToggleClimb.canceled += PlayerInput_OnToggleClimb;
+            _playerInput.Player.ToggleCraftingMenu.started += PlayerInput_OnToggleCraftingMenu;
+            
+            _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
+            _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
         }
 
         public void OnDestroy()
         {
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnToggleCraftingMenu(InputAction.CallbackContext context)
+        {
+            OnToggleCraftingMenu?.Invoke(this, context);
         }
 
         private void PlayerInput_OnToggleClimb(InputAction.CallbackContext context)
@@ -58,6 +70,16 @@ namespace CliffGame
         private void PlayerInput_OnMove(InputAction.CallbackContext context)
         {
             OnMove?.Invoke(this, context);
+        }
+
+        private void PlayerInput_OnScrollWheel(InputAction.CallbackContext context)
+        {
+            OnScrollWheel?.Invoke(this, context);
+        }
+
+        private void PlayerInput_OnSelectSlot(InputAction.CallbackContext context)
+        {
+            OnSelectSlot?.Invoke(this, context);
         }
     }
 }

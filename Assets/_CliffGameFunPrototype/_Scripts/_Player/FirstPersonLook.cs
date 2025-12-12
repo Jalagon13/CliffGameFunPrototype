@@ -61,11 +61,8 @@ public class FirstPersonLook : MonoBehaviour
 
     private void Update()
     {
-        if(Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead)
-        {
-            return;
-        }
-    
+        if(Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || CraftingManager.Instance.CraftingMenuUIOpened) return;
+
         // Smooth camera velocity
         Vector2 mouseDelta = new Vector2(_lookInput.x, _lookInput.y);
         Vector2 rawFrameVelocity = Vector2.Scale(mouseDelta, Vector2.one * Sensitivity);

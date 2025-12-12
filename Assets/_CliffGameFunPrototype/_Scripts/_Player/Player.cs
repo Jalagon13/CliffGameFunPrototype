@@ -75,12 +75,19 @@ namespace CliffGame
         {
             GameInput.Instance.OnToggleClimb += GameInput_OnToggleClimb;
             HealthManager.Instance.OnPlayerDeath += HealthManager_OnPlayerDeath;
+            CraftingManager.Instance.OnCraftingUIOpened += CraftingManager_OnCraftingUIOpened;
         }
         
         private void OnDestroy()
         {
             GameInput.Instance.OnToggleClimb -= GameInput_OnToggleClimb;
             HealthManager.Instance.OnPlayerDeath -= HealthManager_OnPlayerDeath;
+            CraftingManager.Instance.OnCraftingUIOpened -= CraftingManager_OnCraftingUIOpened;
+        }
+
+        private void FixedUpdate()
+        {
+            _currentState.StateFixedUpdate();
         }
 
         private void HealthManager_OnPlayerDeath()
@@ -88,9 +95,10 @@ namespace CliffGame
             TransitionState(PlayerMoveState.Dead);
         }
 
-        private void FixedUpdate()
+        private void CraftingManager_OnCraftingUIOpened()
         {
-            _currentState.StateFixedUpdate();
+            WalkingMoveState.DesiredMoveDirection = Vector2.zero;
+            ClimbMoveState.DesiredMoveDirection = Vector2.zero;
         }
 
         public void RespawnButtonPressed()

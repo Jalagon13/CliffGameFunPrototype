@@ -57,6 +57,8 @@ namespace CliffGame
 
         private void Update()
         {
+            if(Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead) return;
+        
             _hungerStat.UpdateStat(Time.deltaTime, true);
         }
 

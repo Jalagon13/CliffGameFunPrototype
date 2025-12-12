@@ -33,6 +33,7 @@ namespace CliffGame
         {
             Debug.Log($"Exited Dead State");
 
+            _context.RigidBody.useGravity = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }

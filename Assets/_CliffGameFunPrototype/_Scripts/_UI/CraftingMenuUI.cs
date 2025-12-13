@@ -7,6 +7,9 @@ namespace CliffGame
         [SerializeField]
         private GameObject _craftingUIPanel;
 
+        [SerializeField]
+        private GameObject _mainInventoryUI;
+
         private void Start()
         {
             Hide();
@@ -43,11 +46,13 @@ namespace CliffGame
         private void Show()
         {
             _craftingUIPanel.SetActive(true);
+            _mainInventoryUI.SetActive(true);
         }
 
         private void Hide()
         {
             _craftingUIPanel.SetActive(false);
+            _mainInventoryUI.SetActive(false);
         }
     }
 }

@@ -12,32 +12,32 @@ namespace CliffGame
         [Header("Wind Settings")]
         [SerializeField, Range(0, 1f)]
         private float _windSeverity = 0.2f;
-        public float WindSeverity => _windSeverity;
+        // public float WindSeverity => _windSeverity;
 
         [SerializeField, Range(0, 1f)]
         private float _windPushesPlayerThreshold = 0.2f;
-        public float WindPushesPlayerThreshold => _windPushesPlayerThreshold;
+        // public float WindPushesPlayerThreshold => _windPushesPlayerThreshold;
 
-        [SerializeField, Tooltip("Multiplies this with the wind severity to determine the chance to rattle platforms when a platform is chosen")]
-        private float _severityMultiplier = 0.5f;
+        // [SerializeField, Tooltip("Multiplies this with the wind severity to determine the chance to rattle platforms when a platform is chosen")]
+        // private float _severityMultiplier = 0.5f;
         [SerializeField, Tooltip("Interval between each attempt to rattle a platform depending on the wind severity")]
         private float _windTickInterval = 0.15f;
 
-        [SerializeField] private int _minPlatformDamagePerRattle = 8;
-        [SerializeField] private int _maxPlatformDamagePerRattle = 16;
+        // [SerializeField] private int _minPlatformDamagePerRattle = 8;
+        // [SerializeField] private int _maxPlatformDamagePerRattle = 16;
 
-        [Header("Crit Rattle Settings")]
-        [SerializeField, Range(0f, 1f)]
-        private float _minCritChance = 0.05f;
+        // [Header("Crit Rattle Settings")]
+        // [SerializeField, Range(0f, 1f)]
+        // private float _minCritChance = 0.05f;
 
-        [SerializeField, Range(0f, 1f)]
-        private float _maxCritChance = 0.4f;
+        // [SerializeField, Range(0f, 1f)]
+        // private float _maxCritChance = 0.4f;
 
-        [SerializeField]
-        private float _critDamageMultiplier = 3f;
+        // [SerializeField]
+        // private float _critDamageMultiplier = 3f;
 
-        [field: SerializeField]
-        public float MaxWindForceAtFullSeverity { get; private set; } = 15f;
+        // [field: SerializeField]
+        // public float MaxWindForceAtFullSeverity { get; private set; } = 15f;
 
         [Header("Wind Particles Settings")]
         [SerializeField] private float _minWindParticleSpeed = 10f;

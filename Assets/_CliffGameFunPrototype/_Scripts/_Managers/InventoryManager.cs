@@ -17,9 +17,11 @@ namespace CliffGame
         {
             public List<InventoryItem> InventoryItems;
         }
+        
+        public Action<InventoryItem> OnItemPickup;
 
         [SerializeField]
-        private int _slotAmount = 10;
+        private int _slotAmount = 10, _hotbarSlotAmount = 9;
 
         private InventoryModel _inventoryModel;
 
@@ -138,7 +140,10 @@ namespace CliffGame
         {
             if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead) return;
 
-            _inventoryModel.AddItem(ItemToAdd.CreateInventoryItem(quantity));
+            var itemToAdd = ItemToAdd.CreateInventoryItem(quantity);
+            
+            _inventoryModel.AddItem(itemToAdd);
+            OnItemPickup?.Invoke(itemToAdd);
         }
 
         public void AddItems(InventoryItem[] itemsToAdd)
@@ -175,7 +180,7 @@ namespace CliffGame
             || CraftingManager.Instance.CraftingMenuUIOpened /* || InteractionManager.Instance.IsChargingItem */) return;
 
             Vector2 scrollDelta = context.ReadValue<Vector2>();
-            int itemCount = _inventoryModel.InventoryItems.Count;
+            int itemCount = _hotbarSlotAmount;
             if (itemCount == 0) return;
 
             if (scrollDelta.y > 0f) // Scroll up

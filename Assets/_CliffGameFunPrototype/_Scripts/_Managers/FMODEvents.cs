@@ -23,6 +23,9 @@ namespace CliffGame
         [field: SerializeField] public EventReference ClimbToWalkSFX { get; private set; }
         [field: SerializeField] public EventReference WalkToClimbSFX { get; private set; }
 
+        [field: Header("UI SFX")]
+        [field: SerializeField] public EventReference ItemPickupSFX { get; private set; }
+
         [field: Header("Ambience")]
         [field: SerializeField] public EventReference WindAmb { get; private set; }
 

@@ -14,8 +14,8 @@ namespace CliffGame
         private float _windSeverity = 0.2f;
         // public float WindSeverity => _windSeverity;
 
-        [SerializeField, Range(0, 1f)]
-        private float _windPushesPlayerThreshold = 0.2f;
+        // [SerializeField, Range(0, 1f)]
+        // private float _windPushesPlayerThreshold = 0.2f;
         // public float WindPushesPlayerThreshold => _windPushesPlayerThreshold;
 
         // [SerializeField, Tooltip("Multiplies this with the wind severity to determine the chance to rattle platforms when a platform is chosen")]

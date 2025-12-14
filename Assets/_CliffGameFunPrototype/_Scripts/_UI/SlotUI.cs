@@ -1,11 +1,14 @@
 using System;
+using System.Collections.Generic;
+using SingularityGroup.HotReload;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace CliffGame
 {
-    public class SlotUI : MonoBehaviour
+    public class SlotUI : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField]
         private Image _itemImage;
@@ -17,10 +20,30 @@ namespace CliffGame
         private GameObject _highlightedVisuals;
 
         private InventoryItem _item;
+        private int _inventoryIndex;
+        private InventoryModel _inventoryAssociatedWith;
 
         private void Awake()
         {
             SetHighlighted(false);
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                InventoryManager.Instance.SlotInteractionHandler.InventorySlotLeftClicked(_inventoryIndex, _inventoryAssociatedWith);
+            }
+            else if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                InventoryManager.Instance.SlotInteractionHandler.InventorySlotRightClicked(_inventoryIndex, _inventoryAssociatedWith);
+            }
+        }
+
+        public void InitializeInvSlotUI(int inventoryIndex, InventoryModel inventoryAssociatedWith)
+        {
+            _inventoryAssociatedWith = inventoryAssociatedWith;
+            _inventoryIndex = inventoryIndex;
         }
 
         public void UpdateDisplayUI(InventoryItem item)

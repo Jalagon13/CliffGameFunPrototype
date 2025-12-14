@@ -4,11 +4,9 @@ namespace CliffGame
 {
     public class CraftingUI : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject _craftingUIPanel;
-
-        [SerializeField]
-        private GameObject _mainInventoryUI;
+        [SerializeField] private GameObject _craftingUIPanel, _mainInventoryUI;
+        [SerializeField] private RectTransform _hotbarUI;
+        [SerializeField] private float _hotbarRaisedYPosition = 200f;
 
         private void Start()
         {
@@ -47,12 +45,20 @@ namespace CliffGame
         {
             _craftingUIPanel.SetActive(true);
             _mainInventoryUI.SetActive(true);
+
+            Vector2 anchoredPos = _hotbarUI.anchoredPosition;
+            anchoredPos.y = _hotbarRaisedYPosition;
+            _hotbarUI.anchoredPosition = anchoredPos;
         }
 
         private void Hide()
         {
             _craftingUIPanel.SetActive(false);
             _mainInventoryUI.SetActive(false);
+
+            Vector2 anchoredPos = _hotbarUI.anchoredPosition;
+            anchoredPos.y = 0f;
+            _hotbarUI.anchoredPosition = anchoredPos;
         }
     }
 }

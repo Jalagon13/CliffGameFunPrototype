@@ -33,7 +33,15 @@ namespace CliffGame
         {
             if (!context.started || Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || Player.Instance.CurrentMoveStateType == PlayerMoveState.Climbing) return;
 
+            // If trying to CLOSE the crafting menu while mouse has an item, block it
+            if (_craftingMenuUIOpened && InventoryManager.Instance.MouseHasItem)
+            {
+                return;
+            }
+
+            // Otherwise toggle normally
             _craftingMenuUIOpened = !_craftingMenuUIOpened;
+
             if (_craftingMenuUIOpened)
                 OnCraftingUIOpened?.Invoke();
             else

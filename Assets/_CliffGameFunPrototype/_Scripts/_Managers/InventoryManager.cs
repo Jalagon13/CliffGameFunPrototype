@@ -11,7 +11,9 @@ namespace CliffGame
     public class InventoryManager : MonoBehaviour
     {
         public static InventoryManager Instance;
+        public bool MouseHasItem { get; private set; }
 
+        public Action<InventoryItem> OnMouseItemUpdated;
         public event EventHandler<OnInventoryUpdatedEventArgs> OnInventoryUpdated;
         public class OnInventoryUpdatedEventArgs : EventArgs
         {
@@ -24,6 +26,7 @@ namespace CliffGame
         private int _slotAmount = 10, _hotbarSlotAmount = 9;
 
         private InventoryModel _inventoryModel;
+        public InventoryModel InventoryModel => _inventoryModel;
 
         [SerializeField]
         private int _startingHotbarIndex = 1;
@@ -51,6 +54,12 @@ namespace CliffGame
         {
             get => _inventoryModel.InventoryItems[_selectedSlotIndexBacking];
         }
+        
+        private SlotInteractionHandler _slotInteractionHandler;
+        public SlotInteractionHandler SlotInteractionHandler => _slotInteractionHandler;
+        
+        private MouseItemModel _mouseItemModel;
+        private bool _gotItemThisFrame, _gaveItemThisFrame;
 
         private void Awake()
         {
@@ -60,7 +69,12 @@ namespace CliffGame
 
             _inventoryModel = new(_slotAmount);
             _inventoryModel.OnInventoryUpdate += InventoryModel_OnInventoryUpdate;
+
+            _mouseItemModel = new();
+
+            _slotInteractionHandler = new(_inventoryModel, _mouseItemModel);
         }
+        
         private IEnumerator Start()
         {
             HealthManager.Instance.OnPlayerDeath += OnPlayerDeath;
@@ -79,6 +93,36 @@ namespace CliffGame
             GameInput.Instance.OnSelectSlot -= OnSelectSlot;
 
             _inventoryModel.OnInventoryUpdate -= InventoryModel_OnInventoryUpdate;
+        }
+
+        private void Update()
+        {
+            if (_mouseItemModel.MouseInventoryItem.HasItem)
+            {
+                if (_gotItemThisFrame) return;
+
+                UpdateMouseItem();
+
+                _gotItemThisFrame = true;
+                _gaveItemThisFrame = false;
+
+                MouseHasItem = true;
+                // Tooltip.HideUI();
+            }
+            else if (!_gaveItemThisFrame)
+            {
+                UpdateMouseItem();
+
+                _gaveItemThisFrame = true;
+                _gotItemThisFrame = false;
+
+                MouseHasItem = false;
+            }
+        }
+
+        private void UpdateMouseItem()
+        {
+            OnMouseItemUpdated?.Invoke(_mouseItemModel.MouseInventoryItem);
         }
 
         private void OnPlayerDeath()
@@ -112,6 +156,8 @@ namespace CliffGame
 
         private void InventoryModel_OnInventoryUpdate(List<InventoryItem> items)
         {
+            UpdateMouseItem();
+
             OnInventoryUpdated?.Invoke(this, new OnInventoryUpdatedEventArgs
             {
                 InventoryItems = items

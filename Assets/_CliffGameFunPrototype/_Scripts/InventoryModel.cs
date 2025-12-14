@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using SingularityGroup.HotReload;
 using UnityEngine;
 
 
@@ -154,30 +155,6 @@ namespace CliffGame
             }
 
             return amountCounter;
-        }
-
-        public void TryToCraft(RecipeDataSO recipe)
-        {
-            // Check if all required items are present
-            foreach (InventoryItem requiredItem in recipe.RequiredItems)
-            {
-                if (!Contains(requiredItem))
-                {
-                    Debug.Log($"Cannot craft {recipe.ResultItem.InGameName}: missing {requiredItem.Item.InGameName} x{requiredItem.Quantity}");
-                    return;
-                }
-            }
-
-            // Remove required items
-            foreach (InventoryItem requiredItem in recipe.RequiredItems)
-            {
-                RemoveItem(requiredItem.Item, requiredItem.Quantity);
-            }
-
-            // Add crafted item
-            AddItem(recipe.ResultItem.CreateInventoryItem(recipe.ResultAmount));
-
-            Debug.Log($"Crafted {recipe.ResultItem.InGameName} x{recipe.ResultAmount}!");
         }
     }
 }

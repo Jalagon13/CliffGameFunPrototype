@@ -20,6 +20,9 @@ namespace CliffGame
                 InventoryManager.Instance.AddItem(item.Item, item.Quantity);
                 yield return new WaitForSeconds(_delayBeforeGivingItems);
             }
+            
+            Debug.Log("Starting items added to inventory.");
+            InventoryManager.Instance.InventoryModel.UpdateInventory();
         }
     }
 }

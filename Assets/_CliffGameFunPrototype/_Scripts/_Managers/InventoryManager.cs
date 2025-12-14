@@ -200,13 +200,6 @@ namespace CliffGame
             }
         }
 
-        public void TryToCraft(RecipeDataSO recipe)
-        {
-            if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead) return;
-
-            _inventoryModel.TryToCraft(recipe);
-        }
-
         public void RemoveItem(ItemSO ItemToAdd, int quantity)
         {
             _inventoryModel.RemoveItem(ItemToAdd, quantity);

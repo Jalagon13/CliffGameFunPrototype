@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AdvancedTooltips.Core;
 using UnityEngine;
 
 namespace CliffGame
@@ -70,7 +71,7 @@ namespace CliffGame
                         inventory.InventoryItems[clickedInventorySlotIndex].Item = null;
                     }
 
-                    // Tooltip.HideUI();
+                    Tooltip.HideUI();
                 }
             }
             else
@@ -87,7 +88,7 @@ namespace CliffGame
                     {
                         _mouseItemModel.Clear();
 
-                        // ShowInventoryItemTooltip(_mouseItemModel.MouseInventoryItem);
+                        ShowInventoryItemTooltip(_mouseItemModel.MouseInventoryItem);
                     }
                 }
             }
@@ -118,7 +119,7 @@ namespace CliffGame
 
                         didChange = true;
 
-                        // ShowInventoryItemTooltip(_mouseItemModel.MouseInventoryItem);
+                        ShowInventoryItemTooltip(_mouseItemModel.MouseInventoryItem);
                     }
                     else
                     {
@@ -138,7 +139,7 @@ namespace CliffGame
 
                     didChange = true;
 
-                    // Tooltip.HideUI();
+                    Tooltip.HideUI();
                 }
             }
             else
@@ -150,7 +151,7 @@ namespace CliffGame
 
                     didChange = true;
 
-                    // ShowInventoryItemTooltip(inventory.InventoryItems[clickedInventorySlotIndex]);
+                    ShowInventoryItemTooltip(inventory.InventoryItems[clickedInventorySlotIndex]);
                 }
             }
 
@@ -165,6 +166,22 @@ namespace CliffGame
         public void PlayClickFeedbacks()
         {
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SlotClickedSFX, Player.Instance.transform.position);
+        }
+
+        public void ShowInventoryItemTooltip(InventoryItem inventoryItem)
+        {
+            if (!inventoryItem.HasItem)
+            {
+                Debug.LogWarning($"Trying to display an inventory item that does not exists for {inventoryItem}");
+                return;
+            }
+
+            Tooltip.ShowNew();
+
+            string quantityString = inventoryItem.Quantity > 1 ? $"[{inventoryItem.Quantity}]" : string.Empty;
+            string itemText = $"{inventoryItem.Item.InGameName} {quantityString}<br>{inventoryItem.Item.GetDescription()}";
+
+            Tooltip.JustText(itemText, Color.white, fontSize: 12f);
         }
     }
 }

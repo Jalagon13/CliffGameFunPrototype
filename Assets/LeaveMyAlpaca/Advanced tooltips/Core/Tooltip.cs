@@ -119,7 +119,7 @@ namespace AdvancedTooltips.Core
 
         public static void CraftingRecipeDisplay(RecipeSO recipeSO, Transform customLayout = null, float fontSize = 10, float iconScale = 1)
         {
-            JustText($"{recipeSO.ResultItem.InGameName} ({recipeSO.ResultAmount}):<br>Ingredients:", Color.white, fontSize: fontSize);
+            JustText($"{recipeSO.ResultItem.InGameName} ({recipeSO.ResultAmount})<br>Ingredients:", Color.white, fontSize: fontSize);
 
             //for each ingredient in the recipe resource list
             foreach (InventoryItem ingredient in recipeSO.RequiredItems)

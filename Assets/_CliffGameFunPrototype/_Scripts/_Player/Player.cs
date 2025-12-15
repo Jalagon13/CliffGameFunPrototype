@@ -30,6 +30,7 @@ namespace CliffGame
         public PlayerMoveState CurrentMoveStateType { get; private set; }
 
         private Camera _playerCamera;
+        public Camera PlayerCamera => _playerCamera;
 
         [SerializeField]
         private Transform _respawnTransform;

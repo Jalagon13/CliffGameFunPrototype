@@ -53,7 +53,7 @@ namespace CliffGame
 
         public void EnterState()
         {
-            Debug.Log($"Entered Walk State");
+            // Debug.Log($"Entered Walk State");
         }
 
         public void StateFixedUpdate()
@@ -83,7 +83,7 @@ namespace CliffGame
         public void ExitState()
         {
             _captureExitVelocity = _rigidbody.linearVelocity;
-            Debug.Log($"Exited Walk State with velocity: {_captureExitVelocity}");
+            // Debug.Log($"Exited Walk State with velocity: {_captureExitVelocity}");
         }
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)

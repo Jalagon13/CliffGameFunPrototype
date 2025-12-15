@@ -58,6 +58,7 @@ namespace AdvancedTooltips.Core
         }
         public void HideUI()
         {
+            if(animations == null) return;
             animations.HideAnimation();
             turnOn = false;
         }

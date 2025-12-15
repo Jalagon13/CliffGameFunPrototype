@@ -16,8 +16,12 @@ namespace CliffGame
         public event EventHandler<InputAction.CallbackContext> OnScrollWheel;
         public event EventHandler<InputAction.CallbackContext> OnSelectSlot;
         public event EventHandler<InputAction.CallbackContext> OnToggleCraftingMenu;
+        public event EventHandler<InputAction.CallbackContext> OnInteractStarted;
+        public event EventHandler<InputAction.CallbackContext> OnInteractCanceled;
 
         private PlayerInput _playerInput;
+        
+        public bool IsHoldingDownInteract { get; private set; }
 
         private void Awake()
         {
@@ -36,6 +40,8 @@ namespace CliffGame
             _playerInput.Player.ToggleClimb.started += PlayerInput_OnToggleClimb;
             _playerInput.Player.ToggleClimb.canceled += PlayerInput_OnToggleClimb;
             _playerInput.Player.ToggleCraftingMenu.started += PlayerInput_OnToggleCraftingMenu;
+            _playerInput.Player.Interact.started += PlayerInput_OnInteract;
+            _playerInput.Player.Interact.canceled += PlayerInput_OnInteract;
             
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -45,6 +51,20 @@ namespace CliffGame
         {
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnInteract(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                IsHoldingDownInteract = true;
+                OnInteractStarted?.Invoke(this, context);
+            }
+            else if(context.canceled)
+            {
+                IsHoldingDownInteract = false;
+                OnInteractCanceled?.Invoke(this, context);
+            }
         }
 
         private void PlayerInput_OnToggleCraftingMenu(InputAction.CallbackContext context)

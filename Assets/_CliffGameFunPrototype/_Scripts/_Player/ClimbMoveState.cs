@@ -72,7 +72,7 @@ namespace CliffGame
 
         public void EnterState()
         {
-            Debug.Log($"Entered Climb State with inherited velocity: {_context.WalkingMoveState.CaptureExitVelocity}");
+            // Debug.Log($"Entered Climb State with inherited velocity: {_context.WalkingMoveState.CaptureExitVelocity}");
 
             _rb.linearVelocity = new Vector3(0f, 0f, 0f);
             _rb.useGravity = false;
@@ -251,7 +251,7 @@ namespace CliffGame
 
         public void ExitState()
         {
-            Debug.Log($"Exited Climb State");
+            // Debug.Log($"Exited Climb State");
 
             _rb.useGravity = true;
         }

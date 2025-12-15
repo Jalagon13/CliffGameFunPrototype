@@ -2,6 +2,7 @@ namespace AdvancedTooltips.Core
 {
     using System;
     using System.Collections;
+    using Unity.VisualScripting;
     using UnityEngine;
     using UnityEngine.Events;
 
@@ -20,6 +21,9 @@ namespace AdvancedTooltips.Core
         }
         public void HideAnimation()
         {
+            if(gameObject == null || !gameObject.activeSelf)
+                return;
+        
             StopAllCoroutines();
             if (!gameObject.activeSelf)
                 return;

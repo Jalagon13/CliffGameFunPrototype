@@ -89,6 +89,7 @@ namespace CliffGame
 
             // Add crafted item
             InventoryManager.Instance.AddItem(recipe.ResultItem, recipe.ResultAmount);
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SlotClickedSFX, Player.Instance.transform.position);
         }
     }
 }

@@ -149,6 +149,7 @@ GameObject:
   - component: {fileID: 4888312255160041691}
   - component: {fileID: 1428649370990390063}
   - component: {fileID: 4398836320879300592}
+  - component: {fileID: 7581172630883392422}
   m_Layer: 5
   m_Name: CraftSlotUI
   m_TagString: Untagged
@@ -229,6 +230,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.CraftSlotUI
   _outputImage: {fileID: 2029243876777584564}
   _outputAmountText: {fileID: 4199204728781235938}
+--- !u!225 &7581172630883392422
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039472717120297842}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6414559964819245586
 GameObject:
   m_ObjectHideFlags: 0

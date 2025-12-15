@@ -4,11 +4,12 @@ namespace AdvancedTooltips.Core
 {
     using System;
     using AdvancedTooltips.ContentTypesHandlers;
+    using CliffGame;
     using TMPro;
     using UnityEngine;
     using UnityEngine.UI;
 
-    public static class TooltipsStatic
+    public static class Tooltip
     {
         //* In this script should be placed functions that will be called form other scripts
 
@@ -47,15 +48,11 @@ namespace AdvancedTooltips.Core
             referenceHolder.background.color = color;
         }
 
-
-        #region  just text
         /// <summary>
         ///  if font == null -> will use default font
         /// </summary>
         public static void JustText(Sprite icon, Color colorOfIcon, string text, Color colorOfTheText, Transform customLayout = null, TMP_FontAsset font = null, float fontSize = 20)
         {
-
-
             JustTextHandler script = instantiateHandler.InstantiateJustText(customLayout);
             script.icon.sprite = icon;
             script.icon.color = colorOfIcon;
@@ -64,13 +61,10 @@ namespace AdvancedTooltips.Core
             script.text.text = text;
             script.text.color = colorOfTheText;
             script.text.fontSize = fontSize;
-
-
         }
+        
         public static void JustText(Sprite icon, Color colorOfIcon, string text, Color colorOfTheText, float iconScale, Transform customLayout = null, TMP_FontAsset font = null, float fontSize = 20)
         {
-
-
             JustTextHandler script = instantiateHandler.InstantiateJustText(customLayout);
             script.icon.sprite = icon;
             script.icon.color = colorOfIcon;
@@ -80,13 +74,12 @@ namespace AdvancedTooltips.Core
             script.text.color = colorOfTheText;
             script.text.fontSize = fontSize;
             script.icon.transform.localScale = Vector3.one * iconScale;
-
         }
+        
         public static void JustText(string text, Color colorOfTheText, TMP_FontAsset font = null, float fontSize = 20)
         {
             JustText(icon: null, new(0, 0, 0, 0), text, colorOfTheText, font: font, fontSize: fontSize);
         }
-        #endregion
 
         public static void DisplayMaterial(MaterialsDisplay materialsDisplay, bool showPlusSignOnPositiveValues = true, bool showName = false, bool changeColorBasedOnAmount = true, Transform customLayout = null, TMP_FontAsset font = null, float fontSize = 20)
         {
@@ -108,14 +101,12 @@ namespace AdvancedTooltips.Core
 
         public static void BuildingDisplay(Building building, Transform customLayout = null, TMP_FontAsset font = null, float nameSize = 20, float fontSize = 10)
         {
-
-
             BuildingDisplayHandler script = instantiateHandler.InstantiateBuildingDisplay(customLayout);
             script.icon.sprite = building.icon;
 
-            script.name.font = font == null ? referenceHolder.defaultFont : font;
-            script.name.text = building.name;
-            script.name.fontSize = nameSize;
+            script.Name.font = font == null ? referenceHolder.defaultFont : font;
+            script.Name.text = building.name;
+            script.Name.fontSize = nameSize;
             foreach (var materialsDisplay in building.production)
             {
                 DisplayMaterial(materialsDisplay, showPlusSignOnPositiveValues: true, showName: true, customLayout: script.productionLayout, fontSize: fontSize);
@@ -126,7 +117,25 @@ namespace AdvancedTooltips.Core
             }
         }
 
+        public static void CraftingRecipeDisplay(RecipeSO recipeSO, Transform customLayout = null, float fontSize = 10, float iconScale = 1)
+        {
+            JustText($"{recipeSO.ResultItem.InGameName} ({recipeSO.ResultAmount}):<br>Ingredients:", Color.white, fontSize: fontSize);
 
+            //for each ingredient in the recipe resource list
+            foreach (InventoryItem ingredient in recipeSO.RequiredItems)
+            {
+                JustTextHandler script = instantiateHandler.InstantiateIngredientUI(customLayout);
+                script.icon.sprite = ingredient.Item.UiDisplay;
+                script.icon.transform.localScale = Vector3.one * iconScale;
+
+                int itemAmountInInventory = InventoryManager.Instance.InventoryModel.GetAmount(ingredient.Item);
+
+                script.text.fontSize = fontSize;
+                script.text.text = itemAmountInInventory >= ingredient.Quantity ?
+                $"{ingredient.Item.InGameName} {itemAmountInInventory}/{ingredient.Quantity}<br>" :
+                $"<color=red>{ingredient.Item.InGameName} {itemAmountInInventory}/{ingredient.Quantity}</color><br>";
+            }
+        }
 
 
 

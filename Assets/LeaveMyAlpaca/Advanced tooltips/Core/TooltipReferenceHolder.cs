@@ -19,7 +19,7 @@ namespace AdvancedTooltips.Core
 
         private void Awake()
         {
-            TooltipsStatic.referenceHolder = this;
+            Tooltip.referenceHolder = this;
             animations = GetComponent<TooltipAnimations>();
         }
 
@@ -34,10 +34,13 @@ namespace AdvancedTooltips.Core
         /// <summary>
         ///  has just text and image
         /// </summary>
-        public GameObject JustTextPrefab;
         public TMP_FontAsset defaultFont;
 
+        [Header("Tooltip Prefabs")]
+        public GameObject JustTextPrefab;
         public GameObject buildingPrefab;
+        public GameObject IngredientPrefab;
+
 
         [Header("Background")]
         public Image background;

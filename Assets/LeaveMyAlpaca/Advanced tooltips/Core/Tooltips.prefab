@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6338317493030167923}
   - component: {fileID: 7420903362143452278}
   m_Layer: 5
-  m_Name: Tooltips prefab
+  m_Name: Tooltips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

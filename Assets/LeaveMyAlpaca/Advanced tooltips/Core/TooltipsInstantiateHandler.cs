@@ -16,11 +16,8 @@ namespace AdvancedTooltips.Core
         private void Awake()
         {
             referenceHolder = GetComponent<TooltipReferenceHolder>();
-            TooltipsStatic.instantiateHandler = this;
+            Tooltip.instantiateHandler = this;
         }
-
-
-
 
         public JustTextHandler InstantiateJustText(Transform customLayout = null)
         {
@@ -36,6 +33,14 @@ namespace AdvancedTooltips.Core
             referenceHolder.oldPrefabs.Add(gameObject);
 
             return gameObject.GetComponent<BuildingDisplayHandler>();
+        }
+
+        public JustTextHandler InstantiateIngredientUI(Transform customLayout = null)
+        {
+            var gameObject = Instantiate(referenceHolder.IngredientPrefab, customLayout == null ? referenceHolder.layout.transform : customLayout);
+            referenceHolder.oldPrefabs.Add(gameObject);
+
+            return gameObject.GetComponent<JustTextHandler>();
         }
 
     }

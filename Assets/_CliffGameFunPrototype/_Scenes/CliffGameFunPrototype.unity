@@ -7322,6 +7322,143 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6abda33777d5044809706d4a3845ddc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.SlotUI
+--- !u!1001 &1875415217
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 17159226976096996, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: hideAnimation.animationLength
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 17159226976096996, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: showUpAnimation.animationLength
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456497781731199897, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: IngredientPrefab
+      value: 
+      objectReference: {fileID: 7984777672620914767, guid: f62f3333949d64f7c8572891e4b6b406, type: 3}
+    - target: {fileID: 1456497781731199897, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: defaultBackgroundSprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456497781731199897, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: defaultBackgroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456497781731199897, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: defaultBackgroundColor.b
+      value: 0.09812211
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456497781731199897, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: defaultBackgroundColor.g
+      value: 0.28201294
+      objectReference: {fileID: 0}
+    - target: {fileID: 1456497781731199897, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: defaultBackgroundColor.r
+      value: 0.4245283
+      objectReference: {fileID: 0}
+    - target: {fileID: 2181046411215254580, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_Name
+      value: Tooltips
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274787354005272579, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8134198314058942031, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8134198314058942031, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cf4ea186d6b188b4f917afa3e084053c, type: 3}
 --- !u!1 &1877260125
 GameObject:
   m_ObjectHideFlags: 0
@@ -7387,7 +7524,7 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: 538f7bfaf86764bd4ac49be7107ea497, type: 2}
     Quantity: 32
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 56
+    Quantity: 45
   - Item: {fileID: 11400000, guid: bc97d82a1a35d4cc4847a6ce9018103c, type: 2}
     Quantity: 99
 --- !u!1 &1895881966
@@ -8166,7 +8303,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
   _windSeverity: 0.05
-  _windPushesPlayerThreshold: 0.1
   _windTickInterval: 0.1
   _minWindParticleSpeed: 18
   _maxWindParticleSpeed: 75
@@ -13369,3 +13505,4 @@ SceneRoots:
   - {fileID: 1010040582}
   - {fileID: 689656520}
   - {fileID: 1753652126}
+  - {fileID: 1875415217}

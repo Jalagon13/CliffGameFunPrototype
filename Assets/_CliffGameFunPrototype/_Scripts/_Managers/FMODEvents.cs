@@ -10,7 +10,6 @@ namespace CliffGame
         [field: Header("Player SFX")]
         [field: SerializeField] public EventReference PlayerHurtSFX { get; private set; }
 
-
         [field: Header("Walking SFX")]
         [field: SerializeField] public EventReference JumpSFX { get; private set; }
         [field: SerializeField] public EventReference LandingSFX { get; private set; }
@@ -29,6 +28,11 @@ namespace CliffGame
 
         [field: Header("Ambience")]
         [field: SerializeField] public EventReference WindAmb { get; private set; }
+        
+        [field: Header("Building SFX")]
+        [field: SerializeField] public EventReference WoodRattleSFX { get; private set; }
+        [field: SerializeField] public EventReference WoodDestroyedSFX { get; private set; }
+        
 
         private void Awake()
         {

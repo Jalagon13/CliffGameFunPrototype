@@ -140,7 +140,7 @@ namespace CliffGame
             }
             else if(CurrentMoveStateType == PlayerMoveState.Climbing)
             {
-                if(e.canceled && !_climbMoveState.IsLerpingToLedge)
+                if(e.started && !_climbMoveState.IsLerpingToLedge)
                 {
                     TransitionState(PlayerMoveState.Walking);
                 }

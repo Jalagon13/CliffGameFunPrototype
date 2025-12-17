@@ -12667,8 +12667,8 @@ MonoBehaviour:
   _isStartingPlatform: 0
   _hitPoints: 200
   _rattleVFX: {fileID: 3892629605381178607}
-  _destructionParticles: {fileID: 0}
-  _crackParticles: {fileID: 0}
+  _destructionParticles: {fileID: 3947636531895734693, guid: e5f1ccd63da2f44378d6559a1a73df60, type: 3}
+  _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
   _crackDecalProjector: {fileID: 7193672247195066392}
   _noCracksModel: {fileID: 2325712648555079617}
   _crackMaterialsArray:

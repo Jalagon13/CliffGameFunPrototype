@@ -1097,6 +1097,20 @@ MonoBehaviour:
       Data3: 149056939
       Data4: 1833276242
     Path: event:/Ambience/AMB_Howling_Wind
+  <WoodRattleSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <WoodDestroyedSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &270546346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8622,6 +8636,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   _buildRange: 4
+  _itemsNeededForBuilding: []
   _isDestroying: 0
   _ghostMaterialValid: {fileID: 0}
   _ghostMaterialInvalid: {fileID: 0}

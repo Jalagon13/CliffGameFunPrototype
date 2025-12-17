@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4242712941915119039}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Planks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 190940788947002257}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Connectors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4399951465294787162}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: VeryHeavyCracks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 5389397916804517459}
   - component: {fileID: 7225218850526457945}
   - component: {fileID: 2244192252316570327}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1388,6 +1388,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &2244192252316570327
 MeshFilter:
@@ -1406,7 +1407,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1648442669892973360}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Logs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1441,7 +1442,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3603552176386128863}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Logs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1480,7 +1481,7 @@ GameObject:
   - component: {fileID: 1041908066997197427}
   - component: {fileID: 735235376738247566}
   - component: {fileID: 2472873373156149184}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2750,6 +2751,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &2472873373156149184
 MeshFilter:
@@ -2768,7 +2770,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6750355769683895555}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Logs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2803,7 +2805,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1645449769971420285}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Planks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2840,7 +2842,7 @@ GameObject:
   - component: {fileID: 8185013271474437585}
   - component: {fileID: 343434726090198073}
   - component: {fileID: 2156347000058998194}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4830,6 +4832,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &2156347000058998194
 MeshFilter:
@@ -4852,7 +4855,7 @@ GameObject:
   - component: {fileID: 1955944534238785071}
   - component: {fileID: 5762805592395802078}
   - component: {fileID: 1539262956337388466}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Connector (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4929,6 +4932,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &5762805592395802078
 SphereCollider:
@@ -4960,7 +4964,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1782096566597644988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f396a8f54504e92b0f44bcf4b601a8, type: 3}
+  m_Script: {fileID: 11500000, guid: d422ae2260c6447fe89b0e300c426b58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Connector
   ConnectorPosition: 2
@@ -4983,7 +4987,7 @@ GameObject:
   - component: {fileID: 5502914530251396553}
   - component: {fileID: 2574930877428461471}
   - component: {fileID: 3499925204019869355}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6973,6 +6977,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &3499925204019869355
 MeshFilter:
@@ -6995,7 +7000,7 @@ GameObject:
   - component: {fileID: 175392718390105428}
   - component: {fileID: 4744749547631674162}
   - component: {fileID: 6640693656996854486}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8985,6 +8990,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &6640693656996854486
 MeshFilter:
@@ -9003,7 +9009,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5373249222305399232}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Logs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9038,7 +9044,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5834910154213904477}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Planks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9072,7 +9078,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2192287426063457381}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: NoCracks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9109,7 +9115,7 @@ GameObject:
   - component: {fileID: 4122703532845942174}
   - component: {fileID: 7126017709718293517}
   - component: {fileID: 366852834658344124}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11099,6 +11105,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &366852834658344124
 MeshFilter:
@@ -11121,7 +11128,7 @@ GameObject:
   - component: {fileID: 2211502992613209380}
   - component: {fileID: 7193894038830704057}
   - component: {fileID: 7518538778957818452}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12391,6 +12398,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &7518538778957818452
 MeshFilter:
@@ -12410,7 +12418,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1625203976796518466}
   - component: {fileID: 2348206916443856480}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12466,7 +12474,7 @@ GameObject:
   - component: {fileID: 4159800038380987397}
   - component: {fileID: 5210967782925801351}
   - component: {fileID: 8068145437594920084}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Connector (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12543,6 +12551,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &5210967782925801351
 SphereCollider:
@@ -12574,7 +12583,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4219402438013119671}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f396a8f54504e92b0f44bcf4b601a8, type: 3}
+  m_Script: {fileID: 11500000, guid: d422ae2260c6447fe89b0e300c426b58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Connector
   ConnectorPosition: 1
@@ -12596,7 +12605,7 @@ GameObject:
   - component: {fileID: 2033269412382184172}
   - component: {fileID: 7598075245066883551}
   - component: {fileID: 3892629605381178607}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Floor
   m_TagString: Buildables
   m_Icon: {fileID: 0}
@@ -12652,13 +12661,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5175794678529326981}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0de502c9c622e42f1a7252126b495b7d, type: 3}
+  m_Script: {fileID: 11500000, guid: eccffe8f1c33f4eb882e72bee4156037, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Floor
+  _isStartingPlatform: 0
   _hitPoints: 200
   _rattleVFX: {fileID: 3892629605381178607}
-  _destructionParticles: {fileID: 3947636531895734693, guid: e5f1ccd63da2f44378d6559a1a73df60, type: 3}
-  _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
+  _destructionParticles: {fileID: 0}
+  _crackParticles: {fileID: 0}
   _crackDecalProjector: {fileID: 7193672247195066392}
   _noCracksModel: {fileID: 2325712648555079617}
   _crackMaterialsArray:
@@ -12673,9 +12683,9 @@ MonoBehaviour:
   - {fileID: 362440981991232527}
   _repairAmount: 250
   _itemsNeededForRepairing:
-  - Item: {fileID: 11400000, guid: 0c9d1756137dd43979e3a6d7e2aa2db0, type: 2}
+  - Item: {fileID: 11400000, guid: 538f7bfaf86764bd4ac49be7107ea497, type: 2}
     Quantity: 1
-  _repairDuration: 1.35
+  _repairDuration: 1
 --- !u!114 &3892629605381178607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12785,6 +12795,9 @@ MonoBehaviour:
   RestoreInitialValuesOnDisable: 0
   StopFeedbacksOnDisable: 0
   PlayCount: 0
+  MMF_ChannelMode: 0
+  MMF_Channel: 0
+  MMF_ChannelDefinition: {fileID: 0}
   references:
     version: 2
     RefIds:
@@ -12927,7 +12940,7 @@ GameObject:
   - component: {fileID: 2403169791933816056}
   - component: {fileID: 2299127285621661529}
   - component: {fileID: 3450919749747090914}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14917,6 +14930,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &3450919749747090914
 MeshFilter:
@@ -14935,7 +14949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7365564471257186642}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: HeavyCracks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14969,7 +14983,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4142615920013960537}
   - component: {fileID: 3524554325167096970}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Models
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15087,7 +15101,7 @@ GameObject:
   - component: {fileID: 1186233825195440176}
   - component: {fileID: 9019222311447045631}
   - component: {fileID: 3029735958138288004}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17077,6 +17091,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &3029735958138288004
 MeshFilter:
@@ -17095,7 +17110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 966045510202392423}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: LightCracks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17132,7 +17147,7 @@ GameObject:
   - component: {fileID: 2573809974863912102}
   - component: {fileID: 7411078407550762243}
   - component: {fileID: 3417812465825906931}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19122,6 +19137,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &3417812465825906931
 MeshFilter:
@@ -19144,7 +19160,7 @@ GameObject:
   - component: {fileID: 78264574014342036}
   - component: {fileID: 3804004272060607510}
   - component: {fileID: 1257457107942113482}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21134,6 +21150,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1257457107942113482
 MeshFilter:
@@ -21156,7 +21173,7 @@ GameObject:
   - component: {fileID: 3752735940358127208}
   - component: {fileID: 2798109120392747304}
   - component: {fileID: 1504963004337213290}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22426,6 +22443,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1504963004337213290
 MeshFilter:
@@ -22448,7 +22466,7 @@ GameObject:
   - component: {fileID: 4239185610941002268}
   - component: {fileID: 5990323040640163095}
   - component: {fileID: 2386244143411771210}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24438,6 +24456,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &2386244143411771210
 MeshFilter:
@@ -24456,7 +24475,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 216932250604771461}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: MediumCracks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24489,7 +24508,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4080056133915621705}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Logs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24525,7 +24544,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2955051489556478910}
   - component: {fileID: 7193672247195066392}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: CrackDecalProjector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24588,7 +24607,7 @@ GameObject:
   - component: {fileID: 2612730641518080270}
   - component: {fileID: 1274251700256860714}
   - component: {fileID: 4679306675545270158}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Connector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24665,6 +24684,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &1274251700256860714
 SphereCollider:
@@ -24696,7 +24716,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7421862169934940408}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f396a8f54504e92b0f44bcf4b601a8, type: 3}
+  m_Script: {fileID: 11500000, guid: d422ae2260c6447fe89b0e300c426b58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Connector
   ConnectorPosition: 0
@@ -24719,7 +24739,7 @@ GameObject:
   - component: {fileID: 4648198951806435140}
   - component: {fileID: 6189516910539586502}
   - component: {fileID: 3580990416650962281}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Connector (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24796,6 +24816,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &6189516910539586502
 SphereCollider:
@@ -24827,7 +24848,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7544632235012995620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f396a8f54504e92b0f44bcf4b601a8, type: 3}
+  m_Script: {fileID: 11500000, guid: d422ae2260c6447fe89b0e300c426b58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Connector
   ConnectorPosition: 3
@@ -24850,7 +24871,7 @@ GameObject:
   - component: {fileID: 4179695683964440882}
   - component: {fileID: 636421071277146380}
   - component: {fileID: 1848075474486708829}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26840,6 +26861,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &1848075474486708829
 MeshFilter:
@@ -26862,7 +26884,7 @@ GameObject:
   - component: {fileID: 7687953375454955942}
   - component: {fileID: 352942576204079511}
   - component: {fileID: 5968651229650375790}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28852,6 +28874,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &5968651229650375790
 MeshFilter:
@@ -28870,7 +28893,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4873275483123623374}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Planks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28910,7 +28933,7 @@ GameObject:
   - component: {fileID: 77980068656179021}
   - component: {fileID: 7276914467443940582}
   - component: {fileID: 7893245187425765342}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30900,6 +30923,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &7893245187425765342
 MeshFilter:
@@ -30922,7 +30946,7 @@ GameObject:
   - component: {fileID: 4324998319893580622}
   - component: {fileID: 9212256404392818255}
   - component: {fileID: 3777504408994719878}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32192,6 +32216,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &3777504408994719878
 MeshFilter:
@@ -32210,7 +32235,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7808509492746182960}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Planks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32249,7 +32274,7 @@ GameObject:
   - component: {fileID: 4547032688348975713}
   - component: {fileID: 5824979294111599279}
   - component: {fileID: 4323805193510765137}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33519,6 +33544,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &4323805193510765137
 MeshFilter:
@@ -33541,7 +33567,7 @@ GameObject:
   - component: {fileID: 1961214966080266951}
   - component: {fileID: 1904124096443083035}
   - component: {fileID: 6828872996094325770}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35531,6 +35557,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &6828872996094325770
 MeshFilter:
@@ -35553,7 +35580,7 @@ GameObject:
   - component: {fileID: 8767592745073586408}
   - component: {fileID: 7677342522929642859}
   - component: {fileID: 3958983504981238979}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Plank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36823,6 +36850,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &3958983504981238979
 MeshFilter:
@@ -36903,6 +36931,10 @@ PrefabInstance:
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_Name
       value: Log (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -36992,6 +37024,10 @@ PrefabInstance:
       value: Log (1)
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -37077,6 +37113,10 @@ PrefabInstance:
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_Name
       value: Log (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -37166,6 +37206,10 @@ PrefabInstance:
       value: Log (2)
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -37251,6 +37295,10 @@ PrefabInstance:
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_Name
       value: Log (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -37340,6 +37388,10 @@ PrefabInstance:
       value: Log (3)
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -37425,6 +37477,10 @@ PrefabInstance:
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_Name
       value: Log (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -37514,6 +37570,10 @@ PrefabInstance:
       value: Log
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -37599,6 +37659,10 @@ PrefabInstance:
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_Name
       value: Log
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -37688,6 +37752,10 @@ PrefabInstance:
       value: Log (2)
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -37773,6 +37841,10 @@ PrefabInstance:
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_Name
       value: Log
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -37862,6 +37934,10 @@ PrefabInstance:
       value: Log
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -37947,6 +38023,10 @@ PrefabInstance:
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_Name
       value: Log (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -38036,6 +38116,10 @@ PrefabInstance:
       value: Log (1)
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -38121,6 +38205,10 @@ PrefabInstance:
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_Name
       value: Log
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -38210,6 +38298,10 @@ PrefabInstance:
       value: Log (1)
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -38295,6 +38387,10 @@ PrefabInstance:
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_Name
       value: Log (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -38384,6 +38480,10 @@ PrefabInstance:
       value: Log (1)
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -38471,6 +38571,10 @@ PrefabInstance:
       value: Log (1)
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -38556,6 +38660,10 @@ PrefabInstance:
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_Name
       value: Log (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 522459008932986039, guid: 23bd600a3424d9e44ac451d447977c93, type: 3}
       propertyPath: m_StaticEditorFlags

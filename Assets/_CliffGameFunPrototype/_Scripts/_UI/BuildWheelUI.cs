@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using SingularityGroup.HotReload;
 using UnityEngine;
@@ -10,12 +11,14 @@ namespace CliffGame
     {
         [SerializeField] private float _defaultScale = 1f;
         [SerializeField] private float _selectedScale = 1.5f;
-
+        [SerializeField] private float _disappearDuration = 0.2f;
+        [SerializeField] private BuildOption _startingBuildOption = BuildOption.Floor;
         [SerializeField] private GameObject _buildOptions;
     
         private GameObject _buildMenuUI;
         private Transform _lastClosestUI = null;
         private OptionUI _selectedOption;
+        private bool _isBuildWheelToggledOpen = false;
 
         public bool BuildWheelUIOpen { get; private set; }
         
@@ -23,13 +26,24 @@ namespace CliffGame
         {
             _buildMenuUI = transform.GetChild(0).gameObject;
 
-            Hide();
+            Hide(false);
         }
     
         private void Start()
         {
             GameInput.Instance.OnSecondaryInteract += GameInput_OnSecondaryInteract;
             GameInput.Instance.OnPrimaryInteract += GameInput_OnPrimaryInteract;
+
+            // Set the starting state to whatever you set in the inspector
+            foreach (Transform ui in _buildOptions.transform)
+            {
+                if(ui.TryGetComponent(out OptionUI optionUI) && optionUI.BuildOption == _startingBuildOption)
+                {
+                    _lastClosestUI = ui;
+                    _selectedOption = optionUI;
+                    SetSelectedBuildOption(_selectedOption);
+                }
+            }
         }
         
         private void OnDestroy()
@@ -89,10 +103,8 @@ namespace CliffGame
                 
                 SetSelectedBuildOption(_selectedOption);
 
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-
-                Hide();
+                _isBuildWheelToggledOpen = false;
+                Hide(true);
             }
         }
 
@@ -111,32 +123,46 @@ namespace CliffGame
 
         private void GameInput_OnSecondaryInteract(object sender, InputAction.CallbackContext e)
         {
-            if(!BuildingManager.Instance.IsBuilding || CraftingManager.Instance.CraftingMenuUIOpened) return;
-        
-            if (e.started)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
+            if (CraftingManager.Instance.CraftingMenuUIOpened) return;
 
+            if (!e.started) return;
+
+            _isBuildWheelToggledOpen = !_isBuildWheelToggledOpen;
+
+            if (_isBuildWheelToggledOpen)
+            {
                 Show();
             }
-            else if(e.canceled)
+            else
             {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                
-                Hide();
+                Hide(true);
             }
         }
         
         private void Show()
         {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+
             _buildMenuUI.SetActive(true);
             BuildWheelUIOpen = true;
         }
         
-        private void Hide()
+        private void Hide(bool delayIt)
         {
+            StartCoroutine(DelayBuildWheelOpenToFalse(delayIt));
+        }
+        
+        private IEnumerator DelayBuildWheelOpenToFalse(bool delayIt)
+        {
+            if(delayIt)
+            {
+                yield return new WaitForSeconds(_disappearDuration);
+            }
+
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
             _buildMenuUI.SetActive(false);
             BuildWheelUIOpen = false;
         }

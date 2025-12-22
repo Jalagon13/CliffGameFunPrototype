@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CliffGame
 {
@@ -16,10 +17,11 @@ namespace CliffGame
         
         public void OnSelected()
         {
+            Debug.Log($"Selecting Option {_buildOption}");
             switch (_buildOption)
             {
                 case BuildOption.Wall:
-                    BuildingManager.Instance.SetIsBuilding(true);
+                    // BuildingManager.Instance.SetIsBuilding(true);
                     break;
                 case BuildOption.Floor:
                     BuildingManager.Instance.SetIsBuilding(true);
@@ -28,6 +30,9 @@ namespace CliffGame
                     BuildingManager.Instance.SetIsDestroying(true);
                     break;
             }
+            
+            Image selectedImage = transform.GetChild(0).GetComponent<Image>();
+            selectedImage.enabled = true;
         }
         
         public void OnDeselected()
@@ -35,7 +40,7 @@ namespace CliffGame
             switch (_buildOption)
             {
                 case BuildOption.Wall:
-                    BuildingManager.Instance.SetIsBuilding(false);
+                    // BuildingManager.Instance.SetIsBuilding(false);
                     break;
                 case BuildOption.Floor:
                     BuildingManager.Instance.SetIsBuilding(false);
@@ -44,6 +49,9 @@ namespace CliffGame
                     BuildingManager.Instance.SetIsDestroying(false);
                     break;
             }
+
+            Image selectedImage = transform.GetChild(0).GetComponent<Image>();
+            selectedImage.enabled = false;
         }
     }
 }

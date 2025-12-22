@@ -53,8 +53,7 @@ namespace CliffGame
         private GameObject _ghostBuildGameObject;
         private bool _isGhostInValidPosition = false;
         private Transform _modelParent = null;
-        private bool _clickedThisFrame = false;
-        private bool _isInWallMode = false;
+        private bool _clickedThisFrame = false, _isInWallMode = false, _isHoldingHammar;
 
         private void Awake()
         {
@@ -77,6 +76,8 @@ namespace CliffGame
 
         private void Update()
         {
+            if(!_isHoldingHammar) return;
+        
             if (_isBuilding && !_isDestroying && Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking)
             {
                 GhostBuild();
@@ -109,13 +110,14 @@ namespace CliffGame
 
         private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
         {
-            if(!_isBuilding || BuildWheelUI.BuildWheelUIOpen) return;
+            if(!_isHoldingHammar || BuildWheelUI.BuildWheelUIOpen) return;
             
             _clickedThisFrame = true;
         }
         
         public void SetIsBuilding(bool foo)
         {
+            Debug.Log($"Building mode: {foo}");
             _isBuilding = foo;
         }
 
@@ -137,25 +139,12 @@ namespace CliffGame
         {
             if (item.Item is HammerItemSO hammerData)
             {
-                Debug.Log($"Building Mode Enabled");
-                SetIsBuilding(true);
-                _isDestroying = false;
+                _isHoldingHammar = true;
             }
             else
             {
-                Debug.Log($"Building Mode Disabled");
-                SetIsBuilding(false);
+                _isHoldingHammar = false;
                 OnGhostUnsnap?.Invoke();
-
-                if (_isDestroying)
-                {
-                    if (_lastHitDestroyTransform != null)
-                    {
-                        ResetLastHitDestroyTransform();
-                    }
-
-                    _isDestroying = false;
-                }
             }
         }
 

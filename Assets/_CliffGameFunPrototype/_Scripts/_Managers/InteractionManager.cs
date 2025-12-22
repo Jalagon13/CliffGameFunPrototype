@@ -28,14 +28,12 @@ namespace CliffGame
         
         private void Start()
         {
-            GameInput.Instance.OnInteractStarted += OnInteractStarted;
-            GameInput.Instance.OnInteractCanceled += OnInteractCanceled;
+            GameInput.Instance.OnSecondaryInteract += GameInput_OnSecondaryInteract;
         }
         
         private void OnDestroy()
         {
-            GameInput.Instance.OnInteractStarted -= OnInteractStarted;
-            GameInput.Instance.OnInteractCanceled -= OnInteractCanceled;
+            GameInput.Instance.OnSecondaryInteract -= GameInput_OnSecondaryInteract;
         }
 
         private void Update()
@@ -45,7 +43,7 @@ namespace CliffGame
             // Always update current interactable under the crosshair
             SearchForResource();
 
-            if (GameInput.Instance.IsHoldingDownInteract)
+            if (GameInput.Instance.IsHoldingDownSecondaryInteract)
             {
                 if (_currentFoundInteractable != null)
                 {
@@ -110,15 +108,14 @@ namespace CliffGame
             return false;
         }
 
-        private void OnInteractStarted(object sender, InputAction.CallbackContext e)
+        private void GameInput_OnSecondaryInteract(object sender, InputAction.CallbackContext e)
         {
             // Not needed to do anything here; Update handles starting harvest
-        }
-
-        private void OnInteractCanceled(object sender, InputAction.CallbackContext e)
-        {
-            CancelInteractTimer();
-            _previousFoundInteractable = null;
+            if(e.canceled)
+            {
+                CancelInteractTimer();
+                _previousFoundInteractable = null;
+            }
         }
     }
 }

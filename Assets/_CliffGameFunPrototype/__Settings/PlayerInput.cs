@@ -122,7 +122,16 @@ namespace CliffGame
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Interact"",
+                    ""name"": ""PrimaryInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""6512db10-2756-417a-a102-83057ffa21c0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondaryInteract"",
                     ""type"": ""Button"",
                     ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
                     ""expectedControlType"": """",
@@ -152,33 +161,6 @@ namespace CliffGame
                     ""name"": ""Sprint"",
                     ""type"": ""Button"",
                     ""id"": ""641cd816-40e6-41b4-8c3d-04687c349290"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ToggleClimb"",
-                    ""type"": ""Button"",
-                    ""id"": ""28a478c9-1398-411b-8a53-8db562787d63"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""PlaceBuild"",
-                    ""type"": ""Button"",
-                    ""id"": ""1d7d0069-4909-47f0-97ae-de6c1cfcdd28"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ToggleDestroyMode"",
-                    ""type"": ""Button"",
-                    ""id"": ""c57212e8-824c-466b-8887-ed3992f289d2"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -424,7 +406,7 @@ namespace CliffGame
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Interact"",
+                    ""action"": ""SecondaryInteract"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -435,7 +417,7 @@ namespace CliffGame
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Interact"",
+                    ""action"": ""SecondaryInteract"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -463,34 +445,12 @@ namespace CliffGame
                 },
                 {
                     ""name"": """",
-                    ""id"": ""796ea755-3b06-4876-b4a3-4d59d1ae334d"",
+                    ""id"": ""3e6038c4-7578-4a8f-8bc3-3fd82a0a278b"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ToggleClimb"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""96244513-095f-44ec-9458-475ee4af3a2e"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""PlaceBuild"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""82a83ab4-dd19-4bd1-8239-b58225d84a27"",
-                    ""path"": ""<Keyboard>/v"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ToggleDestroyMode"",
+                    ""action"": ""PrimaryInteract"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1200,13 +1160,11 @@ namespace CliffGame
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_ToggleCraftingMenu = m_Player.FindAction("ToggleCraftingMenu", throwIfNotFound: true);
-            m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+            m_Player_PrimaryInteract = m_Player.FindAction("PrimaryInteract", throwIfNotFound: true);
+            m_Player_SecondaryInteract = m_Player.FindAction("SecondaryInteract", throwIfNotFound: true);
             m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
-            m_Player_ToggleClimb = m_Player.FindAction("ToggleClimb", throwIfNotFound: true);
-            m_Player_PlaceBuild = m_Player.FindAction("PlaceBuild", throwIfNotFound: true);
-            m_Player_ToggleDestroyMode = m_Player.FindAction("ToggleDestroyMode", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
@@ -1304,13 +1262,11 @@ namespace CliffGame
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_ToggleCraftingMenu;
-        private readonly InputAction m_Player_Interact;
+        private readonly InputAction m_Player_PrimaryInteract;
+        private readonly InputAction m_Player_SecondaryInteract;
         private readonly InputAction m_Player_Crouch;
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Sprint;
-        private readonly InputAction m_Player_ToggleClimb;
-        private readonly InputAction m_Player_PlaceBuild;
-        private readonly InputAction m_Player_ToggleDestroyMode;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1335,9 +1291,13 @@ namespace CliffGame
             /// </summary>
             public InputAction @ToggleCraftingMenu => m_Wrapper.m_Player_ToggleCraftingMenu;
             /// <summary>
-            /// Provides access to the underlying input action "Player/Interact".
+            /// Provides access to the underlying input action "Player/PrimaryInteract".
             /// </summary>
-            public InputAction @Interact => m_Wrapper.m_Player_Interact;
+            public InputAction @PrimaryInteract => m_Wrapper.m_Player_PrimaryInteract;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/SecondaryInteract".
+            /// </summary>
+            public InputAction @SecondaryInteract => m_Wrapper.m_Player_SecondaryInteract;
             /// <summary>
             /// Provides access to the underlying input action "Player/Crouch".
             /// </summary>
@@ -1350,18 +1310,6 @@ namespace CliffGame
             /// Provides access to the underlying input action "Player/Sprint".
             /// </summary>
             public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
-            /// <summary>
-            /// Provides access to the underlying input action "Player/ToggleClimb".
-            /// </summary>
-            public InputAction @ToggleClimb => m_Wrapper.m_Player_ToggleClimb;
-            /// <summary>
-            /// Provides access to the underlying input action "Player/PlaceBuild".
-            /// </summary>
-            public InputAction @PlaceBuild => m_Wrapper.m_Player_PlaceBuild;
-            /// <summary>
-            /// Provides access to the underlying input action "Player/ToggleDestroyMode".
-            /// </summary>
-            public InputAction @ToggleDestroyMode => m_Wrapper.m_Player_ToggleDestroyMode;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1397,9 +1345,12 @@ namespace CliffGame
                 @ToggleCraftingMenu.started += instance.OnToggleCraftingMenu;
                 @ToggleCraftingMenu.performed += instance.OnToggleCraftingMenu;
                 @ToggleCraftingMenu.canceled += instance.OnToggleCraftingMenu;
-                @Interact.started += instance.OnInteract;
-                @Interact.performed += instance.OnInteract;
-                @Interact.canceled += instance.OnInteract;
+                @PrimaryInteract.started += instance.OnPrimaryInteract;
+                @PrimaryInteract.performed += instance.OnPrimaryInteract;
+                @PrimaryInteract.canceled += instance.OnPrimaryInteract;
+                @SecondaryInteract.started += instance.OnSecondaryInteract;
+                @SecondaryInteract.performed += instance.OnSecondaryInteract;
+                @SecondaryInteract.canceled += instance.OnSecondaryInteract;
                 @Crouch.started += instance.OnCrouch;
                 @Crouch.performed += instance.OnCrouch;
                 @Crouch.canceled += instance.OnCrouch;
@@ -1409,15 +1360,6 @@ namespace CliffGame
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
-                @ToggleClimb.started += instance.OnToggleClimb;
-                @ToggleClimb.performed += instance.OnToggleClimb;
-                @ToggleClimb.canceled += instance.OnToggleClimb;
-                @PlaceBuild.started += instance.OnPlaceBuild;
-                @PlaceBuild.performed += instance.OnPlaceBuild;
-                @PlaceBuild.canceled += instance.OnPlaceBuild;
-                @ToggleDestroyMode.started += instance.OnToggleDestroyMode;
-                @ToggleDestroyMode.performed += instance.OnToggleDestroyMode;
-                @ToggleDestroyMode.canceled += instance.OnToggleDestroyMode;
             }
 
             /// <summary>
@@ -1438,9 +1380,12 @@ namespace CliffGame
                 @ToggleCraftingMenu.started -= instance.OnToggleCraftingMenu;
                 @ToggleCraftingMenu.performed -= instance.OnToggleCraftingMenu;
                 @ToggleCraftingMenu.canceled -= instance.OnToggleCraftingMenu;
-                @Interact.started -= instance.OnInteract;
-                @Interact.performed -= instance.OnInteract;
-                @Interact.canceled -= instance.OnInteract;
+                @PrimaryInteract.started -= instance.OnPrimaryInteract;
+                @PrimaryInteract.performed -= instance.OnPrimaryInteract;
+                @PrimaryInteract.canceled -= instance.OnPrimaryInteract;
+                @SecondaryInteract.started -= instance.OnSecondaryInteract;
+                @SecondaryInteract.performed -= instance.OnSecondaryInteract;
+                @SecondaryInteract.canceled -= instance.OnSecondaryInteract;
                 @Crouch.started -= instance.OnCrouch;
                 @Crouch.performed -= instance.OnCrouch;
                 @Crouch.canceled -= instance.OnCrouch;
@@ -1450,15 +1395,6 @@ namespace CliffGame
                 @Sprint.started -= instance.OnSprint;
                 @Sprint.performed -= instance.OnSprint;
                 @Sprint.canceled -= instance.OnSprint;
-                @ToggleClimb.started -= instance.OnToggleClimb;
-                @ToggleClimb.performed -= instance.OnToggleClimb;
-                @ToggleClimb.canceled -= instance.OnToggleClimb;
-                @PlaceBuild.started -= instance.OnPlaceBuild;
-                @PlaceBuild.performed -= instance.OnPlaceBuild;
-                @PlaceBuild.canceled -= instance.OnPlaceBuild;
-                @ToggleDestroyMode.started -= instance.OnToggleDestroyMode;
-                @ToggleDestroyMode.performed -= instance.OnToggleDestroyMode;
-                @ToggleDestroyMode.canceled -= instance.OnToggleDestroyMode;
             }
 
             /// <summary>
@@ -1792,12 +1728,19 @@ namespace CliffGame
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnToggleCraftingMenu(InputAction.CallbackContext context);
             /// <summary>
-            /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// Method invoked when associated input action "PrimaryInteract" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnInteract(InputAction.CallbackContext context);
+            void OnPrimaryInteract(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "SecondaryInteract" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnSecondaryInteract(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "Crouch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
@@ -1819,27 +1762,6 @@ namespace CliffGame
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSprint(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "ToggleClimb" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnToggleClimb(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "PlaceBuild" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnPlaceBuild(InputAction.CallbackContext context);
-            /// <summary>
-            /// Method invoked when associated input action "ToggleDestroyMode" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-            /// </summary>
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnToggleDestroyMode(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

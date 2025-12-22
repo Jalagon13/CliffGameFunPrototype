@@ -12,18 +12,17 @@ namespace CliffGame
         public event EventHandler<InputAction.CallbackContext> OnMove;
         public event EventHandler<InputAction.CallbackContext> OnLook;
         public event EventHandler<InputAction.CallbackContext> OnJump;
-        public event EventHandler<InputAction.CallbackContext> OnToggleClimb;
         public event EventHandler<InputAction.CallbackContext> OnScrollWheel;
         public event EventHandler<InputAction.CallbackContext> OnSelectSlot;
         public event EventHandler<InputAction.CallbackContext> OnToggleCraftingMenu;
-        public event EventHandler<InputAction.CallbackContext> OnInteractStarted;
-        public event EventHandler<InputAction.CallbackContext> OnInteractCanceled;
-        public event EventHandler<InputAction.CallbackContext> OnBuildPlaced;
-        public event EventHandler<InputAction.CallbackContext> OnToggleDestroyMode;
+        
+        public event EventHandler<InputAction.CallbackContext> OnPrimaryInteract;
+        public event EventHandler<InputAction.CallbackContext> OnSecondaryInteract;
 
         private PlayerInput _playerInput;
         
-        public bool IsHoldingDownInteract { get; private set; }
+        public bool IsHoldingDownSecondaryInteract { get; private set; }
+        public bool IsHoldingDownPrimaryInteract { get; private set; }
 
         private void Awake()
         {
@@ -39,13 +38,11 @@ namespace CliffGame
             _playerInput.Player.Look.performed += PlayerInput_OnLook;
             _playerInput.Player.Look.canceled += PlayerInput_OnLook;
             _playerInput.Player.Jump.started += PlayerInput_OnJump;
-            _playerInput.Player.ToggleClimb.started += PlayerInput_OnToggleClimb;
-            _playerInput.Player.ToggleClimb.canceled += PlayerInput_OnToggleClimb;
             _playerInput.Player.ToggleCraftingMenu.started += PlayerInput_OnToggleCraftingMenu;
-            _playerInput.Player.Interact.started += PlayerInput_OnInteract;
-            _playerInput.Player.Interact.canceled += PlayerInput_OnInteract;
-            _playerInput.Player.PlaceBuild.started += PlayerInput_OnPlaceBuild;
-            _playerInput.Player.ToggleDestroyMode.started += PlayerInput_OnToggleDestroyMode;
+            _playerInput.Player.PrimaryInteract.started += PlayerInput_OnPrimaryInteract;
+            _playerInput.Player.PrimaryInteract.canceled += PlayerInput_OnPrimaryInteract;
+            _playerInput.Player.SecondaryInteract.started += PlayerInput_OnSecondaryInteract;
+            _playerInput.Player.SecondaryInteract.canceled += PlayerInput_OnSecondaryInteract;
             
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -57,44 +54,37 @@ namespace CliffGame
             _playerInput.Dispose();
         }
 
-        private void PlayerInput_OnToggleDestroyMode(InputAction.CallbackContext context)
+        private void PlayerInput_OnPrimaryInteract(InputAction.CallbackContext context)
         {
             if(context.started)
             {
-                OnToggleDestroyMode?.Invoke(this, context);
-            }
-        }
-
-        private void PlayerInput_OnPlaceBuild(InputAction.CallbackContext context)
-        {
-            if(context.started)
-            {
-                OnBuildPlaced?.Invoke(this, context);
-            }
-        }
-
-        private void PlayerInput_OnInteract(InputAction.CallbackContext context)
-        {
-            if(context.started)
-            {
-                IsHoldingDownInteract = true;
-                OnInteractStarted?.Invoke(this, context);
+                IsHoldingDownPrimaryInteract = true;
             }
             else if(context.canceled)
             {
-                IsHoldingDownInteract = false;
-                OnInteractCanceled?.Invoke(this, context);
+                IsHoldingDownPrimaryInteract = false;
             }
+
+            OnPrimaryInteract?.Invoke(this, context);
+        }
+
+        private void PlayerInput_OnSecondaryInteract(InputAction.CallbackContext context)
+        {
+            if (context.started)
+            {
+                IsHoldingDownSecondaryInteract = true;
+            }
+            else if (context.canceled)
+            {
+                IsHoldingDownSecondaryInteract = false;
+            }
+
+            OnSecondaryInteract?.Invoke(this, context);
         }
 
         private void PlayerInput_OnToggleCraftingMenu(InputAction.CallbackContext context)
         {
             OnToggleCraftingMenu?.Invoke(this, context);
-        }
-
-        private void PlayerInput_OnToggleClimb(InputAction.CallbackContext context)
-        {
-            OnToggleClimb?.Invoke(this, context);
         }
 
         private void PlayerInput_OnJump(InputAction.CallbackContext context)

@@ -74,14 +74,14 @@ namespace CliffGame
         
         private void Start()
         {
-            GameInput.Instance.OnToggleClimb += GameInput_OnToggleClimb;
+            GameInput.Instance.OnPrimaryInteract += GameInput_OnPrimaryInteract;
             HealthManager.Instance.OnPlayerDeath += HealthManager_OnPlayerDeath;
             CraftingManager.Instance.OnCraftingUIOpened += CraftingManager_OnCraftingUIOpened;
         }
         
         private void OnDestroy()
         {
-            GameInput.Instance.OnToggleClimb -= GameInput_OnToggleClimb;
+            GameInput.Instance.OnPrimaryInteract -= GameInput_OnPrimaryInteract;
             HealthManager.Instance.OnPlayerDeath -= HealthManager_OnPlayerDeath;
             CraftingManager.Instance.OnCraftingUIOpened -= CraftingManager_OnCraftingUIOpened;
         }
@@ -125,7 +125,7 @@ namespace CliffGame
             }
         }
 
-        private void GameInput_OnToggleClimb(object sender, InputAction.CallbackContext e)
+        private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
         {
             if(CurrentMoveStateType == PlayerMoveState.Walking)
             {

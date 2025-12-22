@@ -24,6 +24,7 @@ namespace CliffGame
         [SerializeField] private List<GameObject> _wallObjects = new();
 
         [Header("Build Settings")]
+        [field: SerializeField] public BuildWheelUI BuildWheelUI { get; private set; }
         [SerializeField] private SelectedBuildType _currentBuildType;
         [SerializeField] private LayerMask _connectorLayerMask;
         [SerializeField] private LayerMask _playerLayerMask;
@@ -63,15 +64,15 @@ namespace CliffGame
         private void Start()
         {
             InventoryManager.Instance.OnSelectedSlotChanged += OnSelectedSlotChanged_CheckForHammer;
-            GameInput.Instance.OnBuildPlaced += GameInput_OnBuildPlaced;
-            GameInput.Instance.OnToggleDestroyMode += GameInput_OnToggleDestroyMode;
+            GameInput.Instance.OnPrimaryInteract += GameInput_OnPrimaryInteract;
+            // GameInput.Instance.OnToggleDestroyMode += GameInput_OnToggleDestroyMode;
         }
         
         private void OnDestroy()
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= OnSelectedSlotChanged_CheckForHammer;
-            GameInput.Instance.OnBuildPlaced -= GameInput_OnBuildPlaced;
-            GameInput.Instance.OnToggleDestroyMode -= GameInput_OnToggleDestroyMode;
+            GameInput.Instance.OnPrimaryInteract -= GameInput_OnPrimaryInteract;
+            // GameInput.Instance.OnToggleDestroyMode -= GameInput_OnToggleDestroyMode;
         }
 
         private void Update()
@@ -106,18 +107,21 @@ namespace CliffGame
 
         #region Input
 
-        private void GameInput_OnBuildPlaced(object sender, InputAction.CallbackContext e)
+        private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
         {
-            if(!_isBuilding) return;
+            if(!_isBuilding || BuildWheelUI.BuildWheelUIOpen) return;
             
             _clickedThisFrame = true;
         }
-
-        private void GameInput_OnToggleDestroyMode(object sender, InputAction.CallbackContext e)
+        
+        public void SetIsBuilding(bool foo)
         {
-            if (!e.started || !_isBuilding) return;
-            
-            _isDestroying = !_isDestroying;
+            _isBuilding = foo;
+        }
+
+        public void SetIsDestroying(bool foo)
+        {
+            _isDestroying = foo;
             Debug.Log($"Destroy Mode: {_isDestroying}");
 
             if (!_isDestroying)
@@ -134,13 +138,13 @@ namespace CliffGame
             if (item.Item is HammerItemSO hammerData)
             {
                 Debug.Log($"Building Mode Enabled");
-                _isBuilding = true;
+                SetIsBuilding(true);
                 _isDestroying = false;
             }
             else
             {
                 Debug.Log($"Building Mode Disabled");
-                _isBuilding = false;
+                SetIsBuilding(false);
                 OnGhostUnsnap?.Invoke();
 
                 if (_isDestroying)
@@ -484,6 +488,8 @@ namespace CliffGame
 
         private void MoveGhostPrefabToRaycast()
         {
+            if(BuildWheelUI.BuildWheelUIOpen) return;
+        
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit[] hits = Physics.RaycastAll(ray, _buildRange);
             Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance)); // Sort hits by distance (RaycastAll doesn’t guarantee order)

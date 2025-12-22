@@ -34,7 +34,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "PrimaryInteract",
+                    "type": "Button",
+                    "id": "6512db10-2756-417a-a102-83057ffa21c0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SecondaryInteract",
                     "type": "Button",
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
                     "expectedControlType": "",
@@ -64,33 +73,6 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ToggleClimb",
-                    "type": "Button",
-                    "id": "28a478c9-1398-411b-8a53-8db562787d63",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "PlaceBuild",
-                    "type": "Button",
-                    "id": "1d7d0069-4909-47f0-97ae-de6c1cfcdd28",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ToggleDestroyMode",
-                    "type": "Button",
-                    "id": "c57212e8-824c-466b-8887-ed3992f289d2",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -336,7 +318,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Interact",
+                    "action": "SecondaryInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -347,7 +329,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Interact",
+                    "action": "SecondaryInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -375,34 +357,12 @@
                 },
                 {
                     "name": "",
-                    "id": "796ea755-3b06-4876-b4a3-4d59d1ae334d",
+                    "id": "3e6038c4-7578-4a8f-8bc3-3fd82a0a278b",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ToggleClimb",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "96244513-095f-44ec-9458-475ee4af3a2e",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PlaceBuild",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "82a83ab4-dd19-4bd1-8239-b58225d84a27",
-                    "path": "<Keyboard>/v",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ToggleDestroyMode",
+                    "action": "PrimaryInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

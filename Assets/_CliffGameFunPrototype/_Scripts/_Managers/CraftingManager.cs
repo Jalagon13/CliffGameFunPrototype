@@ -32,7 +32,9 @@ namespace CliffGame
 
         private void OnCraftingToggle(object sender, InputAction.CallbackContext context)
         {
-            if (!context.started || Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || Player.Instance.CurrentMoveStateType == PlayerMoveState.Climbing) return;
+            if (!context.started || Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || 
+                Player.Instance.CurrentMoveStateType == PlayerMoveState.Climbing ||
+                BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen) return;
 
             // If trying to CLOSE the crafting menu while mouse has an item, block it
             if (_craftingMenuUIOpened && InventoryManager.Instance.MouseHasItem)

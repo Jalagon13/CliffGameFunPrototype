@@ -698,6 +698,7 @@ MonoBehaviour:
   - Master
   Banks:
   - Ambience
+  - Building
   - Player
   - UI
   BanksToLoad: []

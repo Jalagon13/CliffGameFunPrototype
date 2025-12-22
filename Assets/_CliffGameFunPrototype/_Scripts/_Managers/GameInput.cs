@@ -18,6 +18,8 @@ namespace CliffGame
         public event EventHandler<InputAction.CallbackContext> OnToggleCraftingMenu;
         public event EventHandler<InputAction.CallbackContext> OnInteractStarted;
         public event EventHandler<InputAction.CallbackContext> OnInteractCanceled;
+        public event EventHandler<InputAction.CallbackContext> OnBuildPlaced;
+        public event EventHandler<InputAction.CallbackContext> OnToggleDestroyMode;
 
         private PlayerInput _playerInput;
         
@@ -42,6 +44,8 @@ namespace CliffGame
             _playerInput.Player.ToggleCraftingMenu.started += PlayerInput_OnToggleCraftingMenu;
             _playerInput.Player.Interact.started += PlayerInput_OnInteract;
             _playerInput.Player.Interact.canceled += PlayerInput_OnInteract;
+            _playerInput.Player.PlaceBuild.started += PlayerInput_OnPlaceBuild;
+            _playerInput.Player.ToggleDestroyMode.started += PlayerInput_OnToggleDestroyMode;
             
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -51,6 +55,22 @@ namespace CliffGame
         {
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnToggleDestroyMode(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                OnToggleDestroyMode?.Invoke(this, context);
+            }
+        }
+
+        private void PlayerInput_OnPlaceBuild(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                OnBuildPlaced?.Invoke(this, context);
+            }
         }
 
         private void PlayerInput_OnInteract(InputAction.CallbackContext context)

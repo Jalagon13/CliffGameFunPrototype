@@ -12,32 +12,32 @@ namespace CliffGame
         [Header("Wind Settings")]
         [SerializeField, Range(0, 1f)]
         private float _windSeverity = 0.2f;
-        // public float WindSeverity => _windSeverity;
+        public float WindSeverity => _windSeverity;
 
-        // [SerializeField, Range(0, 1f)]
-        // private float _windPushesPlayerThreshold = 0.2f;
-        // public float WindPushesPlayerThreshold => _windPushesPlayerThreshold;
+        [SerializeField, Range(0, 1f)]
+        private float _windPushesPlayerThreshold = 0.2f;
+        public float WindPushesPlayerThreshold => _windPushesPlayerThreshold;
 
-        // [SerializeField, Tooltip("Multiplies this with the wind severity to determine the chance to rattle platforms when a platform is chosen")]
-        // private float _severityMultiplier = 0.5f;
+        [SerializeField, Tooltip("Multiplies this with the wind severity to determine the chance to rattle platforms when a platform is chosen")]
+        private float _severityMultiplier = 0.5f;
         [SerializeField, Tooltip("Interval between each attempt to rattle a platform depending on the wind severity")]
         private float _windTickInterval = 0.15f;
 
-        // [SerializeField] private int _minPlatformDamagePerRattle = 8;
-        // [SerializeField] private int _maxPlatformDamagePerRattle = 16;
+        [SerializeField] private int _minPlatformDamagePerRattle = 8;
+        [SerializeField] private int _maxPlatformDamagePerRattle = 16;
 
-        // [Header("Crit Rattle Settings")]
-        // [SerializeField, Range(0f, 1f)]
-        // private float _minCritChance = 0.05f;
+        [Header("Crit Rattle Settings")]
+        [SerializeField, Range(0f, 1f)]
+        private float _minCritChance = 0.05f;
 
-        // [SerializeField, Range(0f, 1f)]
-        // private float _maxCritChance = 0.4f;
+        [SerializeField, Range(0f, 1f)]
+        private float _maxCritChance = 0.4f;
 
-        // [SerializeField]
-        // private float _critDamageMultiplier = 3f;
+        [SerializeField]
+        private float _critDamageMultiplier = 3f;
 
-        // [field: SerializeField]
-        // public float MaxWindForceAtFullSeverity { get; private set; } = 15f;
+        [field: SerializeField]
+        public float MaxWindForceAtFullSeverity { get; private set; } = 15f;
 
         [Header("Wind Particles Settings")]
         [SerializeField] private float _minWindParticleSpeed = 10f;
@@ -69,23 +69,23 @@ namespace CliffGame
 
             foreach (var hit in hits)
             {
-                // if (!hit.gameObject.transform.root.TryGetComponent<Floor>(out var platform))
-                //     continue;
+                if (!hit.gameObject.transform.root.TryGetComponent<Floor>(out var platform))
+                    continue;
 
-                // if (platform.IsRattling)
-                //     continue;
+                if (platform.IsRattling)
+                    continue;
 
-                // float chance = _windSeverity * _severityMultiplier;
-                // if (UnityEngine.Random.value < chance)
-                // {
-                //     int baseDamage = Mathf.RoundToInt(Mathf.Lerp(_minPlatformDamagePerRattle, _maxPlatformDamagePerRattle, _windSeverity));
-                //     float critChance = Mathf.Lerp(_minCritChance, _maxCritChance, _windSeverity);
-                //     bool isCrit = UnityEngine.Random.value < critChance;
+                float chance = _windSeverity * _severityMultiplier;
+                if (UnityEngine.Random.value < chance)
+                {
+                    int baseDamage = Mathf.RoundToInt(Mathf.Lerp(_minPlatformDamagePerRattle, _maxPlatformDamagePerRattle, _windSeverity));
+                    float critChance = Mathf.Lerp(_minCritChance, _maxCritChance, _windSeverity);
+                    bool isCrit = UnityEngine.Random.value < critChance;
 
-                //     int finalDamage = isCrit ? Mathf.RoundToInt(baseDamage * _critDamageMultiplier) : baseDamage;
+                    int finalDamage = isCrit ? Mathf.RoundToInt(baseDamage * _critDamageMultiplier) : baseDamage;
 
-                //     platform.RattleFloor(finalDamage);
-                // }
+                    platform.RattleFloor(finalDamage);
+                }
             }
 
             // Update wind particle settings based on current storm severity

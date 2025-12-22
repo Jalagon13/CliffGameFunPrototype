@@ -11,7 +11,11 @@ namespace CliffGame
         [SerializeField] private bool _isStartingPlatform = false;
         [SerializeField] private int _hitPoints = 100;
         public int MaxHitPoints => _hitPoints;
+        
+        [SerializeField] private bool _destroyIfNotConntectedToAnything = true;
+        public bool DestroyIfNotConntectedToAnything => _destroyIfNotConntectedToAnything;
 
+        [Header("Game Feel Settings")]
         [SerializeField] private MMF_Player _rattleVFX;
         [SerializeField] private ParticleSystem _destructionParticles;
         [SerializeField] private ParticleSystem _crackParticles;
@@ -44,7 +48,7 @@ namespace CliffGame
         {
             _currentHP = _hitPoints;
         }
-
+        
         private IEnumerator Start()
         {
             if (!_isStartingPlatform) yield break;
@@ -83,6 +87,21 @@ namespace CliffGame
             }
         }
 
+        private void ManageDestruction()
+        {
+            Debug.Log($"Managing destruction");
+
+            foreach (Connector connector in transform.GetComponentsInChildren<Connector>())
+            {
+                // Debug.Log($"disablign connector");
+                connector.gameObject.SetActive(false);
+                connector.UpdateConnectors(true);
+            }
+
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
+            Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
+        }
+
         public void ExecuteInteraction()
         {
             Debug.Log($"Repairing Floor");
@@ -100,21 +119,6 @@ namespace CliffGame
             _rattleVFX?.PlayFeedbacks();
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodRattleSFX, transform.position);
             Instantiate(_crackParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
-        }
-
-        private void ManageDestruction()
-        {
-            Debug.Log($"Managing destruction");
-
-            foreach (Connector connector in transform.GetComponentsInChildren<Connector>())
-            {
-                // Debug.Log($"disablign connector");
-                connector.gameObject.SetActive(false);
-                connector.UpdateConnectors(true);
-            }
-
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
-            Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
         }
 
         private void UpdateCrackDecals()

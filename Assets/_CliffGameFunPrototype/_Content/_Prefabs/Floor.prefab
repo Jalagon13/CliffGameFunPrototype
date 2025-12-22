@@ -4853,8 +4853,8 @@ GameObject:
   - component: {fileID: 7454451783957895968}
   - component: {fileID: 3482569315850350067}
   - component: {fileID: 1955944534238785071}
-  - component: {fileID: 5762805592395802078}
   - component: {fileID: 1539262956337388466}
+  - component: {fileID: 988648094821512587}
   m_Layer: 9
   m_Name: Connector (2)
   m_TagString: Untagged
@@ -4934,27 +4934,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5762805592395802078
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1782096566597644988}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1539262956337388466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4974,6 +4953,27 @@ MonoBehaviour:
   CanConnectTo: 1
   _canConnectToFloor: 1
   _canConnectToWall: 1
+--- !u!135 &988648094821512587
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782096566597644988}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.35
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2167043849178494730
 GameObject:
   m_ObjectHideFlags: 0
@@ -12472,8 +12472,8 @@ GameObject:
   - component: {fileID: 1414113306675160812}
   - component: {fileID: 3234034549818990006}
   - component: {fileID: 4159800038380987397}
-  - component: {fileID: 5210967782925801351}
   - component: {fileID: 8068145437594920084}
+  - component: {fileID: 6250392016538147473}
   m_Layer: 9
   m_Name: Connector (1)
   m_TagString: Untagged
@@ -12553,27 +12553,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5210967782925801351
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4219402438013119671}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8068145437594920084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12593,6 +12572,27 @@ MonoBehaviour:
   CanConnectTo: 1
   _canConnectToFloor: 1
   _canConnectToWall: 1
+--- !u!135 &6250392016538147473
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4219402438013119671}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.35
+  m_Center: {x: -0.000015258789, y: 0, z: 0}
 --- !u!1 &5175794678529326981
 GameObject:
   m_ObjectHideFlags: 0
@@ -12666,6 +12666,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Floor
   _isStartingPlatform: 0
   _hitPoints: 200
+  _destroyIfNotConntectedToAnything: 1
   _rattleVFX: {fileID: 3892629605381178607}
   _destructionParticles: {fileID: 3947636531895734693, guid: e5f1ccd63da2f44378d6559a1a73df60, type: 3}
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
@@ -24605,8 +24606,8 @@ GameObject:
   - component: {fileID: 1345164847802783906}
   - component: {fileID: 5603954670244431964}
   - component: {fileID: 2612730641518080270}
-  - component: {fileID: 1274251700256860714}
   - component: {fileID: 4679306675545270158}
+  - component: {fileID: 7351257273208605659}
   m_Layer: 9
   m_Name: Connector
   m_TagString: Untagged
@@ -24636,7 +24637,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7421862169934940408}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &2612730641518080270
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -24686,27 +24687,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &1274251700256860714
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7421862169934940408}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4679306675545270158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24726,6 +24706,27 @@ MonoBehaviour:
   CanConnectTo: 1
   _canConnectToFloor: 1
   _canConnectToWall: 1
+--- !u!135 &7351257273208605659
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7421862169934940408}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.35
+  m_Center: {x: -0.000015258789, y: 0, z: 0}
 --- !u!1 &7544632235012995620
 GameObject:
   m_ObjectHideFlags: 0
@@ -24737,8 +24738,8 @@ GameObject:
   - component: {fileID: 7735678652055413279}
   - component: {fileID: 6902241065761281642}
   - component: {fileID: 4648198951806435140}
-  - component: {fileID: 6189516910539586502}
   - component: {fileID: 3580990416650962281}
+  - component: {fileID: 8891558304975700420}
   m_Layer: 9
   m_Name: Connector (3)
   m_TagString: Untagged
@@ -24818,27 +24819,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6189516910539586502
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7544632235012995620}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.3
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3580990416650962281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24858,6 +24838,27 @@ MonoBehaviour:
   CanConnectTo: 1
   _canConnectToFloor: 1
   _canConnectToWall: 1
+--- !u!135 &8891558304975700420
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7544632235012995620}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.35
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7961729732723063264
 GameObject:
   m_ObjectHideFlags: 0

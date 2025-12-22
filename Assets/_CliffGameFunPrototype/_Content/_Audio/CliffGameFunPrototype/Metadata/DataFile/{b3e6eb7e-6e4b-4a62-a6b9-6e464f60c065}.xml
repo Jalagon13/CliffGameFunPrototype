@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="DataFile" id="{b3e6eb7e-6e4b-4a62-a6b9-6e464f60c065}">
+		<property name="assetPath">
+			<value>Player/Landing/SFX_Landing_2.wav.meta</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b0f73c75-6694-43ea-9941-7d37677d3af1}</destination>
+		</relationship>
+	</object>
+</objects>

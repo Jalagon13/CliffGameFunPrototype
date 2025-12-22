@@ -38,6 +38,7 @@ namespace CliffGame
 
         [Header("Ghost Settings")]
         [SerializeField] private Material _ghostMaterialValid;
+        [SerializeField] private Material _ghostMaterialInvisible;
         [SerializeField] private Material _ghostMaterialInvalid;
         [SerializeField] private float _connectorOverlapRadius = 1f;
         [SerializeField] private float _maxGroundAngle = 90f;
@@ -62,11 +63,15 @@ namespace CliffGame
         private void Start()
         {
             InventoryManager.Instance.OnSelectedSlotChanged += OnSelectedSlotChanged_CheckForHammer;
+            GameInput.Instance.OnBuildPlaced += GameInput_OnBuildPlaced;
+            GameInput.Instance.OnToggleDestroyMode += GameInput_OnToggleDestroyMode;
         }
         
         private void OnDestroy()
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= OnSelectedSlotChanged_CheckForHammer;
+            GameInput.Instance.OnBuildPlaced -= GameInput_OnBuildPlaced;
+            GameInput.Instance.OnToggleDestroyMode -= GameInput_OnToggleDestroyMode;
         }
 
         private void Update()
@@ -99,6 +104,31 @@ namespace CliffGame
             }
         }
 
+        #region Input
+
+        private void GameInput_OnBuildPlaced(object sender, InputAction.CallbackContext e)
+        {
+            if(!_isBuilding) return;
+            
+            _clickedThisFrame = true;
+        }
+
+        private void GameInput_OnToggleDestroyMode(object sender, InputAction.CallbackContext e)
+        {
+            if (!e.started || !_isBuilding) return;
+            
+            _isDestroying = !_isDestroying;
+            Debug.Log($"Destroy Mode: {_isDestroying}");
+
+            if (!_isDestroying)
+            {
+                if (_lastHitDestroyTransform != null)
+                {
+                    ResetLastHitDestroyTransform();
+                }
+            }
+        }
+
         private void OnSelectedSlotChanged_CheckForHammer(int arg1, InventoryItem item)
         {
             if (item.Item is HammerItemSO hammerData)
@@ -124,6 +154,10 @@ namespace CliffGame
                 }
             }
         }
+
+        #endregion
+
+
 
         #region Building
 
@@ -187,7 +221,7 @@ namespace CliffGame
                 //     _ghostBuildGameObject.transform.GetChild(2).GetComponent<BoxCollider>().enabled = false;
 
 
-                GhostifyModel(_modelParent, _ghostMaterialInvalid); // Sets the correct material
+                GhostifyModel(_modelParent, _ghostMaterialInvisible); // Sets the correct material
                 GhostifyModel(_ghostBuildGameObject.transform); // Disables colliders on the ghostbuild so it doesn't affect the other colliders near it
             }
         }
@@ -212,7 +246,7 @@ namespace CliffGame
                     {
                         if (overlapCollider.gameObject != _ghostBuildGameObject && overlapCollider.transform.root.CompareTag("Buildables"))
                         {
-                            GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                            GhostifyModel(_modelParent, _ghostMaterialInvisible);
                             _isGhostInValidPosition = false;
                             return;
                         }
@@ -247,7 +281,7 @@ namespace CliffGame
                     OnGhostUnsnap?.Invoke();
                     _lastSnappedConnector = null;
                 }
-                GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                GhostifyModel(_modelParent, _ghostMaterialInvisible);
                 _isGhostInValidPosition = false;
                 return;
             }
@@ -359,7 +393,7 @@ namespace CliffGame
             // If it does not have wood to place make it invalid
             if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding))
             {
-                GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                GhostifyModel(_modelParent, _ghostMaterialInvisible);
                 _isGhostInValidPosition = false;
                 return;
             }
@@ -390,7 +424,7 @@ namespace CliffGame
                 if (_currentBuildType == SelectedBuildType.Wall)
                 {
                     // If we try to place a wall, but haven't snapped it to anything, we won't be able to place it
-                    GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                    GhostifyModel(_modelParent, _ghostMaterialInvisible);
                     _isGhostInValidPosition = false;
                     return;
                 }
@@ -404,13 +438,13 @@ namespace CliffGame
                 }
                 else
                 {
-                    GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                    GhostifyModel(_modelParent, _ghostMaterialInvisible);
                     _isGhostInValidPosition = false;
                 }
             }
             else
             {
-                GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                GhostifyModel(_modelParent, _ghostMaterialInvisible);
                 _isGhostInValidPosition = false;
             }
         }
@@ -461,7 +495,7 @@ namespace CliffGame
                 if (hit.transform)
 
                     // Skip if collider is in the connector layer mask
-                    if (((1 << hit.transform.gameObject.layer) & _connectorLayerMask) != 0 || ((1 << hit.transform.gameObject.layer) & _playerLayerMask) != 0)
+                    if (/* ((1 << hit.transform.gameObject.layer) & _connectorLayerMask) != 0 ||  */((1 << hit.transform.gameObject.layer) & _playerLayerMask) != 0)
                         continue;
 
                 if (hit.transform.root.TryGetComponent(out Player player))
@@ -583,7 +617,7 @@ namespace CliffGame
                     // InventoryManager.Instance.AddItem(StructureManager.Instance.CurrentStructureItemSO, 1);
                 }
 
-                // AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
                 // _hammer.PlayHammerSwing();
             }
         }

@@ -78,6 +78,14 @@ namespace CliffGame
             // Apply the velocity change as force
             Vector3 velocityChange = smoothedVelocity - horizontalVelocity;
             _rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+
+            // Apply wind force in positive X direction. ONLY IN X DIRECTION RN FIX LATER
+            if (WindManager.Instance != null)
+            {
+                float windSeverity = WindManager.Instance.WindSeverity > WindManager.Instance.WindPushesPlayerThreshold ? WindManager.Instance.WindSeverity : 0f;
+                Vector3 windForce = Vector3.right * (WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity);
+                _rigidbody.AddForce(windForce, ForceMode.Acceleration);
+            }
         }
 
         public void ExitState()

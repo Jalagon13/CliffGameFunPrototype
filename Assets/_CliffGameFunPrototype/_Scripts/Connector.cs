@@ -31,11 +31,17 @@ namespace CliffGame
 
         [SerializeField]
         private bool _canConnectToWall = true;
+        
         private SphereCollider _connectorCollider;
+        private Floor _floor;
+        
+        public bool IsNotConnectedToAnything { get; private set; }
+        
 
         private void Awake()
         {
             _connectorCollider = GetComponent<SphereCollider>();
+            _floor = transform.root.GetComponent<Floor>();
         }
 
         private void OnDrawGizmos()
@@ -87,6 +93,34 @@ namespace CliffGame
             {
                 CanConnectTo = false;
             }
+
+            IsNotConnectedToAnything = !IsConnectedToFloor && !IsConnectedToWall;
+            
+            if(CheckIfBuildingIsNotConntectedToAnything())
+            {
+                if(_floor.DestroyIfNotConntectedToAnything)
+                {
+                    Destroy(_floor.gameObject);
+                }
+            }
+        }
+
+        // Still WIP. Only works if the platform is not connected to anything but like bunches of platforms not connected to the cliff still stand
+        private bool CheckIfBuildingIsNotConntectedToAnything()
+        {
+            if (transform.parent == null)
+                return true;
+
+            foreach (Transform item in transform.parent)
+            {
+                Connector connector = item.GetComponent<Connector>();
+                if (connector == null) continue;
+
+                if (!connector.IsNotConnectedToAnything)
+                    return false; // At least one connector is connected
+            }
+
+            return true; // All connectors are unconnected
         }
     }
 }

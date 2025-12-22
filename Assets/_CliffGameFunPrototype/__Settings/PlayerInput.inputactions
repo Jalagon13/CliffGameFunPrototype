@@ -77,6 +77,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PlaceBuild",
+                    "type": "Button",
+                    "id": "1d7d0069-4909-47f0-97ae-de6c1cfcdd28",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleDestroyMode",
+                    "type": "Button",
+                    "id": "c57212e8-824c-466b-8887-ed3992f289d2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -363,6 +381,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "ToggleClimb",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "96244513-095f-44ec-9458-475ee4af3a2e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceBuild",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "82a83ab4-dd19-4bd1-8239-b58225d84a27",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleDestroyMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

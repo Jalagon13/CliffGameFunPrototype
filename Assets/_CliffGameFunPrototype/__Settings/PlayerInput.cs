@@ -165,6 +165,24 @@ namespace CliffGame
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PlaceBuild"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d7d0069-4909-47f0-97ae-de6c1cfcdd28"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleDestroyMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""c57212e8-824c-466b-8887-ed3992f289d2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -451,6 +469,28 @@ namespace CliffGame
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ToggleClimb"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96244513-095f-44ec-9458-475ee4af3a2e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaceBuild"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82a83ab4-dd19-4bd1-8239-b58225d84a27"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDestroyMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1165,6 +1205,8 @@ namespace CliffGame
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
             m_Player_ToggleClimb = m_Player.FindAction("ToggleClimb", throwIfNotFound: true);
+            m_Player_PlaceBuild = m_Player.FindAction("PlaceBuild", throwIfNotFound: true);
+            m_Player_ToggleDestroyMode = m_Player.FindAction("ToggleDestroyMode", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
@@ -1267,6 +1309,8 @@ namespace CliffGame
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Sprint;
         private readonly InputAction m_Player_ToggleClimb;
+        private readonly InputAction m_Player_PlaceBuild;
+        private readonly InputAction m_Player_ToggleDestroyMode;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1310,6 +1354,14 @@ namespace CliffGame
             /// Provides access to the underlying input action "Player/ToggleClimb".
             /// </summary>
             public InputAction @ToggleClimb => m_Wrapper.m_Player_ToggleClimb;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/PlaceBuild".
+            /// </summary>
+            public InputAction @PlaceBuild => m_Wrapper.m_Player_PlaceBuild;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/ToggleDestroyMode".
+            /// </summary>
+            public InputAction @ToggleDestroyMode => m_Wrapper.m_Player_ToggleDestroyMode;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1360,6 +1412,12 @@ namespace CliffGame
                 @ToggleClimb.started += instance.OnToggleClimb;
                 @ToggleClimb.performed += instance.OnToggleClimb;
                 @ToggleClimb.canceled += instance.OnToggleClimb;
+                @PlaceBuild.started += instance.OnPlaceBuild;
+                @PlaceBuild.performed += instance.OnPlaceBuild;
+                @PlaceBuild.canceled += instance.OnPlaceBuild;
+                @ToggleDestroyMode.started += instance.OnToggleDestroyMode;
+                @ToggleDestroyMode.performed += instance.OnToggleDestroyMode;
+                @ToggleDestroyMode.canceled += instance.OnToggleDestroyMode;
             }
 
             /// <summary>
@@ -1395,6 +1453,12 @@ namespace CliffGame
                 @ToggleClimb.started -= instance.OnToggleClimb;
                 @ToggleClimb.performed -= instance.OnToggleClimb;
                 @ToggleClimb.canceled -= instance.OnToggleClimb;
+                @PlaceBuild.started -= instance.OnPlaceBuild;
+                @PlaceBuild.performed -= instance.OnPlaceBuild;
+                @PlaceBuild.canceled -= instance.OnPlaceBuild;
+                @ToggleDestroyMode.started -= instance.OnToggleDestroyMode;
+                @ToggleDestroyMode.performed -= instance.OnToggleDestroyMode;
+                @ToggleDestroyMode.canceled -= instance.OnToggleDestroyMode;
             }
 
             /// <summary>
@@ -1762,6 +1826,20 @@ namespace CliffGame
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnToggleClimb(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "PlaceBuild" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnPlaceBuild(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "ToggleDestroyMode" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnToggleDestroyMode(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

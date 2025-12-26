@@ -29,11 +29,13 @@ namespace CliffGame
         private void Start()
         {
             GameInput.Instance.OnSecondaryInteract += GameInput_OnSecondaryInteract;
+            GameInput.Instance.OnTertiaryInteract += GameInput_OnTertiaryInteract;
         }
         
         private void OnDestroy()
         {
             GameInput.Instance.OnSecondaryInteract -= GameInput_OnSecondaryInteract;
+            GameInput.Instance.OnTertiaryInteract -= GameInput_OnTertiaryInteract;
         }
 
         private void Update()
@@ -66,6 +68,39 @@ namespace CliffGame
             else
             {
                 // Player is not holding, cancel any ongoing timer
+                CancelInteractTimer();
+                _previousFoundInteractable = null;
+            }
+        }
+
+        private void GameInput_OnTertiaryInteract(object sender, InputAction.CallbackContext e)
+        {
+            if(!e.started) return;
+
+            // Repair logic here
+            if (InventoryManager.Instance.HasSelectedItem)
+            {
+                if(InventoryManager.Instance.SelectedInventoryItem.Item is HammerItemSO hammerselected)
+                {
+                    RaycastHit hit;
+                    if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance))
+                    {
+                        if (hit.collider.TryGetComponent(out Floor floor))
+                        {
+                            Debug.Log($"Hit repairable object: {hit.collider.name}");
+                            floor.AddFloorHp(hammerselected.RepairAmount);
+                            // Repair logic here
+                        }
+                    }
+                }
+            }
+        }
+
+        private void GameInput_OnSecondaryInteract(object sender, InputAction.CallbackContext e)
+        {
+            // Not needed to do anything here; Update handles starting harvest
+            if (e.canceled)
+            {
                 CancelInteractTimer();
                 _previousFoundInteractable = null;
             }
@@ -106,16 +141,6 @@ namespace CliffGame
 
             _currentFoundInteractable = null;
             return false;
-        }
-
-        private void GameInput_OnSecondaryInteract(object sender, InputAction.CallbackContext e)
-        {
-            // Not needed to do anything here; Update handles starting harvest
-            if(e.canceled)
-            {
-                CancelInteractTimer();
-                _previousFoundInteractable = null;
-            }
         }
     }
 }

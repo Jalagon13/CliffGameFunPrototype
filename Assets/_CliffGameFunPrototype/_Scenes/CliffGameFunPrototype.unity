@@ -1297,7 +1297,7 @@ PrefabInstance:
       objectReference: {fileID: 307869475}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8920
+      value: 8992
       objectReference: {fileID: 0}
     - target: {fileID: 1848075474486708829, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1325,7 +1325,7 @@ PrefabInstance:
       objectReference: {fileID: 1101648340}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 6997
+      value: 7069
       objectReference: {fileID: 0}
     - target: {fileID: 3029735958138288004, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1361,7 +1361,7 @@ PrefabInstance:
       objectReference: {fileID: 1313269496}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8959
+      value: 9031
       objectReference: {fileID: 0}
     - target: {fileID: 3926050539205680572, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1485,7 +1485,7 @@ PrefabInstance:
       objectReference: {fileID: 883151112}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8072
+      value: 8144
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1533,7 +1533,7 @@ PrefabInstance:
       objectReference: {fileID: 1797813800}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8492
+      value: 8564
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1541,7 +1541,7 @@ PrefabInstance:
       objectReference: {fileID: 312484770}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8093
+      value: 8165
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3970,6 +3970,7 @@ RectTransform:
   m_Children:
   - {fileID: 1300451249}
   - {fileID: 1346871923}
+  - {fileID: 1464495968}
   m_Father: {fileID: 1753652126}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3990,6 +3991,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.CrosshairUI
   _interactRadialBar: {fileID: 1346871925}
+  _structReqHolder: {fileID: 1464495967}
+  _structReqPrefab: {fileID: 7395797144979960113, guid: b208ecb44a85f419580664d9c9d207d8, type: 3}
 --- !u!43 &531356363
 Mesh:
   m_ObjectHideFlags: 0
@@ -9592,6 +9595,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6abda33777d5044809706d4a3845ddc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.SlotUI
+--- !u!1 &1464495967
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1464495968}
+  - component: {fileID: 1464495969}
+  m_Layer: 5
+  m_Name: StructureRequirementsHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1464495968
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464495967}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 522399309}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -85}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1464495969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464495967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GridLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 65, y: 65}
+  m_Spacing: {x: 8, y: 0}
+  m_Constraint: 2
+  m_ConstraintCount: 1
 --- !u!1 &1466956233
 GameObject:
   m_ObjectHideFlags: 0
@@ -12776,7 +12839,9 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
     Quantity: 1
   - Item: {fileID: 11400000, guid: 538f7bfaf86764bd4ac49be7107ea497, type: 2}
-    Quantity: 99
+    Quantity: 10
+  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 10
 --- !u!1 &1895881966
 GameObject:
   m_ObjectHideFlags: 0
@@ -13046,7 +13111,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BuildingManager
   _floorObjects:
   - {fileID: 5175794678529326981, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
-  _wallObjects: []
+  _wallObjects:
+  - {fileID: 4875664662248945301, guid: 02c2d8e2eb6b74544823d3fb95ff59e1, type: 3}
   <BuildWheelUI>k__BackingField: {fileID: 2036576184}
   _currentBuildType: 0
   _connectorLayerMask:
@@ -13058,14 +13124,14 @@ MonoBehaviour:
   _buildRange: 4
   _itemsNeededForBuilding:
   - Item: {fileID: 11400000, guid: 538f7bfaf86764bd4ac49be7107ea497, type: 2}
-    Quantity: 1
-  _isDestroying: 0
+    Quantity: 3
+  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 2
   _ghostMaterialValid: {fileID: 2100000, guid: 206c5e23e8fe7483296565746246a68f, type: 2}
   _ghostMaterialInvisible: {fileID: 2100000, guid: 3107ba3cabaf847c5ab8dc6f5acd505c, type: 2}
   _ghostMaterialInvalid: {fileID: 2100000, guid: ed20caad1ba214755b4e240924bfacf4, type: 2}
   _connectorOverlapRadius: 1.25
   _maxGroundAngle: 45
-  _isBuilding: 0
   _currentBuildIndex: 0
 --- !u!43 &1998519336
 Mesh:
@@ -13463,6 +13529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BuildWheelUI
   _defaultScale: 1
   _selectedScale: 1.5
+  _disappearDuration: 0.1
   _startingBuildOption: 1
   _buildOptions: {fileID: 1358101278}
 --- !u!1 &2050953159

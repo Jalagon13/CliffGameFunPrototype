@@ -14,6 +14,9 @@ namespace CliffGame
         
         [SerializeField] private bool _destroyIfNotConntectedToAnything = true;
         public bool DestroyIfNotConntectedToAnything => _destroyIfNotConntectedToAnything;
+        
+        [field: SerializeField] 
+        public InventoryItem[] BuildItemRequirements { get; private set; }
 
         [Header("Game Feel Settings")]
         [SerializeField] private MMF_Player _rattleVFX;
@@ -179,6 +182,8 @@ namespace CliffGame
             {
                 _currentHP = 0;
             }
+            
+            Debug.Log($"Adding floor hp {amount}, new hp: {_currentHP}");
         }
     }
 }

@@ -49,7 +49,10 @@ namespace CliffGame
             }
         }
 
-        public bool HasSelectedItem => SelectedInventoryItem.Item != null;
+        public bool HasSelectedItem => 
+            _inventoryModel.InventoryItems[_selectedSlotIndexBacking] != null && 
+            _inventoryModel.InventoryItems[_selectedSlotIndexBacking].HasItem;
+            
         public InventoryItem SelectedInventoryItem
         {
             get => _inventoryModel.InventoryItems[_selectedSlotIndexBacking];
@@ -173,7 +176,7 @@ namespace CliffGame
                     return false;
                 }
             }
-
+            
             return true;
         }
 

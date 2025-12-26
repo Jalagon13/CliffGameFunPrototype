@@ -140,6 +140,15 @@ namespace CliffGame
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""TertiaryInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""c52136ff-3e24-49ad-bdca-e79b54ab5eda"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Crouch"",
                     ""type"": ""Button"",
                     ""id"": ""27c5f898-bc57-4ee1-8800-db469aca5fe3"",
@@ -462,6 +471,17 @@ namespace CliffGame
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""ToggleCraftingMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8f45b82e-2551-47d8-9a35-09c1e18f29c7"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TertiaryInteract"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1162,6 +1182,7 @@ namespace CliffGame
             m_Player_ToggleCraftingMenu = m_Player.FindAction("ToggleCraftingMenu", throwIfNotFound: true);
             m_Player_PrimaryInteract = m_Player.FindAction("PrimaryInteract", throwIfNotFound: true);
             m_Player_SecondaryInteract = m_Player.FindAction("SecondaryInteract", throwIfNotFound: true);
+            m_Player_TertiaryInteract = m_Player.FindAction("TertiaryInteract", throwIfNotFound: true);
             m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
@@ -1264,6 +1285,7 @@ namespace CliffGame
         private readonly InputAction m_Player_ToggleCraftingMenu;
         private readonly InputAction m_Player_PrimaryInteract;
         private readonly InputAction m_Player_SecondaryInteract;
+        private readonly InputAction m_Player_TertiaryInteract;
         private readonly InputAction m_Player_Crouch;
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Sprint;
@@ -1298,6 +1320,10 @@ namespace CliffGame
             /// Provides access to the underlying input action "Player/SecondaryInteract".
             /// </summary>
             public InputAction @SecondaryInteract => m_Wrapper.m_Player_SecondaryInteract;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/TertiaryInteract".
+            /// </summary>
+            public InputAction @TertiaryInteract => m_Wrapper.m_Player_TertiaryInteract;
             /// <summary>
             /// Provides access to the underlying input action "Player/Crouch".
             /// </summary>
@@ -1351,6 +1377,9 @@ namespace CliffGame
                 @SecondaryInteract.started += instance.OnSecondaryInteract;
                 @SecondaryInteract.performed += instance.OnSecondaryInteract;
                 @SecondaryInteract.canceled += instance.OnSecondaryInteract;
+                @TertiaryInteract.started += instance.OnTertiaryInteract;
+                @TertiaryInteract.performed += instance.OnTertiaryInteract;
+                @TertiaryInteract.canceled += instance.OnTertiaryInteract;
                 @Crouch.started += instance.OnCrouch;
                 @Crouch.performed += instance.OnCrouch;
                 @Crouch.canceled += instance.OnCrouch;
@@ -1386,6 +1415,9 @@ namespace CliffGame
                 @SecondaryInteract.started -= instance.OnSecondaryInteract;
                 @SecondaryInteract.performed -= instance.OnSecondaryInteract;
                 @SecondaryInteract.canceled -= instance.OnSecondaryInteract;
+                @TertiaryInteract.started -= instance.OnTertiaryInteract;
+                @TertiaryInteract.performed -= instance.OnTertiaryInteract;
+                @TertiaryInteract.canceled -= instance.OnTertiaryInteract;
                 @Crouch.started -= instance.OnCrouch;
                 @Crouch.performed -= instance.OnCrouch;
                 @Crouch.canceled -= instance.OnCrouch;
@@ -1741,6 +1773,13 @@ namespace CliffGame
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSecondaryInteract(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "TertiaryInteract" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnTertiaryInteract(InputAction.CallbackContext context);
             /// <summary>
             /// Method invoked when associated input action "Crouch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>

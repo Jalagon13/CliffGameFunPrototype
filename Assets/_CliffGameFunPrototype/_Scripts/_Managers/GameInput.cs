@@ -18,6 +18,7 @@ namespace CliffGame
         
         public event EventHandler<InputAction.CallbackContext> OnPrimaryInteract;
         public event EventHandler<InputAction.CallbackContext> OnSecondaryInteract;
+        public event EventHandler<InputAction.CallbackContext> OnTertiaryInteract;
 
         private PlayerInput _playerInput;
         
@@ -43,7 +44,9 @@ namespace CliffGame
             _playerInput.Player.PrimaryInteract.canceled += PlayerInput_OnPrimaryInteract;
             _playerInput.Player.SecondaryInteract.started += PlayerInput_OnSecondaryInteract;
             _playerInput.Player.SecondaryInteract.canceled += PlayerInput_OnSecondaryInteract;
-            
+            _playerInput.Player.TertiaryInteract.started += PlayerInput_OnTertiaryInteract;
+            _playerInput.Player.TertiaryInteract.canceled += PlayerInput_OnTertiaryInteract;
+
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
         }
@@ -52,6 +55,11 @@ namespace CliffGame
         {
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnTertiaryInteract(InputAction.CallbackContext context)
+        {
+            OnTertiaryInteract?.Invoke(this, context);
         }
 
         private void PlayerInput_OnPrimaryInteract(InputAction.CallbackContext context)

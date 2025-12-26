@@ -52,6 +52,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "TertiaryInteract",
+                    "type": "Button",
+                    "id": "c52136ff-3e24-49ad-bdca-e79b54ab5eda",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Crouch",
                     "type": "Button",
                     "id": "27c5f898-bc57-4ee1-8800-db469aca5fe3",
@@ -374,6 +383,17 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "ToggleCraftingMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8f45b82e-2551-47d8-9a35-09c1e18f29c7",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TertiaryInteract",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

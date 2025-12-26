@@ -21,13 +21,13 @@ namespace CliffGame
             switch (_buildOption)
             {
                 case BuildOption.Wall:
-                    // BuildingManager.Instance.SetIsBuilding(true);
+                    BuildingManager.Instance.SetBuildType(SelectedBuildType.Wall);
                     break;
                 case BuildOption.Floor:
-                    BuildingManager.Instance.SetIsBuilding(true);
+                    BuildingManager.Instance.SetBuildType(SelectedBuildType.Floor);
                     break;
                 case BuildOption.Destroy:
-                    BuildingManager.Instance.SetIsDestroying(true);
+                    BuildingManager.Instance.SetBuildType(SelectedBuildType.DestroyMode);
                     break;
             }
             
@@ -37,19 +37,6 @@ namespace CliffGame
         
         public void OnDeselected()
         {
-            switch (_buildOption)
-            {
-                case BuildOption.Wall:
-                    // BuildingManager.Instance.SetIsBuilding(false);
-                    break;
-                case BuildOption.Floor:
-                    BuildingManager.Instance.SetIsBuilding(false);
-                    break;
-                case BuildOption.Destroy:
-                    BuildingManager.Instance.SetIsDestroying(false);
-                    break;
-            }
-
             Image selectedImage = transform.GetChild(0).GetComponent<Image>();
             selectedImage.enabled = false;
         }

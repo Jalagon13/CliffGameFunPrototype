@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +11,7 @@ namespace CliffGame
     {
         Floor,
         Wall,
+        DestroyMode,
     }
 
     public class BuildingManager : MonoBehaviour
@@ -30,10 +32,9 @@ namespace CliffGame
         [SerializeField] private LayerMask _playerLayerMask;
         [SerializeField] private float _buildRange = 4f;
         [SerializeField] private InventoryItem[] _itemsNeededForBuilding;
+        public InventoryItem[] ItemsNeededForBuilding => _itemsNeededForBuilding;
+        
         private Connector _lastSnappedConnector = null; // Tracks the last connector the ghost was snapped to, for snap/unsnap events
-
-        [Header("Destroy Settings")]
-        [SerializeField] private bool _isDestroying = false;
         private Transform _lastHitDestroyTransform;
         private List<Material> _lastHitMaterials = new();
 
@@ -44,16 +45,12 @@ namespace CliffGame
         [SerializeField] private float _connectorOverlapRadius = 1f;
         [SerializeField] private float _maxGroundAngle = 90f;
 
-        [Header("Internal State")]
-        [SerializeField] private bool _isBuilding = false;
-        public bool IsBuilding => _isBuilding;
-
         [SerializeField] private int _currentBuildIndex;
 
         private GameObject _ghostBuildGameObject;
         private bool _isGhostInValidPosition = false;
         private Transform _modelParent = null;
-        private bool _clickedThisFrame = false, _isInWallMode = false, _isHoldingHammar;
+        private bool _clickedThisFrame = false, _isHoldingHammar;
 
         private void Awake()
         {
@@ -64,21 +61,19 @@ namespace CliffGame
         {
             InventoryManager.Instance.OnSelectedSlotChanged += OnSelectedSlotChanged_CheckForHammer;
             GameInput.Instance.OnPrimaryInteract += GameInput_OnPrimaryInteract;
-            // GameInput.Instance.OnToggleDestroyMode += GameInput_OnToggleDestroyMode;
         }
         
         private void OnDestroy()
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= OnSelectedSlotChanged_CheckForHammer;
             GameInput.Instance.OnPrimaryInteract -= GameInput_OnPrimaryInteract;
-            // GameInput.Instance.OnToggleDestroyMode -= GameInput_OnToggleDestroyMode;
         }
 
         private void Update()
         {
             if(!_isHoldingHammar) return;
         
-            if (_isBuilding && !_isDestroying && Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking)
+            if (_currentBuildType != SelectedBuildType.DestroyMode && Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking)
             {
                 GhostBuild();
 
@@ -94,7 +89,7 @@ namespace CliffGame
                 _ghostBuildGameObject = null;
             }
 
-            if (_isDestroying)
+            if (_currentBuildType == SelectedBuildType.DestroyMode)
             {
                 GhostDestroy();
 
@@ -112,26 +107,47 @@ namespace CliffGame
         {
             if(!_isHoldingHammar || BuildWheelUI.BuildWheelUIOpen) return;
             
-            _clickedThisFrame = true;
+            if(e.started)
+            {
+                _clickedThisFrame = true;
+            }
         }
         
-        public void SetIsBuilding(bool foo)
+        public void SetBuildType(SelectedBuildType buildType)
         {
-            Debug.Log($"Building mode: {foo}");
-            _isBuilding = foo;
-        }
-
-        public void SetIsDestroying(bool foo)
-        {
-            _isDestroying = foo;
-            Debug.Log($"Destroy Mode: {_isDestroying}");
-
-            if (!_isDestroying)
+            switch (buildType)
             {
-                if (_lastHitDestroyTransform != null)
-                {
-                    ResetLastHitDestroyTransform();
-                }
+                case SelectedBuildType.Floor:
+                    _currentBuildType = SelectedBuildType.Floor;
+
+                    if (_ghostBuildGameObject != null)
+                    {
+                        Destroy(_ghostBuildGameObject);
+                        _ghostBuildGameObject = null;
+                    }
+
+                    if (_lastHitDestroyTransform != null)
+                    {
+                        ResetLastHitDestroyTransform();
+                    }
+                    break;
+                case SelectedBuildType.Wall:
+                    _currentBuildType = SelectedBuildType.Wall;
+
+                    if (_ghostBuildGameObject != null)
+                    {
+                        Destroy(_ghostBuildGameObject);
+                        _ghostBuildGameObject = null;
+                    }
+
+                    if (_lastHitDestroyTransform != null)
+                    {
+                        ResetLastHitDestroyTransform();
+                    }
+                    break;
+                case SelectedBuildType.DestroyMode:
+                    _currentBuildType = SelectedBuildType.DestroyMode;
+                    break;
             }
         }
 
@@ -145,6 +161,17 @@ namespace CliffGame
             {
                 _isHoldingHammar = false;
                 OnGhostUnsnap?.Invoke();
+
+                if (_ghostBuildGameObject != null)
+                {
+                    Destroy(_ghostBuildGameObject);
+                    _ghostBuildGameObject = null;
+                }
+
+                if (_lastHitDestroyTransform != null)
+                {
+                    ResetLastHitDestroyTransform();
+                }
             }
         }
 
@@ -165,6 +192,9 @@ namespace CliffGame
 
         private void PlaceBuild()
         {
+            if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding))
+                return;
+
             if (_ghostBuildGameObject != null && _isGhostInValidPosition)
             {
                 GameObject newBuild = Instantiate(GetCurrentBuild(), _ghostBuildGameObject.transform.position, _ghostBuildGameObject.transform.rotation);
@@ -301,6 +331,13 @@ namespace CliffGame
                 Quaternion newRotation = _ghostBuildGameObject.transform.rotation;
                 newRotation.eulerAngles = new Vector3(newRotation.eulerAngles.x, connector.transform.rotation.eulerAngles.y, newRotation.eulerAngles.z);
                 _ghostBuildGameObject.transform.rotation = newRotation;
+            }
+
+            if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding))
+            {
+                GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                _isGhostInValidPosition = false;
+                return;
             }
 
             GhostifyModel(_modelParent, _ghostMaterialValid);

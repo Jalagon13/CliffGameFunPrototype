@@ -15,8 +15,8 @@ namespace CliffGame
         [SerializeField]
         private LayerMask _interactLayer;
 
-        private IInteractable _currentFoundInteractable;
-        private IInteractable _previousFoundInteractable;
+        private IInteractable _currentlyHoveredInteractable;
+        private IInteractable _interactableInteracting;
         private Timer _interactTimer;
         public Timer HarvestTimer => _interactTimer;
         public bool IsHarvesting => _interactTimer != null;
@@ -42,34 +42,25 @@ namespace CliffGame
         {
             if (GameInput.Instance == null) return;
 
-            // Always update current interactable under the crosshair
             SearchForResource();
 
-            if (GameInput.Instance.IsHoldingDownSecondaryInteract)
+            if (_currentlyHoveredInteractable != null)
             {
-                if (_currentFoundInteractable != null)
+                if(_currentlyHoveredInteractable == _interactableInteracting)
                 {
-                    // Start or restart the harvest timer if it's a new interactable
-                    if (_currentFoundInteractable != _previousFoundInteractable || _interactTimer == null)
+                    if (_interactTimer != null)
                     {
-                        StartInteractTimer(_currentFoundInteractable);
+                        _interactTimer?.Tick(Time.deltaTime);
                     }
-
-                    // Tick the timer
-                    _interactTimer?.Tick(Time.deltaTime);
                 }
                 else
                 {
-                    // Not looking at anything harvestable, cancel timer
                     CancelInteractTimer();
-                    _previousFoundInteractable = null;
                 }
             }
             else
             {
-                // Player is not holding, cancel any ongoing timer
                 CancelInteractTimer();
-                _previousFoundInteractable = null;
             }
         }
 
@@ -98,11 +89,13 @@ namespace CliffGame
 
         private void GameInput_OnSecondaryInteract(object sender, InputAction.CallbackContext e)
         {
-            // Not needed to do anything here; Update handles starting harvest
-            if (e.canceled)
+            if(e.started)
             {
-                CancelInteractTimer();
-                _previousFoundInteractable = null;
+                if (_currentlyHoveredInteractable != null)
+                {
+                    _interactableInteracting = _currentlyHoveredInteractable;
+                    StartInteractTimer(_interactableInteracting);
+                }
             }
         }
 
@@ -112,7 +105,6 @@ namespace CliffGame
 
             _interactTimer = new Timer(interactable.InteractionTime);
             _interactTimer.OnTimerEnd += OnTimerEnd;
-            _previousFoundInteractable = interactable;
         }
         
         private void CancelInteractTimer()
@@ -126,7 +118,7 @@ namespace CliffGame
 
         private void OnTimerEnd(object sender, EventArgs e)
         {
-            _currentFoundInteractable.ExecuteInteraction();
+            _currentlyHoveredInteractable.ExecuteInteraction();
         }
 
         private bool SearchForResource()
@@ -135,11 +127,11 @@ namespace CliffGame
             if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance, _interactLayer))
             {
                 // Try to get the IInteractable component from the hit collider
-                _currentFoundInteractable = hit.collider.GetComponent<IInteractable>();
-                return _currentFoundInteractable != null;
+                _currentlyHoveredInteractable = hit.collider.GetComponent<IInteractable>();
+                return _currentlyHoveredInteractable != null;
             }
 
-            _currentFoundInteractable = null;
+            _currentlyHoveredInteractable = null;
             return false;
         }
     }

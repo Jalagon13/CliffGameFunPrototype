@@ -28,16 +28,17 @@ namespace CliffGame
 
             if (isHarvesting)
             {
+                _interactRadialBar.UpdateBar(InteractionManager.Instance.HarvestTimer.PercentRemaining, 0, 1);
+                _interactRadialBar.gameObject.SetActive(true);
+                
                 if (!_wasHarvesting)
                 {
                     OnHarvestStarted();
                 }
-
-                _interactRadialBar.gameObject.SetActive(true);
-                _interactRadialBar.UpdateBar(InteractionManager.Instance.HarvestTimer.PercentRemaining, 0, 1);
             }
             else
             {
+                _interactRadialBar.UpdateBar(0, 0, 1);
                 _interactRadialBar.gameObject.SetActive(false);
             }
 

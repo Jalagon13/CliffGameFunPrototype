@@ -123,19 +123,20 @@ namespace CliffGame
 
         private void GameInput_OnSecondaryInteract(object sender, InputAction.CallbackContext e)
         {
-            if (CraftingManager.Instance.CraftingMenuUIOpened) return;
+            if (!e.started || CraftingManager.Instance.CraftingMenuUIOpened) return;
 
-            if (!e.started) return;
-
-            _isBuildWheelToggledOpen = !_isBuildWheelToggledOpen;
-
-            if (_isBuildWheelToggledOpen)
+            if(InventoryManager.Instance.SelectedInventoryItem.HasItem && InventoryManager.Instance.SelectedInventoryItem.Item is HammerItemSO)
             {
-                Show();
-            }
-            else
-            {
-                Hide(true);
+                _isBuildWheelToggledOpen = !_isBuildWheelToggledOpen;
+
+                if (_isBuildWheelToggledOpen)
+                {
+                    Show();
+                }
+                else
+                {
+                    Hide(true);
+                }
             }
         }
         

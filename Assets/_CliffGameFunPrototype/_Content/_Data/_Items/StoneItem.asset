@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d28da6757b5e4bf5b4380cee679a06d, type: 3}
-  m_Name: TestItem2
+  m_Name: StoneItem
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ResourceDataSO
   <InGameName>k__BackingField: Stone
-  <ItemWorldPrefab>k__BackingField: {fileID: 0}
-  <UiDisplay>k__BackingField: {fileID: 21300012, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
+  <ItemWorldPrefab>k__BackingField: {fileID: 1465330192500852548, guid: 8321dca69422d457ebbe2e22f0006ca5, type: 3}
+  <UiDisplay>k__BackingField: {fileID: 21300002, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: 

@@ -5,7 +5,7 @@
 			<value>SFX_LedgeClimb</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{42cab45f-da23-4215-99d2-60ed34e81783}</destination>
@@ -60,7 +60,7 @@
 	<object class="MarkerTrack" id="{2dec64bc-2bac-4f28-bf18-c95b08b2bf59}" />
 	<object class="GroupTrack" id="{8ed8a5cd-10a5-418b-86ad-77f163c1c788}">
 		<relationship name="modules">
-			<destination>{73cb14b9-5748-47f2-acc8-73b92aca769e}</destination>
+			<destination>{2fa68f1a-66b8-4ed2-9590-88ac1449e940}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{b8213c59-1671-440d-90c9-a3b100715dc9}</destination>
@@ -68,7 +68,7 @@
 	</object>
 	<object class="Timeline" id="{a3d7ac7f-59ea-48cd-81fe-1c36ee897198}">
 		<relationship name="modules">
-			<destination>{73cb14b9-5748-47f2-acc8-73b92aca769e}</destination>
+			<destination>{2fa68f1a-66b8-4ed2-9590-88ac1449e940}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{1570bf3c-0873-4255-b652-5ca66017d853}">
@@ -88,12 +88,12 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{370ed1a6-385b-4141-8efd-1ff9e4e72abe}" />
-	<object class="SingleSound" id="{73cb14b9-5748-47f2-acc8-73b92aca769e}">
+	<object class="SingleSound" id="{2fa68f1a-66b8-4ed2-9590-88ac1449e940}">
 		<property name="length">
-			<value>1.1000416666666666</value>
+			<value>0.75887499999999997</value>
 		</property>
 		<relationship name="audioFile">
-			<destination>{a0b66b29-bb1b-43be-b217-121d18a2f610}</destination>
+			<destination>{e316772a-bade-4f16-9ac5-1d0d341e79cc}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{b8213c59-1671-440d-90c9-a3b100715dc9}">

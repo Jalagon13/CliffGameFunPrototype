@@ -22,7 +22,7 @@ public class GroundCheck : MonoBehaviour
     private void LateUpdate()
     {
         // Check if we are grounded now.
-        bool isGroundedNow = Physics.Raycast(_raycastOrigin, Vector3.down, DistanceThreshold * 2);
+        bool isGroundedNow = Physics.Raycast(_raycastOrigin, Vector3.down, DistanceThreshold);
 
         // Call event if we were in the air and we are now touching the ground.
         if (isGroundedNow && !IsGrounded)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SingularityGroup.HotReload;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,6 +23,15 @@ namespace CliffGame
         public float MaxHorizontalSpeed = 10f;
         public float AccelerationRate = 40f;
         public float AirMultiplier = 0.4f;
+
+        [Header("Falling Settings")]
+        [SerializeField, Tooltip("How far you can fall for free (no damage)")] 
+        private float _fallDamageThreshold = 5f;
+        [SerializeField, Tooltip("How hard each extra meter of falling hurts")] 
+        private float _fallDamageMultiplier = 2f;
+        private float _fallStartY;
+        
+        private bool _isFallingFlag;
 
         private Player _context;
         private Rigidbody _rigidbody;
@@ -86,6 +96,8 @@ namespace CliffGame
                 Vector3 windForce = Vector3.right * (WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity);
                 _rigidbody.AddForce(windForce, ForceMode.Acceleration);
             }
+
+            HandleFallTracking();
         }
 
         public void ExitState()
@@ -99,6 +111,37 @@ namespace CliffGame
             if (CraftingManager.Instance.CraftingMenuUIOpened) return;
 
             DesiredMoveDirection = e.ReadValue<Vector2>();
+        }
+
+        private void HandleFallTracking()
+        {
+            bool isGrounded = _groundCheck.IsGrounded;
+            bool isFallingNow = !isGrounded && _rigidbody.linearVelocity.y < -0.01f;
+
+            // ---- FALL START ----
+            if (isFallingNow && !_isFallingFlag)
+            {
+                _isFallingFlag = true;
+                _fallStartY = transform.position.y;
+            }
+
+            // ---- FALL END (LANDING) ----
+            if (!isFallingNow && _isFallingFlag && isGrounded)
+            {
+                float fallEndY = transform.position.y;
+                float distanceFallen = _fallStartY - fallEndY;
+
+                _isFallingFlag = false;
+                
+                if(distanceFallen > _fallDamageThreshold)
+                {
+                    float damage = (distanceFallen - _fallDamageThreshold) * _fallDamageMultiplier;
+                    int finalDamage = Mathf.RoundToInt(damage);
+
+                    HealthManager.Instance.DamageHealth(finalDamage);
+                    // Debug.Log($"Fall dmg: {finalDamage}, dist fell: {distanceFallen}");
+                }
+            }
         }
     }
 }

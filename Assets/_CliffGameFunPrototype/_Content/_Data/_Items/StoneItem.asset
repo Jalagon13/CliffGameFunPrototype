@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ResourceDataSO
   <InGameName>k__BackingField: Stone
   <ItemWorldPrefab>k__BackingField: {fileID: 1465330192500852548, guid: 8321dca69422d457ebbe2e22f0006ca5, type: 3}
-  <UiDisplay>k__BackingField: {fileID: 21300002, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
+  <UiDisplay>k__BackingField: {fileID: -512641925, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: 

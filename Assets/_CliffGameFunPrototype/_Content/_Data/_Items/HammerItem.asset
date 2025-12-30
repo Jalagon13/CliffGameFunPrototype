@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HammerItemSO
   <InGameName>k__BackingField: Hammer
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
-  <UiDisplay>k__BackingField: {fileID: 2264220715439007670, guid: ed5ca0da953ceb143a6080abe9a30f7c, type: 3}
+  <UiDisplay>k__BackingField: {fileID: 1844556041, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: 
   RepairAmount: 100

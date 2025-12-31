@@ -71,7 +71,7 @@ namespace CliffGame
                 }
 
             }
-            else if(!IsExhausted)
+            else if (!IsExhausted && !Player.Instance.WalkingMoveState.IsFalling)
             {
                 _staminaStat.UpdateStat(Time.deltaTime, false);
             }

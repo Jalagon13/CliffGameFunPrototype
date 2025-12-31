@@ -33,6 +33,7 @@ namespace CliffGame
         private float _fallStartY;
         
         private bool _isFallingFlag;
+        public bool IsFalling => _isFallingFlag;
 
         private Player _context;
         private Rigidbody _rigidbody;

@@ -327,7 +327,7 @@ namespace MoreMountains.Tools
 		/// <param name="currentValue">Current value.</param>
 		/// <param name="minValue">Minimum value.</param>
 		/// <param name="maxValue">Max value.</param>
-		public virtual void UpdateBar(float currentValue,float minValue,float maxValue) 
+		public virtual void UpdateBar(float currentValue,float minValue,float maxValue, bool alwaysSetActive = true) 
 		{
 			if (!_initialized)
 			{
@@ -339,7 +339,7 @@ namespace MoreMountains.Tools
 				StoreInitialColor();	
 			}
 
-			if (!this.gameObject.activeInHierarchy)
+			if (!this.gameObject.activeInHierarchy && alwaysSetActive)
 			{
 				this.gameObject.SetActive(true);    
 			}

@@ -20,6 +20,9 @@ namespace CliffGame
         public int CurrentStamina => _staminaStat.Current;
 
         private bool _isClimbing;
+        
+        [HideInInspector]
+        public bool IsExhausted; // Cannot regenerate stamina 
 
         private void Awake()
         {
@@ -36,6 +39,7 @@ namespace CliffGame
 
             Player.Instance.OnMoveStateChanged += HandlePlayerStateChanged;
             Player.Instance.OnPlayerRespawn += OnRespawn;
+            Player.Instance.WalkingMoveState.GroundCheck.Grounded += OnGrounded;
 
             yield return null;
 
@@ -46,6 +50,7 @@ namespace CliffGame
         {
             Player.Instance.OnMoveStateChanged -= HandlePlayerStateChanged;
             Player.Instance.OnPlayerRespawn -= OnRespawn;
+            Player.Instance.WalkingMoveState.GroundCheck.Grounded -= OnGrounded;
         }
 
         private void Update()
@@ -66,9 +71,17 @@ namespace CliffGame
                 }
 
             }
-            else
+            else if(!IsExhausted)
             {
                 _staminaStat.UpdateStat(Time.deltaTime, false);
+            }
+        }
+
+        private void OnGrounded()
+        {
+            if (IsExhausted)
+            {
+                IsExhausted = false;
             }
         }
 

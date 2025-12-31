@@ -1,42 +1,43 @@
-﻿using SingularityGroup.HotReload;
-using UnityEngine;
+﻿using UnityEngine;
 
-[ExecuteInEditMode]
 public class GroundCheck : MonoBehaviour
 {
-    [Tooltip("Maximum distance from the ground.")]
-    public float DistanceThreshold = .15f;
+    [Tooltip("How far below the player to check for ground")]
+    public float GroundDistance = 0.15f;
 
-    [Tooltip("Whether this transform is grounded now.")]
+    [Tooltip("Is the player currently grounded")]
     public bool IsGrounded = true;
-    /// <summary>
-    /// Called when the ground is touched again.
-    /// </summary>
+
+    // Fired ONCE when the player lands
     public event System.Action Grounded;
 
-    const float OriginOffset = .001f;
-    private Vector3 _raycastOrigin => transform.position + Vector3.up * OriginOffset;
-    private float _raycastDistance => DistanceThreshold + OriginOffset;
+    bool wasGrounded;
 
-
-    private void LateUpdate()
+    void Update()
     {
-        // Check if we are grounded now.
-        bool isGroundedNow = Physics.Raycast(_raycastOrigin, Vector3.down, DistanceThreshold);
+        // Start the ray slightly above the feet to avoid self-collision
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.01f;
 
-        // Call event if we were in the air and we are now touching the ground.
-        if (isGroundedNow && !IsGrounded)
+        bool groundedNow = Physics.Raycast(
+            rayOrigin,
+            Vector3.down,
+            GroundDistance
+        );
+
+        // Landed this frame
+        if (!wasGrounded && groundedNow)
         {
             Grounded?.Invoke();
         }
 
-        // Update isGrounded.
-        IsGrounded = isGroundedNow;
+        IsGrounded = groundedNow;
+        wasGrounded = groundedNow;
     }
 
-    private void OnDrawGizmosSelected()
+    void OnDrawGizmosSelected()
     {
-        // Draw a line in the Editor to show whether we are touching the ground.
-        Debug.DrawLine(_raycastOrigin, _raycastOrigin + Vector3.down * _raycastDistance, IsGrounded ? Color.white : Color.red);
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.01f;
+        Gizmos.color = IsGrounded ? Color.white : Color.red;
+        Gizmos.DrawLine(rayOrigin, rayOrigin + Vector3.down * GroundDistance);
     }
 }

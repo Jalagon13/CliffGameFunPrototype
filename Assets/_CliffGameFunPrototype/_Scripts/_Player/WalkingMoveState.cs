@@ -12,6 +12,7 @@ namespace CliffGame
         public float speed = 5f;
 
         [SerializeField] private GroundCheck _groundCheck;
+        public GroundCheck GroundCheck => _groundCheck;
 
         [Header("Running")]
         public bool canRun = true;

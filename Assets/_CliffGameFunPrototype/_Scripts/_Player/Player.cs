@@ -127,7 +127,7 @@ namespace CliffGame
 
         private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
         {
-            if(CurrentMoveStateType == PlayerMoveState.Walking)
+            if(CurrentMoveStateType == PlayerMoveState.Walking && !StaminaManager.Instance.IsExhausted)
             {
                 if(e.started)
                 {

@@ -38,7 +38,7 @@ namespace CliffGame
             }
             else
             {
-                _interactRadialBar.UpdateBar(0, 0, 1);
+                _interactRadialBar.UpdateBar(1, 0, 1);
                 _interactRadialBar.gameObject.SetActive(false);
             }
 

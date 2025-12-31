@@ -2082,11 +2082,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.FMODEvents
   <PlayerHurtSFX>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1831241671
+      Data2: 1079292836
+      Data3: 1171428993
+      Data4: -993440233
+    Path: event:/Player/SFX_PlayerHurt
   <JumpSFX>k__BackingField:
     Guid:
       Data1: -1560920118
@@ -13023,6 +13023,7 @@ MonoBehaviour:
   _climbMovingStaminaDecreasePerSecond: 4
   _climbIdleStaminaDecreasePerSecond: 1
   _staminaRegenPerSecond: 10
+  IsExhausted: 0
 --- !u!114 &1628844530
 MonoBehaviour:
   m_ObjectHideFlags: 0

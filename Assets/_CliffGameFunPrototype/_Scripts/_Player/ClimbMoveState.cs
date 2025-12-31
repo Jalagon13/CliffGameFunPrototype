@@ -114,6 +114,12 @@ namespace CliffGame
             EnforceWallOffset(ref move);
             
             _rb.MovePosition(_rb.position + move * _climbSpeed * Time.fixedDeltaTime);
+            
+            if(StaminaManager.Instance.CurrentStamina <= 0)
+            {
+                StaminaManager.Instance.IsExhausted = true;
+                _context.TransitionState(PlayerMoveState.Walking);
+            }
         }
 
         private void EnforceWallOffset(ref Vector3 move)

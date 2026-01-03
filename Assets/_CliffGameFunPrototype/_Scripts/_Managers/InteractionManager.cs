@@ -28,14 +28,14 @@ namespace CliffGame
         
         private void Start()
         {
-            GameInput.Instance.OnSecondaryInteract += GameInput_OnSecondaryInteract;
-            GameInput.Instance.OnTertiaryInteract += GameInput_OnTertiaryInteract;
+            GameInput.Instance.OnPrimaryInteract += StartInteraction;
+            GameInput.Instance.OnTertiaryInteract += RepairFloor;
         }
         
         private void OnDestroy()
         {
-            GameInput.Instance.OnSecondaryInteract -= GameInput_OnSecondaryInteract;
-            GameInput.Instance.OnTertiaryInteract -= GameInput_OnTertiaryInteract;
+            GameInput.Instance.OnPrimaryInteract -= StartInteraction;
+            GameInput.Instance.OnTertiaryInteract -= RepairFloor;
         }
 
         private void Update()
@@ -64,7 +64,7 @@ namespace CliffGame
             }
         }
 
-        private void GameInput_OnTertiaryInteract(object sender, InputAction.CallbackContext e)
+        private void RepairFloor(object sender, InputAction.CallbackContext e)
         {
             if(!e.started) return;
 
@@ -87,7 +87,7 @@ namespace CliffGame
             }
         }
 
-        private void GameInput_OnSecondaryInteract(object sender, InputAction.CallbackContext e)
+        private void StartInteraction(object sender, InputAction.CallbackContext e)
         {
             if(e.started)
             {

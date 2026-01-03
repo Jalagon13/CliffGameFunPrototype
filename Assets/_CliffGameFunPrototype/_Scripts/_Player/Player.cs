@@ -127,24 +127,24 @@ namespace CliffGame
 
         private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
         {
-            if(CurrentMoveStateType == PlayerMoveState.Walking && !StaminaManager.Instance.IsExhausted)
-            {
-                if(e.started)
-                {
-                    RaycastHit hit;
-                    if(Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out hit, _climbRayDistance, _climbableLayer))
-                    {
-                        TransitionState(PlayerMoveState.Climbing);
-                    }
-                }
-            }
-            else if(CurrentMoveStateType == PlayerMoveState.Climbing)
-            {
-                if(e.started && !_climbMoveState.IsLerpingToLedge)
-                {
-                    TransitionState(PlayerMoveState.Walking);
-                }
-            }
+            // if(CurrentMoveStateType == PlayerMoveState.Walking && !StaminaManager.Instance.IsExhausted)
+            // {
+            //     if(e.started)
+            //     {
+            //         RaycastHit hit;
+            //         if(Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out hit, _climbRayDistance, _climbableLayer))
+            //         {
+            //             TransitionState(PlayerMoveState.Climbing);
+            //         }
+            //     }
+            // }
+            // else if(CurrentMoveStateType == PlayerMoveState.Climbing)
+            // {
+            //     if(e.started && !_climbMoveState.IsLerpingToLedge)
+            //     {
+            //         TransitionState(PlayerMoveState.Walking);
+            //     }
+            // }
         }
 
         public void TransitionState(PlayerMoveState playerMoveState)

@@ -15,6 +15,8 @@ namespace CliffGame
         private void Start()
         {
             InventoryManager.Instance.OnSelectedSlotChanged += CheckForHammer;
+
+            _interactRadialBar.gameObject.SetActive(false); // TEMP. Delete this later
         }
         
         private void OnDestroy()
@@ -24,25 +26,25 @@ namespace CliffGame
 
         private void Update()
         {
-            bool isHarvesting = InteractionManager.Instance.IsHarvesting;
+            // bool isHarvesting = InteractionManager.Instance.IsHarvesting;
 
-            if (isHarvesting)
-            {
-                _interactRadialBar.UpdateBar(InteractionManager.Instance.HarvestTimer.PercentRemaining, 0, 1);
-                _interactRadialBar.gameObject.SetActive(true);
+            // if (isHarvesting)
+            // {
+            //     _interactRadialBar.UpdateBar(InteractionManager.Instance.HarvestTimer.PercentRemaining, 0, 1);
+            //     _interactRadialBar.gameObject.SetActive(true);
                 
-                if (!_wasHarvesting)
-                {
-                    OnHarvestStarted();
-                }
-            }
-            else
-            {
-                _interactRadialBar.UpdateBar(1, 0, 1);
-                _interactRadialBar.gameObject.SetActive(false);
-            }
+            //     if (!_wasHarvesting)
+            //     {
+            //         OnHarvestStarted();
+            //     }
+            // }
+            // else
+            // {
+            //     _interactRadialBar.UpdateBar(1, 0, 1);
+            //     _interactRadialBar.gameObject.SetActive(false);
+            // }
 
-            _wasHarvesting = isHarvesting; // Update previous state
+            // _wasHarvesting = isHarvesting; // Update previous state
         }
 
         private void OnHarvestStarted()

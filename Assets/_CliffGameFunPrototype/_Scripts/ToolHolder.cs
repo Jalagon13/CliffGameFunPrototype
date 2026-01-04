@@ -14,7 +14,11 @@ namespace CliffGame
         [SerializeField] private float _swingCooldownSeconds = 0.375f;
 
         private ToolItemSO _currentHeldTool;
+        public ToolItemSO CurrentHeldTool => _currentHeldTool;
+        
         private bool _isSwinging;
+        public bool IsSwinging => _isSwinging;
+        
         private Timer _swingCooldownTimer;
         public event Action OnToolSwingDown;
     
@@ -33,6 +37,10 @@ namespace CliffGame
         private void Update()
         {
             _swingCooldownTimer?.Tick(Time.deltaTime);
+            
+            if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead ||
+                CraftingManager.Instance.CraftingMenuUIOpened || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
+                Player.Instance.ToolHolder.IsSwinging) return;
             
             if(GameInput.Instance.IsHoldingDownPrimaryInteract)
             {

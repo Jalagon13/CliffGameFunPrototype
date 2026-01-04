@@ -47,6 +47,8 @@ namespace CliffGame
         [SerializeField] private float _repairDuration = 1f;
         public float InteractionTime => _repairDuration;
 
+        public ToolType BreakToolType => throw new NotImplementedException();
+
         private void Awake()
         {
             _currentHP = _hitPoints;
@@ -184,6 +186,11 @@ namespace CliffGame
             }
             
             Debug.Log($"Adding floor hp {amount}, new hp: {_currentHP}");
+        }
+
+        public void OnHitWithTool()
+        {
+            
         }
     }
 }

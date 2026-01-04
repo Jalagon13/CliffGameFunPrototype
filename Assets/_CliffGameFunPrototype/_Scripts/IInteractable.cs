@@ -4,10 +4,10 @@ namespace CliffGame
 {
     public interface IInteractable
     {
-        // How long it takes to interact with this object
-        float InteractionTime { get; }
+        ToolType BreakToolType { get; }
 
-        // Called when the interaction is executed
-        void ExecuteInteraction();
+        void ExecuteInteraction(); // For like opening UI  or something
+        
+        void OnHitWithTool(); // When it gets hit by a tool
     }
 }

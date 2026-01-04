@@ -16,10 +16,6 @@ namespace CliffGame
         private LayerMask _interactLayer;
 
         private IInteractable _currentlyHoveredInteractable;
-        private IInteractable _interactableInteracting;
-        private Timer _interactTimer;
-        public Timer HarvestTimer => _interactTimer;
-        public bool IsHarvesting => _interactTimer != null;
 
         private void Awake()
         {
@@ -28,13 +24,13 @@ namespace CliffGame
         
         private void Start()
         {
-            GameInput.Instance.OnPrimaryInteract += StartInteraction;
+            Player.Instance.ToolHolder.OnToolSwingDown += TryToHitInteractable;
             GameInput.Instance.OnTertiaryInteract += RepairFloor;
         }
         
         private void OnDestroy()
         {
-            GameInput.Instance.OnPrimaryInteract -= StartInteraction;
+            Player.Instance.ToolHolder.OnToolSwingDown -= TryToHitInteractable;
             GameInput.Instance.OnTertiaryInteract -= RepairFloor;
         }
 
@@ -43,24 +39,13 @@ namespace CliffGame
             if (GameInput.Instance == null) return;
 
             SearchForResource();
+        }
 
-            if (_currentlyHoveredInteractable != null)
+        private void TryToHitInteractable()
+        {
+            if(_currentlyHoveredInteractable != null)
             {
-                if(_currentlyHoveredInteractable == _interactableInteracting)
-                {
-                    if (_interactTimer != null)
-                    {
-                        _interactTimer?.Tick(Time.deltaTime);
-                    }
-                }
-                else
-                {
-                    CancelInteractTimer();
-                }
-            }
-            else
-            {
-                CancelInteractTimer();
+                _currentlyHoveredInteractable.OnHitWithTool();
             }
         }
 
@@ -85,40 +70,6 @@ namespace CliffGame
                     }
                 }
             }
-        }
-
-        private void StartInteraction(object sender, InputAction.CallbackContext e)
-        {
-            if(e.started)
-            {
-                if (_currentlyHoveredInteractable != null)
-                {
-                    _interactableInteracting = _currentlyHoveredInteractable;
-                    StartInteractTimer(_interactableInteracting);
-                }
-            }
-        }
-
-        private void StartInteractTimer(IInteractable interactable)
-        {
-            CancelInteractTimer(); // Ensure no old timer is active
-
-            _interactTimer = new Timer(interactable.InteractionTime);
-            _interactTimer.OnTimerEnd += OnTimerEnd;
-        }
-        
-        private void CancelInteractTimer()
-        {
-            if(_interactTimer != null)
-            {
-                _interactTimer.OnTimerEnd -= OnTimerEnd;
-                _interactTimer = null;
-            }
-        }
-
-        private void OnTimerEnd(object sender, EventArgs e)
-        {
-            _currentlyHoveredInteractable.ExecuteInteraction();
         }
 
         private bool SearchForResource()

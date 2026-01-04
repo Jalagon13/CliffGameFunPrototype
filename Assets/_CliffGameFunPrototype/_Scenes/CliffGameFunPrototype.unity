@@ -163,6 +163,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b3fa50434f2f4f3db5de05d632fe62f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructureManager
+  _connectorLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
+  _buildRange: 4
+  _ghostMaterialValid: {fileID: 2100000, guid: 206c5e23e8fe7483296565746246a68f, type: 2}
+  _ghostMaterialInvalid: {fileID: 2100000, guid: ed20caad1ba214755b4e240924bfacf4, type: 2}
+  _maxGroundAngle: 45
 --- !u!1001 &27058224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4075,7 +4082,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8404
+      value: 8410
       objectReference: {fileID: 0}
     - target: {fileID: 2386244143411771210, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -4087,7 +4094,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 6481
+      value: 6487
       objectReference: {fileID: 0}
     - target: {fileID: 3417812465825906931, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -4107,7 +4114,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8443
+      value: 8449
       objectReference: {fileID: 0}
     - target: {fileID: 4323805193510765137, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -4127,7 +4134,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7556
+      value: 7562
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4175,7 +4182,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7976
+      value: 7982
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -4183,7 +4190,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7577
+      value: 7583
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -37897,7 +37904,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.InventoryManager
   _slotAmount: 27
   _hotbarSlotAmount: 9
-  _startingHotbarIndex: 1
+  _startingHotbarIndex: 2
 --- !u!114 &1877260128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37913,6 +37920,8 @@ MonoBehaviour:
   _delayBeforeGivingItems: 0.375
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: 93455b748a55c4eb1805b933314b2842, type: 2}
     Quantity: 1
 --- !u!1 &1884146304
 GameObject:

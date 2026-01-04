@@ -18,7 +18,7 @@ namespace CliffGame
         public void ExecuteInteraction()
         {
             InventoryManager.Instance.AddItem(_harvestItem, _harvestAmount);
-            Destroy(gameObject);
+            // Destroy(gameObject);
         }
     }
 }

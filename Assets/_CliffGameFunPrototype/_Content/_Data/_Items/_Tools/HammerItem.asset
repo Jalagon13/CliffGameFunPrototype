@@ -9,12 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 725593a41107147bf888d47345e95d1a, type: 3}
+  m_Script: {fileID: 11500000, guid: 758ebea90039c4c65acaef5eef26b129, type: 3}
   m_Name: HammerItem
-  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HammerItemSO
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ToolItemSO
   <InGameName>k__BackingField: Hammer
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
-  <UiDisplay>k__BackingField: {fileID: 1844556041, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
+  <UiDisplay>k__BackingField: {fileID: 1204406958, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: 
-  RepairAmount: 100
+  <ToolType>k__BackingField: 0
+  <IntValue>k__BackingField: 100
+  <HeldToolPrefab>k__BackingField: {fileID: 1131926571834917158, guid: 12137e5a4f0f13d45b921a301983726b, type: 3}

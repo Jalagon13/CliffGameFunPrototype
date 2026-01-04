@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f0f488d3ff1742c9b87e4264f94e224, type: 3}
   m_Name: HammerRecipe
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.RecipeSO
-  <ResultItem>k__BackingField: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
+  <ResultItem>k__BackingField: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
   <ResultAmount>k__BackingField: 1
   <RequiredItems>k__BackingField:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}

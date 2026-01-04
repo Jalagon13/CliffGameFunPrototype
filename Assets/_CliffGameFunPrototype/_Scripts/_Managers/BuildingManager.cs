@@ -153,7 +153,7 @@ namespace CliffGame
 
         private void OnSelectedSlotChanged_CheckForHammer(int arg1, InventoryItem item)
         {
-            if (item.Item is HammerItemSO hammerData)
+            if (item.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer)
             {
                 _isHoldingHammar = true;
             }

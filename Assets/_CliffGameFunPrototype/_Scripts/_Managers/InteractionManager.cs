@@ -71,7 +71,7 @@ namespace CliffGame
             // Repair logic here
             if (InventoryManager.Instance.HasSelectedItem)
             {
-                if(InventoryManager.Instance.SelectedInventoryItem.Item is HammerItemSO hammerselected)
+                if(InventoryManager.Instance.SelectedInventoryItem.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer)
                 {
                     RaycastHit hit;
                     if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance))
@@ -79,7 +79,7 @@ namespace CliffGame
                         if (hit.collider.TryGetComponent(out Floor floor))
                         {
                             Debug.Log($"Hit repairable object: {hit.collider.name}");
-                            floor.AddFloorHp(hammerselected.RepairAmount);
+                            floor.AddFloorHp(toolItem.IntValue);
                             // Repair logic here
                         }
                     }

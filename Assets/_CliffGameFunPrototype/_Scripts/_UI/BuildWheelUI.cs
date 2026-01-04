@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using SingularityGroup.HotReload;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -125,7 +126,7 @@ namespace CliffGame
         {
             if (!e.started || CraftingManager.Instance.CraftingMenuUIOpened) return;
 
-            if(InventoryManager.Instance.SelectedInventoryItem.HasItem && InventoryManager.Instance.SelectedInventoryItem.Item is HammerItemSO)
+            if(InventoryManager.Instance.SelectedInventoryItem.HasItem && InventoryManager.Instance.SelectedInventoryItem.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer)
             {
                 _isBuildWheelToggledOpen = !_isBuildWheelToggledOpen;
 

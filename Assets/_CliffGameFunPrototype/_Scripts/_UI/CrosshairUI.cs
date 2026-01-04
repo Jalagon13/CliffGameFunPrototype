@@ -53,7 +53,7 @@ namespace CliffGame
 
         private void CheckForHammer(int arg1, InventoryItem item)
         {
-            if(item.Item is HammerItemSO hammer) 
+            if(item.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer) 
             {
                 PopulateBuildReqs();        
             }

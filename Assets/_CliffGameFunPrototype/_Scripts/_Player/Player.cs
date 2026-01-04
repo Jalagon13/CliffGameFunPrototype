@@ -52,6 +52,10 @@ namespace CliffGame
         
         public Rigidbody RigidBody { get; private set; }
         
+        [SerializeField] 
+        private ToolHolder _toolHolder;
+        public ToolHolder ToolHolder => _toolHolder;
+        
         private void Awake()
         {
             Instance = this;

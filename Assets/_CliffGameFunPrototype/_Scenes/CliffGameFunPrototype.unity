@@ -14124,6 +14124,7 @@ MonoBehaviour:
   _craftSlotHolder: {fileID: 2080646905}
   _craftSlotUIPrefab: {fileID: 4398836320879300592, guid: a4b0fbe2c252a48c69c445dff71c090e, type: 3}
   _availableRecipes:
+  - {fileID: 11400000, guid: b40c06f46f67a483997ef7acb9dec05b, type: 2}
   - {fileID: 11400000, guid: b0f05b04c91344f8da2db89156f31d8e, type: 2}
 --- !u!1 &816577298
 GameObject:
@@ -37938,7 +37939,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.InventoryManager
   _slotAmount: 27
   _hotbarSlotAmount: 9
-  _startingHotbarIndex: 3
+  _startingHotbarIndex: 2
 --- !u!114 &1877260128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37955,12 +37956,6 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 93455b748a55c4eb1805b933314b2842, type: 2}
-    Quantity: 1
-  - Item: {fileID: 11400000, guid: 34bda5c88630143b38e30dc4c8d538a3, type: 2}
-    Quantity: 3
-  - Item: {fileID: 11400000, guid: bc97d82a1a35d4cc4847a6ce9018103c, type: 2}
-    Quantity: 20
 --- !u!1 &1884146304
 GameObject:
   m_ObjectHideFlags: 0

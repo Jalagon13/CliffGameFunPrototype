@@ -37938,7 +37938,7 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: 93455b748a55c4eb1805b933314b2842, type: 2}
     Quantity: 1
   - Item: {fileID: 11400000, guid: 34bda5c88630143b38e30dc4c8d538a3, type: 2}
-    Quantity: 1
+    Quantity: 3
 --- !u!1 &1884146304
 GameObject:
   m_ObjectHideFlags: 0

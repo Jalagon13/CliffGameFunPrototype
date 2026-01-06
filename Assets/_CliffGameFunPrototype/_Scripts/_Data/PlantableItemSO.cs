@@ -9,7 +9,7 @@ namespace CliffGame
         public float GrowthTimeInSeconds { get; private set; }
     
         [field: SerializeField]
-        public GameObject PlantPrefab { get; private set; }
+        public Growable GrowablePrefab { get; private set; }
 
         public override InventoryItem CreateInventoryItem(int quantity)
         {

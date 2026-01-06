@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace CliffGame
@@ -11,16 +12,19 @@ namespace CliffGame
 
     public class PlanterBox : Resource
     {
-        private PlantableItemSO _currentPlantable;
+        [SerializeField] private Transform _growableGrowPoint;
+    
+        private PlantableItemSO _currentPlantableItem;
         private PlanterBoxState _currentState = PlanterBoxState.Empty;
 
         private Timer _growthTimer;
+        private Growable _currentGrowableInstance;
 
         private void Update()
         {
             if (_currentState == PlanterBoxState.Growing && _growthTimer != null)
             {
-                _growthTimer.Tick(Time.deltaTime);
+                OnGrowthTick();
             }
         }
 
@@ -67,7 +71,7 @@ namespace CliffGame
 
         private void StartGrowing(PlantableItemSO plantable)
         {
-            _currentPlantable = plantable;
+            _currentPlantableItem = plantable;
             _currentState = PlanterBoxState.Growing;
 
             _growthTimer = new Timer(plantable.GrowthTimeInSeconds);
@@ -86,13 +90,13 @@ namespace CliffGame
 
         private void CancelGrowth()
         {
-            if (_currentPlantable != null)
+            if (_currentPlantableItem != null)
             {
-                InventoryManager.Instance.AddItem(_currentPlantable, 1);
+                InventoryManager.Instance.AddItem(_currentPlantableItem, 1);
             }
 
             _growthTimer = null;
-            _currentPlantable = null;
+            _currentPlantableItem = null;
             _currentState = PlanterBoxState.Empty;
 
             OnGrowthCancelled();
@@ -101,27 +105,37 @@ namespace CliffGame
         public void ClearPlanterBox()
         {
             _growthTimer = null;
-            _currentPlantable = null;
+            _currentPlantableItem = null;
             _currentState = PlanterBoxState.Empty;
+            _currentGrowableInstance = null;
 
             OnPlanterCleared();
         }
 
-        // ----- Extension Hooks -----
-
         protected virtual void OnGrowthStarted()
         {
             // Add visuals, sounds, UI updates here
+            _currentGrowableInstance = Instantiate(_currentPlantableItem.GrowablePrefab, _growableGrowPoint.position, Quaternion.identity);
+            _currentGrowableInstance.InitializeGrowable(this);
+        }
+
+        protected virtual void OnGrowthTick()
+        {
+            // Update growth visuals, UI progress bars, etc.
+            _growthTimer.Tick(Time.deltaTime);
+            _currentGrowableInstance.UpdateGrowthPercentage(_growthTimer.GetPercentComplete());
         }
 
         protected virtual void OnGrowthFinished()
         {
             // Spawn plant prefab, rewards, etc.
+            _currentGrowableInstance.UpdateGrowthPercentage(1f);
         }
 
         protected virtual void OnGrowthCancelled()
         {
             // Handle cancellation effects here
+            Destroy(_currentGrowableInstance.gameObject);
         }
 
         protected virtual void OnPlanterCleared()

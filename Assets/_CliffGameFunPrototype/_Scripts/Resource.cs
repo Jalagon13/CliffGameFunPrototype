@@ -28,7 +28,7 @@ namespace CliffGame
         [SerializeField]
         private EventReference _destroySFX;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _currentLife = _maxLife;
         }

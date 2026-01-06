@@ -17,5 +17,5 @@ MonoBehaviour:
   <UiDisplay>k__BackingField: {fileID: 811161192, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: 
-  <GrowthTimeInSeconds>k__BackingField: 5
+  <GrowthTimeInSeconds>k__BackingField: 180
   <GrowablePrefab>k__BackingField: {fileID: 1193042686163046655, guid: 5f11abe12d65f4ad2b909f3541c56e23, type: 3}

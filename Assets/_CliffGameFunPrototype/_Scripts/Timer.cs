@@ -35,6 +35,12 @@ namespace CliffGame
         {
             _remainingSeconds += time;
         }
+        
+        public void SubtractTime(float time)
+        {
+            _remainingSeconds = Mathf.Max(0f, _remainingSeconds - time);
+            CheckForTimerEnd();
+        }
 
         public void Reset()
         {

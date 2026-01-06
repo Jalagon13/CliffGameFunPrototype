@@ -228,7 +228,6 @@ namespace CliffGame
         private void OnPrimaryInteract(object sender, InputAction.CallbackContext e)
         {
             if (!e.started || !_isBuilding) return;
-            Debug.Log($"Clicked this frame");
             _clickedThisFrame = true;
         }
 
@@ -236,13 +235,11 @@ namespace CliffGame
         {
             if(InventoryManager.Instance.SelectedInventoryItem.Item is StructureItemSO structureData)
             {
-                Debug.Log($"Structure Building Mode Enabled via Inventory Update");
                 _isBuilding = true;
                 _currentStructureItemSO = structureData;
             }
             else
             {
-                Debug.Log($"Structure Building Mode Disabled via Inventory Update");
                 _isBuilding = false;
                 _currentStructureItemSO = null;
             }

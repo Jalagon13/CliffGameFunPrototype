@@ -16,6 +16,7 @@ namespace CliffGame
     
         private PlantableItemSO _currentPlantableItem;
         private PlanterBoxState _currentState = PlanterBoxState.Empty;
+        public PlanterBoxState CurrentState => _currentState;
 
         private Timer _growthTimer;
         private Growable _currentGrowableInstance;
@@ -35,7 +36,16 @@ namespace CliffGame
             switch (_currentState)
             {
                 case PlanterBoxState.Growing:
-                    CancelGrowth();
+
+                    if (InventoryManager.Instance.HasSelectedItem && InventoryManager.Instance.SelectedInventoryItem.Item is PlantGrowthItemSO plantGrowthItem && _currentState == PlanterBoxState.Growing)
+                    {
+                        _growthTimer.SubtractTime(plantGrowthItem.TimeToSubtractFromGrowthTimer);
+                        InventoryManager.Instance.RemoveItem(plantGrowthItem, 1);
+                    }
+                    else
+                    {
+                        CancelGrowth();
+                    }
                     return;
 
                 case PlanterBoxState.Empty:
@@ -47,7 +57,12 @@ namespace CliffGame
                     return;
             }
         }
-
+        
+        public void SubtractTime(int seconds)
+        {
+            _growthTimer.SubtractTime(seconds);
+        }
+        
         public override void OnHitWithTool()
         {
             if (_currentState == PlanterBoxState.Empty) // Only execute hit if it is currently not in use

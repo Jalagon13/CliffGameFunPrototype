@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0abd23a848c8443599fa2989c648f349, type: 3}
-  m_Name: WoodPotItem
+  m_Name: PlanterPotItem
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructureItemSO
-  <InGameName>k__BackingField: Wood Pot
+  <InGameName>k__BackingField: Planter Pot
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 734688836, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: 
-  <StructurePrefab>k__BackingField: {fileID: 1465330192500852548, guid: d9419febf3bb74b55ae75817007c1f15, type: 3}
+  <StructurePrefab>k__BackingField: {fileID: 1887798041782377036, guid: ce87eb9c2b36f4d738e605d219a581cc, type: 3}

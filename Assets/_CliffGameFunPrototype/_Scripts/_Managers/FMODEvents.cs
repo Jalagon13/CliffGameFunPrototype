@@ -34,6 +34,9 @@ namespace CliffGame
         [field: SerializeField] public EventReference WoodRattleSFX { get; private set; }
         [field: SerializeField] public EventReference WoodDestroyedSFX { get; private set; }
         
+        [field: Header("Structure SFX")]
+        [field: SerializeField] public EventReference StructureBuiltSFX { get; private set; }
+        [field: SerializeField] public EventReference StructureDestroyedSFX { get; private set; }
 
         private void Awake()
         {

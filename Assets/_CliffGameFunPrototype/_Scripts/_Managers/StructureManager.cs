@@ -33,12 +33,14 @@ namespace CliffGame
         private void Start()
         {
             InventoryManager.Instance.OnSelectedSlotChanged += OnSelectedSlotChanged;
+            InventoryManager.Instance.OnInventoryUpdated += CheckIfHoldingStructureItem;
             GameInput.Instance.OnPrimaryInteract += OnPrimaryInteract;
         }
 
         private void OnDestroy()
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= OnSelectedSlotChanged;
+            InventoryManager.Instance.OnInventoryUpdated -= CheckIfHoldingStructureItem;
             GameInput.Instance.OnPrimaryInteract -= OnPrimaryInteract;
         }
 
@@ -71,7 +73,7 @@ namespace CliffGame
                 _ghostStructureGameObject = null;
 
                 InventoryManager.Instance.RemoveItem(_currentStructureItemSO, 1);
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, Player.Instance.transform.position);
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StructureBuiltSFX, Player.Instance.transform.position);
             }
         }
 
@@ -228,6 +230,22 @@ namespace CliffGame
             if (!e.started || !_isBuilding) return;
             Debug.Log($"Clicked this frame");
             _clickedThisFrame = true;
+        }
+
+        private void CheckIfHoldingStructureItem(object sender, InventoryManager.OnInventoryUpdatedEventArgs e)
+        {
+            if(InventoryManager.Instance.SelectedInventoryItem.Item is StructureItemSO structureData)
+            {
+                Debug.Log($"Structure Building Mode Enabled via Inventory Update");
+                _isBuilding = true;
+                _currentStructureItemSO = structureData;
+            }
+            else
+            {
+                Debug.Log($"Structure Building Mode Disabled via Inventory Update");
+                _isBuilding = false;
+                _currentStructureItemSO = null;
+            }
         }
 
         private void OnSelectedSlotChanged(int arg1, InventoryItem item)

@@ -35,12 +35,12 @@ namespace CliffGame
     
         public ToolType BreakToolType => _requiredToolType;
 
-        public void ExecuteInteraction()
+        public virtual void OnInteractWith()
         {
-            
+            // Default resource interaction (can be empty)
         }
 
-        public void OnHitWithTool()
+        public virtual void OnHitWithTool()
         {
             if(Player.Instance.ToolHolder.CurrentHeldTool.ToolType != _requiredToolType) return;
         

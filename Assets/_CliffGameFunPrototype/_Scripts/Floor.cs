@@ -107,7 +107,7 @@ namespace CliffGame
             Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
         }
 
-        public void ExecuteInteraction()
+        public void OnInteractWith()
         {
             Debug.Log($"Repairing Floor");
             if (InventoryManager.Instance.InventoryHasItems(_itemsNeededForRepairing))

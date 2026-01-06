@@ -1999,7 +1999,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6590227040691501302}
   - component: {fileID: 1555885362046456605}
-  - component: {fileID: 7358534172450390222}
+  - component: {fileID: 5653854016755179433}
   m_Layer: 7
   m_Name: PlanterPotStruct
   m_TagString: Untagged
@@ -2044,7 +2044,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.48, y: 0.22, z: 0.48}
   m_Center: {x: 0, y: 0.105, z: 0}
---- !u!114 &7358534172450390222
+--- !u!114 &5653854016755179433
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2053,9 +2053,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1887798041782377036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd6da26e5f017400fbd6f1833f526bf2, type: 3}
+  m_Script: {fileID: 11500000, guid: 119e1dd5e9f754a65b3672eef2bf96a2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Resource
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlanterBox
   _requiredToolType: 1
   _maxLife: 1
   _harvestItems:

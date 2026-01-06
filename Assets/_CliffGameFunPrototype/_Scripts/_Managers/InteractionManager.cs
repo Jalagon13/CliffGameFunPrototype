@@ -26,19 +26,29 @@ namespace CliffGame
         {
             Player.Instance.ToolHolder.OnToolSwingDown += TryToHitInteractable;
             GameInput.Instance.OnTertiaryInteract += RepairFloor;
+            GameInput.Instance.OnSecondaryInteract += Interact;
         }
         
         private void OnDestroy()
         {
             Player.Instance.ToolHolder.OnToolSwingDown -= TryToHitInteractable;
             GameInput.Instance.OnTertiaryInteract -= RepairFloor;
+            GameInput.Instance.OnSecondaryInteract -= Interact;
         }
 
         private void Update()
         {
             if (GameInput.Instance == null) return;
 
-            SearchForResource();
+            SearchForInteractable();
+        }
+
+        private void Interact(object sender, InputAction.CallbackContext e)
+        {
+            if(_currentlyHoveredInteractable != null && e.started)
+            {
+                _currentlyHoveredInteractable.OnInteractWith();
+            }
         }
 
         private void TryToHitInteractable()
@@ -72,7 +82,7 @@ namespace CliffGame
             }
         }
 
-        private bool SearchForResource()
+        private bool SearchForInteractable()
         {
             RaycastHit hit;
             if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance, _interactLayer))

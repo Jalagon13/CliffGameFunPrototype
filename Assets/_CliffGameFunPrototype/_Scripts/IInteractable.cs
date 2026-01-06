@@ -6,7 +6,7 @@ namespace CliffGame
     {
         ToolType BreakToolType { get; }
 
-        void ExecuteInteraction(); // For like opening UI  or something
+        void OnInteractWith(); // For like opening UI  or something
         
         void OnHitWithTool(); // When it gets hit by a tool
     }

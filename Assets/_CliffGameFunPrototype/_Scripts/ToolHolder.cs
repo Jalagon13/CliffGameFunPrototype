@@ -11,7 +11,7 @@ namespace CliffGame
         [SerializeField] private float _returnTime = 0.15f;
         [SerializeField] private float _swingDownAngle = -50f;
         [SerializeField] private float _swingUpAngle = 40f;
-        [SerializeField] private float _swingCooldownSeconds = 0.375f;
+        // [SerializeField] private float _swingCooldownSeconds = 0.375f;
 
         private ToolItemSO _currentHeldTool;
         public ToolItemSO CurrentHeldTool => _currentHeldTool;
@@ -25,7 +25,7 @@ namespace CliffGame
         private void Start()
         {
             InventoryManager.Instance.OnSelectedSlotChanged += OnSelectedSlotChanged;
-            _swingCooldownTimer = new Timer(_swingCooldownSeconds);
+            _swingCooldownTimer = new Timer(0);
             _swingCooldownTimer.RemainingSeconds = 0f;
         }
         
@@ -68,6 +68,8 @@ namespace CliffGame
             UnequipTool();
 
             _currentHeldTool = toolItem;
+            _swingCooldownTimer = new Timer(_currentHeldTool.SwingCooldownInSeconds);
+            _swingCooldownTimer.RemainingSeconds = 0;
 
             // Instantiate as a child so the prefab's local offset is preserved
             Instantiate(toolItem.HeldToolPrefab, transform);

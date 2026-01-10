@@ -1362,6 +1362,13 @@ MonoBehaviour:
       Data3: -564401781
       Data4: 1637590921
     Path: event:/Building/WoodDestroyedSFX
+  <CampfireCooking>k__BackingField:
+    Guid:
+      Data1: -1877160065
+      Data2: 1307472397
+      Data3: -314509420
+      Data4: -994794170
+    Path: event:/Ambience/AMB_Campfire_Crackling
 --- !u!114 &270546346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4688,6 +4695,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b0f05b04c91344f8da2db89156f31d8e, type: 2}
   - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
   - {fileID: 11400000, guid: 3e24266cef9f540c0959b541dd07ecfa, type: 2}
+  - {fileID: 11400000, guid: 1e3064abad23d408a8dbfa4a43f94031, type: 2}
 --- !u!1001 &826374936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10510,6 +10518,10 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
+  - Item: {fileID: 11400000, guid: 7c6a432ee975d4d63bd3bedd71f680fa, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}
+    Quantity: 12
 --- !u!1 &1895881966
 GameObject:
   m_ObjectHideFlags: 0

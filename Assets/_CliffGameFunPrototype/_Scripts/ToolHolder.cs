@@ -129,7 +129,7 @@ namespace CliffGame
             swingSequence.AppendCallback(() =>
             {
                 OnToolSwingDown?.Invoke();
-                Debug.Log("Tool swing down event invoked.");
+                // Debug.Log("Tool swing down event invoked.");
             });
 
             // Return to original rotation

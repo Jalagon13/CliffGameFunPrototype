@@ -32,7 +32,15 @@ namespace CliffGame
         {
             _currentLife = _maxLife;
         }
-    
+
+        private void OnDestroy()
+        {
+            if (ResourceManager.Instance != null)
+            {
+                ResourceManager.Instance.UnregisterResource(this);
+            }
+        }
+
         public ToolType BreakToolType => _requiredToolType;
 
         public virtual void OnInteractWith()
@@ -62,6 +70,8 @@ namespace CliffGame
                         InventoryManager.Instance.AddItem(item.Item, 1);
                     }
                 }
+                
+                ResourceManager.Instance.UnregisterResource(this);
                 Destroy(gameObject);
             }
         }

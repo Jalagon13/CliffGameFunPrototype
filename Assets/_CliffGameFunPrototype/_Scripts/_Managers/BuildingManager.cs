@@ -206,9 +206,8 @@ namespace CliffGame
                 {
                     connector.UpdateConnectors(true);
                 }
-                // AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodKnockSFX, transform.position);
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StructureBuiltSFX, transform.position);
                 InventoryManager.Instance.RemoveItems(_itemsNeededForBuilding);
-                // _hammer.PlayHammerSwing();
             }
         }
 

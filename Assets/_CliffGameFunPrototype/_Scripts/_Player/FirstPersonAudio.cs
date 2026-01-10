@@ -188,7 +188,7 @@ namespace CliffGame
 
         private void SubscribeToEvents()
         {
-            Player.Instance.OnMoveStateChanged += OnMoveStateChanged;
+            Player.Instance.OnStateChanged += OnMoveStateChanged;
             GroundCheck.Grounded += PlayLandingAudio;
 
             if (Jump)
@@ -197,7 +197,7 @@ namespace CliffGame
 
         private void UnsubscribeToEvents()
         {
-            Player.Instance.OnMoveStateChanged -= OnMoveStateChanged;
+            Player.Instance.OnStateChanged -= OnMoveStateChanged;
             GroundCheck.Grounded -= PlayLandingAudio;
 
             if (Jump)

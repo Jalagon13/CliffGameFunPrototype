@@ -37,7 +37,7 @@ namespace CliffGame
                 OnStaminaChanged?.Invoke(current, max);
             };
 
-            Player.Instance.OnMoveStateChanged += HandlePlayerStateChanged;
+            Player.Instance.OnStateChanged += HandlePlayerStateChanged;
             Player.Instance.OnPlayerRespawn += OnRespawn;
             Player.Instance.WalkingMoveState.GroundCheck.Grounded += OnGrounded;
 
@@ -48,7 +48,7 @@ namespace CliffGame
 
         private void OnDestroy()
         {
-            Player.Instance.OnMoveStateChanged -= HandlePlayerStateChanged;
+            Player.Instance.OnStateChanged -= HandlePlayerStateChanged;
             Player.Instance.OnPlayerRespawn -= OnRespawn;
             Player.Instance.WalkingMoveState.GroundCheck.Grounded -= OnGrounded;
         }

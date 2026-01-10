@@ -15,8 +15,21 @@ namespace CliffGame
         private int _maxLife = 3;
         private int _currentLife;
 
+        [System.Serializable]
+        private class HarvestDrop
+        {
+            [Tooltip("Item to drop when the resource is destroyed")]
+            public ItemSO DropItem;
+
+            [Tooltip("Minimum amount of this item to drop")]
+            public int MinAmount = 1;
+
+            [Tooltip("Maximum amount of this item to drop")]
+            public int MaxAmount = 1;
+        }
+
         [SerializeField]
-        private List<InventoryItem> _harvestItems = new List<InventoryItem>();
+        private List<HarvestDrop> _harvestDrops = new List<HarvestDrop>();
         
         [Header("Feel Settings")]
         [SerializeField] 
@@ -63,11 +76,19 @@ namespace CliffGame
 
             if (_currentLife <= 0)
             {
-                foreach (InventoryItem item in _harvestItems)
+                foreach (HarvestDrop drop in _harvestDrops)
                 {
-                    for (int i = 0; i < item.Quantity; i++)
+                    if (drop.DropItem == null)
+                        continue;
+
+                    int amount = Random.Range(drop.MinAmount, drop.MaxAmount + 1);
+
+                    if (amount <= 0)
+                        continue;
+                        
+                    for (int i = 0; i < amount; i++)
                     {
-                        InventoryManager.Instance.AddItem(item.Item, 1);
+                        InventoryManager.Instance.AddItem(drop.DropItem, 1);
                     }
                 }
                 

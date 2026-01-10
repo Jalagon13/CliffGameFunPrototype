@@ -21,7 +21,7 @@ namespace CliffGame
     {
         public static Player Instance;
         
-        public Action<PlayerMoveState, PlayerMoveState> OnMoveStateChanged;
+        public Action<PlayerMoveState, PlayerMoveState> OnStateChanged;
         public event Action OnPlayerRespawn;
 
         private Dictionary<PlayerMoveState, IPlayerState> _states;
@@ -78,14 +78,14 @@ namespace CliffGame
         
         private void Start()
         {
-            GameInput.Instance.OnPrimaryInteract += GameInput_OnPrimaryInteract;
+            // GameInput.Instance.OnPrimaryInteract += GameInput_OnPrimaryInteract;
             HealthManager.Instance.OnPlayerDeath += HealthManager_OnPlayerDeath;
             CraftingManager.Instance.OnCraftingUIOpened += CraftingManager_OnCraftingUIOpened;
         }
         
         private void OnDestroy()
         {
-            GameInput.Instance.OnPrimaryInteract -= GameInput_OnPrimaryInteract;
+            // GameInput.Instance.OnPrimaryInteract -= GameInput_OnPrimaryInteract;
             HealthManager.Instance.OnPlayerDeath -= HealthManager_OnPlayerDeath;
             CraftingManager.Instance.OnCraftingUIOpened -= CraftingManager_OnCraftingUIOpened;
         }
@@ -129,27 +129,27 @@ namespace CliffGame
             }
         }
 
-        private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
-        {
-            // if(CurrentMoveStateType == PlayerMoveState.Walking && !StaminaManager.Instance.IsExhausted)
-            // {
-            //     if(e.started)
-            //     {
-            //         RaycastHit hit;
-            //         if(Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out hit, _climbRayDistance, _climbableLayer))
-            //         {
-            //             TransitionState(PlayerMoveState.Climbing);
-            //         }
-            //     }
-            // }
-            // else if(CurrentMoveStateType == PlayerMoveState.Climbing)
-            // {
-            //     if(e.started && !_climbMoveState.IsLerpingToLedge)
-            //     {
-            //         TransitionState(PlayerMoveState.Walking);
-            //     }
-            // }
-        }
+        // private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
+        // {
+        //     if(CurrentMoveStateType == PlayerMoveState.Walking && !StaminaManager.Instance.IsExhausted)
+        //     {
+        //         if(e.started)
+        //         {
+        //             RaycastHit hit;
+        //             if(Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out hit, _climbRayDistance, _climbableLayer))
+        //             {
+        //                 TransitionState(PlayerMoveState.Climbing);
+        //             }
+        //         }
+        //     }
+        //     else if(CurrentMoveStateType == PlayerMoveState.Climbing)
+        //     {
+        //         if(e.started && !_climbMoveState.IsLerpingToLedge)
+        //         {
+        //             TransitionState(PlayerMoveState.Walking);
+        //         }
+        //     }
+        // }
 
         public void TransitionState(PlayerMoveState playerMoveState)
         {
@@ -161,7 +161,7 @@ namespace CliffGame
 
             CurrentMoveStateType = playerMoveState;
             
-            OnMoveStateChanged?.Invoke(previousState, playerMoveState);
+            OnStateChanged?.Invoke(previousState, playerMoveState);
         }
 
         public IPlayerState GetState(PlayerMoveState key)

@@ -36,13 +36,13 @@ public class FirstPersonLook : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         GameInput.Instance.OnLook += GameInput_OnLook;
-        Player.Instance.OnMoveStateChanged += OnMoveStateChanged;
+        Player.Instance.OnStateChanged += OnMoveStateChanged;
     }
 
     private void OnDestroy()
     {
         GameInput.Instance.OnLook -= GameInput_OnLook;
-        Player.Instance.OnMoveStateChanged -= OnMoveStateChanged;
+        Player.Instance.OnStateChanged -= OnMoveStateChanged;
     }
 
     private void OnMoveStateChanged(PlayerMoveState previous, PlayerMoveState newState)

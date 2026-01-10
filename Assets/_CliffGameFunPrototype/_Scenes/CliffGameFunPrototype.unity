@@ -3422,8 +3422,10 @@ MonoBehaviour:
   _resources:
   - resourcePrefab: {fileID: 6733385212726564722, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
     spawnWeight: 100
-  - resourcePrefab: {fileID: 0}
-    spawnWeight: 0
+  - resourcePrefab: {fileID: 6733385212726564722, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
+    spawnWeight: 100
+  - resourcePrefab: {fileID: 6733385212726564722, guid: b33445883b635420d93b380d00ff9d20, type: 3}
+    spawnWeight: 17
 --- !u!1 &522399308
 GameObject:
   m_ObjectHideFlags: 0
@@ -4772,8 +4774,9 @@ MonoBehaviour:
   _craftSlotHolder: {fileID: 2080646905}
   _craftSlotUIPrefab: {fileID: 4398836320879300592, guid: a4b0fbe2c252a48c69c445dff71c090e, type: 3}
   _availableRecipes:
-  - {fileID: 11400000, guid: b40c06f46f67a483997ef7acb9dec05b, type: 2}
   - {fileID: 11400000, guid: b0f05b04c91344f8da2db89156f31d8e, type: 2}
+  - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
+  - {fileID: 11400000, guid: 3e24266cef9f540c0959b541dd07ecfa, type: 2}
 --- !u!1001 &826374936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10596,8 +10599,6 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
-    Quantity: 1
 --- !u!1 &1895881966
 GameObject:
   m_ObjectHideFlags: 0
@@ -10881,6 +10882,8 @@ MonoBehaviour:
   _itemsNeededForBuilding:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 2
+  - Item: {fileID: 11400000, guid: 16315e06fbe8645e8be6994f23704482, type: 2}
+    Quantity: 1
   _ghostMaterialValid: {fileID: 2100000, guid: 206c5e23e8fe7483296565746246a68f, type: 2}
   _ghostMaterialInvisible: {fileID: 2100000, guid: 3107ba3cabaf847c5ab8dc6f5acd505c, type: 2}
   _ghostMaterialInvalid: {fileID: 2100000, guid: ed20caad1ba214755b4e240924bfacf4, type: 2}

@@ -39,7 +39,7 @@ namespace CliffGame
             HealthManager.Instance.OnHealthChanged += HandleHealthChanged;
             HungerManager.Instance.OnHungerChanged += HandleHungerChanged;
             StaminaManager.Instance.OnStaminaChanged += HandleStaminaChanged;
-            Player.Instance.OnMoveStateChanged += OnMoveStateChanged;
+            Player.Instance.OnStateChanged += OnMoveStateChanged;
 
             _staminaBar.HideBar(0f);
         }
@@ -49,7 +49,7 @@ namespace CliffGame
             HealthManager.Instance.OnHealthChanged -= HandleHealthChanged;
             HungerManager.Instance.OnHungerChanged -= HandleHungerChanged;
             StaminaManager.Instance.OnStaminaChanged -= HandleStaminaChanged;
-            Player.Instance.OnMoveStateChanged -= OnMoveStateChanged;
+            Player.Instance.OnStateChanged -= OnMoveStateChanged;
         }
 
         private void OnMoveStateChanged(PlayerMoveState prevState, PlayerMoveState newState)

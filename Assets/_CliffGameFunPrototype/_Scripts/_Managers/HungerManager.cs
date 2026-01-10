@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using CliffGame;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 namespace CliffGame
 {
@@ -45,6 +46,7 @@ namespace CliffGame
         private IEnumerator Start()
         {
             Player.Instance.OnPlayerRespawn += OnRespawn;
+            GameInput.Instance.OnPrimaryInteract += TryToEat;
 
             yield return null;
             OnHungerChanged?.Invoke(CurrentHunger, _hungerStat.Max);
@@ -53,6 +55,16 @@ namespace CliffGame
         private void OnDestroy()
         {
             Player.Instance.OnPlayerRespawn -= OnRespawn;
+            GameInput.Instance.OnPrimaryInteract -= TryToEat;
+        }
+
+        private void TryToEat(object sender, InputAction.CallbackContext e)
+        {
+            if(e.started && InventoryManager.Instance.HasSelectedItem && InventoryManager.Instance.SelectedInventoryItem.Item is ConsumableItemSO consumableItem)
+            {
+                InventoryManager.Instance.RemoveItem(consumableItem, 1);
+                AddHunger(consumableItem.HealAmount);
+            }
         }
 
         private void Update()

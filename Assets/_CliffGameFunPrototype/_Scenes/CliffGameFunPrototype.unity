@@ -3992,10 +3992,6 @@ PrefabInstance:
       propertyPath: _terrain
       value: 
       objectReference: {fileID: 115139681}
-    - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
-      propertyPath: _birdResourcePrefab
-      value: 
-      objectReference: {fileID: 8347050287948959519, guid: 8321dca69422d457ebbe2e22f0006ca5, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11921,7 +11917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
   _windSeverity: 0.175
-  _windPushesPlayerThreshold: 0.252
+  _windPushesPlayerThreshold: 0.1
   _severityMultiplier: 0.02
   _windTickInterval: 0.1
   _minPlatformDamagePerRattle: 1

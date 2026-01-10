@@ -580,12 +580,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BirdSpawner
   _terrain: {fileID: 0}
-  _maxSparrows: 10
+  _birdResourcePrefab: {fileID: 8347050287948959519, guid: 8321dca69422d457ebbe2e22f0006ca5, type: 3}
+  _maxSparrows: 6
   _spawningPlaneSideLength: 20
   _spawningPlaneDistanceFromPlayer: 15
   _obstacleAvoidanceRadius: 2
-  _ticksPerSecond: 60
-  _spawnChancePerTick: 0.02
+  _ticksPerSecond: 20
+  _spawnChancePerTick: 0.0125
 --- !u!1 &5234949846655753315
 GameObject:
   m_ObjectHideFlags: 0

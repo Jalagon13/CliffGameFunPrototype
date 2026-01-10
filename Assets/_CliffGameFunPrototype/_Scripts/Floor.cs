@@ -185,7 +185,7 @@ namespace CliffGame
                 _currentHP = 0;
             }
             
-            Debug.Log($"Adding floor hp {amount}, new hp: {_currentHP}");
+            // Debug.Log($"Adding floor hp {amount}, new hp: {_currentHP}");
         }
 
         public void OnHitWithTool()

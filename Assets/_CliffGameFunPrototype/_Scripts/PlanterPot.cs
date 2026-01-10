@@ -36,16 +36,7 @@ namespace CliffGame
             switch (_currentState)
             {
                 case PlanterBoxState.Growing:
-
-                    if (InventoryManager.Instance.HasSelectedItem && InventoryManager.Instance.SelectedInventoryItem.Item is PlantGrowthItemSO plantGrowthItem && _currentState == PlanterBoxState.Growing)
-                    {
-                        _growthTimer.SubtractTime(plantGrowthItem.TimeToSubtractFromGrowthTimer);
-                        InventoryManager.Instance.RemoveItem(plantGrowthItem, 1);
-                    }
-                    else
-                    {
-                        CancelGrowth();
-                    }
+                    CancelGrowth();
                     return;
 
                 case PlanterBoxState.Empty:

@@ -25,16 +25,6 @@ namespace CliffGame
             _parentPlanterBox = planterBox;
         }
 
-        public override void OnInteractWith()
-        {
-            if (InventoryManager.Instance.HasSelectedItem && InventoryManager.Instance.SelectedInventoryItem.Item is PlantGrowthItemSO plantGrowthItem && _parentPlanterBox.CurrentState == PlanterBoxState.Growing)
-            {
-                // Consume one fertilizer from inventory
-                _parentPlanterBox.SubtractTime(plantGrowthItem.TimeToSubtractFromGrowthTimer);
-                InventoryManager.Instance.RemoveItem(plantGrowthItem, 1);
-            }
-        }
-
         public void UpdateGrowthPercentage(float percentage)
         {
             _growthPercentage = Mathf.Clamp01(percentage);

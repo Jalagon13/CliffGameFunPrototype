@@ -3410,7 +3410,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35bc9ce4198134d5da61581d501783a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ResourceManager
-  _testResourcePrefab: {fileID: 6733385212726564722, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
   _resourceSamplingQuad: {fileID: 1762091691}
   _cliffLayerMask:
     serializedVersion: 2
@@ -3420,6 +3419,11 @@ MonoBehaviour:
   _maxResources: 35
   _spawnAttemptInterval: 3
   _attemptsPerTick: 5
+  _resources:
+  - resourcePrefab: {fileID: 6733385212726564722, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
+    spawnWeight: 100
+  - resourcePrefab: {fileID: 0}
+    spawnWeight: 0
 --- !u!1 &522399308
 GameObject:
   m_ObjectHideFlags: 0
@@ -11998,8 +12002,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086b541bead394a5c8ead360709dff36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
-  _windSeverity: 0
-  _windPushesPlayerThreshold: 0.125
+  _windSeverity: 0.175
+  _windPushesPlayerThreshold: 0.1
   _severityMultiplier: 0.02
   _windTickInterval: 0.1
   _minPlatformDamagePerRattle: 1

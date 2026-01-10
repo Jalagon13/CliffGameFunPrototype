@@ -8,10 +8,6 @@ namespace CliffGame
     {
         public static ResourceManager Instance;
 
-        [Header("Prefabs")]
-        [SerializeField]
-        private Resource _testResourcePrefab;
-
         [Header("Sampling")]
         [SerializeField]
         private GameObject _resourceSamplingQuad;
@@ -40,6 +36,9 @@ namespace CliffGame
         [Tooltip("How many random samples to try per spawn attempt")]
         [SerializeField]
         private int _attemptsPerTick = 5;
+
+        [SerializeField] 
+        private List<WeightedResource> _resources;
 
         private readonly List<Resource> _activeResources = new List<Resource>();
 
@@ -132,7 +131,7 @@ namespace CliffGame
         private void SpawnResourceAt(Vector3 position, Vector3 normal)
         {
             Resource resource = Instantiate(
-                _testResourcePrefab,
+                WeightedResourceSelector.GetRandomResource(_resources),
                 position,
                 Quaternion.LookRotation(normal),
                 transform
@@ -144,7 +143,10 @@ namespace CliffGame
         public void UnregisterResource(Resource resource)
         {
             if (_activeResources.Contains(resource))
+            {
                 _activeResources.Remove(resource);
+                Debug.Log($"{_activeResources.Count}/{_maxResources}: Unregistered resource {resource.name}");
+            }
         }
     }
 }

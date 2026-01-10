@@ -71,9 +71,73 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _maxLife
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _hitSFX.Path
+      value: event:/Building/WoodHitSFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _destroySFX.Path
+      value: event:/Building/WoodDestroyedSFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _requiredToolType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _hitSFX.Guid.Data1
+      value: 1630036399
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _hitSFX.Guid.Data2
+      value: 1268181368
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _hitSFX.Guid.Data3
+      value: 1761201055
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _hitSFX.Guid.Data4
+      value: 668498223
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _destroySFX.Guid.Data1
+      value: -287471169
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _destroySFX.Guid.Data2
+      value: 1100837610
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _destroySFX.Guid.Data3
+      value: -564401781
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _destroySFX.Guid.Data4
+      value: 1637590921
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _harvestDrops.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _harvestDrops.Array.data[0].DropItem
+      value: 
+      objectReference: {fileID: 11400000, guid: ad2f70919f7d046ed8001013ac529d7d, type: 2}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _harvestDrops.Array.data[0].MaxAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _harvestDrops.Array.data[0].MinAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5756621037923522943, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: m_Name
-      value: StoneRsc
+      value: BirdRsc
       objectReference: {fileID: 0}
     - target: {fileID: 6253507330619653563, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -121,10 +185,38 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6253507330619653563, guid: 207f2353357a24988826c819617406e8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3902656425694640741}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5756621037923522943, guid: 207f2353357a24988826c819617406e8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8347050287948959519}
   m_SourcePrefab: {fileID: 100100000, guid: 207f2353357a24988826c819617406e8, type: 3}
 --- !u!4 &972405431541523328 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6253507330619653563, guid: 207f2353357a24988826c819617406e8, type: 3}
   m_PrefabInstance: {fileID: 6608546874453646907}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1465330192500852548 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5756621037923522943, guid: 207f2353357a24988826c819617406e8, type: 3}
+  m_PrefabInstance: {fileID: 6608546874453646907}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8347050287948959519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465330192500852548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2122637f3cc8e4966ad85d5b1440141c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BirdResource
+  _minSpeed: 1.25
+  _maxSpeed: 2.25
+  _travelDuration: 30
+  _maxAngleDeviation: 15
+  _detectionDistance: 2
+  _obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 64

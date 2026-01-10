@@ -216,10 +216,11 @@ Transform:
   m_GameObject: {fileID: 1593727746557118}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.488, z: 0}
+  m_LocalPosition: {x: 0, y: 1.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5959650992571449019}
   m_Father: {fileID: 4207293392497186}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &20437472682476688
@@ -396,6 +397,7 @@ GameObject:
   - component: {fileID: 4843991343312101987}
   - component: {fileID: 114497868231759342}
   - component: {fileID: 5662476774981885568}
+  - component: {fileID: 8974698583078845963}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -442,7 +444,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.3
-  m_Height: 1.8
+  m_Height: 1.775
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!54 &54063890643546284
@@ -489,6 +491,7 @@ MonoBehaviour:
   _climbableLayer:
     serializedVersion: 2
     m_Bits: 64
+  _toolHolder: {fileID: 8638897331038210049}
 --- !u!114 &114963311885979670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,7 +531,7 @@ MonoBehaviour:
   _climbableLayer:
     serializedVersion: 2
     m_Bits: 64
-  _climbSpeed: 1.5
+  _climbSpeed: 0.75
   _rayDistance: 3
   _horizontalSpreadAngle: 40
   _verticalSpreadAngle: 15
@@ -564,3 +567,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5889e955a91d3474380e6dd5dd695919, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.DeadState
+--- !u!114 &8974698583078845963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773623360729482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6635ffd4c4d3476794c7966537dd93a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BirdSpawner
+  _terrain: {fileID: 0}
+  _maxSparrows: 10
+  _spawningPlaneSideLength: 20
+  _spawningPlaneDistanceFromPlayer: 15
+  _obstacleAvoidanceRadius: 2
+  _ticksPerSecond: 60
+  _spawnChancePerTick: 0.02
+--- !u!1 &5234949846655753315
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5959650992571449019}
+  - component: {fileID: 8638897331038210049}
+  m_Layer: 0
+  m_Name: ToolHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5959650992571449019
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5234949846655753315}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.42, y: -0.431, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4490257326247362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8638897331038210049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5234949846655753315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 504020d699c16420bae297fef604c764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ToolHolder
+  _swingDownTime: 0.2
+  _swingUpTime: 0.1
+  _returnTime: 0.15
+  _swingDownAngle: -50
+  _swingUpAngle: 40

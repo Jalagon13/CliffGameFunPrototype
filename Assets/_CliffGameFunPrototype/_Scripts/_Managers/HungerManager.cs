@@ -62,6 +62,12 @@ namespace CliffGame
         {
             if(e.started && InventoryManager.Instance.HasSelectedItem && InventoryManager.Instance.SelectedInventoryItem.Item is ConsumableItemSO consumableItem)
             {
+                if(InteractionManager.Instance.CurrentlyHoveredInteractable != null && 
+                   InteractionManager.Instance.CurrentlyHoveredInteractable is CookingStation)
+                {
+                    return;
+                }
+            
                 InventoryManager.Instance.RemoveItem(consumableItem, 1);
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.EatingSFX, Player.Instance.transform.position);
                 AddHunger(consumableItem.HealAmount);

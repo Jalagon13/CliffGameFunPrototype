@@ -16,6 +16,7 @@ namespace CliffGame
         private LayerMask _interactLayer;
 
         private IInteractable _currentlyHoveredInteractable;
+        public IInteractable CurrentlyHoveredInteractable => _currentlyHoveredInteractable;
 
         private void Awake()
         {

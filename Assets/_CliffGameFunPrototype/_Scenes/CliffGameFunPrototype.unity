@@ -4031,7 +4031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4773208539257838, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.185
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: 114503055206606986, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: GroundSphereRadius
@@ -9337,7 +9337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HungerManager
   _maxHunger: 100
-  _hungerDrainPerSecond: 0.25
+  _hungerDrainPerSecond: 0.15
 --- !u!114 &1628844531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10580,14 +10580,10 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
+  - Item: {fileID: 11400000, guid: 7c6a432ee975d4d63bd3bedd71f680fa, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 34
-  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 43
-  - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
-    Quantity: 1
+  - Item: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}
+    Quantity: 12
 --- !u!1 &1895881966
 GameObject:
   m_ObjectHideFlags: 0

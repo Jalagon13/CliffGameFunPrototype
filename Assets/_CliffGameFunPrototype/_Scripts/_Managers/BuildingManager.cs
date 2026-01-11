@@ -192,7 +192,7 @@ namespace CliffGame
 
         private void PlaceBuild()
         {
-            if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding))
+            if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding) || CraftingManager.Instance.IsCraftingUIOpen)
                 return;
 
             if (_ghostBuildGameObject != null && _isGhostInValidPosition)

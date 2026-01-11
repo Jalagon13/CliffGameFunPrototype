@@ -39,7 +39,7 @@ namespace CliffGame
             _swingCooldownTimer?.Tick(Time.deltaTime);
             
             if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead ||
-                CraftingManager.Instance.CraftingMenuUIOpened || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
+                CraftingManager.Instance.IsCraftingUIOpen || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
                 Player.Instance.ToolHolder.IsSwinging) return;
             
             if(GameInput.Instance.IsHoldingDownPrimaryInteract)
@@ -96,6 +96,8 @@ namespace CliffGame
             if (_isSwinging || !ToolPrefabExists() || _swingCooldownTimer.RemainingSeconds > 0f)
                 return;
 
+            
+
             _isSwinging = true;
 
             // Cache starting rotation on all axes
@@ -129,9 +131,9 @@ namespace CliffGame
             swingSequence.AppendCallback(() =>
             {
                 OnToolSwingDown?.Invoke();
-                // Debug.Log("Tool swing down event invoked.");
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ToolSwingSFX, transform.position);
             });
-
+            
             // Return to original rotation
             swingSequence.Append(
                 transform.DOLocalRotate(

@@ -63,6 +63,7 @@ namespace CliffGame
             if(e.started && InventoryManager.Instance.HasSelectedItem && InventoryManager.Instance.SelectedInventoryItem.Item is ConsumableItemSO consumableItem)
             {
                 InventoryManager.Instance.RemoveItem(consumableItem, 1);
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.EatingSFX, Player.Instance.transform.position);
                 AddHunger(consumableItem.HealAmount);
             }
         }
@@ -78,7 +79,6 @@ namespace CliffGame
         {
             AddHunger(_maxHunger);
         }
-
 
         public void AddHunger(int amount)
         {

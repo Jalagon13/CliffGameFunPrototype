@@ -39,7 +39,10 @@ namespace CliffGame
             if(_reqs == null) return;
         
             int itemAmountInInventory = InventoryManager.Instance.InventoryModel.GetAmount(_reqs.Item);
-            _amountText.text = $"{itemAmountInInventory}/{_reqs.Quantity}";
+
+            _amountText.text = itemAmountInInventory >= _reqs.Quantity ?
+            $"{itemAmountInInventory}/{_reqs.Quantity}<br>" :
+            $"<color=red>{itemAmountInInventory}/{_reqs.Quantity}</color><br>";
         }
     }
 }

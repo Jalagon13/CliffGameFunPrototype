@@ -264,7 +264,7 @@ namespace CliffGame
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
         {
-            if(CraftingManager.Instance.CraftingMenuUIOpened) return;
+            if(CraftingManager.Instance.IsCraftingUIOpen) return;
         
             DesiredMoveDirection = e.ReadValue<Vector2>();
         }

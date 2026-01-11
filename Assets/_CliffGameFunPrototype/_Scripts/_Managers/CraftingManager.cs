@@ -13,7 +13,7 @@ namespace CliffGame
         public event Action OnCraftingUIClosed;
 
         private bool _craftingMenuUIOpened;
-        public bool CraftingMenuUIOpened => _craftingMenuUIOpened;
+        public bool IsCraftingUIOpen => _craftingMenuUIOpened;
 
         private void Awake()
         {
@@ -23,11 +23,22 @@ namespace CliffGame
         private void Start()
         {
             GameInput.Instance.OnToggleCraftingMenu += OnCraftingToggle;
+            HealthManager.Instance.OnPlayerDeath += CloseCraftingUI;
         }
 
         private void OnDestroy()
         {
             GameInput.Instance.OnToggleCraftingMenu -= OnCraftingToggle;
+            HealthManager.Instance.OnPlayerDeath -= CloseCraftingUI;
+        }
+
+        private void CloseCraftingUI()
+        {
+            if(_craftingMenuUIOpened)
+            {
+                _craftingMenuUIOpened = false;
+                OnCraftingUIClosed?.Invoke();
+            }
         }
 
         private void OnCraftingToggle(object sender, InputAction.CallbackContext context)

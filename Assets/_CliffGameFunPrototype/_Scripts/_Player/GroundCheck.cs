@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GroundCheck : MonoBehaviour
 {
@@ -9,11 +10,11 @@ public class GroundCheck : MonoBehaviour
     public bool IsGrounded = true;
 
     // Fired ONCE when the player lands
-    public event System.Action Grounded;
+    public event Action Grounded;
 
-    bool wasGrounded;
+    private bool _wasGrounded;
 
-    void Update()
+    private void Update()
     {
         // Start the ray slightly above the feet to avoid self-collision
         Vector3 rayOrigin = transform.position + Vector3.up * 0.01f;
@@ -25,16 +26,16 @@ public class GroundCheck : MonoBehaviour
         );
 
         // Landed this frame
-        if (!wasGrounded && groundedNow)
+        if (!_wasGrounded && groundedNow)
         {
             Grounded?.Invoke();
         }
 
         IsGrounded = groundedNow;
-        wasGrounded = groundedNow;
+        _wasGrounded = groundedNow;
     }
 
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * 0.01f;
         Gizmos.color = IsGrounded ? Color.white : Color.red;

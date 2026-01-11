@@ -83,6 +83,7 @@ namespace CliffGame
             HealthManager.Instance.OnPlayerDeath += OnPlayerDeath;
             GameInput.Instance.OnScrollWheel += OnScrollWheel;
             GameInput.Instance.OnSelectSlot += OnSelectSlot;
+            CraftingManager.Instance.OnCraftingUIClosed += CheckIfMouseHasItem;
 
             yield return null; // waits one frame
             _inventoryModel.UpdateInventory();
@@ -94,8 +95,20 @@ namespace CliffGame
             HealthManager.Instance.OnPlayerDeath -= OnPlayerDeath;
             GameInput.Instance.OnScrollWheel -= OnScrollWheel;
             GameInput.Instance.OnSelectSlot -= OnSelectSlot;
+            CraftingManager.Instance.OnCraftingUIClosed -= CheckIfMouseHasItem;
 
             _inventoryModel.OnInventoryUpdate -= InventoryModel_OnInventoryUpdate;
+        }
+
+        private void CheckIfMouseHasItem()
+        {
+            if(_mouseItemModel.MouseInventoryItem.HasItem)
+            {
+                // If mouse has item when crafting UI closes, drop the item
+                AddItem(_mouseItemModel.MouseInventoryItem.Item, _mouseItemModel.MouseInventoryItem.Quantity);
+                _mouseItemModel.Clear();
+                _inventoryModel.UpdateInventory();
+            }
         }
 
         private void Update()
@@ -136,6 +149,7 @@ namespace CliffGame
 
                 if (!item.HasItem) continue;
                 if (UnityEngine.Random.value < 0.5f) continue;
+                if(item.Item is ToolItemSO) continue;
 
                 // 50% chance the item gets deleted
                 int itemAmount = item.Quantity;
@@ -219,7 +233,7 @@ namespace CliffGame
         private void OnScrollWheel(object sender, InputAction.CallbackContext context)
         {
             if (!context.performed || Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || 
-                CraftingManager.Instance.CraftingMenuUIOpened || 
+                CraftingManager.Instance.IsCraftingUIOpen || 
                 BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
                 Player.Instance.ToolHolder.IsSwinging) return;
 
@@ -256,7 +270,7 @@ namespace CliffGame
         private void OnSelectSlot(object sender, InputAction.CallbackContext context)
         {
             if (!context.started || Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || 
-                CraftingManager.Instance.CraftingMenuUIOpened || 
+                CraftingManager.Instance.IsCraftingUIOpen || 
                 BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
                 Player.Instance.ToolHolder.IsSwinging) return;
 

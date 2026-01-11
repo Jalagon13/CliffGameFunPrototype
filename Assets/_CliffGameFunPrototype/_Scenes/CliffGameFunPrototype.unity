@@ -166,6 +166,9 @@ MonoBehaviour:
   _connectorLayerMask:
     serializedVersion: 2
     m_Bits: 512
+  _buildableSurfaceMask:
+    serializedVersion: 2
+    m_Bits: 1024
   _buildRange: 4
   _ghostMaterialValid: {fileID: 2100000, guid: 206c5e23e8fe7483296565746246a68f, type: 2}
   _ghostMaterialInvalid: {fileID: 2100000, guid: ed20caad1ba214755b4e240924bfacf4, type: 2}
@@ -1006,7 +1009,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8431
+      value: 8467
       objectReference: {fileID: 0}
     - target: {fileID: 2386244143411771210, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1018,7 +1021,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 6508
+      value: 6544
       objectReference: {fileID: 0}
     - target: {fileID: 3417812465825906931, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1038,7 +1041,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8470
+      value: 8506
       objectReference: {fileID: 0}
     - target: {fileID: 4323805193510765137, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1058,7 +1061,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7583
+      value: 7619
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1106,7 +1109,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8003
+      value: 8039
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1114,7 +1117,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7604
+      value: 7640
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1250,6 +1253,20 @@ MonoBehaviour:
       Data3: 1171428993
       Data4: -993440233
     Path: event:/Player/SFX_PlayerHurt
+  <ToolSwingSFX>k__BackingField:
+    Guid:
+      Data1: -1431565244
+      Data2: 1184450848
+      Data3: 1399760783
+      Data4: 2056025222
+    Path: event:/Player/SFX_ToolWoosh
+  <EatingSFX>k__BackingField:
+    Guid:
+      Data1: 509036568
+      Data2: 1090063212
+      Data3: -234443111
+      Data4: 617818655
+    Path: event:/Player/SFX_Munch
   <JumpSFX>k__BackingField:
     Guid:
       Data1: -1560920118
@@ -1348,6 +1365,13 @@ MonoBehaviour:
       Data3: -564401781
       Data4: 1637590921
     Path: event:/Building/WoodDestroyedSFX
+  <BuildingRepairedSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   <StructureBuiltSFX>k__BackingField:
     Guid:
       Data1: 1630036399
@@ -1369,6 +1393,20 @@ MonoBehaviour:
       Data3: -314509420
       Data4: -994794170
     Path: event:/Ambience/AMB_Campfire_Crackling
+  <BirdHurtSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <LeafHitSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &270546346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3383,7 +3421,7 @@ MonoBehaviour:
   - resourcePrefab: {fileID: 6733385212726564722, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
     spawnWeight: 100
   - resourcePrefab: {fileID: 6733385212726564722, guid: b33445883b635420d93b380d00ff9d20, type: 3}
-    spawnWeight: 17
+    spawnWeight: 15
 --- !u!1 &522399308
 GameObject:
   m_ObjectHideFlags: 0
@@ -3991,6 +4029,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4773208539257838, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.185
+      objectReference: {fileID: 0}
+    - target: {fileID: 114503055206606986, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: GroundSphereRadius
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 4791299541788846658, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _respawnTransform
       value: 
@@ -3999,6 +4045,22 @@ PrefabInstance:
       propertyPath: _terrain
       value: 
       objectReference: {fileID: 115139681}
+    - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _maxSparrows
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _ticksPerSecond
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _spawnChancePerTick
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _spawningPlaneSideLength
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8820,7 +8882,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 65, y: 65}
-  m_Spacing: {x: 8, y: 0}
+  m_Spacing: {x: 10, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
 --- !u!1 &1466956233
@@ -8942,7 +9004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73254179b7c7140959f3022bdab3508b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.InteractionManager
-  _interactSearchDistance: 3
+  _interactSearchDistance: 4
   _interactLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -10518,10 +10580,8 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 7c6a432ee975d4d63bd3bedd71f680fa, type: 2}
+  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}
-    Quantity: 12
 --- !u!1 &1895881966
 GameObject:
   m_ObjectHideFlags: 0
@@ -10805,8 +10865,8 @@ MonoBehaviour:
   _itemsNeededForBuilding:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 2
-  - Item: {fileID: 11400000, guid: 16315e06fbe8645e8be6994f23704482, type: 2}
-    Quantity: 1
+  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
+    Quantity: 2
   _ghostMaterialValid: {fileID: 2100000, guid: 206c5e23e8fe7483296565746246a68f, type: 2}
   _ghostMaterialInvisible: {fileID: 2100000, guid: 3107ba3cabaf847c5ab8dc6f5acd505c, type: 2}
   _ghostMaterialInvalid: {fileID: 2100000, guid: ed20caad1ba214755b4e240924bfacf4, type: 2}
@@ -11928,7 +11988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086b541bead394a5c8ead360709dff36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
-  _windSeverity: 0.175
+  _windSeverity: 0.2
   _windPushesPlayerThreshold: 0.1
   _severityMultiplier: 0.02
   _windTickInterval: 0.1

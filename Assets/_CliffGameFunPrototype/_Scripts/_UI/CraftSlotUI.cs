@@ -49,7 +49,7 @@ namespace CliffGame
                 _canvasGroup.interactable = false;
             }
             
-            if(_hovered)
+            if(_hovered && CraftingManager.Instance.IsCraftingUIOpen)
             {
                 Tooltip.HideUI();
                 Tooltip.ShowNew();
@@ -76,6 +76,8 @@ namespace CliffGame
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if(!CraftingManager.Instance.IsCraftingUIOpen) return;
+        
             Tooltip.ShowNew();
             Tooltip.CraftingRecipeDisplay(_recipeSO, fontSize: 12f, iconScale: 0.6f);
             _hovered = true;

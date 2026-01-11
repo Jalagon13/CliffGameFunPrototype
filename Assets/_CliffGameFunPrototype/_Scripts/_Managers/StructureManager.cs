@@ -10,6 +10,7 @@ namespace CliffGame
 
         [Header("Build Settings")]
         [SerializeField] private LayerMask _connectorLayerMask;
+        [SerializeField] private LayerMask _buildableSurfaceMask;
         [SerializeField] private float _buildRange = 4f;
 
         [Header("Ghost Settings")]
@@ -187,8 +188,9 @@ namespace CliffGame
                 float angleToUp = Vector3.Angle(hit.normal, Vector3.up);
                 float angleToForward = Vector3.Angle(hit.normal, Player.Instance.transform.forward);
 
-                // Regular ground check (existing logic)
-                if (angleToUp < _maxGroundAngle)
+                bool isBuildableSurface = ((1 << hit.transform.gameObject.layer) & _buildableSurfaceMask) != 0;
+
+                if (angleToUp < _maxGroundAngle && isBuildableSurface)
                 {
                     GhostifyModel(_modelParent, _ghostMaterialValid);
                     _isGhostInValidPosition = true;

@@ -94,6 +94,8 @@ namespace CliffGame
                 {
                     if (!IsFarEnoughFromOtherResources(hit.point))
                         continue;
+                        
+                    
 
                     SpawnResourceAt(hit.point, hit.normal);
                     return;

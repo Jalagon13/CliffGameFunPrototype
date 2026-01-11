@@ -62,7 +62,7 @@ public class FirstPersonLook : MonoBehaviour
     private void Update()
     {
         if(Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || 
-            CraftingManager.Instance.CraftingMenuUIOpened ||
+            CraftingManager.Instance.IsCraftingUIOpen ||
             BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen) return;
 
         // Smooth camera velocity

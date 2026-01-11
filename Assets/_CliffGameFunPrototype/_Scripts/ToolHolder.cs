@@ -120,6 +120,8 @@ namespace CliffGame
                 ).SetEase(Ease.OutQuad)
             );
 
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ToolSwingSFX, transform.position);
+
             // Swing up
             swingSequence.Append(
                 transform.DOLocalRotate(
@@ -131,7 +133,6 @@ namespace CliffGame
             swingSequence.AppendCallback(() =>
             {
                 OnToolSwingDown?.Invoke();
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ToolSwingSFX, transform.position);
             });
             
             // Return to original rotation

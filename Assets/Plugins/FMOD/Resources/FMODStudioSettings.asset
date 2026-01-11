@@ -700,6 +700,7 @@ MonoBehaviour:
   - Ambience
   - Building
   - Player
+  - Resources
   - UI
   BanksToLoad: []
   LiveUpdatePort: 9264

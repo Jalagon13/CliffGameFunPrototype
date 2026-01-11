@@ -97,7 +97,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Path
-      value: event:/Building/WoodHitSFX
+      value: event:/Resources/LeafCrunchSFX
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _crackParticles
@@ -105,7 +105,7 @@ PrefabInstance:
       objectReference: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Path
-      value: event:/Building/WoodDestroyedSFX
+      value: event:/Resources/LeafCrunchSFX
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _requiredToolType
@@ -113,35 +113,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Guid.Data1
-      value: 1630036399
+      value: 1936509638
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Guid.Data2
-      value: 1268181368
+      value: 1090928179
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Guid.Data3
-      value: 1761201055
+      value: -1568273238
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Guid.Data4
-      value: 668498223
+      value: -1783474564
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data1
-      value: -287471169
+      value: 1936509638
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data2
-      value: 1100837610
+      value: 1090928179
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data3
-      value: -564401781
+      value: -1568273238
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data4
-      value: 1637590921
+      value: -1783474564
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.size

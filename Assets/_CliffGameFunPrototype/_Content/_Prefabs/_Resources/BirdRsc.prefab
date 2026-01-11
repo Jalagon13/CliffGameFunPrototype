@@ -2781,11 +2781,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Path
-      value: event:/Building/WoodHitSFX
+      value: event:/GutsSquishSFX
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Path
-      value: event:/Building/WoodDestroyedSFX
+      value: event:/GutsSquishSFX
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _requiredToolType
@@ -2793,35 +2793,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Guid.Data1
-      value: 1630036399
+      value: 220080990
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Guid.Data2
-      value: 1268181368
+      value: 1314872062
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Guid.Data3
-      value: 1761201055
+      value: 688282815
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Guid.Data4
-      value: 668498223
+      value: 416755829
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data1
-      value: -287471169
+      value: 220080990
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data2
-      value: 1100837610
+      value: 1314872062
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data3
-      value: -564401781
+      value: 688282815
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data4
-      value: 1637590921
+      value: 416755829
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.size
@@ -2833,11 +2833,11 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.data[0].MaxAmount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.data[0].MinAmount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5756621037923522943, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: m_Name

@@ -62,5 +62,13 @@ namespace CliffGame
             if (Current != old)
                 OnValueChanged?.Invoke(Current, Max);
         }
+        
+        public void SetCurrentStat(int amount)
+        {
+            int old = Current;
+            Current = Mathf.Clamp(amount, 0, Max);
+            if (Current != old)
+                OnValueChanged?.Invoke(Current, Max);
+        }
     }
 }

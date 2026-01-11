@@ -1367,11 +1367,11 @@ MonoBehaviour:
     Path: event:/Building/WoodDestroyedSFX
   <BuildingRepairedSFX>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -488251273
+      Data2: 1289084267
+      Data3: 1521861253
+      Data4: -2134520381
+    Path: event:/Building/RepairSFX
   <StructureBuiltSFX>k__BackingField:
     Guid:
       Data1: 1630036399
@@ -10580,8 +10580,8 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
-    Quantity: 1
+  - Item: {fileID: 11400000, guid: 3b850cbd57d474a1cb1247f48e2710af, type: 2}
+    Quantity: 23
 --- !u!1 &1895881966
 GameObject:
   m_ObjectHideFlags: 0
@@ -12375,6 +12375,7 @@ GameObject:
   - component: {fileID: 4022460225707098702}
   - component: {fileID: 6343057154601786188}
   - component: {fileID: 6420110435711864252}
+  - component: {fileID: 6420110435711864253}
   m_Layer: 9
   m_Name: WindParticles
   m_TagString: Untagged
@@ -12455,7 +12456,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -17186,6 +17187,18 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &6420110435711864253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6031103918909031401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5400fcc937e544ebb68ba0a5a146250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindParticles
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -17194,8 +17207,8 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 115139682}
-  - {fileID: 4022460225707098702}
   - {fileID: 1010040582}
+  - {fileID: 4022460225707098702}
   - {fileID: 689656520}
   - {fileID: 1753652126}
   - {fileID: 1875415217}

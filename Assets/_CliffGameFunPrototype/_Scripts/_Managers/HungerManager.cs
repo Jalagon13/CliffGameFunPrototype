@@ -46,7 +46,7 @@ namespace CliffGame
         private IEnumerator Start()
         {
             Player.Instance.OnPlayerRespawn += OnRespawn;
-            GameInput.Instance.OnPrimaryInteract += TryToEat;
+            GameInput.Instance.OnSecondaryInteract += TryToEat;
 
             yield return null;
             OnHungerChanged?.Invoke(CurrentHunger, _hungerStat.Max);
@@ -55,7 +55,7 @@ namespace CliffGame
         private void OnDestroy()
         {
             Player.Instance.OnPlayerRespawn -= OnRespawn;
-            GameInput.Instance.OnPrimaryInteract -= TryToEat;
+            GameInput.Instance.OnSecondaryInteract -= TryToEat;
         }
 
         private void TryToEat(object sender, InputAction.CallbackContext e)
@@ -78,6 +78,7 @@ namespace CliffGame
         private void OnRespawn()
         {
             AddHunger(_maxHunger);
+            _hungerStat.SetCurrentStat(50);
         }
 
         public void AddHunger(int amount)

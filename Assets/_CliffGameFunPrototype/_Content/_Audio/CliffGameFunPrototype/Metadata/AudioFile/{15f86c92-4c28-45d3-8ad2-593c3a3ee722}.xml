@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{15f86c92-4c28-45d3-8ad2-593c3a3ee722}">
+		<property name="assetPath">
+			<value>SFX_Leaf_Crunch.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>24</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.77449999999999997</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b0f73c75-6694-43ea-9941-7d37677d3af1}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -75,6 +75,7 @@ namespace CliffGame
                         {
                             Debug.Log($"Hit repairable object: {hit.collider.name}");
                             floor.AddFloorHp(toolItem.IntValue);
+                            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BuildingRepairedSFX, floor.transform.position);
                             // Repair logic here
                         }
                     }

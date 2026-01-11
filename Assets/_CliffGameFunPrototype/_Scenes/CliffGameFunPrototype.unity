@@ -10580,8 +10580,14 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 3b850cbd57d474a1cb1247f48e2710af, type: 2}
-    Quantity: 23
+  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
+    Quantity: 34
+  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 43
+  - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
+    Quantity: 1
 --- !u!1 &1895881966
 GameObject:
   m_ObjectHideFlags: 0
@@ -11991,14 +11997,14 @@ MonoBehaviour:
   _windSeverity: 0.2
   _windPushesPlayerThreshold: 0.1
   _severityMultiplier: 0.02
-  _windTickInterval: 0.1
-  _minPlatformDamagePerRattle: 1
-  _maxPlatformDamagePerRattle: 4
+  _windTickInterval: 0.4
+  _minPlatformDamagePerRattle: 3
+  _maxPlatformDamagePerRattle: 6
   _minCritChance: 0.05
   _maxCritChance: 0.4
-  _critDamageMultiplier: 3
+  _critDamageMultiplier: 2
   <MaxWindForceAtFullSeverity>k__BackingField: 25
-  _minWindParticleSpeed: 18
+  _minWindParticleSpeed: 20
   _maxWindParticleSpeed: 75
   _minWindParticleRateOverTime: 8
   _maxWindParticleRateOverTime: 70

@@ -24,12 +24,14 @@ namespace CliffGame
         {
             GameInput.Instance.OnToggleCraftingMenu += OnCraftingToggle;
             HealthManager.Instance.OnPlayerDeath += CloseCraftingUI;
+            PauseMenuUI.OnPauseMenuOpened += CloseCraftingUI;
         }
 
         private void OnDestroy()
         {
             GameInput.Instance.OnToggleCraftingMenu -= OnCraftingToggle;
             HealthManager.Instance.OnPlayerDeath -= CloseCraftingUI;
+            PauseMenuUI.OnPauseMenuOpened -= CloseCraftingUI;
         }
 
         private void CloseCraftingUI()

@@ -63,7 +63,8 @@ public class FirstPersonLook : MonoBehaviour
     {
         if(Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || 
             CraftingManager.Instance.IsCraftingUIOpen ||
-            BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen) return;
+            BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen || 
+            Time.timeScale == 0f) return;
 
         // Smooth camera velocity
         Vector2 mouseDelta = new Vector2(_lookInput.x, _lookInput.y);

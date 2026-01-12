@@ -55,6 +55,8 @@ namespace CliffGame
 
         private void Update()
         {
+            if(Time.timeScale == 0f) return;
+        
             Vector2 screenMousePosition = Mouse.current.position.ReadValue();
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -87,8 +89,6 @@ namespace CliffGame
             if (closestUI != _lastClosestUI)
             {
                 _lastClosestUI = closestUI;
-                
-                
                 
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SlotClickedSFX, transform.position);
             }

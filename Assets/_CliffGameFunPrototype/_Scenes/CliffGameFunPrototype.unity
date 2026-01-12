@@ -1351,6 +1351,13 @@ MonoBehaviour:
       Data3: 149056939
       Data4: 1833276242
     Path: event:/Ambience/AMB_Howling_Wind
+  <TitleMusic>k__BackingField:
+    Guid:
+      Data1: -2115648594
+      Data2: 1132715152
+      Data3: 515520942
+      Data4: 487890810
+    Path: event:/Ambience/AMB_TitleMenu
   <WoodRattleSFX>k__BackingField:
     Guid:
       Data1: 748759280
@@ -1395,18 +1402,18 @@ MonoBehaviour:
     Path: event:/Ambience/AMB_Campfire_Crackling
   <BirdHurtSFX>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 220080990
+      Data2: 1314872062
+      Data3: 688282815
+      Data4: 416755829
+    Path: event:/Resources/GutsSquishSFX
   <LeafHitSFX>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1936509638
+      Data2: 1090928179
+      Data3: -1568273238
+      Data4: -1783474564
+    Path: event:/Resources/LeafCrunchSFX
 --- !u!114 &270546346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11253,10 +11260,6 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 7c6a432ee975d4d63bd3bedd71f680fa, type: 2}
-    Quantity: 1
-  - Item: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}
-    Quantity: 12
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0

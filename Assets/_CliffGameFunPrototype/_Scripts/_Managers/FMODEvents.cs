@@ -31,7 +31,8 @@ namespace CliffGame
 
         [field: Header("Ambience")]
         [field: SerializeField] public EventReference WindAmb { get; private set; }
-        
+        [field: SerializeField] public EventReference TitleMusic { get; private set; }
+
         [field: Header("Building SFX")]
         [field: SerializeField] public EventReference WoodRattleSFX { get; private set; }
         [field: SerializeField] public EventReference WoodDestroyedSFX { get; private set; }

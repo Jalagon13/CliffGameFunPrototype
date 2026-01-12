@@ -49,6 +49,7 @@ namespace CliffGame
         {
             Time.timeScale = 1f;
             // Scene loading stuff here
+            Loader.Load(Loader.Scene.MainMenuScene);
         }
         
         private void Show()

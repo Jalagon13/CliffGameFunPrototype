@@ -1,6 +1,7 @@
 using System;
 using MoreMountains.Tools;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CliffGame
 {
@@ -9,8 +10,17 @@ namespace CliffGame
         [SerializeField] private MMProgressBar _interactRadialBar;
         [SerializeField] private GameObject _structReqHolder;
         [SerializeField] private StructReqUI _structReqPrefab;
+        [SerializeField] private Sprite _defaultSprite, _axeSprite, _hammerSprite, _spearSprite, _rawBirdSprite;
+        [SerializeField] private GameObject _buildInstructionTextHolder;
 
-        private bool _wasHarvesting = false; // Track previous state
+        // private bool _wasHarvesting = false; // Track previous state
+        private Image _crosshairImage;
+        
+        private void Awake()
+        {
+            _crosshairImage = transform.GetChild(0).GetComponent<Image>();
+            HideInteractableInfo();
+        }
         
         private void Start()
         {
@@ -23,34 +33,88 @@ namespace CliffGame
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= CheckForHammer;
         }
-
+        
         private void Update()
         {
-            // bool isHarvesting = InteractionManager.Instance.IsHarvesting;
-
-            // if (isHarvesting)
-            // {
-            //     _interactRadialBar.UpdateBar(InteractionManager.Instance.HarvestTimer.PercentRemaining, 0, 1);
-            //     _interactRadialBar.gameObject.SetActive(true);
-                
-            //     if (!_wasHarvesting)
-            //     {
-            //         OnHarvestStarted();
-            //     }
-            // }
-            // else
-            // {
-            //     _interactRadialBar.UpdateBar(1, 0, 1);
-            //     _interactRadialBar.gameObject.SetActive(false);
-            // }
-
-            // _wasHarvesting = isHarvesting; // Update previous state
+            if(InteractionManager.Instance.CurrentlyHoveredInteractable != null)
+            {
+                ShowInteractableInfo();
+            }
+            else
+            {
+                HideInteractableInfo();
+            }
         }
-
-        private void OnHarvestStarted()
+        
+        private void ShowInteractableInfo()
         {
-            _interactRadialBar.UpdateBar(0, 0, 1);
+            IInteractable interactable = InteractionManager.Instance.CurrentlyHoveredInteractable;
+
+            if(interactable is CookingStation)
+            {
+                _crosshairImage.sprite = _rawBirdSprite;
+            }
+            else
+            {
+                switch (interactable.BreakToolType)
+                {
+                    case ToolType.Axe:
+                        _crosshairImage.sprite = _axeSprite;
+                        break;
+                    case ToolType.Hammer:
+                        _crosshairImage.sprite = _hammerSprite;
+                        break;
+                    case ToolType.Spear:
+                        _crosshairImage.sprite = _spearSprite;
+                        break;
+                    default:
+                        _crosshairImage.sprite = _defaultSprite;
+                        break;
+                }
+            }
+
+            // Set full alpha
+            Color c = _crosshairImage.color;
+            c.a = 1f;
+            _crosshairImage.color = c;
         }
+        
+        private void HideInteractableInfo()
+        {
+            _crosshairImage.sprite = _defaultSprite;
+
+            Color c = _crosshairImage.color;
+            c.a = 0.25f;
+            _crosshairImage.color = c;
+        }
+
+        // private void Update()
+        // {
+        //     bool isHarvesting = InteractionManager.Instance.IsHarvesting;
+
+        //     if (isHarvesting)
+        //     {
+        //         _interactRadialBar.UpdateBar(InteractionManager.Instance.HarvestTimer.PercentRemaining, 0, 1);
+        //         _interactRadialBar.gameObject.SetActive(true);
+                
+        //         if (!_wasHarvesting)
+        //         {
+        //             OnHarvestStarted();
+        //         }
+        //     }
+        //     else
+        //     {
+        //         _interactRadialBar.UpdateBar(1, 0, 1);
+        //         _interactRadialBar.gameObject.SetActive(false);
+        //     }
+
+        //     _wasHarvesting = isHarvesting; // Update previous state
+        // }
+
+        // private void OnHarvestStarted()
+        // {
+        //     _interactRadialBar.UpdateBar(0, 0, 1);
+        // }
 
 
         private void CheckForHammer(int arg1, InventoryItem item)
@@ -65,6 +129,8 @@ namespace CliffGame
                 {
                     Destroy(_structReqHolder.transform.GetChild(i).gameObject);
                 }
+
+                HideBuildInstructionTexts();
             }
         }
 
@@ -77,6 +143,18 @@ namespace CliffGame
                 
                 structReq.Initialize(item);
             }
+
+            ShowBuildInstructionTexts();
+        }
+        
+        private void ShowBuildInstructionTexts()
+        {
+            _buildInstructionTextHolder.SetActive(true);
+        }
+        
+        private void HideBuildInstructionTexts()
+        {
+            _buildInstructionTextHolder.SetActive(false);
         }
     }
 }

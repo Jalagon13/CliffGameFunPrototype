@@ -16,8 +16,8 @@ MonoBehaviour:
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 904965497, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: 
+  <Description>k__BackingField: Useful for hunting small creatures
   <ToolType>k__BackingField: 3
-  <SwingCooldownInSeconds>k__BackingField: 0.5
+  <SwingCooldownInSeconds>k__BackingField: 0.15
   <IntValue>k__BackingField: 0
   <HeldToolPrefab>k__BackingField: {fileID: 8373242977027255922, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}

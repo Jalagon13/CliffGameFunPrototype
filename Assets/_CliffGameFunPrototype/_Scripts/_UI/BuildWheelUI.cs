@@ -55,7 +55,7 @@ namespace CliffGame
 
         private void Update()
         {
-            if(Time.timeScale == 0f) return;
+            if(Time.timeScale == 0f || !BuildWheelUIOpen) return;
         
             Vector2 screenMousePosition = Mouse.current.position.ReadValue();
 

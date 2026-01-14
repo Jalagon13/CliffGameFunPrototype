@@ -12774,6 +12774,231 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1331380210}
   m_CullTransparentMesh: 1
+--- !u!1 &1347414710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1347414711}
+  - component: {fileID: 1347414712}
+  - component: {fileID: 1347414713}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1347414711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347414710}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1347414712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347414710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a62bb5af2414492a037a03865e1242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.AudioManager
+--- !u!114 &1347414713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347414710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 607fd9d4d1f0e4019bc6cfbb9dde96c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.FMODEvents
+  <PlayerHurtSFX>k__BackingField:
+    Guid:
+      Data1: 1831241671
+      Data2: 1079292836
+      Data3: 1171428993
+      Data4: -993440233
+    Path: event:/Player/SFX_PlayerHurt
+  <ToolSwingSFX>k__BackingField:
+    Guid:
+      Data1: -1431565244
+      Data2: 1184450848
+      Data3: 1399760783
+      Data4: 2056025222
+    Path: event:/Player/SFX_ToolWoosh
+  <EatingSFX>k__BackingField:
+    Guid:
+      Data1: 509036568
+      Data2: 1090063212
+      Data3: -234443111
+      Data4: 617818655
+    Path: event:/Player/SFX_Munch
+  <JumpSFX>k__BackingField:
+    Guid:
+      Data1: -1560920118
+      Data2: 1153053411
+      Data3: 1005465267
+      Data4: -23015611
+    Path: event:/Player/SFX_Jump
+  <LandingSFX>k__BackingField:
+    Guid:
+      Data1: 674984519
+      Data2: 1160050528
+      Data3: -375055721
+      Data4: -373377945
+    Path: event:/Player/SFX_Land
+  <StepsSFX>k__BackingField:
+    Guid:
+      Data1: 95684294
+      Data2: 1183267367
+      Data3: 902090126
+      Data4: -1541084137
+    Path: event:/Player/SFX_Steps
+  <ClimbingSFX>k__BackingField:
+    Guid:
+      Data1: 1077723001
+      Data2: 1080252227
+      Data3: -1910597739
+      Data4: 418058562
+    Path: event:/Player/Climbing/SFX_Climbing
+  <SlidingSFX>k__BackingField:
+    Guid:
+      Data1: 2037202664
+      Data2: 1222250136
+      Data3: -914182728
+      Data4: -1770609181
+    Path: event:/Player/Climbing/SFX_Sliding
+  <LedgeClimbSFX>k__BackingField:
+    Guid:
+      Data1: 1395557926
+      Data2: 1131074803
+      Data3: -987926617
+      Data4: 1646008892
+    Path: event:/Player/Climbing/SFX_LedgeClimb
+  <ClimbToWalkSFX>k__BackingField:
+    Guid:
+      Data1: -1003743447
+      Data2: 1204740250
+      Data3: 828931752
+      Data4: -1960018257
+    Path: event:/Player/Climbing/SFX_ClimbToWalk
+  <WalkToClimbSFX>k__BackingField:
+    Guid:
+      Data1: 1254483609
+      Data2: 1287620208
+      Data3: -1151737679
+      Data4: 1179000601
+    Path: event:/Player/Climbing/SFX_WalkToClimb
+  <StaminaWarningSFX>k__BackingField:
+    Guid:
+      Data1: 425489053
+      Data2: 1116206929
+      Data3: 555758748
+      Data4: -1305086456
+    Path: event:/Player/Climbing/SFX_StaminaWarning
+  <ItemPickupSFX>k__BackingField:
+    Guid:
+      Data1: -2060888172
+      Data2: 1251473414
+      Data3: 1652207802
+      Data4: -1906023678
+    Path: event:/UI/SFX_ItemPickup
+  <SlotClickedSFX>k__BackingField:
+    Guid:
+      Data1: -729843071
+      Data2: 1256477545
+      Data3: 1743002045
+      Data4: 1861212068
+    Path: event:/UI/SFX_SlotClicked
+  <WindAmb>k__BackingField:
+    Guid:
+      Data1: 1921784533
+      Data2: 1082997156
+      Data3: 149056939
+      Data4: 1833276242
+    Path: event:/Ambience/AMB_Howling_Wind
+  <TitleMusic>k__BackingField:
+    Guid:
+      Data1: -2115648594
+      Data2: 1132715152
+      Data3: 515520942
+      Data4: 487890810
+    Path: event:/Ambience/AMB_TitleMenu
+  <WoodRattleSFX>k__BackingField:
+    Guid:
+      Data1: 748759280
+      Data2: 1135792226
+      Data3: -899229288
+      Data4: 440228584
+    Path: event:/Building/WoodCreeksSFX
+  <WoodDestroyedSFX>k__BackingField:
+    Guid:
+      Data1: -287471169
+      Data2: 1100837610
+      Data3: -564401781
+      Data4: 1637590921
+    Path: event:/Building/WoodDestroyedSFX
+  <BuildingRepairedSFX>k__BackingField:
+    Guid:
+      Data1: -488251273
+      Data2: 1289084267
+      Data3: 1521861253
+      Data4: -2134520381
+    Path: event:/Building/RepairSFX
+  <StructureBuiltSFX>k__BackingField:
+    Guid:
+      Data1: 1630036399
+      Data2: 1268181368
+      Data3: 1761201055
+      Data4: 668498223
+    Path: event:/Building/WoodHitSFX
+  <StructureDestroyedSFX>k__BackingField:
+    Guid:
+      Data1: -287471169
+      Data2: 1100837610
+      Data3: -564401781
+      Data4: 1637590921
+    Path: event:/Building/WoodDestroyedSFX
+  <CampfireCooking>k__BackingField:
+    Guid:
+      Data1: -1877160065
+      Data2: 1307472397
+      Data3: -314509420
+      Data4: -994794170
+    Path: event:/Ambience/AMB_Campfire_Crackling
+  <BirdHurtSFX>k__BackingField:
+    Guid:
+      Data1: 220080990
+      Data2: 1314872062
+      Data3: 688282815
+      Data4: 416755829
+    Path: event:/Resources/GutsSquishSFX
+  <LeafHitSFX>k__BackingField:
+    Guid:
+      Data1: 1936509638
+      Data2: 1090928179
+      Data3: -1568273238
+      Data4: -1783474564
+    Path: event:/Resources/LeafCrunchSFX
 --- !u!1 &1374641831
 GameObject:
   m_ObjectHideFlags: 0
@@ -16483,6 +16708,7 @@ Mesh:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1347414711}
   - {fileID: 767852147}
   - {fileID: 2136304743}
   - {fileID: 460461651}

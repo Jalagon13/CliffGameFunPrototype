@@ -68,7 +68,7 @@ public class FirstPersonLook : MonoBehaviour
 
         // Smooth camera velocity
         Vector2 mouseDelta = new Vector2(_lookInput.x, _lookInput.y);
-        Vector2 rawFrameVelocity = Vector2.Scale(mouseDelta, Vector2.one * Sensitivity);
+        Vector2 rawFrameVelocity = mouseDelta * Sensitivity * Time.deltaTime;
         _frameVelocity = Vector2.Lerp(_frameVelocity, rawFrameVelocity, 1 / Smoothing);
         _velocity += _frameVelocity;
         _velocity.y = Mathf.Clamp(_velocity.y, -90, 90);

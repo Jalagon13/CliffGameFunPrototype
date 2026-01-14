@@ -47,7 +47,7 @@ namespace CliffGame
 
         private void Start()
         {
-            AudioManager.Instance.InitializeAmbience(FMODEvents.Instance.WindAmb);
+            // AudioManager.Instance.InitializeAmbience(FMODEvents.Instance.WindAmb);
 
             _titleMenuMusicEventInstance = AudioManager.Instance.CreateInstance(FMODEvents.Instance.TitleMusic);
             _titleMenuMusicEventInstance.start();
@@ -55,7 +55,7 @@ namespace CliffGame
 
         private void OnDestroy()
         {
-            AudioManager.Instance.StopCurrentAmbience();
+            // AudioManager.Instance.StopCurrentAmbience();
             _titleMenuMusicEventInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }

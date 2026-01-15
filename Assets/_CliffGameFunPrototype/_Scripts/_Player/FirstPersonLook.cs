@@ -3,11 +3,18 @@ using CliffGame;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class FirstPersonLook : MonoBehaviour
 {
     [SerializeField]
     private Transform _character;
+    
+    [SerializeField] 
+    private Slider _sensitivitySlider;
+
+    [SerializeField] private float minSensitivity = 0.1f;
+    [SerializeField] private float maxSensitivity = 5f;
 
     public float Sensitivity = 2;
     public float Smoothing = 1.5f;
@@ -68,7 +75,8 @@ public class FirstPersonLook : MonoBehaviour
 
         // Smooth camera velocity
         Vector2 mouseDelta = new Vector2(_lookInput.x, _lookInput.y);
-        Vector2 rawFrameVelocity = mouseDelta * Sensitivity * Time.deltaTime;
+        Sensitivity = Mathf.Lerp(minSensitivity, maxSensitivity, _sensitivitySlider.value);
+        Vector2 rawFrameVelocity = Vector2.Scale(mouseDelta, Vector2.one * Sensitivity);
         _frameVelocity = Vector2.Lerp(_frameVelocity, rawFrameVelocity, 1 / Smoothing);
         _velocity += _frameVelocity;
         _velocity.y = Mathf.Clamp(_velocity.y, -90, 90);
@@ -100,6 +108,11 @@ public class FirstPersonLook : MonoBehaviour
             transform.localRotation = camRot;
         }
     }
+
+    // private void OnSensitivityChanged(float value) // Connected to the slider
+    // {
+    //     Sensitivity = Mathf.Lerp(minSensitivity, maxSensitivity, value);
+    // }
 
     private void GameInput_OnLook(object sender, InputAction.CallbackContext e)
     {

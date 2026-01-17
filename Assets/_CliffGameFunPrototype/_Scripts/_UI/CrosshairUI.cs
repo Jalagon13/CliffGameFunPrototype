@@ -12,6 +12,8 @@ namespace CliffGame
         [SerializeField] private StructReqUI _structReqPrefab;
         [SerializeField] private Sprite _defaultSprite, _axeSprite, _hammerSprite, _spearSprite, _rawBirdSprite;
         [SerializeField] private GameObject _buildInstructionTextHolder;
+        [SerializeField] private GameObject _repairInstructions;
+        [SerializeField] private GameObject _campfireInstructions;
 
         // private bool _wasHarvesting = false; // Track previous state
         private Image _crosshairImage;
@@ -25,15 +27,19 @@ namespace CliffGame
         private void Start()
         {
             InventoryManager.Instance.OnSelectedSlotChanged += CheckForHammer;
+            BuildingManager.Instance.OnBuildTypeChanged += CheckForRepairState;
 
             _interactRadialBar.gameObject.SetActive(false); // TEMP. Delete this later
+            _repairInstructions.SetActive(false);
+            _campfireInstructions.SetActive(false);
         }
         
         private void OnDestroy()
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= CheckForHammer;
+            BuildingManager.Instance.OnBuildTypeChanged -= CheckForRepairState;
         }
-        
+
         private void Update()
         {
             if(InteractionManager.Instance.CurrentlyHoveredInteractable != null)
@@ -45,7 +51,36 @@ namespace CliffGame
                 HideInteractableInfo();
             }
         }
-        
+
+        private void CheckForRepairState(SelectedBuildType type)
+        {
+            if (_structReqHolder.transform.childCount > 0)
+            {
+                for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
+                {
+                    Destroy(_structReqHolder.transform.GetChild(i).gameObject);
+                }
+            }
+
+            if (type == SelectedBuildType.RepairMode)
+            {
+                foreach (InventoryItem item in BuildingManager.Instance.ItemsNeededForRepairing)
+                {
+                    StructReqUI structReq = Instantiate(_structReqPrefab, _structReqHolder.transform.position, Quaternion.identity);
+                    structReq.transform.SetParent(_structReqHolder.transform);
+
+                    structReq.Initialize(item);
+                }
+
+                _repairInstructions.SetActive(true);
+            }
+            else if(type == SelectedBuildType.Wall || type == SelectedBuildType.Floor)
+            {
+                PopulateBuildReqs();
+                _repairInstructions.SetActive(false);
+            }
+        }
+
         private void ShowInteractableInfo()
         {
             IInteractable interactable = InteractionManager.Instance.CurrentlyHoveredInteractable;
@@ -53,6 +88,13 @@ namespace CliffGame
             if(interactable is CookingStation)
             {
                 _crosshairImage.sprite = _rawBirdSprite;
+                _campfireInstructions.SetActive(true);
+
+                // Set full alpha
+                Color co = _crosshairImage.color;
+                co.a = 1f;
+                _crosshairImage.color = co;
+                return;
             }
             else
             {
@@ -73,6 +115,8 @@ namespace CliffGame
                 }
             }
 
+            _campfireInstructions.SetActive(false);
+
             // Set full alpha
             Color c = _crosshairImage.color;
             c.a = 1f;
@@ -82,6 +126,7 @@ namespace CliffGame
         private void HideInteractableInfo()
         {
             _crosshairImage.sprite = _defaultSprite;
+            _campfireInstructions.SetActive(false);
 
             Color c = _crosshairImage.color;
             c.a = 0.25f;
@@ -121,7 +166,40 @@ namespace CliffGame
         {
             if(item.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer) 
             {
-                PopulateBuildReqs();        
+                if(BuildingManager.Instance.CurrentBuildType == SelectedBuildType.DestroyMode)
+                {
+                    if (_structReqHolder.transform.childCount > 0)
+                    {
+                        for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
+                        {
+                            Destroy(_structReqHolder.transform.GetChild(i).gameObject);
+                        }
+                    }
+                }
+                else if(BuildingManager.Instance.CurrentBuildType == SelectedBuildType.RepairMode)
+                {
+                    if (_structReqHolder.transform.childCount > 0)
+                    {
+                        for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
+                        {
+                            Destroy(_structReqHolder.transform.GetChild(i).gameObject);
+                        }
+                    }
+
+                    foreach (InventoryItem item1 in BuildingManager.Instance.ItemsNeededForRepairing)
+                    {
+                        StructReqUI structReq = Instantiate(_structReqPrefab, _structReqHolder.transform.position, Quaternion.identity);
+                        structReq.transform.SetParent(_structReqHolder.transform);
+
+                        structReq.Initialize(item1);
+                    }
+
+                    _repairInstructions.SetActive(true);
+                }
+                else if(BuildingManager.Instance.CurrentBuildType == SelectedBuildType.Wall || BuildingManager.Instance.CurrentBuildType == SelectedBuildType.Floor)
+                {
+                    PopulateBuildReqs();
+                }
             }
             else
             {

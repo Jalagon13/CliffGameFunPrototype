@@ -26,14 +26,14 @@ namespace CliffGame
         private void Start()
         {
             Player.Instance.ToolHolder.OnToolSwingDown += TryToHitInteractable;
-            GameInput.Instance.OnTertiaryInteract += RepairFloor;
+            GameInput.Instance.OnPrimaryInteract += TryToRepairFloor;
             GameInput.Instance.OnSecondaryInteract += Interact;
         }
         
         private void OnDestroy()
         {
             Player.Instance.ToolHolder.OnToolSwingDown -= TryToHitInteractable;
-            GameInput.Instance.OnTertiaryInteract -= RepairFloor;
+            GameInput.Instance.OnPrimaryInteract -= TryToRepairFloor;
             GameInput.Instance.OnSecondaryInteract -= Interact;
         }
 
@@ -60,9 +60,9 @@ namespace CliffGame
             }
         }
 
-        private void RepairFloor(object sender, InputAction.CallbackContext e)
+        private void TryToRepairFloor(object sender, InputAction.CallbackContext e)
         {
-            if(!e.started) return;
+            if(!e.started || BuildingManager.Instance.CurrentBuildType != SelectedBuildType.RepairMode || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen) return;
 
             // Repair logic here
             if (InventoryManager.Instance.HasSelectedItem)
@@ -74,10 +74,13 @@ namespace CliffGame
                     {
                         if (hit.collider.TryGetComponent(out Floor floor))
                         {
-                            Debug.Log($"Hit repairable object: {hit.collider.name}");
-                            floor.AddFloorHp(toolItem.IntValue);
-                            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BuildingRepairedSFX, floor.transform.position);
-                            // Repair logic here
+                            if (InventoryManager.Instance.InventoryHasItems(BuildingManager.Instance.ItemsNeededForRepairing))
+                            {
+                                Debug.Log($"Hit repairable object: {hit.collider.name}");
+                                floor.AddFloorHp(toolItem.IntValue);
+                                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BuildingRepairedSFX, floor.transform.position);
+                                InventoryManager.Instance.RemoveItems(BuildingManager.Instance.ItemsNeededForRepairing);
+                            }
                         }
                     }
                 }

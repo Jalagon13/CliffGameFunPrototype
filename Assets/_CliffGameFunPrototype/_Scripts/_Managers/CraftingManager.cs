@@ -56,6 +56,11 @@ namespace CliffGame
             }
 
             // Otherwise toggle normally
+            ToggleCraftingUI();
+        }
+        
+        public void ToggleCraftingUI()
+        {
             _craftingMenuUIOpened = !_craftingMenuUIOpened;
 
             if (_craftingMenuUIOpened)

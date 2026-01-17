@@ -39,6 +39,17 @@ namespace CliffGame
             }
         }
 
+        public override void OnHitWithTool()
+        {
+            if(_isCooking || _hasFoodToPickup)
+            {
+                // Can't hit while cooking or has food to pickup
+                return;
+            }
+            
+            base.OnHitWithTool();
+        }
+
         public override void OnInteractWith()
         {
             base.OnInteractWith();

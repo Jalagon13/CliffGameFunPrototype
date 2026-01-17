@@ -497,7 +497,7 @@ namespace CliffGame
                 {
                     ""name"": """",
                     ""id"": ""0a7d1f4f-9337-4538-99d5-f0177aa7cca2"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""path"": ""<Keyboard>/backquote"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",

@@ -12,6 +12,7 @@ namespace CliffGame
         [SerializeField] private GameObject _pauseMenuUI;
     
         private bool _pauseMenuOpen;
+        public bool PauseMenuOpen => _pauseMenuOpen;
     
         private void Start()
         {
@@ -27,6 +28,17 @@ namespace CliffGame
 
         private void GameInput_OnTogglePauseMenu(object sender, InputAction.CallbackContext e)
         {
+            if(CraftingManager.Instance.IsCraftingUIOpen)
+            {
+                CraftingManager.Instance.ToggleCraftingUI();   
+                return;
+            }
+            else if(BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen)
+            {
+                BuildingManager.Instance.BuildWheelUI.ToggleBuildWheelUI();
+                return;
+            }
+        
             _pauseMenuOpen = !_pauseMenuOpen;
             
             if (_pauseMenuOpen)

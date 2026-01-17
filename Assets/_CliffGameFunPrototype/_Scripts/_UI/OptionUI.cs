@@ -7,7 +7,8 @@ namespace CliffGame
     {
         Wall,
         Floor,
-        Destroy
+        Destroy,
+        Repair
     }
 
     public class OptionUI : MonoBehaviour
@@ -28,6 +29,9 @@ namespace CliffGame
                     break;
                 case BuildOption.Destroy:
                     BuildingManager.Instance.SetBuildType(SelectedBuildType.DestroyMode);
+                    break;
+                case BuildOption.Repair:
+                    BuildingManager.Instance.SetBuildType(SelectedBuildType.RepairMode);
                     break;
             }
             

@@ -56,6 +56,9 @@ namespace CliffGame
         private ToolHolder _toolHolder;
         public ToolHolder ToolHolder => _toolHolder;
         
+        [field: SerializeField]
+        public PauseMenuUI PauseMenuUI { get; private set; }
+        
         private void Awake()
         {
             Instance = this;

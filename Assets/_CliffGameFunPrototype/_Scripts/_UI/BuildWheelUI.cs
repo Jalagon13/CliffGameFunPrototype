@@ -128,16 +128,21 @@ namespace CliffGame
 
             if(InventoryManager.Instance.SelectedInventoryItem.HasItem && InventoryManager.Instance.SelectedInventoryItem.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer)
             {
-                _isBuildWheelToggledOpen = !_isBuildWheelToggledOpen;
+                ToggleBuildWheelUI();
+            }
+        }
+        
+        public void ToggleBuildWheelUI()
+        {
+            _isBuildWheelToggledOpen = !_isBuildWheelToggledOpen;
 
-                if (_isBuildWheelToggledOpen)
-                {
-                    Show();
-                }
-                else
-                {
-                    Hide(true);
-                }
+            if (_isBuildWheelToggledOpen)
+            {
+                Show();
+            }
+            else
+            {
+                Hide(true);
             }
         }
         

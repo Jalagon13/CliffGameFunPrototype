@@ -11,6 +11,7 @@ namespace CliffGame
         Floor,
         Wall,
         DestroyMode,
+        RepairMode,
     }
 
     public class BuildingManager : MonoBehaviour
@@ -19,20 +20,28 @@ namespace CliffGame
 
         public Action OnGhostSnap;
         public Action OnGhostUnsnap;
+        public Action<SelectedBuildType> OnBuildTypeChanged;
 
         [Header("Build Objects")]
         [SerializeField] private List<GameObject> _floorObjects = new();
         [SerializeField] private List<GameObject> _wallObjects = new();
 
         [Header("Build Settings")]
-        [field: SerializeField] public BuildWheelUI BuildWheelUI { get; private set; }
+        [field: SerializeField] 
+        public BuildWheelUI BuildWheelUI { get; private set; }
+        
         [SerializeField] private SelectedBuildType _currentBuildType;
+        public SelectedBuildType CurrentBuildType => _currentBuildType;
+        
         [SerializeField] private LayerMask _connectorLayerMask;
         [SerializeField] private LayerMask _playerLayerMask;
         [SerializeField] private float _buildRange = 4f;
         [SerializeField] private InventoryItem[] _itemsNeededForBuilding;
         public InventoryItem[] ItemsNeededForBuilding => _itemsNeededForBuilding;
-        
+
+        [SerializeField] private InventoryItem[] _itemsNeededForRepairing;
+        public InventoryItem[] ItemsNeededForRepairing => _itemsNeededForRepairing;
+
         private Connector _lastSnappedConnector = null; // Tracks the last connector the ghost was snapped to, for snap/unsnap events
         private Transform _lastHitDestroyTransform;
         private List<Material> _lastHitMaterials = new();
@@ -72,7 +81,7 @@ namespace CliffGame
         {
             if(!_isHoldingHammar) return;
         
-            if (_currentBuildType != SelectedBuildType.DestroyMode && Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking)
+            if ((_currentBuildType == SelectedBuildType.Floor || _currentBuildType == SelectedBuildType.Wall) && Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.PauseMenuOpen)
             {
                 GhostBuild();
 
@@ -104,7 +113,7 @@ namespace CliffGame
 
         private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
         {
-            if(!_isHoldingHammar || BuildWheelUI.BuildWheelUIOpen) return;
+            if(!_isHoldingHammar || BuildWheelUI.BuildWheelUIOpen || Player.Instance.PauseMenuUI.PauseMenuOpen) return;
             
             if(e.started)
             {
@@ -118,35 +127,35 @@ namespace CliffGame
             {
                 case SelectedBuildType.Floor:
                     _currentBuildType = SelectedBuildType.Floor;
-
-                    if (_ghostBuildGameObject != null)
-                    {
-                        Destroy(_ghostBuildGameObject);
-                        _ghostBuildGameObject = null;
-                    }
-
-                    if (_lastHitDestroyTransform != null)
-                    {
-                        ResetLastHitDestroyTransform();
-                    }
+                    ResetGhosts();
                     break;
                 case SelectedBuildType.Wall:
                     _currentBuildType = SelectedBuildType.Wall;
-
-                    if (_ghostBuildGameObject != null)
-                    {
-                        Destroy(_ghostBuildGameObject);
-                        _ghostBuildGameObject = null;
-                    }
-
-                    if (_lastHitDestroyTransform != null)
-                    {
-                        ResetLastHitDestroyTransform();
-                    }
+                    ResetGhosts();
                     break;
                 case SelectedBuildType.DestroyMode:
                     _currentBuildType = SelectedBuildType.DestroyMode;
                     break;
+                case SelectedBuildType.RepairMode:
+                    _currentBuildType = SelectedBuildType.RepairMode;
+                    ResetGhosts();
+                    break;
+            }
+
+            OnBuildTypeChanged?.Invoke(_currentBuildType);
+        }
+        
+        private void ResetGhosts()
+        {
+            if (_ghostBuildGameObject != null)
+            {
+                Destroy(_ghostBuildGameObject);
+                _ghostBuildGameObject = null;
+            }
+
+            if (_lastHitDestroyTransform != null)
+            {
+                ResetLastHitDestroyTransform();
             }
         }
 

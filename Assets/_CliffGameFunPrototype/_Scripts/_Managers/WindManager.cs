@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace CliffGame
@@ -51,6 +52,7 @@ namespace CliffGame
             WindGameFeelHandler();
         }
 
+        [Button("Start Wind Storm")]
         public void StartWindStorm(float startSeverity, float peakSeverity, float rampUpTime, float holdTime, float rampDownTime)
         {
             if (_windStormRoutine != null)

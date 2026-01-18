@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace CliffGame
@@ -18,24 +19,6 @@ namespace CliffGame
         private float _windPushesPlayerThreshold = 0.2f;
         public float WindPushesPlayerThreshold => _windPushesPlayerThreshold;
 
-        [SerializeField, Tooltip("Multiplies this with the wind severity to determine the chance to rattle platforms when a platform is chosen")]
-        private float _severityMultiplier = 0.5f;
-        [SerializeField, Tooltip("Interval between each attempt to rattle a platform depending on the wind severity")]
-        private float _windTickInterval = 0.15f;
-
-        [SerializeField] private int _minPlatformDamagePerRattle = 8;
-        [SerializeField] private int _maxPlatformDamagePerRattle = 16;
-
-        [Header("Crit Rattle Settings")]
-        [SerializeField, Range(0f, 1f)]
-        private float _minCritChance = 0.05f;
-
-        [SerializeField, Range(0f, 1f)]
-        private float _maxCritChance = 0.4f;
-
-        [SerializeField]
-        private float _critDamageMultiplier = 3f;
-
         [field: SerializeField]
         public float MaxWindForceAtFullSeverity { get; private set; } = 15f;
 
@@ -46,48 +29,87 @@ namespace CliffGame
         [SerializeField] private float _maxWindParticleRateOverTime = 80f;
         [SerializeField] private float _minWindParticleStartSize = 0.125f;
         [SerializeField] private float _maxWindParticleStartSize = 0.25f;
-
         [SerializeField] private ParticleSystem _windStormParticles;
         [SerializeField] private Transform _playerTransform;
+
+        private Coroutine _windStormRoutine;
 
         private void Awake()
         {
             Instance = this;
         }
-
-        private void Start()
+        
+        private IEnumerator Start()
         {
-            InvokeRepeating(nameof(WindTick), _windTickInterval, _windTickInterval);
+            yield return new WaitForSeconds(3f);
+
+            StartWindStorm(0.125f, 0.75f, 5, 10, 5);
         }
 
-        private void WindTick()
+        private void Update()
         {
-            Transform player = _playerTransform;
-            float radius = 50f;
+            WindGameFeelHandler();
+        }
 
-            Collider[] hits = Physics.OverlapSphere(player.position, radius);
+        public void StartWindStorm(float startSeverity, float peakSeverity, float rampUpTime, float holdTime, float rampDownTime)
+        {
+            if (_windStormRoutine != null)
+                StopCoroutine(_windStormRoutine);
 
-            foreach (var hit in hits)
+            _windStormRoutine = StartCoroutine(
+                WindStormSequence(startSeverity, peakSeverity, rampUpTime, holdTime, rampDownTime)
+            );
+        }
+
+        private IEnumerator WindStormSequence(float startSeverity, float peakSeverity, float rampUpTime, float holdTime, float rampDownTime)
+        {
+            // Clamp for safety
+            startSeverity = Mathf.Clamp01(startSeverity);
+            peakSeverity = Mathf.Clamp01(peakSeverity);
+
+            // Start at initial severity
+            _windSeverity = startSeverity;
+
+            // RAMP UP
+            Debug.Log($"Start of wind storm ramp up");
+            yield return LerpWindSeverity(startSeverity, peakSeverity, rampUpTime);
+
+            // HOLD
+            Debug.Log($"Start of wind storm hold");
+            yield return new WaitForSeconds(holdTime);
+
+            // RAMP DOWN
+            Debug.Log($"Start of wind storm ramp down");
+            yield return LerpWindSeverity(peakSeverity, startSeverity, rampDownTime);
+
+            Debug.Log($"End of wind storm, back to starting severity");
+            _windSeverity = startSeverity;
+            _windStormRoutine = null;
+        }
+
+        private IEnumerator LerpWindSeverity(float from, float to, float duration)
+        {
+            if (duration <= 0f)
             {
-                if (!hit.gameObject.transform.root.TryGetComponent<Floor>(out var platform))
-                    continue;
-
-                if (platform.IsRattling)
-                    continue;
-
-                float chance = _windSeverity * _severityMultiplier;
-                if (UnityEngine.Random.value < chance)
-                {
-                    int baseDamage = Mathf.RoundToInt(Mathf.Lerp(_minPlatformDamagePerRattle, _maxPlatformDamagePerRattle, _windSeverity));
-                    float critChance = Mathf.Lerp(_minCritChance, _maxCritChance, _windSeverity);
-                    bool isCrit = UnityEngine.Random.value < critChance;
-
-                    int finalDamage = isCrit ? Mathf.RoundToInt(baseDamage * _critDamageMultiplier) : baseDamage;
-
-                    platform.RattleFloor(finalDamage);
-                }
+                _windSeverity = to;
+                yield break;
             }
 
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+                _windSeverity = Mathf.Lerp(from, to, t);
+                yield return null;
+            }
+
+            _windSeverity = to;
+        }
+
+        private void WindGameFeelHandler()
+        {
             // Update wind particle settings based on current storm severity
             var main = _windStormParticles.main;
             var emission = _windStormParticles.emission;

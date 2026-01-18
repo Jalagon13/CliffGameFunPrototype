@@ -138,7 +138,7 @@ namespace CliffGame
                 Quaternion.LookRotation(normal),
                 transform
             );
-            Debug.Log($"{_activeResources.Count}/{_maxResources}: Spawned resource {resource.name} at {position}");
+            // Debug.Log($"{_activeResources.Count}/{_maxResources}: Spawned resource {resource.name} at {position}");
             _activeResources.Add(resource);
         }
 
@@ -147,7 +147,7 @@ namespace CliffGame
             if (_activeResources.Contains(resource))
             {
                 _activeResources.Remove(resource);
-                Debug.Log($"{_activeResources.Count}/{_maxResources}: Unregistered resource {resource.name}");
+                // Debug.Log($"{_activeResources.Count}/{_maxResources}: Unregistered resource {resource.name}");
             }
         }
     }

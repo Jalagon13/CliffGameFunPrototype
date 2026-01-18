@@ -14257,15 +14257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086b541bead394a5c8ead360709dff36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
-  _windSeverity: 0.2
-  _windPushesPlayerThreshold: 0.1
-  _severityMultiplier: 0.02
-  _windTickInterval: 0.4
-  _minPlatformDamagePerRattle: 3
-  _maxPlatformDamagePerRattle: 6
-  _minCritChance: 0.05
-  _maxCritChance: 0.4
-  _critDamageMultiplier: 2
+  _windSeverity: 0.125
+  _windPushesPlayerThreshold: 0.075
   <MaxWindForceAtFullSeverity>k__BackingField: 25
   _minWindParticleSpeed: 20
   _maxWindParticleSpeed: 75

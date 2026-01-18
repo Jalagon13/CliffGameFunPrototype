@@ -16,5 +16,5 @@ MonoBehaviour:
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 1223464883, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: 
+  <Description>k__BackingField: Useful for cooking
   <StructurePrefab>k__BackingField: {fileID: 3282181520534882374, guid: 0d2e4abc3f28042f59b6fa41a7aaa1b7, type: 3}

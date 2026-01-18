@@ -1186,7 +1186,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8470
+      value: 8482
       objectReference: {fileID: 0}
     - target: {fileID: 2386244143411771210, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1198,7 +1198,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 6547
+      value: 6559
       objectReference: {fileID: 0}
     - target: {fileID: 3417812465825906931, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1218,7 +1218,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8509
+      value: 8521
       objectReference: {fileID: 0}
     - target: {fileID: 4323805193510765137, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1238,7 +1238,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7622
+      value: 7634
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1286,7 +1286,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8042
+      value: 8054
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1294,7 +1294,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7643
+      value: 7655
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3669,7 +3669,7 @@ MonoBehaviour:
   _cliffLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _minSpawnDistance: 1.5
+  _minSpawnDistance: 1
   _initialSpawnCount: 15
   _maxResources: 35
   _spawnAttemptInterval: 3
@@ -10886,7 +10886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73254179b7c7140959f3022bdab3508b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.InteractionManager
-  _interactSearchDistance: 4
+  _interactSearchDistance: 3.25
   _interactLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -11041,143 +11041,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555007534}
-  m_CullTransparentMesh: 1
---- !u!1 &1565923199
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1565923200}
-  - component: {fileID: 1565923202}
-  - component: {fileID: 1565923201}
-  m_Layer: 5
-  m_Name: GoalText
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1565923200
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565923199}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1753652126}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 1}
---- !u!114 &1565923201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565923199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 'GOAL: Craft a campfire, cook and eat 2 birds.'
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 1
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 0
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1565923202
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1565923199}
   m_CullTransparentMesh: 1
 --- !u!1001 &1595831808
 PrefabInstance:
@@ -11906,7 +11769,6 @@ RectTransform:
   - {fileID: 1999087961}
   - {fileID: 2036576183}
   - {fileID: 1125035072}
-  - {fileID: 1565923200}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -12660,13 +12522,9 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
     Quantity: 1
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 66
+    Quantity: 123
   - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 66
-  - Item: {fileID: 11400000, guid: 7c6a432ee975d4d63bd3bedd71f680fa, type: 2}
-    Quantity: 12
-  - Item: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}
-    Quantity: 12
+    Quantity: 123
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -13269,7 +13127,7 @@ MonoBehaviour:
   _playerLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  _buildRange: 4
+  _buildRange: 3
   _itemsNeededForBuilding:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 2

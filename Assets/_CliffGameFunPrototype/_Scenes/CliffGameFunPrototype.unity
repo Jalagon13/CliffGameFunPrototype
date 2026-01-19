@@ -1186,7 +1186,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8572
+      value: 8575
       objectReference: {fileID: 0}
     - target: {fileID: 2386244143411771210, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1198,7 +1198,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 6649
+      value: 6652
       objectReference: {fileID: 0}
     - target: {fileID: 3417812465825906931, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1218,7 +1218,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8611
+      value: 8614
       objectReference: {fileID: 0}
     - target: {fileID: 4323805193510765137, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1246,7 +1246,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7724
+      value: 7727
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1294,7 +1294,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8144
+      value: 8147
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1302,7 +1302,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7745
+      value: 7748
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3680,13 +3680,13 @@ MonoBehaviour:
   _minSpawnDistance: 1
   _initialSpawnCount: 15
   _maxResources: 35
-  _spawnAttemptInterval: 3
+  _spawnAttemptInterval: 2.5
   _attemptsPerTick: 5
   _resources:
   - resourcePrefab: {fileID: 6733385212726564722, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
-    spawnWeight: 80
+    spawnWeight: 95
   - resourcePrefab: {fileID: 6733385212726564722, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
-    spawnWeight: 100
+    spawnWeight: 85
   - resourcePrefab: {fileID: 6733385212726564722, guid: b33445883b635420d93b380d00ff9d20, type: 3}
     spawnWeight: 15
 --- !u!1 &522399308
@@ -10894,7 +10894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73254179b7c7140959f3022bdab3508b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.InteractionManager
-  _interactSearchDistance: 3.25
+  _interactSearchDistance: 3.75
   _interactLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -13135,7 +13135,7 @@ MonoBehaviour:
   _playerLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  _buildRange: 3
+  _buildRange: 3.75
   _itemsNeededForBuilding:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 2
@@ -14265,11 +14265,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086b541bead394a5c8ead360709dff36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
-  _windSeverity: 0.14
-  _windPushesPlayerThreshold: 0.07
+  _windSeverity: 0.1
+  _windPushesPlayerThreshold: 0.05
   _windTickInterval: 0.125
   _minRattleChance: 0.0185
   _maxRattleChance: 0.7
+  <MaxWindForceAtFullSeverity>k__BackingField: 30
   _rattleSeverityCurve:
     serializedVersion: 2
     m_Curve:
@@ -14294,8 +14295,15 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _secondsPerCrack: 4
+  _timeInBetweenStormsInSec: 240
   _radiusOfRattlingAroundPlayer: 15
-  <MaxWindForceAtFullSeverity>k__BackingField: 30
+  _damagePerCrack: 25
+  _startSeverity: 0.1
+  _peakSeverity: 1
+  _rampUpTime: 4
+  _holdTime: 12
+  _rampDownTime: 8
   _minWindParticleSpeed: 20
   _maxWindParticleSpeed: 75
   _minWindParticleRateOverTime: 8

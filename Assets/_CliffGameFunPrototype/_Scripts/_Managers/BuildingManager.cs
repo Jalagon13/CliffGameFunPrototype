@@ -321,8 +321,18 @@ namespace CliffGame
 
         private void SnapGhostPrefabToConnector(Connector connector)
         {
+            if(_ghostBuildGameObject == null) return;
+        
             // Find the correct connector on the ghost prefab to snap to, and snap it to it
             Transform ghostConnector = FindSnapConnector(connector.transform, _ghostBuildGameObject.transform.GetChild(1));
+            
+            if(ghostConnector == null)
+            {
+                GhostifyModel(_modelParent, _ghostMaterialInvisible);
+                _isGhostInValidPosition = false;
+                return;
+            }
+            
             _ghostBuildGameObject.transform.position = connector.transform.position - (ghostConnector.position - _ghostBuildGameObject.transform.position);
 
             // Trigger OnGhostSnap action only when snapping to a new connector

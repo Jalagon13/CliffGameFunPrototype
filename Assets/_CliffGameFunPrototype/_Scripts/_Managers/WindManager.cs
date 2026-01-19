@@ -29,14 +29,27 @@ namespace CliffGame
         [SerializeField, Range(0f, 1f)]
         private float _maxRattleChance = 0.4f;
 
+        [field: SerializeField]
+        public float MaxWindForceAtFullSeverity { get; private set; } = 15f;
+
         [SerializeField]
         private AnimationCurve _rattleSeverityCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
+        [Header("Storm Settings")]
+        [SerializeField, Tooltip("How often does a crack happen during a storm in seconds")]
+        private float _secondsPerCrack = 3f;
+
         [SerializeField] 
+        private float _timeInBetweenStormsInSec = 300f;
+
+        [SerializeField]
         private float _radiusOfRattlingAroundPlayer = 15f;// Only rattle in the radius of the player since that is all that matters
 
-        [field: SerializeField]
-        public float MaxWindForceAtFullSeverity { get; private set; } = 15f;
+        [SerializeField]
+        private int _damagePerCrack = 25;
+
+        [SerializeField] 
+        private float _startSeverity = 0.14f, _peakSeverity = 1f, _rampUpTime = 5f, _holdTime = 15f, _rampDownTime = 10f;
 
         [Header("Wind Particles Settings")]
         [SerializeField] private float _minWindParticleSpeed = 10f;
@@ -59,11 +72,20 @@ namespace CliffGame
         private void Start()
         {
             InvokeRepeating(nameof(WindTick), _windTickInterval, _windTickInterval);
+            InvokeRepeating(nameof(StartScheduledWindStorm), _timeInBetweenStormsInSec, _timeInBetweenStormsInSec);
         }
 
         private void Update()
         {
             WindGameFeelHandler();
+        }
+
+        private void StartScheduledWindStorm()
+        {
+            if (_windStormRoutine != null)
+                StopCoroutine(_windStormRoutine);
+
+            _windStormRoutine = StartCoroutine(WindStormSequence(_startSeverity, _peakSeverity, _rampUpTime, _holdTime, _rampDownTime));
         }
 
         private void WindTick()
@@ -89,7 +111,7 @@ namespace CliffGame
                 curvedSeverity
             );
             
-            Debug.Log($"Rattle Chance: {rattleChance}");
+            // Debug.Log($"Rattle Chance: {rattleChance}");
 
             Collider[] hits = Physics.OverlapSphere(
                 Player.Instance.transform.position,
@@ -122,17 +144,6 @@ namespace CliffGame
             }
         }
 
-        [Button("Start Wind Storm")] // 6, 14, 10 for now feels good
-        public void StartWindStorm(float startSeverity, float peakSeverity, float rampUpTime, float holdTime, float rampDownTime)
-        {
-            if (_windStormRoutine != null)
-                StopCoroutine(_windStormRoutine);
-
-            _windStormRoutine = StartCoroutine(
-                WindStormSequence(startSeverity, peakSeverity, rampUpTime, holdTime, rampDownTime)
-            );
-        }
-
         private IEnumerator WindStormSequence(float startSeverity, float peakSeverity, float rampUpTime, float holdTime, float rampDownTime)
         {
             // Clamp for safety
@@ -158,26 +169,40 @@ namespace CliffGame
             _windSeverity = startSeverity;
             _windStormRoutine = null;
         }
-        
+
         private IEnumerator SustainWindSeverity(float holdTime)
         {
-            float elapsed = 0f;
-            int amountOfCracks = 3;
-            float timeBetweenCracks = holdTime / amountOfCracks;
+            int crackCount = Mathf.Max(1, Mathf.FloorToInt(holdTime / _secondsPerCrack));
 
-            // TEMP: This is just for until I figure out how i want to handle this
-            // Need to figure out how I want cracks to be dispersed within this time as well as 
-            // if crack # should scale off of how many planks there are or if I should keep track if a platform has been cracked
+            // Generate random crack times within the hold duration
+            List<float> crackTimes = new List<float>();
+            for (int i = 0; i < crackCount; i++)
+            {
+                crackTimes.Add(UnityEngine.Random.Range(0f, holdTime));
+            }
+
+            // Sort so cracks happen in chronological order
+            crackTimes.Sort();
+
+            float elapsed = 0f;
+            int nextCrackIndex = 0;
+
             while (elapsed < holdTime)
             {
                 elapsed += Time.deltaTime;
+
+                // Trigger cracks when their scheduled time is reached
+                if (nextCrackIndex < crackTimes.Count && elapsed >= crackTimes[nextCrackIndex])
+                {
+                    CrackRandomPlatform();
+                    nextCrackIndex++;
+                }
+
                 yield return null;
             }
-
-            BreakRandomPlatform();
         }
-        
-        private void BreakRandomPlatform()
+
+        private void CrackRandomPlatform()
         {
             Collider[] hits = Physics.OverlapSphere(
                 Player.Instance.transform.position,
@@ -191,9 +216,6 @@ namespace CliffGame
                 if (!hit.transform.root.TryGetComponent<Platform>(out var platform))
                     continue;
 
-                if (platform.IsRattling)
-                    continue;
-
                 if (!validPlatforms.Contains(platform))
                     validPlatforms.Add(platform);
             }
@@ -201,7 +223,8 @@ namespace CliffGame
             if (validPlatforms.Count > 0)
             {
                 int randomIndex = UnityEngine.Random.Range(0, validPlatforms.Count);
-                validPlatforms[randomIndex].AddFloorHp(-30);
+                validPlatforms[randomIndex].AddFloorHp(-_damagePerCrack);
+                Debug.Log($"Wind cracked platform: {validPlatforms[randomIndex].name}");
             }
 
             validPlatforms.Clear();

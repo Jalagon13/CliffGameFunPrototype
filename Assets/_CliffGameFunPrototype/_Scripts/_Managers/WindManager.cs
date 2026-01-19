@@ -148,7 +148,7 @@ namespace CliffGame
 
             // HOLD
             Debug.Log($"Start of wind storm hold");
-            yield return new WaitForSeconds(holdTime);
+            yield return SustainWindSeverity(holdTime);
 
             // RAMP DOWN
             Debug.Log($"Start of wind storm ramp down");
@@ -157,6 +157,54 @@ namespace CliffGame
             Debug.Log($"End of wind storm, back to starting severity");
             _windSeverity = startSeverity;
             _windStormRoutine = null;
+        }
+        
+        private IEnumerator SustainWindSeverity(float holdTime)
+        {
+            float elapsed = 0f;
+            int amountOfCracks = 3;
+            float timeBetweenCracks = holdTime / amountOfCracks;
+
+            // TEMP: This is just for until I figure out how i want to handle this
+            // Need to figure out how I want cracks to be dispersed within this time as well as 
+            // if crack # should scale off of how many planks there are or if I should keep track if a platform has been cracked
+            while (elapsed < holdTime)
+            {
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            BreakRandomPlatform();
+        }
+        
+        private void BreakRandomPlatform()
+        {
+            Collider[] hits = Physics.OverlapSphere(
+                Player.Instance.transform.position,
+                _radiusOfRattlingAroundPlayer
+            );
+
+            List<Platform> validPlatforms = new();
+
+            foreach (var hit in hits)
+            {
+                if (!hit.transform.root.TryGetComponent<Platform>(out var platform))
+                    continue;
+
+                if (platform.IsRattling)
+                    continue;
+
+                if (!validPlatforms.Contains(platform))
+                    validPlatforms.Add(platform);
+            }
+
+            if (validPlatforms.Count > 0)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, validPlatforms.Count);
+                validPlatforms[randomIndex].AddFloorHp(-30);
+            }
+
+            validPlatforms.Clear();
         }
 
         private IEnumerator LerpWindSeverity(float from, float to, float duration)

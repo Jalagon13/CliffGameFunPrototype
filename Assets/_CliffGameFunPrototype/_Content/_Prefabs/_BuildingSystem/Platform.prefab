@@ -12665,7 +12665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Floor
   _isStartingPlatform: 0
-  _hitPoints: 200
+  _hitPoints: 100
   _destroyIfNotConntectedToAnything: 1
   <BuildItemRequirements>k__BackingField: []
   _rattleVFX: {fileID: 3892629605381178607}

@@ -3684,9 +3684,9 @@ MonoBehaviour:
   _attemptsPerTick: 5
   _resources:
   - resourcePrefab: {fileID: 6733385212726564722, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
-    spawnWeight: 95
-  - resourcePrefab: {fileID: 6733385212726564722, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
     spawnWeight: 85
+  - resourcePrefab: {fileID: 6733385212726564722, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
+    spawnWeight: 80
   - resourcePrefab: {fileID: 6733385212726564722, guid: b33445883b635420d93b380d00ff9d20, type: 3}
     spawnWeight: 15
 --- !u!1 &522399308

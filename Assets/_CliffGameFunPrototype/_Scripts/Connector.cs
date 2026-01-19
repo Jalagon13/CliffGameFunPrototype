@@ -33,7 +33,7 @@ namespace CliffGame
         private bool _canConnectToWall = true;
         
         private SphereCollider _connectorCollider;
-        private Floor _floor;
+        private Platform _floor;
         
         public bool IsNotConnectedToAnything { get; private set; }
         
@@ -41,7 +41,7 @@ namespace CliffGame
         private void Awake()
         {
             _connectorCollider = GetComponent<SphereCollider>();
-            _floor = transform.root.GetComponent<Floor>();
+            _floor = transform.root.GetComponent<Platform>();
         }
 
         private void OnDrawGizmos()

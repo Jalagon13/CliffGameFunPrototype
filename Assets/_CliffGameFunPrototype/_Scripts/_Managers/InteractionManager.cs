@@ -72,7 +72,7 @@ namespace CliffGame
                     RaycastHit hit;
                     if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance))
                     {
-                        if (hit.collider.TryGetComponent(out Floor floor))
+                        if (hit.collider.TryGetComponent(out Platform floor))
                         {
                             if (InventoryManager.Instance.InventoryHasItems(BuildingManager.Instance.ItemsNeededForRepairing))
                             {

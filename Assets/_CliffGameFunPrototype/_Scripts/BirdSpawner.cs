@@ -56,7 +56,7 @@ namespace CliffGame
             BirdResource newSparrow = Instantiate(_birdResourcePrefab, spawnPos, Quaternion.identity);
             newSparrow.Initialize(!spawnOnLeft);
             _activeSparrows.Add(newSparrow);
-            Debug.Log($"Spawned Bird ({(spawnOnLeft ? "Left" : "Right")}), Count: {_activeSparrows.Count}/{_maxSparrows}");
+            // Debug.Log($"Spawned Bird ({(spawnOnLeft ? "Left" : "Right")}), Count: {_activeSparrows.Count}/{_maxSparrows}");
         }
     }
 }

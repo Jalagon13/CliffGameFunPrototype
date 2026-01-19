@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace CliffGame
 {
-    public class Floor : MonoBehaviour, IInteractable
+    public class Platform : MonoBehaviour, IInteractable
     {
         [SerializeField] private bool _isStartingPlatform = false;
         [SerializeField] private int _hitPoints = 100;
@@ -60,21 +60,11 @@ namespace CliffGame
 
             yield return new WaitForSeconds(3f);
 
-            _rattleVFX?.PlayFeedbacks();
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodRattleSFX, transform.position);
-            Instantiate(_crackParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
+            PlayRattleFeedbacks();
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
 
-            _rattleVFX?.PlayFeedbacks();
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodRattleSFX, transform.position);
-            Instantiate(_crackParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
-
-            yield return new WaitForSeconds(2f);
-
-            _rattleVFX?.PlayFeedbacks();
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodRattleSFX, transform.position);
-            Instantiate(_crackParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
+            PlayRattleFeedbacks();
         }
 
         private void Update()
@@ -90,6 +80,13 @@ namespace CliffGame
                 ManageDestruction();
                 Destroy(gameObject);
             }
+        }
+        
+        public void PlayRattleFeedbacks()
+        {
+            _rattleVFX?.PlayFeedbacks();
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodRattleSFX, transform.position);
+            Instantiate(_crackParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
         }
 
         private void ManageDestruction()
@@ -107,24 +104,8 @@ namespace CliffGame
             Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
         }
 
-        public void OnInteractWith()
-        {
-            Debug.Log($"Repairing Floor");
-            if (InventoryManager.Instance.InventoryHasItems(_itemsNeededForRepairing))
-            {
-                AddFloorHp(_repairAmount);
-                InventoryManager.Instance.RemoveItems(_itemsNeededForRepairing);
-            }
-        }
-
-        public void RattleFloor(int damageAmount)
-        {
-            AddFloorHp(-damageAmount);
-
-            _rattleVFX?.PlayFeedbacks();
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodRattleSFX, transform.position);
-            Instantiate(_crackParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
-        }
+        public void OnInteractWith() { }
+        public void OnHitWithTool() { }
 
         private void UpdateCrackDecals()
         {
@@ -186,11 +167,6 @@ namespace CliffGame
             }
             
             // Debug.Log($"Adding floor hp {amount}, new hp: {_currentHP}");
-        }
-
-        public void OnHitWithTool()
-        {
-            
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -9,8 +10,6 @@ namespace CliffGame
     {
         public static WindManager Instance;
 
-        [Header("Storm Settings")]
-
         [Header("Wind Settings")]
         [SerializeField, Range(0, 1f)]
         private float _windSeverity = 0.2f;
@@ -19,6 +18,22 @@ namespace CliffGame
         [SerializeField, Range(0, 1f)]
         private float _windPushesPlayerThreshold = 0.2f;
         public float WindPushesPlayerThreshold => _windPushesPlayerThreshold;
+
+        [Header("Wind Tick Settings")]
+        [SerializeField, Range(0f, 1f)]
+        private float _windTickInterval = 0.25f;
+
+        [SerializeField, Range(0f, 1f)]
+        private float _minRattleChance = 0.02f;
+
+        [SerializeField, Range(0f, 1f)]
+        private float _maxRattleChance = 0.4f;
+
+        [SerializeField]
+        private AnimationCurve _rattleSeverityCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+        [SerializeField] 
+        private float _radiusOfRattlingAroundPlayer = 15f;// Only rattle in the radius of the player since that is all that matters
 
         [field: SerializeField]
         public float MaxWindForceAtFullSeverity { get; private set; } = 15f;
@@ -34,17 +49,16 @@ namespace CliffGame
         [SerializeField] private Transform _playerTransform;
 
         private Coroutine _windStormRoutine;
+        private readonly List<Platform> _foundationBuffer = new();
 
         private void Awake()
         {
             Instance = this;
         }
         
-        private IEnumerator Start()
+        private void Start()
         {
-            yield return new WaitForSeconds(3f);
-
-            StartWindStorm(0.125f, 0.75f, 5, 10, 5);
+            InvokeRepeating(nameof(WindTick), _windTickInterval, _windTickInterval);
         }
 
         private void Update()
@@ -52,7 +66,63 @@ namespace CliffGame
             WindGameFeelHandler();
         }
 
-        [Button("Start Wind Storm")]
+        private void WindTick()
+        {
+            // Do nothing if wind is below the rattle threshold
+            if (_windSeverity < _windPushesPlayerThreshold)
+                return;
+
+            // Normalize wind severity between threshold and full storm (0–1)
+            float normalizedSeverity = Mathf.InverseLerp(
+                _windPushesPlayerThreshold,
+                1f,
+                _windSeverity
+            );
+
+            // Shape the severity using the designer-controlled curve
+            float curvedSeverity = _rattleSeverityCurve.Evaluate(normalizedSeverity);
+
+            // Convert severity into a final rattle chance
+            float rattleChance = Mathf.Lerp(
+                _minRattleChance,
+                _maxRattleChance,
+                curvedSeverity
+            );
+            
+            Debug.Log($"Rattle Chance: {rattleChance}");
+
+            Collider[] hits = Physics.OverlapSphere(
+                Player.Instance.transform.position,
+                _radiusOfRattlingAroundPlayer
+            );
+
+            if (UnityEngine.Random.value < rattleChance)
+            {
+                // Collect all valid, non-rattling foundations
+                _foundationBuffer.Clear();
+
+                foreach (var hit in hits)
+                {
+                    if (!hit.transform.root.TryGetComponent<Platform>(out var platform))
+                        continue;
+
+                    if (platform.IsRattling)
+                        continue;
+
+                    if (!_foundationBuffer.Contains(platform))
+                        _foundationBuffer.Add(platform);
+                }
+
+                // If we found at least one valid platform, pick one at random
+                if (_foundationBuffer.Count > 0)
+                {
+                    int randomIndex = UnityEngine.Random.Range(0, _foundationBuffer.Count);
+                    _foundationBuffer[randomIndex].PlayRattleFeedbacks();
+                }
+            }
+        }
+
+        [Button("Start Wind Storm")] // 6, 14, 10 for now feels good
         public void StartWindStorm(float startSeverity, float peakSeverity, float rampUpTime, float holdTime, float rampDownTime)
         {
             if (_windStormRoutine != null)

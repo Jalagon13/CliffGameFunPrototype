@@ -12606,7 +12606,7 @@ GameObject:
   - component: {fileID: 7598075245066883551}
   - component: {fileID: 3892629605381178607}
   m_Layer: 10
-  m_Name: Floor
+  m_Name: Platform
   m_TagString: Buildables
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12882,8 +12882,8 @@ MonoBehaviour:
         ResetShakerValuesAfterShake: 1
         ResetTargetValuesAfterShake: 1
         ShakeSpeed: 30
-        ShakeRange: 0.009
-        ShakeMainDirection: {x: 0, y: 0.025, z: 0}
+        ShakeRange: 0.0125
+        ShakeMainDirection: {x: 0, y: 0.035, z: 0}
         RandomizeDirection: 0
         ShakeAltDirection: {x: 0, y: 1, z: 0}
         RandomizeDirectionOnPlay: 0
@@ -12891,8 +12891,8 @@ MonoBehaviour:
         RandomizeDirectionY: 1
         RandomizeDirectionZ: 1
         AddDirectionalNoise: 1
-        DirectionalNoiseStrengthMin: {x: 0, y: 0.01, z: 0}
-        DirectionalNoiseStrengthMax: {x: 0, y: 0.01, z: 0}
+        DirectionalNoiseStrengthMin: {x: 0, y: 0.0125, z: 0}
+        DirectionalNoiseStrengthMax: {x: 0, y: 0.0125, z: 0}
         RandomnessSeed: {x: 0, y: 0, z: 0}
         RandomizeSeedOnShake: 1
         UseAttenuation: 1
@@ -12902,15 +12902,15 @@ MonoBehaviour:
           - serializedVersion: 3
             time: 0
             value: 0
-            inSlope: 6.560984
-            outSlope: 6.560984
+            inSlope: 7.7692747
+            outSlope: 7.7692747
             tangentMode: 0
             weightedMode: 0
             inWeight: 0
-            outWeight: 0.029126214
+            outWeight: 0.015403612
           - serializedVersion: 3
-            time: 0.5
-            value: 1
+            time: 0.4727173
+            value: 1.0163193
             inSlope: 0
             outSlope: 0
             tangentMode: 0

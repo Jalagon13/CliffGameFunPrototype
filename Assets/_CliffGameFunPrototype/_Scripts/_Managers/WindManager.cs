@@ -11,6 +11,9 @@ namespace CliffGame
         public static WindManager Instance;
 
         [Header("Wind Settings")]
+        [field: SerializeField] 
+        public bool WindCanPushPlayer { get; private set; } = true;
+        
         [SerializeField, Range(0, 1f)]
         private float _windSeverity = 0.2f;
         public float WindSeverity => _windSeverity;

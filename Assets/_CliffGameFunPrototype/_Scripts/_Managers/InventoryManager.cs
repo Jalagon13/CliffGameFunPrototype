@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AdvancedTooltips.Core;
 using SingularityGroup.HotReload;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -136,6 +137,22 @@ namespace CliffGame
 
                 MouseHasItem = false;
             }
+        }
+
+        public void ShowInventoryItemTooltip(InventoryItem inventoryItem)
+        {
+            if (!inventoryItem.HasItem)
+            {
+                Debug.LogWarning($"Trying to display an inventory item that does not exists for {inventoryItem}");
+                return;
+            }
+
+            Tooltip.ShowNew();
+
+            string quantityString = inventoryItem.Quantity > 1 ? $"[{inventoryItem.Quantity}]" : string.Empty;
+            string itemText = $"{inventoryItem.Item.InGameName} {quantityString}<br>{inventoryItem.Item.GetDescription()}";
+
+            Tooltip.JustText(itemText, Color.white, fontSize: 12f);
         }
 
         private void UpdateMouseItem()

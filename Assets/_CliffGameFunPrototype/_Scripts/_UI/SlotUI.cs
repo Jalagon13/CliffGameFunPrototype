@@ -81,10 +81,11 @@ namespace CliffGame
 
         public void SetHighlighted(bool isHighlighted)
         {
-            _highlightedVisuals.SetActive(isHighlighted);
+            if(_highlightedVisuals != null)
+                _highlightedVisuals.SetActive(isHighlighted);
         }
 
-        public void OnPointerEnter(PointerEventData eventData)
+        public virtual void OnPointerEnter(PointerEventData eventData)
         {
             if (_item != null && _item.HasItem && !InventoryManager.Instance.MouseHasItem)
             {
@@ -100,7 +101,7 @@ namespace CliffGame
             }
         }
 
-        public void OnPointerExit(PointerEventData eventData)
+        public virtual void OnPointerExit(PointerEventData eventData)
         {
             Tooltip.HideUI();
         }

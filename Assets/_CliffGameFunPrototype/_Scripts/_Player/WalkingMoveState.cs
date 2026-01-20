@@ -92,10 +92,21 @@ namespace CliffGame
             _rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 
             // Apply wind force in positive X direction. ONLY IN X DIRECTION RN FIX LATER
-            if (WindManager.Instance != null)
+            if (WindManager.Instance != null && WindManager.Instance.WindCanPushPlayer)
             {
                 float windSeverity = WindManager.Instance.WindSeverity > WindManager.Instance.WindPushesPlayerThreshold ? WindManager.Instance.WindSeverity : 0f;
-                Vector3 windForce = Vector3.right * (WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity);
+                float windForceOnPlayer = WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity;
+                
+                if(EquipmentSlotUI.PREVENT_WIND_WITH_BOOTS)
+                {
+                    windForceOnPlayer -= WindManager.Instance.MaxWindForceAtFullSeverity / 2f;
+                    if(windForceOnPlayer < 0f)
+                    {
+                        windForceOnPlayer = 0f;
+                    }
+                }
+
+                Vector3 windForce = Vector3.right * windForceOnPlayer;
                 _rigidbody.AddForce(windForce, ForceMode.Acceleration);
             }
 

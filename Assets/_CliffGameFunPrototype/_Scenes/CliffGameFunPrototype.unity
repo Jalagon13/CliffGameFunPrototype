@@ -5412,6 +5412,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
   - {fileID: 11400000, guid: 3e24266cef9f540c0959b541dd07ecfa, type: 2}
   - {fileID: 11400000, guid: 1e3064abad23d408a8dbfa4a43f94031, type: 2}
+  - {fileID: 11400000, guid: 03854f3548bbb4778a3b7c68ca31593f, type: 2}
 --- !u!1001 &826374936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12533,6 +12534,8 @@ MonoBehaviour:
     Quantity: 123
   - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
     Quantity: 123
+  - Item: {fileID: 11400000, guid: bd51402fb03d9454c9c56e4a8740140e, type: 2}
+    Quantity: 1
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0

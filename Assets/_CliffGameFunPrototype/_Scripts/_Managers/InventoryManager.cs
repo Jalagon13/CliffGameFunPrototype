@@ -62,6 +62,8 @@ namespace CliffGame
         public SlotInteractionHandler SlotInteractionHandler => _slotInteractionHandler;
         
         private MouseItemModel _mouseItemModel;
+        public MouseItemModel MouseItemModel => _mouseItemModel;
+        
         private bool _gotItemThisFrame, _gaveItemThisFrame;
 
         private void Awake()

@@ -58,11 +58,11 @@ namespace CliffGame
         {
             if (!_isStartingPlatform) yield break;
 
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(4f);
 
             PlayRattleFeedbacks();
 
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(4f);
 
             PlayRattleFeedbacks();
         }

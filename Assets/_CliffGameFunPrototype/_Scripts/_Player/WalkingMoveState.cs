@@ -99,7 +99,7 @@ namespace CliffGame
                 
                 if(EquipmentSlotUI.PREVENT_WIND_WITH_BOOTS)
                 {
-                    windForceOnPlayer -= WindManager.Instance.MaxWindForceAtFullSeverity / 2f;
+                    windForceOnPlayer -= WindManager.Instance.MaxWindForceAtFullSeverity * 0.6667f;
                     if(windForceOnPlayer < 0f)
                     {
                         windForceOnPlayer = 0f;

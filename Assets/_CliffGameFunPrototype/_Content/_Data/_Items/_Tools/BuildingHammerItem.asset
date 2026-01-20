@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 758ebea90039c4c65acaef5eef26b129, type: 3}
-  m_Name: HammerItem
+  m_Name: BuildingHammerItem
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ToolItemSO
-  <InGameName>k__BackingField: Hammer
+  <InGameName>k__BackingField: Building Hammer
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 1204406958, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1

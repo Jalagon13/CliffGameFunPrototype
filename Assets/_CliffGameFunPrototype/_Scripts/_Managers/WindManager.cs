@@ -67,6 +67,8 @@ namespace CliffGame
         private Coroutine _windStormRoutine;
         private readonly List<Platform> _foundationBuffer = new();
 
+        private Timer _stormCooldownTimer;
+
         private void Awake()
         {
             Instance = this;
@@ -75,20 +77,45 @@ namespace CliffGame
         private void Start()
         {
             InvokeRepeating(nameof(WindTick), _windTickInterval, _windTickInterval);
-            InvokeRepeating(nameof(StartScheduledWindStorm), _timeInBetweenStormsInSec, _timeInBetweenStormsInSec);
+            _stormCooldownTimer = new Timer(_timeInBetweenStormsInSec);
+            _stormCooldownTimer.OnTimerEnd += OnStormCooldownEnded;
+        }
+        
+        private void OnDestroy()
+        {
+            _stormCooldownTimer.OnTimerEnd -= OnStormCooldownEnded;
         }
 
         private void Update()
         {
             WindGameFeelHandler();
+            TickStormCooldown();
+        }
+
+        private void TickStormCooldown()
+        {
+            // Do nothing if a storm is currently running
+            if (_windStormRoutine != null)
+                return;
+
+            _stormCooldownTimer.Tick(Time.deltaTime);
+        }
+
+        private void OnStormCooldownEnded(object sender, EventArgs e)
+        {
+            StartScheduledWindStorm();
         }
 
         private void StartScheduledWindStorm()
         {
+            // If a windstorm is already running, do nothing
             if (_windStormRoutine != null)
-                StopCoroutine(_windStormRoutine);
+                return;
 
-            _windStormRoutine = StartCoroutine(WindStormSequence(_startSeverity, _peakSeverity, _rampUpTime, _holdTime, _rampDownTime));
+            _windStormRoutine = StartCoroutine(
+                WindStormSequence(_startSeverity, _peakSeverity, _rampUpTime, _holdTime, _rampDownTime)
+            );
+            _stormCooldownTimer.IsPaused = true;
         }
 
         private void WindTick()
@@ -171,6 +198,8 @@ namespace CliffGame
             Debug.Log($"End of wind storm, back to starting severity");
             _windSeverity = startSeverity;
             _windStormRoutine = null;
+            _stormCooldownTimer.Reset();
+            _stormCooldownTimer.IsPaused = false;
         }
 
         private IEnumerator SustainWindSeverity(float holdTime)

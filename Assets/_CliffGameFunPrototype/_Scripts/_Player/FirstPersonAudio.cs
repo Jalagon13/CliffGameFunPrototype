@@ -53,7 +53,7 @@ namespace CliffGame
             bool walking = Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking;
             bool climbing = Player.Instance.CurrentMoveStateType == PlayerMoveState.Climbing;
 
-            bool shouldPlaySteps = walking && grounded && moving;
+            bool shouldPlaySteps = walking && grounded && moving && Player.Instance.WalkingMoveState.DesiredMoveDirection != Vector2.zero;
 
             // Update active sound position
             if (_isMoving)

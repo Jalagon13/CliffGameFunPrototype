@@ -205,6 +205,13 @@ namespace CliffGame
         private IEnumerator SustainWindSeverity(float holdTime)
         {
             int crackCount = Mathf.Max(1, Mathf.FloorToInt(holdTime / _secondsPerCrack));
+            if(UnityEngine.Random.value < 0.5f) // 50% chance to have one less crack
+            {
+                crackCount -= 1;
+                
+                if(crackCount < 0) 
+                    crackCount = 0;
+            }
 
             // Generate random crack times within the hold duration
             List<float> crackTimes = new List<float>();

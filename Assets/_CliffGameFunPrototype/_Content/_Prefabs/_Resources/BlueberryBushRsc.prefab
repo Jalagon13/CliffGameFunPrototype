@@ -1862,11 +1862,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.data[0].MaxAmount
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.data[0].MinAmount
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.data[1].MaxAmount

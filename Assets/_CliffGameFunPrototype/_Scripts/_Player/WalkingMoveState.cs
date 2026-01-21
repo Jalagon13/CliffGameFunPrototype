@@ -20,8 +20,12 @@ namespace CliffGame
         public float runSpeed = 9f;
 
         [Header("Physics Settings")]
-        public float MovementForceMultiplier = 20f; // Reduced for Acceleration mode
-        public float MaxHorizontalSpeed = 10f;
+        [SerializeField] 
+        private float _accelLerpSpeed = 14f;
+        
+        [SerializeField] 
+        private float _decelLerpSpeed = 10f;
+        
         public float AccelerationRate = 40f;
         public float AirMultiplier = 0.4f;
 
@@ -37,7 +41,8 @@ namespace CliffGame
 
         private Player _context;
         private Rigidbody _rigidbody;
-        
+        private Vector3 _smoothedDesiredVelocity;
+
         [HideInInspector]
         public Vector2 DesiredMoveDirection;
         
@@ -70,40 +75,61 @@ namespace CliffGame
 
         public void StateFixedUpdate()
         {
-            // Determine target speed
+            // ---- BASIC ACCELERATION-BASED WALKING ----
             float targetSpeed = IsRunning ? runSpeed : speed;
 
             // Input direction in world space
-            Vector3 desiredMove = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
-            desiredMove *= targetSpeed;
+            Vector3 inputDir =
+                transform.forward * DesiredMoveDirection.y +
+                transform.right * DesiredMoveDirection.x;
 
-            // Only horizontal velocity
-            Vector3 horizontalVelocity = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
+            // Prevent faster diagonal movement
+            inputDir = Vector3.ClampMagnitude(inputDir, 1f);
 
-            // Apply AirMultiplier if not grounded
-            float multiplier = _groundCheck.IsGrounded ? 1f : AirMultiplier;
-            desiredMove *= multiplier;
+            bool hasInput = inputDir.sqrMagnitude > 0.0001f;
 
-            // Smoothly move towards desired velocity
-            Vector3 smoothedVelocity = Vector3.MoveTowards(horizontalVelocity, desiredMove, AccelerationRate * Time.fixedDeltaTime);
+            // Raw desired velocity from input
+            Vector3 rawDesiredVelocity = inputDir * targetSpeed;
 
-            // Apply the velocity change as force
-            Vector3 velocityChange = smoothedVelocity - horizontalVelocity;
-            _rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+            // Reduce control in air
+            float controlMultiplier = _groundCheck.IsGrounded ? 1f : AirMultiplier;
+            rawDesiredVelocity *= controlMultiplier;
 
-            // Apply wind force in positive X direction. ONLY IN X DIRECTION RN FIX LATER
+            // Smooth desired velocity (Mario-style micro inertia)
+            float lerpSpeed = hasInput ? _accelLerpSpeed : _decelLerpSpeed;
+
+            _smoothedDesiredVelocity = Vector3.Lerp(
+                _smoothedDesiredVelocity,
+                rawDesiredVelocity,
+                lerpSpeed * Time.fixedDeltaTime
+            );
+
+            // Current horizontal velocity (ignore Y)
+            Vector3 currentVelocity = _rigidbody.linearVelocity;
+            Vector3 currentHorizontalVelocity =
+                new Vector3(currentVelocity.x, 0f, currentVelocity.z);
+
+            // Accelerate toward smoothed desired velocity
+            Vector3 velocityDelta = _smoothedDesiredVelocity - currentHorizontalVelocity;
+            Vector3 acceleration = velocityDelta * AccelerationRate;
+
+            _rigidbody.AddForce(acceleration, ForceMode.Acceleration);
+
+            // ---- WIND FORCE (UNCHANGED) ----
             if (WindManager.Instance != null && WindManager.Instance.WindCanPushPlayer)
             {
-                float windSeverity = WindManager.Instance.WindSeverity > WindManager.Instance.WindPushesPlayerThreshold ? WindManager.Instance.WindSeverity : 0f;
-                float windForceOnPlayer = WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity;
-                
-                if(EquipmentSlotUI.PREVENT_WIND_WITH_BOOTS)
+                float windSeverity =
+                    WindManager.Instance.WindSeverity > WindManager.Instance.WindPushesPlayerThreshold
+                        ? WindManager.Instance.WindSeverity
+                        : 0f;
+
+                float windForceOnPlayer =
+                    WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity;
+
+                if (EquipmentSlotUI.PREVENT_WIND_WITH_BOOTS)
                 {
                     windForceOnPlayer -= WindManager.Instance.MaxWindForceAtFullSeverity * 0.6667f;
-                    if(windForceOnPlayer < 0f)
-                    {
-                        windForceOnPlayer = 0f;
-                    }
+                    windForceOnPlayer = Mathf.Max(0f, windForceOnPlayer);
                 }
 
                 Vector3 windForce = Vector3.right * windForceOnPlayer;

@@ -72,13 +72,19 @@ namespace CliffGame
                     RaycastHit hit;
                     if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance))
                     {
-                        if (hit.collider.TryGetComponent(out Platform floor))
+                        if (hit.collider.TryGetComponent(out Platform platform))
                         {
                             if (InventoryManager.Instance.InventoryHasItems(BuildingManager.Instance.ItemsNeededForRepairing))
                             {
+                                if(platform.CurrentHitPoints >= platform.MaxHitPoints)
+                                {
+                                    Debug.Log("Platform is already at max HP, no need to repair.");
+                                    return;
+                                }
+                                
                                 Debug.Log($"Hit repairable object: {hit.collider.name}");
-                                floor.AddFloorHp(toolItem.IntValue);
-                                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BuildingRepairedSFX, floor.transform.position);
+                                platform.AddFloorHp(toolItem.IntValue);
+                                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BuildingRepairedSFX, platform.transform.position);
                                 InventoryManager.Instance.RemoveItems(BuildingManager.Instance.ItemsNeededForRepairing);
                             }
                         }

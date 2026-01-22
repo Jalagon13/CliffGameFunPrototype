@@ -47,13 +47,13 @@ namespace CliffGame
         private void FixedUpdate()
         {
             float velocity = Vector3.Distance(_currentCharacterPosition, _lastCharacterPosition);
-            bool moving = velocity >= VelocityThreshold;
+            bool moving = velocity >= VelocityThreshold && Player.Instance.WalkingMoveState.DesiredMoveDirection.magnitude >= VelocityThreshold;
 
             bool grounded = GroundCheck.IsGrounded;
             bool walking = Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking;
             bool climbing = Player.Instance.CurrentMoveStateType == PlayerMoveState.Climbing;
 
-            bool shouldPlaySteps = walking && grounded && moving && Player.Instance.WalkingMoveState.DesiredMoveDirection != Vector2.zero;
+            bool shouldPlaySteps = walking && grounded && moving /* && Player.Instance.WalkingMoveState.DesiredMoveDirection != Vector2.zero */;
 
             // Update active sound position
             if (_isMoving)

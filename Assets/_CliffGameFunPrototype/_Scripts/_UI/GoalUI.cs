@@ -21,6 +21,8 @@ namespace CliffGame
         [Tooltip("How long the message stays visible after flashing")]
         [SerializeField] private float _lingerDuration = 15f;
 
+        private Timer _endMessageTimer;
+
         private void Start()
         {
             if (_endMessageGO != null)
@@ -28,7 +30,33 @@ namespace CliffGame
                 _endMessageGO.SetActive(false);
             }
 
-            Invoke(nameof(ShowEndMessage), _timeBeforeMessage);
+            _endMessageTimer = new Timer(_timeBeforeMessage);
+            _endMessageTimer.OnTimerEnd += HandleTimerEnd;
+        }
+        
+        private void OnDestroy()
+        {
+            if (_endMessageTimer != null)
+            {
+                _endMessageTimer.OnTimerEnd -= HandleTimerEnd;
+            }
+        }
+
+        private void Update()
+        {
+            if (_endMessageTimer == null) return;
+
+            // Pause timer when pause menu is open
+            _endMessageTimer.IsPaused = Player.Instance != null &&
+                                        Player.Instance.PauseMenuUI != null &&
+                                        Player.Instance.PauseMenuUI.PauseMenuOpen;
+
+            _endMessageTimer.Tick(Time.deltaTime);
+        }
+
+        private void HandleTimerEnd(object sender, System.EventArgs e)
+        {
+            ShowEndMessage();
         }
 
         private void ShowEndMessage()

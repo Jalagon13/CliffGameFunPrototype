@@ -16,10 +16,13 @@ namespace CliffGame
         public static AudioManager Instance { get; private set; }
 
         private EventInstance _ambienceEventInstance;
+        private Bus _masterBus;
 
         private void Awake()
         {
             Instance = this;
+            
+            _masterBus = RuntimeManager.GetBus("bus:/");
         }
 
         private void Start()
@@ -66,6 +69,11 @@ namespace CliffGame
         {
             EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
             return eventInstance;
+        }
+        
+        public void SetMasterVolume(float volume) // connected to pause menu volume slider
+        {
+            _masterBus.setVolume(volume);
         }
     }
 }

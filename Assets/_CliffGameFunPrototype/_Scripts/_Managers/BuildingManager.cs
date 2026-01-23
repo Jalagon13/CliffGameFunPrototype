@@ -84,11 +84,10 @@ namespace CliffGame
             if ((_currentBuildType == SelectedBuildType.Floor || _currentBuildType == SelectedBuildType.Wall) && Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.PauseMenuOpen)
             {
                 GhostBuild();
-
-                if (_clickedThisFrame)
+                
+                if(GameInput.Instance.IsHoldingDownPrimaryInteract)
                 {
                     PlaceBuild();
-                    _clickedThisFrame = false;
                 }
             }
             else if (_ghostBuildGameObject != null)
@@ -101,11 +100,16 @@ namespace CliffGame
             {
                 GhostDestroy();
 
-                if (_clickedThisFrame)
+                if (GameInput.Instance.IsHoldingDownPrimaryInteract)
                 {
                     DestroyBuild();
-                    _clickedThisFrame = false;
                 }
+
+                // if (_clickedThisFrame)
+                // {
+                //     DestroyBuild();
+                //     _clickedThisFrame = false;
+                // }
             }
         }
 

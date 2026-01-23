@@ -50,7 +50,32 @@ namespace CliffGame
             {
                 HideInteractableInfo();
             }
+
+            // bool isHarvesting = InteractionManager.Instance.IsHarvesting;
+
+            // if (isHarvesting)
+            // {
+            //     _interactRadialBar.UpdateBar(InteractionManager.Instance.HarvestTimer.PercentRemaining, 0, 1);
+            //     _interactRadialBar.gameObject.SetActive(true);
+
+            //     if (!_wasHarvesting)
+            //     {
+            //         OnHarvestStarted();
+            //     }
+            // }
+            // else
+            // {
+            //     _interactRadialBar.UpdateBar(1, 0, 1);
+            //     _interactRadialBar.gameObject.SetActive(false);
+            // }
+
+            // _wasHarvesting = isHarvesting; // Update previous state
         }
+
+        // private void OnHarvestStarted()
+        // {
+        //     _interactRadialBar.UpdateBar(0, 0, 1);
+        // }
 
         private void CheckForRepairState(SelectedBuildType type)
         {
@@ -132,35 +157,6 @@ namespace CliffGame
             c.a = 0.25f;
             _crosshairImage.color = c;
         }
-
-        // private void Update()
-        // {
-        //     bool isHarvesting = InteractionManager.Instance.IsHarvesting;
-
-        //     if (isHarvesting)
-        //     {
-        //         _interactRadialBar.UpdateBar(InteractionManager.Instance.HarvestTimer.PercentRemaining, 0, 1);
-        //         _interactRadialBar.gameObject.SetActive(true);
-                
-        //         if (!_wasHarvesting)
-        //         {
-        //             OnHarvestStarted();
-        //         }
-        //     }
-        //     else
-        //     {
-        //         _interactRadialBar.UpdateBar(1, 0, 1);
-        //         _interactRadialBar.gameObject.SetActive(false);
-        //     }
-
-        //     _wasHarvesting = isHarvesting; // Update previous state
-        // }
-
-        // private void OnHarvestStarted()
-        // {
-        //     _interactRadialBar.UpdateBar(0, 0, 1);
-        // }
-
 
         private void CheckForHammer(int arg1, InventoryItem item)
         {

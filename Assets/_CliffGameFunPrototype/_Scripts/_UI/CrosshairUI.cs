@@ -15,7 +15,6 @@ namespace CliffGame
         [SerializeField] private GameObject _repairInstructions;
         [SerializeField] private GameObject _campfireInstructions;
 
-        // private bool _wasHarvesting = false; // Track previous state
         private Image _crosshairImage;
         
         private void Awake()
@@ -51,31 +50,27 @@ namespace CliffGame
                 HideInteractableInfo();
             }
 
-            // bool isHarvesting = InteractionManager.Instance.IsHarvesting;
+            Timer destroyTimer = BuildingManager.Instance.DestroyTimer;
 
-            // if (isHarvesting)
-            // {
-            //     _interactRadialBar.UpdateBar(InteractionManager.Instance.HarvestTimer.PercentRemaining, 0, 1);
-            //     _interactRadialBar.gameObject.SetActive(true);
+            // Timer is considered active once it has started ticking (not full duration, not zero)
+            bool destroyTimerActive =
+                destroyTimer != null &&
+                destroyTimer.RemainingSeconds < destroyTimer.Duration &&
+                destroyTimer.RemainingSeconds > 0f;
 
-            //     if (!_wasHarvesting)
-            //     {
-            //         OnHarvestStarted();
-            //     }
-            // }
-            // else
-            // {
-            //     _interactRadialBar.UpdateBar(1, 0, 1);
-            //     _interactRadialBar.gameObject.SetActive(false);
-            // }
-
-            // _wasHarvesting = isHarvesting; // Update previous state
+            if (destroyTimerActive)
+            {
+                // PercentRemaining already goes 0 → 1 over the timer duration
+                _interactRadialBar.UpdateBar(destroyTimer.PercentRemaining, 0f, 1f);
+                _interactRadialBar.gameObject.SetActive(true);
+            }
+            else
+            {
+                // Ensure clean reset when not destroying
+                _interactRadialBar.UpdateBar(0f, 0f, 1f);
+                _interactRadialBar.gameObject.SetActive(false);
+            }
         }
-
-        // private void OnHarvestStarted()
-        // {
-        //     _interactRadialBar.UpdateBar(0, 0, 1);
-        // }
 
         private void CheckForRepairState(SelectedBuildType type)
         {

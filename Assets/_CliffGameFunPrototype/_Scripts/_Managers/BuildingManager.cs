@@ -36,6 +36,7 @@ namespace CliffGame
         [SerializeField] private LayerMask _connectorLayerMask;
         [SerializeField] private LayerMask _playerLayerMask;
         [SerializeField] private float _buildRange = 4f;
+        [SerializeField] private float _destroyDuration = 0.5f;
         [SerializeField] private InventoryItem[] _itemsNeededForBuilding;
         public InventoryItem[] ItemsNeededForBuilding => _itemsNeededForBuilding;
 
@@ -58,11 +59,19 @@ namespace CliffGame
         private GameObject _ghostBuildGameObject;
         private bool _isGhostInValidPosition = false;
         private Transform _modelParent = null;
-        private bool _clickedThisFrame = false, _isHoldingHammar;
+        private bool _isHoldingHammar, _clickedThisFrame;
+        private Timer _destroyTimer;
+        public Timer DestroyTimer => _destroyTimer;
+        
+        private bool _isDestroying = false;
+        private Transform _currentDestroyTarget = null;
 
         private void Awake()
         {
             Instance = this;
+
+            _destroyTimer = new(_destroyDuration);
+            _destroyTimer.OnTimerEnd += OnDestroyTimerEnd;
         }
         
         private void Start()
@@ -75,6 +84,7 @@ namespace CliffGame
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= OnSelectedSlotChanged_CheckForHammer;
             GameInput.Instance.OnPrimaryInteract -= GameInput_OnPrimaryInteract;
+            _destroyTimer.OnTimerEnd -= OnDestroyTimerEnd;
         }
 
         private void Update()
@@ -85,9 +95,22 @@ namespace CliffGame
             {
                 GhostBuild();
                 
-                if(GameInput.Instance.IsHoldingDownPrimaryInteract)
+                switch(_currentBuildType)
                 {
-                    PlaceBuild();
+                    case SelectedBuildType.Floor:
+                    if (GameInput.Instance.IsHoldingDownPrimaryInteract)
+                    {
+                        PlaceBuild();
+                    }
+                    break;
+
+                    case SelectedBuildType.Wall:
+                    if(_clickedThisFrame)
+                    {
+                        PlaceBuild();
+                        _clickedThisFrame = false;
+                    }
+                    break;
                 }
             }
             else if (_ghostBuildGameObject != null)
@@ -99,22 +122,13 @@ namespace CliffGame
             if (_currentBuildType == SelectedBuildType.DestroyMode)
             {
                 GhostDestroy();
-
-                if (GameInput.Instance.IsHoldingDownPrimaryInteract)
-                {
-                    DestroyBuild();
-                }
-
-                // if (_clickedThisFrame)
-                // {
-                //     DestroyBuild();
-                //     _clickedThisFrame = false;
-                // }
+                HandleDestroyTimer();
             }
         }
-
+        
         #region Input
 
+        // I might use this later for something
         private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
         {
             if(!_isHoldingHammar || BuildWheelUI.BuildWheelUIOpen || Player.Instance.PauseMenuUI.PauseMenuOpen) return;
@@ -188,8 +202,6 @@ namespace CliffGame
         }
 
         #endregion
-
-
 
         #region Building
 
@@ -578,7 +590,49 @@ namespace CliffGame
 
         #endregion
 
-        #region Destorying
+        #region Destorying  
+
+        private void HandleDestroyTimer()
+        {
+            // Must be holding interact and hovering a valid target
+            if (!GameInput.Instance.IsHoldingDownPrimaryInteract || _lastHitDestroyTransform == null)
+            {
+                CancelDestroy();
+                return;
+            }
+
+            // New target → reset timer
+            if (_currentDestroyTarget != _lastHitDestroyTransform)
+            {
+                _currentDestroyTarget = _lastHitDestroyTransform;
+                _destroyTimer.Reset();
+            }
+
+            _isDestroying = true;
+            _destroyTimer.Tick(Time.deltaTime);
+        }
+
+        private void OnDestroyTimerEnd(object sender, EventArgs e)
+        {
+            if (!_isDestroying || _currentDestroyTarget == null)
+                return;
+
+            DestroyBuild();
+
+            // Prepare for next object (Raft-style chaining)
+            _destroyTimer.Reset();
+            _currentDestroyTarget = null;
+            _isDestroying = false;
+        }
+
+        private void CancelDestroy()
+        {
+            if (!_isDestroying) return;
+
+            _isDestroying = false;
+            _currentDestroyTarget = null;
+            _destroyTimer.Reset();
+        }
 
         private void GhostDestroy()
         {

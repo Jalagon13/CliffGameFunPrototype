@@ -13,10 +13,13 @@ namespace CliffGame
         private float _interactSearchDistance = 2f;
 
         [SerializeField]
-        private LayerMask _interactLayer;
+        private LayerMask _interactLayer, _buildLayer;
 
         private IInteractable _currentlyHoveredInteractable;
         public IInteractable CurrentlyHoveredInteractable => _currentlyHoveredInteractable;
+        
+        private GameObject _currentlyHoveredBuildable;
+        public GameObject CurrentlyHoveredBuildable => _currentlyHoveredBuildable;
 
         private void Awake()
         {
@@ -104,6 +107,20 @@ namespace CliffGame
             }
 
             _currentlyHoveredInteractable = null;
+            return false;
+        }
+        
+        private bool SearchForBuildable() // Maybe I'll use this later
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance, _buildLayer))
+            {
+                // Try to get the IInteractable component from the hit collider
+                _currentlyHoveredBuildable = hit.collider.gameObject;
+                return _currentlyHoveredBuildable != null;
+            }
+
+            _currentlyHoveredBuildable = null;
             return false;
         }
     }

@@ -27,6 +27,12 @@ namespace CliffGame
         public HungerState CurrentHungerState { get; private set; }
 
         public event Action<int, int> OnHungerChanged; // current, max
+        private Timer _eatTimer;
+        public Timer EatTimer => _eatTimer;
+        
+        private ConsumableItemSO _currentConsumable;
+        private bool _isEating;
+        public bool IsEating => _isEating;
 
         private void Awake()
         {
@@ -63,46 +69,36 @@ namespace CliffGame
             if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead) return;
 
             _hungerStat.UpdateStat(Time.deltaTime, true);
+
+            if (_isEating && _eatTimer != null)
+            {
+                // Cancel eating if button released
+                if (!GameInput.Instance.IsHoldingDownSecondaryInteract)
+                {
+                    CancelEating();
+                    return;
+                }
+
+                _eatTimer.Tick(Time.deltaTime);
+            }
         }
 
         private void TryToEat(object sender, InputAction.CallbackContext e)
         {
-            if(e.started && InventoryManager.Instance.HasSelectedItem && InventoryManager.Instance.SelectedInventoryItem.Item is ConsumableItemSO consumableItem)
+            if (!e.started) return;
+
+            if (!InventoryManager.Instance.HasSelectedItem) return;
+
+            if (InventoryManager.Instance.SelectedInventoryItem.Item is not ConsumableItemSO consumableItem)
+                return;
+
+            if (InteractionManager.Instance.CurrentlyHoveredInteractable != null &&
+                InteractionManager.Instance.CurrentlyHoveredInteractable is CookingStation)
             {
-                if(InteractionManager.Instance.CurrentlyHoveredInteractable != null && 
-                   InteractionManager.Instance.CurrentlyHoveredInteractable is CookingStation)
-                {
-                    return;
-                }
-                
-                // Start the eating routine
-                StartCoroutine(EatingRoutine(consumableItem));
+                return;
             }
-        }
-        
-        private IEnumerator EatingRoutine(ConsumableItemSO consumableItemSO)
-        {
-            // Check every frame if the onsecondaryinteract button is lifted off.
-            float consumeDuration = consumableItemSO.ConsumeDuration;
-            float timeElapsed = 0;
-            Debug.Log($"Started eating routine");
-            
-            while(timeElapsed < consumeDuration)
-            {
-                timeElapsed += Time.deltaTime;
-                
-                if(!GameInput.Instance.IsHoldingDownSecondaryInteract)
-                {
-                    Debug.Log($"Canceled eating rountine");
-                    yield break;
-                }
-                
-                yield return null;
-            }
-        
-            InventoryManager.Instance.RemoveItem(consumableItemSO, 1);
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.EatingSFX, Player.Instance.transform.position);
-            AddHunger(consumableItemSO.HealAmount);
+
+            StartEating(consumableItem);
         }
 
         private void OnRespawn()
@@ -114,6 +110,61 @@ namespace CliffGame
         public void AddHunger(int amount)
         {
             _hungerStat.ChangeCurrent(amount);
+        }
+
+        private void StartEating(ConsumableItemSO consumable)
+        {
+            if (_isEating) return;
+
+            _currentConsumable = consumable;
+            _eatTimer = new Timer(consumable.ConsumeDuration);
+            _eatTimer.OnTimerEnd += OnEatTimerFinished;
+
+            _isEating = true;
+        }
+
+        private void CancelEating()
+        {
+            if (!_isEating) return;
+
+            _eatTimer.OnTimerEnd -= OnEatTimerFinished;
+            _eatTimer = null;
+            _currentConsumable = null;
+            _isEating = false;
+        }
+
+        private void OnEatTimerFinished(object sender, EventArgs e)
+        {
+            _eatTimer.OnTimerEnd -= OnEatTimerFinished;
+
+            // Consume the food
+            InventoryManager.Instance.RemoveItem(_currentConsumable, 1);
+            AudioManager.Instance.PlayOneShot(
+                FMODEvents.Instance.EatingSFX,
+                Player.Instance.transform.position
+            );
+            AddHunger(_currentConsumable.HealAmount);
+
+            // Check if player is still holding eat input
+            bool stillHoldingEat = GameInput.Instance.IsHoldingDownSecondaryInteract;
+
+            // Check if the same consumable is still selected and available
+            bool stillHasFoodSelected =
+                InventoryManager.Instance.HasSelectedItem &&
+                InventoryManager.Instance.SelectedInventoryItem.Item == _currentConsumable; 
+
+            if (stillHoldingEat && stillHasFoodSelected)
+            {
+                // Restart eating immediately with a fresh timer
+                _eatTimer = new Timer(_currentConsumable.ConsumeDuration);
+                _eatTimer.OnTimerEnd += OnEatTimerFinished;
+                return;
+            }
+
+            // Otherwise, fully exit eating state
+            _eatTimer = null;
+            _currentConsumable = null;
+            _isEating = false;
         }
     }
 }

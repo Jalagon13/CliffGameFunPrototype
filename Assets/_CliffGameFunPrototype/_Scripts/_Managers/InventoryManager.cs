@@ -254,7 +254,8 @@ namespace CliffGame
             if (!context.performed || Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || 
                 CraftingManager.Instance.IsCraftingUIOpen || 
                 BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
-                Player.Instance.ToolHolder.IsSwinging) return;
+                Player.Instance.ToolHolder.IsSwinging || 
+                HungerManager.Instance.IsEating) return;
 
             Vector2 scrollDelta = context.ReadValue<Vector2>();
             int itemCount = _hotbarSlotAmount;
@@ -291,7 +292,8 @@ namespace CliffGame
             if (!context.started || Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || 
                 CraftingManager.Instance.IsCraftingUIOpen || 
                 BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
-                Player.Instance.ToolHolder.IsSwinging) return;
+                Player.Instance.ToolHolder.IsSwinging ||
+                HungerManager.Instance.IsEating) return;
 
             var control = context.control; // The control (key/button) that triggered this
 

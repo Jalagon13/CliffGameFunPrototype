@@ -28,7 +28,7 @@ namespace CliffGame
             InventoryManager.Instance.OnSelectedSlotChanged += CheckForHammer;
             BuildingManager.Instance.OnBuildTypeChanged += CheckForRepairState;
 
-            _interactRadialBar.gameObject.SetActive(false); // TEMP. Delete this later
+            _interactRadialBar.gameObject.SetActive(false);
             _repairInstructions.SetActive(false);
             _campfireInstructions.SetActive(false);
         }
@@ -50,26 +50,28 @@ namespace CliffGame
                 HideInteractableInfo();
             }
 
+            Timer activeTimer = null;
+
+            // Priority order: Destroying > Eating
             Timer destroyTimer = BuildingManager.Instance.DestroyTimer;
+            Timer eatTimer = HungerManager.Instance.EatTimer;
 
-
-            // NEXT: FIgure out how to access the interact radial bar
-
-            // Timer is considered active once it has started ticking (not full duration, not zero)
-            bool destroyTimerActive =
-                destroyTimer != null &&
-                destroyTimer.RemainingSeconds < destroyTimer.Duration &&
-                destroyTimer.RemainingSeconds > 0f;
-
-            if (destroyTimerActive)
+            if (IsTimerActive(destroyTimer))
             {
-                // PercentRemaining already goes 0 → 1 over the timer duration
-                _interactRadialBar.UpdateBar(destroyTimer.PercentRemaining, 0f, 1f);
+                activeTimer = destroyTimer;
+            }
+            else if (IsTimerActive(eatTimer))
+            {
+                activeTimer = eatTimer;
+            }
+
+            if (activeTimer != null)
+            {
+                _interactRadialBar.UpdateBar(activeTimer.PercentRemaining, 0f, 1f);
                 _interactRadialBar.gameObject.SetActive(true);
             }
             else
             {
-                // Ensure clean reset when not destroying
                 _interactRadialBar.UpdateBar(0f, 0f, 1f);
                 _interactRadialBar.gameObject.SetActive(false);
             }
@@ -227,6 +229,14 @@ namespace CliffGame
         private void HideBuildInstructionTexts()
         {
             _buildInstructionTextHolder.SetActive(false);
+        }
+
+        private bool IsTimerActive(Timer timer)
+        {
+            if (timer == null) return false;
+
+            return timer.RemainingSeconds < timer.Duration &&
+                   timer.RemainingSeconds > 0f;
         }
     }
 }

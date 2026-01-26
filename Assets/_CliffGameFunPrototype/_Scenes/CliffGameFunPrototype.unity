@@ -12356,6 +12356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HealthManager
   _maxHealth: 100
   _noHungerHealthDrainPerSecond: 1
+  _passiveHealthGenPerSecond: 0.25
 --- !u!1001 &1636102964
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15414,7 +15415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086b541bead394a5c8ead360709dff36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
-  <WindCanPushPlayer>k__BackingField: 1
+  <WindCanPushPlayer>k__BackingField: 0
   _windSeverity: 0.05
   _windPushesPlayerThreshold: 0.025
   _windTickInterval: 0.125
@@ -15446,7 +15447,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _secondsPerCrack: 5
-  _timeInBetweenStormsInSec: 210
+  _timeInBetweenStormsInSec: 240
   _radiusOfRattlingAroundPlayer: 15
   _damagePerCrack: 25
   _startSeverity: 0.05

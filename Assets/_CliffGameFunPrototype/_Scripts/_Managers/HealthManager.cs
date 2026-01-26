@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace CliffGame
@@ -14,7 +15,7 @@ namespace CliffGame
         private int _maxHealth = 100;
 
         [SerializeField]
-        private float _noHungerHealthDrainPerSecond = 1f;
+        private float _noHungerHealthDrainPerSecond = 1f, _passiveHealthGenPerSecond = 0.25f;
 
         private PlayerStat _healthStat;
 
@@ -24,7 +25,7 @@ namespace CliffGame
         {
             Instance = this;
 
-            _healthStat = new PlayerStat(_maxHealth, _noHungerHealthDrainPerSecond);
+            _healthStat = new PlayerStat(_maxHealth, _noHungerHealthDrainPerSecond, _passiveHealthGenPerSecond);
 
             _healthStat.OnValueChanged += (current, max) =>
             {
@@ -51,6 +52,10 @@ namespace CliffGame
             {
                 _healthStat.UpdateStat(Time.deltaTime, true);
             }
+            else
+            {
+                _healthStat.UpdateStat(Time.deltaTime, false);
+            }
         }
 
         private void OnRespawn()
@@ -63,6 +68,7 @@ namespace CliffGame
             _healthStat.ChangeCurrent(amount);
         }
 
+        [Button("TestDamage")]
         public void DamageHealth(int amount)
         {
             int amountToDamage = Mathf.Abs(amount);

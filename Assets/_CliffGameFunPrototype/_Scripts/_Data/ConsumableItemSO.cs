@@ -7,7 +7,10 @@ namespace CliffGame
     {
         [field: SerializeField]
         public int HealAmount { get; private set; }
-    
+
+        [field: SerializeField]
+        public float ConsumeDuration { get; private set; } = 1f;
+
         public override InventoryItem CreateInventoryItem(int quantity)
         {
             return new(this, quantity);

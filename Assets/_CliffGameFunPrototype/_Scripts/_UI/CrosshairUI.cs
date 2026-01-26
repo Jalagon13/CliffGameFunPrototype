@@ -52,6 +52,9 @@ namespace CliffGame
 
             Timer destroyTimer = BuildingManager.Instance.DestroyTimer;
 
+
+            // NEXT: FIgure out how to access the interact radial bar
+
             // Timer is considered active once it has started ticking (not full duration, not zero)
             bool destroyTimerActive =
                 destroyTimer != null &&

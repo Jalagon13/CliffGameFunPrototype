@@ -58,6 +58,13 @@ namespace CliffGame
             GameInput.Instance.OnSecondaryInteract -= TryToEat;
         }
 
+        private void Update()
+        {
+            if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead) return;
+
+            _hungerStat.UpdateStat(Time.deltaTime, true);
+        }
+
         private void TryToEat(object sender, InputAction.CallbackContext e)
         {
             if(e.started && InventoryManager.Instance.HasSelectedItem && InventoryManager.Instance.SelectedInventoryItem.Item is ConsumableItemSO consumableItem)
@@ -67,18 +74,35 @@ namespace CliffGame
                 {
                     return;
                 }
-            
-                InventoryManager.Instance.RemoveItem(consumableItem, 1);
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.EatingSFX, Player.Instance.transform.position);
-                AddHunger(consumableItem.HealAmount);
+                
+                // Start the eating routine
+                StartCoroutine(EatingRoutine(consumableItem));
             }
         }
-
-        private void Update()
-        {
-            if(Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead) return;
         
-            _hungerStat.UpdateStat(Time.deltaTime, true);
+        private IEnumerator EatingRoutine(ConsumableItemSO consumableItemSO)
+        {
+            // Check every frame if the onsecondaryinteract button is lifted off.
+            float consumeDuration = consumableItemSO.ConsumeDuration;
+            float timeElapsed = 0;
+            Debug.Log($"Started eating routine");
+            
+            while(timeElapsed < consumeDuration)
+            {
+                timeElapsed += Time.deltaTime;
+                
+                if(!GameInput.Instance.IsHoldingDownSecondaryInteract)
+                {
+                    Debug.Log($"Canceled eating rountine");
+                    yield break;
+                }
+                
+                yield return null;
+            }
+        
+            InventoryManager.Instance.RemoveItem(consumableItemSO, 1);
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.EatingSFX, Player.Instance.transform.position);
+            AddHunger(consumableItemSO.HealAmount);
         }
 
         private void OnRespawn()

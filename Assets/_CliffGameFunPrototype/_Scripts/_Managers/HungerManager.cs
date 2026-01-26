@@ -92,11 +92,13 @@ namespace CliffGame
             if (InventoryManager.Instance.SelectedInventoryItem.Item is not ConsumableItemSO consumableItem)
                 return;
 
-            if (InteractionManager.Instance.CurrentlyHoveredInteractable != null &&
-                InteractionManager.Instance.CurrentlyHoveredInteractable is CookingStation)
+            if (InteractionManager.Instance.CurrentlyHoveredInteractable != null && InteractionManager.Instance.CurrentlyHoveredInteractable is CookingStation)
             {
                 return;
             }
+            
+            if(consumableItem.ConsumableType != ConsumableType.Food)
+                return;
 
             StartEating(consumableItem);
         }

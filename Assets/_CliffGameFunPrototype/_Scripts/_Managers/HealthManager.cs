@@ -15,7 +15,7 @@ namespace CliffGame
         private int _maxHealth = 100;
 
         [SerializeField]
-        private float _noHungerHealthDrainPerSecond = 1f, _passiveHealthGenPerSecond = 0.25f;
+        private float _noVitalsHealthDrainPerSecond = 1f, _passiveHealthGenPerSecond = 0.25f;
 
         private PlayerStat _healthStat;
 
@@ -25,7 +25,7 @@ namespace CliffGame
         {
             Instance = this;
 
-            _healthStat = new PlayerStat(_maxHealth, _noHungerHealthDrainPerSecond, _passiveHealthGenPerSecond);
+            _healthStat = new PlayerStat(_maxHealth, _noVitalsHealthDrainPerSecond, _passiveHealthGenPerSecond);
 
             _healthStat.OnValueChanged += (current, max) =>
             {
@@ -48,7 +48,7 @@ namespace CliffGame
 
         private void Update()
         {
-            if (HungerManager.Instance.CurrentHungerState == HungerState.Hungry)
+            if (HungerManager.Instance.CurrentHungerState == HungerState.Hungry || ThirstManager.Instance.CurrentThirstState == ThirstState.Thirsty)
             {
                 _healthStat.UpdateStat(Time.deltaTime, true);
             }

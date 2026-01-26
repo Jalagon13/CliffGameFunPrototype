@@ -10,6 +10,7 @@ namespace CliffGame
     {
         [SerializeField] private MMProgressBar _healthBar;
         [SerializeField] private MMProgressBar _hungerBar;
+        [SerializeField] private MMProgressBar _thirstBar;
         
         [Header("Stamina Settings")]
         [SerializeField] 
@@ -23,6 +24,7 @@ namespace CliffGame
 
         private TextMeshProUGUI _healthText;
         private TextMeshProUGUI _hungerText;
+        private TextMeshProUGUI _thirstText;
         private TextMeshProUGUI _staminaText;
 
         private float _previousStaminaPercent = 1f;
@@ -31,6 +33,7 @@ namespace CliffGame
         {
             _healthText = _healthBar.transform.GetChild(4).GetComponent<TextMeshProUGUI>();
             _hungerText = _hungerBar.transform.GetChild(4).GetComponent<TextMeshProUGUI>();
+            _thirstText = _thirstBar.transform.GetChild(4).GetComponent<TextMeshProUGUI>();
             _staminaText = _staminaBar.transform.GetChild(4).GetComponent<TextMeshProUGUI>();
         }
         
@@ -38,6 +41,7 @@ namespace CliffGame
         {
             HealthManager.Instance.OnHealthChanged += HandleHealthChanged;
             HungerManager.Instance.OnHungerChanged += HandleHungerChanged;
+            ThirstManager.Instance.OnThirstChanged += HandleThirstChanged;
             StaminaManager.Instance.OnStaminaChanged += HandleStaminaChanged;
             Player.Instance.OnStateChanged += OnMoveStateChanged;
 
@@ -48,6 +52,7 @@ namespace CliffGame
         {
             HealthManager.Instance.OnHealthChanged -= HandleHealthChanged;
             HungerManager.Instance.OnHungerChanged -= HandleHungerChanged;
+            ThirstManager.Instance.OnThirstChanged -= HandleThirstChanged;
             StaminaManager.Instance.OnStaminaChanged -= HandleStaminaChanged;
             Player.Instance.OnStateChanged -= OnMoveStateChanged;
         }
@@ -59,6 +64,12 @@ namespace CliffGame
                 _staminaBar.ShowBar();
                 OnStaminaBarShown();
             }
+        }
+
+        private void HandleThirstChanged(int currentAmount, int maxAmount)
+        {
+            _thirstBar.UpdateBar(currentAmount, 0, maxAmount);
+            _thirstText.text = $"Thirst: {currentAmount}%";
         }
 
         private void HandleHealthChanged(int currentAmount, int maxAmount)

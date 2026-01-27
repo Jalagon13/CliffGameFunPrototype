@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0abd23a848c8443599fa2989c648f349, type: 3}
+  m_Name: WaterStillItem
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructureItemSO
+  <InGameName>k__BackingField: Water Still
+  <ItemWorldPrefab>k__BackingField: {fileID: 0}
+  <UiDisplay>k__BackingField: {fileID: -286354734, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
+  <Stackable>k__BackingField: 1
+  <Description>k__BackingField: Extracts water from plant fibers.
+  <StructurePrefab>k__BackingField: {fileID: 3282181520534882374, guid: 777481653298a4045b0566db77d88702, type: 3}

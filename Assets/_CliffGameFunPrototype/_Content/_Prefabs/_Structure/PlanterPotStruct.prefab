@@ -2059,9 +2059,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlanterBox
   _requiredToolType: 1
   _maxLife: 1
-  _harvestItems:
-  - Item: {fileID: 11400000, guid: 93455b748a55c4eb1805b933314b2842, type: 2}
-    Quantity: 1
+  _harvestDrops: []
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
   _hitSFX:
     Guid:

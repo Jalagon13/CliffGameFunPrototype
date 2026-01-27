@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructureItemSO
   <InGameName>k__BackingField: Water Still
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
-  <UiDisplay>k__BackingField: {fileID: -286354734, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
+  <UiDisplay>k__BackingField: {fileID: 2006670891, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: Extracts water from plant fibers.
   <StructurePrefab>k__BackingField: {fileID: 3282181520534882374, guid: 777481653298a4045b0566db77d88702, type: 3}

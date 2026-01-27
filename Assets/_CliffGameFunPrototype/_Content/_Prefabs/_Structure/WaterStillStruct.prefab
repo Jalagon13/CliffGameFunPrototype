@@ -5224,6 +5224,7 @@ MonoBehaviour:
   _thirstReplenished: 35
   _fiberItemSO: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
   _fiberModel: {fileID: 5160726101079451226}
+  _waterModel: {fileID: 5727275453561733311}
   _fiberScatterRange: 0.2
   _fiberVisualParent: {fileID: 0}
   _processingScaleMin: 0.94
@@ -5332,12 +5333,12 @@ GameObject:
   - component: {fileID: 3250205784121114953}
   - component: {fileID: 4480688234414531142}
   m_Layer: 0
-  m_Name: Dirt
+  m_Name: Water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8928523301059539356
 Transform:
   m_ObjectHideFlags: 0
@@ -7241,7 +7242,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: db3c489da07f34a4d8d699e296cf1e18, type: 2}
+  - {fileID: 2100000, guid: 451112f5aba7d8041bc52b85134a0e73, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

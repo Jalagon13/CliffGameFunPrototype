@@ -2,6 +2,7 @@ using System;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace CliffGame
 {
@@ -10,10 +11,11 @@ namespace CliffGame
         [SerializeField] private MMProgressBar _interactRadialBar;
         [SerializeField] private GameObject _structReqHolder;
         [SerializeField] private StructReqUI _structReqPrefab;
-        [SerializeField] private Sprite _defaultSprite, _axeSprite, _hammerSprite, _spearSprite, _rawBirdSprite;
+        [SerializeField] private Sprite _defaultSprite, _axeSprite, _hammerSprite, _spearSprite, _rawBirdSprite, _fiberSprite;
         [SerializeField] private GameObject _buildInstructionTextHolder;
         [SerializeField] private GameObject _repairInstructions;
-        [SerializeField] private GameObject _campfireInstructions;
+        [SerializeField] private GameObject _textAboveCrosshair;
+        [SerializeField] private TMP_Text _textAboveCrosshairLabel;
 
         private Image _crosshairImage;
         
@@ -21,6 +23,7 @@ namespace CliffGame
         {
             _crosshairImage = transform.GetChild(0).GetComponent<Image>();
             HideInteractableInfo();
+            HideTextAboveCrosshair();
         }
         
         private void Start()
@@ -30,7 +33,7 @@ namespace CliffGame
 
             _interactRadialBar.gameObject.SetActive(false);
             _repairInstructions.SetActive(false);
-            _campfireInstructions.SetActive(false);
+            HideTextAboveCrosshair();
         }
         
         private void OnDestroy()
@@ -115,52 +118,77 @@ namespace CliffGame
         {
             IInteractable interactable = InteractionManager.Instance.CurrentlyHoveredInteractable;
 
-            if(interactable is CookingStation)
+            // Default visuals
+            _crosshairImage.sprite = _defaultSprite;
+            HideTextAboveCrosshair();
+
+            // ---- Cooking Station ----
+            if (interactable is CookingStation)
             {
                 _crosshairImage.sprite = _rawBirdSprite;
-                _campfireInstructions.SetActive(true);
-
-                // Set full alpha
-                Color co = _crosshairImage.color;
-                co.a = 1f;
-                _crosshairImage.color = co;
+                ShowTextAboveCrosshair("Right Click <br> Cook / Collect Meat");
+                SetCrosshairAlpha(1f);
                 return;
             }
-            else
+
+            // ---- Water Still ----
+            if (interactable is WaterStill waterStill)
             {
-                switch (interactable.BreakToolType)
-                {
-                    case ToolType.Axe:
-                        _crosshairImage.sprite = _axeSprite;
-                        break;
-                    case ToolType.Hammer:
-                        _crosshairImage.sprite = _hammerSprite;
-                        break;
-                    case ToolType.Spear:
-                        _crosshairImage.sprite = _spearSprite;
-                        break;
-                    default:
-                        _crosshairImage.sprite = _defaultSprite;
-                        break;
-                }
+                
+                HandleWaterStillText(waterStill);
+                SetCrosshairAlpha(1f);
+                return;
             }
 
-            _campfireInstructions.SetActive(false);
+            // ---- Tool-based interactables ----
+            switch (interactable.BreakToolType)
+            {
+                case ToolType.Axe:
+                    _crosshairImage.sprite = _axeSprite;
+                    break;
+                case ToolType.Hammer:
+                    _crosshairImage.sprite = _hammerSprite;
+                    break;
+                case ToolType.Spear:
+                    _crosshairImage.sprite = _spearSprite;
+                    break;
+                default:
+                    _crosshairImage.sprite = _defaultSprite;
+                    break;
+            }
 
-            // Set full alpha
-            Color c = _crosshairImage.color;
-            c.a = 1f;
-            _crosshairImage.color = c;
+            SetCrosshairAlpha(1f);
         }
         
+        private void HandleWaterStillText(WaterStill waterStill)
+        {
+            switch (waterStill.CurrentState)
+            {
+                case WaterStill.WaterStillState.Idle:
+                case WaterStill.WaterStillState.CollectingFiber:
+                    _crosshairImage.sprite = _fiberSprite;
+                    ShowTextAboveCrosshair(
+                        $"Right Click <br> Insert Fiber ({waterStill.CurrentFiberStorage}/{waterStill.FiberNeededPerWaterUnit})"
+                    );
+                    break;
+
+                case WaterStill.WaterStillState.ProcessingWater:
+                    _crosshairImage.sprite = _defaultSprite;
+                    ShowTextAboveCrosshair("Processing Water...");
+                    break;
+
+                case WaterStill.WaterStillState.WaterReady:
+                    _crosshairImage.sprite = _defaultSprite;
+                    ShowTextAboveCrosshair("Right Click <br> Drink Water");
+                    break;
+            }
+        }
+
         private void HideInteractableInfo()
         {
             _crosshairImage.sprite = _defaultSprite;
-            _campfireInstructions.SetActive(false);
-
-            Color c = _crosshairImage.color;
-            c.a = 0.25f;
-            _crosshairImage.color = c;
+            HideTextAboveCrosshair();
+            SetCrosshairAlpha(0.25f);
         }
 
         private void CheckForHammer(int arg1, InventoryItem item)
@@ -234,6 +262,25 @@ namespace CliffGame
         private void HideBuildInstructionTexts()
         {
             _buildInstructionTextHolder.SetActive(false);
+        }
+
+        private void ShowTextAboveCrosshair(string text)
+        {
+            _textAboveCrosshair.SetActive(true);
+            _textAboveCrosshairLabel.text = text;
+        }
+
+        private void HideTextAboveCrosshair()
+        {
+            _textAboveCrosshair.SetActive(false);
+            _textAboveCrosshairLabel.text = string.Empty;
+        }
+
+        private void SetCrosshairAlpha(float alpha)
+        {
+            Color c = _crosshairImage.color;
+            c.a = alpha;
+            _crosshairImage.color = c;
         }
 
         private bool IsTimerActive(Timer timer)

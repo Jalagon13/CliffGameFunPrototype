@@ -6,7 +6,7 @@ namespace CliffGame
 {
     public class WaterStill : Resource
     {
-        private enum WaterStillState
+        public enum WaterStillState
         {
             Idle,
             CollectingFiber,
@@ -16,10 +16,14 @@ namespace CliffGame
 
         [Header("Water Still Settings")]
         [SerializeField] private float _waterUnitGenerationTimeInSec = 30f;
+        
         [SerializeField] private int _fiberNeededPerWaterUnit = 5;
+        public int FiberNeededPerWaterUnit => _fiberNeededPerWaterUnit;
+        
         [SerializeField] private int _thirstReplenished = 35;
         [SerializeField] private ItemSO _fiberItemSO;
         [SerializeField] private GameObject _fiberModel;
+        [SerializeField] private GameObject _waterModel;
         [SerializeField] private float _fiberScatterRange = 0.2f;
 
         [Header("Processing Water Visuals")]
@@ -31,8 +35,12 @@ namespace CliffGame
         private Vector3 _fiberModelOriginalLocalPosition;
         private readonly List<GameObject> _fiberModelDuplicates = new List<GameObject>();
         private int _currentFiberStorage;
+        public int CurrentFiberStorage => _currentFiberStorage;
+        
         private Timer _waterExtractionTimer;
+        
         private WaterStillState _currentState = WaterStillState.Idle;
+        public WaterStillState CurrentState => _currentState;
 
         private Tween _processingScaleTween;
 
@@ -45,6 +53,8 @@ namespace CliffGame
                 _fiberModelOriginalLocalPosition = _fiberModel.transform.localPosition;
                 _fiberModel.SetActive(false);
             }
+
+            _waterModel.SetActive(false);
         }
 
         private void Update()
@@ -132,11 +142,13 @@ namespace CliffGame
         private void OnWaterExtractionFinished(object sender, System.EventArgs e)
         {
             Debug.Log("[WaterStill] Water extraction finished — water ready to drink");
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SplashSFX, transform.position);
 
             _waterExtractionTimer.OnTimerEnd -= OnWaterExtractionFinished;
             _waterExtractionTimer = null;
             StopProcessingVisuals();
             ResetFiberVisuals();
+            _waterModel.SetActive(true);
             _currentFiberStorage = 0;
             _currentState = WaterStillState.WaterReady;
         }
@@ -148,8 +160,10 @@ namespace CliffGame
             // This assumes your thirst system listens to this interaction
             // or that Resource handles drinking elsewhere
             ThirstManager.Instance.AddThirst(_thirstReplenished);
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.GulpSFX, transform.position);
             StopProcessingVisuals();
             ResetFiberVisuals();
+            _waterModel.SetActive(false);
             _currentState = WaterStillState.Idle;
         }
 

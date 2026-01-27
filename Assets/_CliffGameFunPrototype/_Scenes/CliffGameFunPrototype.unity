@@ -1665,6 +1665,13 @@ MonoBehaviour:
       Data3: -234443111
       Data4: 617818655
     Path: event:/Player/SFX_Munch
+  <GulpSFX>k__BackingField:
+    Guid:
+      Data1: 55947062
+      Data2: 1178925725
+      Data3: -247999328
+      Data4: 1576845314
+    Path: event:/Player/SFX_Gulp
   <JumpSFX>k__BackingField:
     Guid:
       Data1: -1560920118
@@ -1798,6 +1805,13 @@ MonoBehaviour:
       Data3: -314509420
       Data4: -994794170
     Path: event:/Ambience/AMB_Campfire_Crackling
+  <SplashSFX>k__BackingField:
+    Guid:
+      Data1: -1479717860
+      Data2: 1249933947
+      Data3: -990760782
+      Data4: 49015649
+    Path: event:/Resources/SplashSFX
   <BirdHurtSFX>k__BackingField:
     Guid:
       Data1: 220080990
@@ -4196,9 +4210,11 @@ MonoBehaviour:
   _hammerSprite: {fileID: 1204406958, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   _spearSprite: {fileID: 904965497, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   _rawBirdSprite: {fileID: -2345204063719780061, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
+  _fiberSprite: {fileID: 393603439, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   _buildInstructionTextHolder: {fileID: 649473752}
   _repairInstructions: {fileID: 683403628}
-  _campfireInstructions: {fileID: 997604445}
+  _textAboveCrosshair: {fileID: 997604445}
+  _textAboveCrosshairLabel: {fileID: 997604447}
 --- !u!1001 &534378893
 PrefabInstance:
   m_ObjectHideFlags: 0

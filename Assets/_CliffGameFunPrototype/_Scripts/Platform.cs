@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace CliffGame
 {
-    public class Platform : MonoBehaviour, IInteractable
+    public class Platform : MonoBehaviour
     {
         [SerializeField] private bool _isStartingPlatform = false;
         [SerializeField] private int _hitPoints = 100;
@@ -32,22 +32,12 @@ namespace CliffGame
         [SerializeField] private Material[] _crackMaterialsArray; // light, medium, heavy, very heavy
         [SerializeField] private GameObject[] _crackModelsArray;  // light, medium, heavy, very heavy
 
-        [SerializeField] private int _repairAmount = 20;
-        [SerializeField] private InventoryItem[] _itemsNeededForRepairing;
-
         private float _currentHP;
         public int CurrentHitPoints => Mathf.RoundToInt(_currentHP);
 
         private float _hpPercent;
         private int _lastCrackState = -1;
         public bool IsRattling => _rattleVFX.IsPlaying;
-
-        public GameObject GameObject => gameObject;
-
-        [SerializeField] private float _repairDuration = 1f;
-        public float InteractionTime => _repairDuration;
-
-        public ToolType BreakToolType => throw new NotImplementedException();
 
         private void Awake()
         {
@@ -103,9 +93,6 @@ namespace CliffGame
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
             Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
         }
-
-        public void OnInteractWith() { }
-        public void OnHitWithTool() { }
 
         private void UpdateCrackDecals()
         {

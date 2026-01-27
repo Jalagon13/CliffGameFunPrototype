@@ -15,6 +15,8 @@ namespace CliffGame
         [SerializeField]
         private LayerMask _interactLayer, _buildLayer;
 
+        private int _playerLayer;
+
         private IInteractable _currentlyHoveredInteractable;
         public IInteractable CurrentlyHoveredInteractable => _currentlyHoveredInteractable;
         
@@ -24,6 +26,7 @@ namespace CliffGame
         private void Awake()
         {
             Instance = this;
+            _playerLayer = LayerMask.NameToLayer("Player");
         }
         
         private void Start()
@@ -98,10 +101,21 @@ namespace CliffGame
 
         private bool SearchForInteractable()
         {
-            RaycastHit hit;
-            if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance, _interactLayer))
+            RaycastHit[] hits = Physics.RaycastAll(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, _interactSearchDistance, _interactLayer);
+
+            if (hits.Length == 0)
             {
-                // Try to get the IInteractable component from the hit collider
+                _currentlyHoveredInteractable = null;
+                return false;
+            }
+
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            foreach (var hit in hits)
+            {
+                if (hit.collider.gameObject.layer == _playerLayer)
+                    continue;
+
                 _currentlyHoveredInteractable = hit.collider.GetComponent<IInteractable>();
                 return _currentlyHoveredInteractable != null;
             }
@@ -110,14 +124,25 @@ namespace CliffGame
             return false;
         }
         
-        private bool SearchForBuildable() // Maybe I'll use this later
+        private bool SearchForBuildable()
         {
-            RaycastHit hit;
-            if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance, _buildLayer))
+            RaycastHit[] hits = Physics.RaycastAll(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, _interactSearchDistance, _buildLayer);
+
+            if (hits.Length == 0)
             {
-                // Try to get the IInteractable component from the hit collider
+                _currentlyHoveredBuildable = null;
+                return false;
+            }
+
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+            foreach (var hit in hits)
+            {
+                if (hit.collider.gameObject.layer == _playerLayer)
+                    continue;
+
                 _currentlyHoveredBuildable = hit.collider.gameObject;
-                return _currentlyHoveredBuildable != null;
+                return true;
             }
 
             _currentlyHoveredBuildable = null;

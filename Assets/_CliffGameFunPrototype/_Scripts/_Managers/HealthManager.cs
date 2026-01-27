@@ -48,7 +48,7 @@ namespace CliffGame
 
         private void Update()
         {
-            if (HungerManager.Instance.CurrentHungerState == HungerState.Hungry || ThirstManager.Instance.CurrentThirstState == ThirstState.Thirsty)
+            if (HungerManager.Instance.CurrentHungerState == HungerState.Starving || ThirstManager.Instance.CurrentThirstState == ThirstState.Thirsty)
             {
                 _healthStat.UpdateStat(Time.deltaTime, true);
             }

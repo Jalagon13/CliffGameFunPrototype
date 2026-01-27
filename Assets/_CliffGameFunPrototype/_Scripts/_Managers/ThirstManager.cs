@@ -8,23 +8,33 @@ namespace CliffGame
 {
     public enum ThirstState
     {
-        Full,   // When the player has a thirst higher than 0
-        Thirsty  // When thirst is 0
+        Fine,          // Thirst above the low-thirst threshold
+        Thirsty,       // Thirst below the threshold but above 0
+        Dehydrated     // Thirst is 0
     }
 
     public class ThirstManager : MonoBehaviour
     {
         public static ThirstManager Instance { get; private set; }
 
+        public event Action OnThirstPangExecuted;
+
         [SerializeField]
         private int _maxThirst = 100;
         [SerializeField]
         private float _thirstDrainPerSecond = 0.1f;
 
+        [SerializeField, Range(0f, 1f)]
+        private float _lowThirstThresholdPercent = 0.3f;
+
+        [SerializeField]
+        private float _thirstPangIntervalSeconds = 10f;
+
         private PlayerStat _thirstStat;
         public int CurrentThirst => _thirstStat.Current;
 
         public ThirstState CurrentThirstState { get; private set; }
+        private ThirstState _previousThirstState;
 
         public event Action<int, int> OnThirstChanged; // current, max
         private Timer _drinkTimer;
@@ -39,14 +49,8 @@ namespace CliffGame
             Instance = this;
 
             _thirstStat = new PlayerStat(_maxThirst, _thirstDrainPerSecond, 0f);
-            _thirstStat.OnValueChanged += (current, max) =>
-            {
-                OnThirstChanged?.Invoke(current, max);
-                if (current <= 0)
-                    CurrentThirstState = ThirstState.Thirsty;
-                else
-                    CurrentThirstState = ThirstState.Full;
-            };
+            _thirstStat.OnValueChanged += HandleThirstValueChanged;
+            _previousThirstState = CurrentThirstState;
         }
 
         private IEnumerator Start()
@@ -60,6 +64,11 @@ namespace CliffGame
 
         private void OnDestroy()
         {
+            CancelInvoke(nameof(ExecuteThirstPang));
+            if (_thirstStat != null)
+            {
+                _thirstStat.OnValueChanged -= HandleThirstValueChanged;
+            }
             Player.Instance.OnPlayerRespawn -= OnRespawn;
             GameInput.Instance.OnSecondaryInteract -= TryToDrink;
         }
@@ -80,6 +89,59 @@ namespace CliffGame
                 }
 
                 _drinkTimer.Tick(Time.deltaTime);
+            }
+        }
+
+        private void ExecuteThirstPang()
+        {
+            if (CurrentThirstState == ThirstState.Thirsty || CurrentThirstState == ThirstState.Dehydrated)
+            {
+                OnThirstPangExecuted?.Invoke();
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ThirstPangSFX, Player.Instance.transform.position);
+            }
+        }
+
+        private void HandleThirstValueChanged(int current, int max)
+        {
+            OnThirstChanged?.Invoke(current, max);
+
+            float percent = max > 0 ? (float)current / max : 0f;
+
+            ThirstState newState;
+
+            if (current <= 0)
+            {
+                newState = ThirstState.Dehydrated;
+            }
+            else if (percent <= _lowThirstThresholdPercent)
+            {
+                newState = ThirstState.Thirsty;
+            }
+            else
+            {
+                newState = ThirstState.Fine;
+            }
+
+            if (newState != CurrentThirstState)
+            {
+                Debug.Log($"[ThirstManager] Thirst state changed: {CurrentThirstState} → {newState} (Current: {current}/{max})");
+
+                // Stop thirst pangs when leaving Thirsty
+                if (CurrentThirstState == ThirstState.Thirsty && newState == ThirstState.Fine)
+                {
+                    CancelInvoke(nameof(ExecuteThirstPang));
+                    Debug.Log("[ThirstManager] Stopped thirst pangs");
+                }
+
+                // Start thirst pangs when entering Thirsty
+                if (newState == ThirstState.Thirsty)
+                {
+                    InvokeRepeating(nameof(ExecuteThirstPang), 0.1f, _thirstPangIntervalSeconds);
+                    Debug.Log("[ThirstManager] Started thirst pangs");
+                }
+
+                _previousThirstState = CurrentThirstState;
+                CurrentThirstState = newState;
             }
         }
 
@@ -140,18 +202,13 @@ namespace CliffGame
 
             // Consume the drink
             InventoryManager.Instance.RemoveItem(_currentConsumable, 1);
-            AudioManager.Instance.PlayOneShot(
-                FMODEvents.Instance.EatingSFX,
-                Player.Instance.transform.position
-            );
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.EatingSFX, Player.Instance.transform.position);
             AddThirst(_currentConsumable.HealAmount);
 
             // Check if player is still holding drink input
             bool stillHoldingDrink = GameInput.Instance.IsHoldingDownSecondaryInteract;
             // Check if the same consumable is still selected and available
-            bool stillHasFoodSelected =
-                InventoryManager.Instance.HasSelectedItem &&
-                InventoryManager.Instance.SelectedInventoryItem.Item == _currentConsumable;
+            bool stillHasFoodSelected = InventoryManager.Instance.HasSelectedItem && InventoryManager.Instance.SelectedInventoryItem.Item == _currentConsumable;
 
             if (stillHoldingDrink && stillHasFoodSelected)
             {

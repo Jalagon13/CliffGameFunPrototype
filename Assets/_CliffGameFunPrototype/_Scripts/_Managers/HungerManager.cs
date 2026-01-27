@@ -8,12 +8,15 @@ namespace CliffGame
 {
     public enum HungerState
     {
-        Full,   // When the player has a hunger higher than 0
-        Hungry  // When hunger is 0
+        Fine,        // Hunger above the low-hunger threshold
+        Hungry,      // Hunger below the threshold but above 0
+        Starving     // Hunger is 0
     }
 
     public class HungerManager : MonoBehaviour
     {
+        public event Action OnHungerPangExecuted;
+    
         public static HungerManager Instance { get; private set; }
 
         [SerializeField]
@@ -21,10 +24,17 @@ namespace CliffGame
         [SerializeField]
         private float _hungerDrainPerSecond = 0.1f;
 
+        [SerializeField, Range(0f, 1f)]
+        private float _lowHungerThresholdPercent = 0.3f;
+
+        [SerializeField]
+        private float _stomachGrowlIntervalSeconds = 10f;
+
         private PlayerStat _hungerStat;
         public int CurrentHunger => _hungerStat.Current;
 
         public HungerState CurrentHungerState { get; private set; }
+        private HungerState _previousHungerState;
 
         public event Action<int, int> OnHungerChanged; // current, max
         private Timer _eatTimer;
@@ -37,16 +47,10 @@ namespace CliffGame
         private void Awake()
         {
             Instance = this;
+            _previousHungerState = CurrentHungerState;
 
             _hungerStat = new PlayerStat(_maxHunger, _hungerDrainPerSecond, 0f);
-            _hungerStat.OnValueChanged += (current, max) =>
-            {
-                OnHungerChanged?.Invoke(current, max);
-                if (current <= 0)
-                    CurrentHungerState = HungerState.Hungry;
-                else
-                    CurrentHungerState = HungerState.Full;
-            };
+            _hungerStat.OnValueChanged += HandleHungerValueChanged;
         }
 
         private IEnumerator Start()
@@ -60,6 +64,11 @@ namespace CliffGame
 
         private void OnDestroy()
         {
+            CancelInvoke(nameof(ExecuteHungerPang));
+            if (_hungerStat != null)
+            {
+                _hungerStat.OnValueChanged -= HandleHungerValueChanged;
+            }
             Player.Instance.OnPlayerRespawn -= OnRespawn;
             GameInput.Instance.OnSecondaryInteract -= TryToEat;
         }
@@ -80,6 +89,59 @@ namespace CliffGame
                 }
 
                 _eatTimer.Tick(Time.deltaTime);
+            }
+        }
+
+        private void ExecuteHungerPang()
+        {
+            if (CurrentHungerState == HungerState.Hungry || CurrentHungerState == HungerState.Starving)
+            {
+                OnHungerPangExecuted?.Invoke();
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StomachGrowlSFX, Player.Instance.transform.position);
+            }
+        }
+
+        private void HandleHungerValueChanged(int current, int max)
+        {
+            OnHungerChanged?.Invoke(current, max);
+
+            float percent = max > 0 ? (float)current / max : 0f;
+
+            HungerState newState;
+
+            if (current <= 0)
+            {
+                newState = HungerState.Starving;
+            }
+            else if (percent <= _lowHungerThresholdPercent)
+            {
+                newState = HungerState.Hungry;
+            }
+            else
+            {
+                newState = HungerState.Fine;
+            }
+
+            if (newState != CurrentHungerState)
+            {
+                Debug.Log($"[HungerManager] Hunger state changed: {CurrentHungerState} → {newState} (Current: {current}/{max})");
+
+                // Stop hunger pangs when leaving Hungry state
+                if (CurrentHungerState == HungerState.Hungry && newState == HungerState.Fine)
+                {
+                    CancelInvoke(nameof(ExecuteHungerPang));
+                    Debug.Log("[HungerManager] Stopped hunger pangs");
+                }
+
+                // Start hunger pangs when entering Hungry state
+                if (newState == HungerState.Hungry)
+                {
+                    InvokeRepeating(nameof(ExecuteHungerPang), 0.1f, _stomachGrowlIntervalSeconds);
+                    Debug.Log("[HungerManager] Started hunger pangs");
+                }
+
+                _previousHungerState = CurrentHungerState;
+                CurrentHungerState = newState;
             }
         }
 

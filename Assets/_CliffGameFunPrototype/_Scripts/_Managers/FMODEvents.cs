@@ -12,6 +12,8 @@ namespace CliffGame
         [field: SerializeField] public EventReference ToolSwingSFX { get; private set; }
         [field: SerializeField] public EventReference EatingSFX { get; private set; }
         [field: SerializeField] public EventReference GulpSFX { get; private set; }
+        [field: SerializeField] public EventReference StomachGrowlSFX { get; private set; }
+        [field: SerializeField] public EventReference ThirstPangSFX { get; private set; }
 
         [field: Header("Walking SFX")]
         [field: SerializeField] public EventReference JumpSFX { get; private set; }

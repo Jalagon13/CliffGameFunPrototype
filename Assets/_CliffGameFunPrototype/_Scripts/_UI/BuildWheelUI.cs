@@ -13,7 +13,7 @@ namespace CliffGame
         [SerializeField] private float _defaultScale = 1f;
         [SerializeField] private float _selectedScale = 1.5f;
         [SerializeField] private float _disappearDuration = 0.2f;
-        [SerializeField] private BuildOption _startingBuildOption = BuildOption.Floor;
+        [SerializeField] private BuildOption _startingBuildOption = BuildOption.Platform;
         [SerializeField] private GameObject _buildOptions;
     
         private GameObject _buildMenuUI;

@@ -5,8 +5,9 @@ namespace CliffGame
 {
     public enum BuildOption
     {
-        Wall,
-        Floor,
+        Fence,
+        Platform,
+        Stairs,
         Destroy,
         Repair
     }
@@ -21,11 +22,14 @@ namespace CliffGame
             Debug.Log($"Selecting Option {_buildOption}");
             switch (_buildOption)
             {
-                case BuildOption.Wall:
-                    BuildingManager.Instance.SetBuildType(SelectedBuildType.Wall);
+                case BuildOption.Fence:
+                    BuildingManager.Instance.SetBuildType(SelectedBuildType.Fence);
                     break;
-                case BuildOption.Floor:
-                    BuildingManager.Instance.SetBuildType(SelectedBuildType.Floor);
+                case BuildOption.Platform:
+                    BuildingManager.Instance.SetBuildType(SelectedBuildType.Platform);
+                    break;
+                case BuildOption.Stairs:
+                    BuildingManager.Instance.SetBuildType(SelectedBuildType.Stairs);
                     break;
                 case BuildOption.Destroy:
                     BuildingManager.Instance.SetBuildType(SelectedBuildType.DestroyMode);

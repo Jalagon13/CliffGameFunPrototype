@@ -21,7 +21,10 @@ namespace CliffGame
         public bool IsConnectedToFloor = false;
 
         [HideInInspector]
-        public bool IsConnectedToWall = false;
+        public bool IsConnectedToFence = false;
+
+        [HideInInspector]
+        public bool IsConnectedToStairs = false;
 
         [HideInInspector]
         public bool CanConnectTo = true;
@@ -31,7 +34,10 @@ namespace CliffGame
 
         [SerializeField]
         private bool _canConnectToWall = true;
-        
+
+        [SerializeField]
+        private bool _canConnectToStairs = true;
+
         private SphereCollider _connectorCollider;
         private Platform _floor;
         
@@ -49,7 +55,7 @@ namespace CliffGame
             _connectorCollider = GetComponent<SphereCollider>();
 
             // Red: Can no longer be connected at all, Green: Can connect to both wall and floor, Yellow: Can only connect to floor, Blue: Can only connect to wall
-            Gizmos.color = IsConnectedToFloor ? (IsConnectedToWall ? Color.red : Color.blue) : (!IsConnectedToWall ? Color.green : Color.yellow);
+            Gizmos.color = IsConnectedToFloor ? ((IsConnectedToFence || IsConnectedToStairs) ? Color.red : Color.blue) : ((!IsConnectedToFence || !IsConnectedToStairs) ? Color.green : Color.yellow);
             Gizmos.DrawWireSphere(transform.position, _connectorCollider.radius);
         }
 
@@ -58,7 +64,8 @@ namespace CliffGame
             Collider[] colliders = Physics.OverlapSphere(transform.position, _connectorCollider.radius);
 
             IsConnectedToFloor = !_canConnectToFloor;
-            IsConnectedToWall = !_canConnectToWall;
+            IsConnectedToFence = !_canConnectToWall;
+            IsConnectedToStairs = !_canConnectToStairs;
 
             foreach (Collider collider in colliders)
             {
@@ -70,14 +77,19 @@ namespace CliffGame
                 {
                     Connector foundConnector = collider.GetComponent<Connector>();
 
-                    if (foundConnector.ConnectorParentType == SelectedBuildType.Floor)
+                    if (foundConnector.ConnectorParentType == SelectedBuildType.Platform)
                     {
                         IsConnectedToFloor = true;
                     }
 
-                    if (foundConnector.ConnectorParentType == SelectedBuildType.Wall)
+                    if (foundConnector.ConnectorParentType == SelectedBuildType.Fence)
                     {
-                        IsConnectedToWall = true;
+                        IsConnectedToFence = true;
+                    }
+
+                    if (foundConnector.ConnectorParentType == SelectedBuildType.Stairs)
+                    {
+                        IsConnectedToStairs = true;
                     }
 
                     if (rootCall)
@@ -89,12 +101,12 @@ namespace CliffGame
 
             CanConnectTo = true;
 
-            if (IsConnectedToFloor && IsConnectedToWall)
+            if (IsConnectedToFloor && IsConnectedToFence && IsConnectedToStairs)
             {
                 CanConnectTo = false;
             }
 
-            IsNotConnectedToAnything = !IsConnectedToFloor && !IsConnectedToWall;
+            IsNotConnectedToAnything = !IsConnectedToFloor && !IsConnectedToFence && !IsConnectedToStairs;
             
             if(CheckIfBuildingIsNotConntectedToAnything())
             {

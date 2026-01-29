@@ -7,6 +7,7 @@ namespace CliffGame
 
     public class BirdSpawner : MonoBehaviour
     {
+        [SerializeField] private bool _canSpawnBirds = true;
         [SerializeField] private Terrain _terrain;
         [SerializeField] private BirdResource _birdResourcePrefab;
         [SerializeField] private int _maxSparrows = 10;
@@ -25,6 +26,8 @@ namespace CliffGame
 
         private void Tick()
         {
+            if (!_canSpawnBirds) return;
+        
             _activeSparrows.RemoveAll(b => b == null);
 
             if (_activeSparrows.Count >= _maxSparrows)

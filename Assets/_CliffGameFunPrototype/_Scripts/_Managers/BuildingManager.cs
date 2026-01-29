@@ -8,8 +8,9 @@ namespace CliffGame
     [Serializable]
     public enum SelectedBuildType
     {
-        Floor,
-        Wall,
+        Platform,
+        Fence,
+        Stairs,
         DestroyMode,
         RepairMode,
     }
@@ -25,6 +26,7 @@ namespace CliffGame
         [Header("Build Objects")]
         [SerializeField] private List<GameObject> _floorObjects = new();
         [SerializeField] private List<GameObject> _wallObjects = new();
+        [SerializeField] private List<GameObject> _stairsObjects = new();
 
         [Header("Build Settings")]
         [field: SerializeField] 
@@ -91,21 +93,30 @@ namespace CliffGame
         {
             if(!_isHoldingHammar) return;
         
-            if ((_currentBuildType == SelectedBuildType.Floor || _currentBuildType == SelectedBuildType.Wall) && Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.PauseMenuOpen)
+            if ((_currentBuildType == SelectedBuildType.Platform || _currentBuildType == SelectedBuildType.Fence || _currentBuildType == SelectedBuildType.Stairs) && 
+                Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.PauseMenuOpen)
             {
-                GhostBuild();
+                HandleGhostBuild();
                 
                 switch(_currentBuildType)
                 {
-                    case SelectedBuildType.Floor:
+                    case SelectedBuildType.Platform:
                     if (GameInput.Instance.IsHoldingDownPrimaryInteract)
                     {
                         PlaceBuild();
                     }
                     break;
 
-                    case SelectedBuildType.Wall:
+                    case SelectedBuildType.Fence:
                     if(_clickedThisFrame)
+                    {
+                        PlaceBuild();
+                        _clickedThisFrame = false;
+                    }
+                    break;
+
+                    case SelectedBuildType.Stairs:
+                    if (_clickedThisFrame)
                     {
                         PlaceBuild();
                         _clickedThisFrame = false;
@@ -143,12 +154,16 @@ namespace CliffGame
         {
             switch (buildType)
             {
-                case SelectedBuildType.Floor:
-                    _currentBuildType = SelectedBuildType.Floor;
+                case SelectedBuildType.Platform:
+                    _currentBuildType = SelectedBuildType.Platform;
                     ResetGhosts();
                     break;
-                case SelectedBuildType.Wall:
-                    _currentBuildType = SelectedBuildType.Wall;
+                case SelectedBuildType.Fence:
+                    _currentBuildType = SelectedBuildType.Fence;
+                    ResetGhosts();
+                    break;
+                case SelectedBuildType.Stairs:
+                    _currentBuildType = SelectedBuildType.Stairs;
                     ResetGhosts();
                     break;
                 case SelectedBuildType.DestroyMode:
@@ -205,7 +220,7 @@ namespace CliffGame
 
         #region Building
 
-        private void GhostBuild()
+        private void HandleGhostBuild()
         {
             GameObject currentBuild = GetCurrentBuild();
             CreateGhostPrefab(currentBuild);
@@ -230,6 +245,7 @@ namespace CliffGame
                 {
                     connector.UpdateConnectors(true);
                 }
+                
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StructureBuiltSFX, transform.position);
                 InventoryManager.Instance.RemoveItems(_itemsNeededForBuilding);
             }
@@ -239,10 +255,12 @@ namespace CliffGame
         {
             switch (_currentBuildType)
             {
-                case SelectedBuildType.Floor:
+                case SelectedBuildType.Platform:
                     return _floorObjects[_currentBuildIndex];
-                case SelectedBuildType.Wall:
+                case SelectedBuildType.Fence:
                     return _wallObjects[_currentBuildIndex];
+                case SelectedBuildType.Stairs:
+                    return _stairsObjects[_currentBuildIndex];
                 default:
                     return null;
             }
@@ -319,7 +337,7 @@ namespace CliffGame
                 }
             }
 
-            if (bestConnector == null || _currentBuildType == SelectedBuildType.Floor && bestConnector.IsConnectedToFloor || _currentBuildType == SelectedBuildType.Wall && bestConnector.IsConnectedToWall)
+            if (bestConnector == null || _currentBuildType == SelectedBuildType.Platform && bestConnector.IsConnectedToFloor || _currentBuildType == SelectedBuildType.Fence && bestConnector.IsConnectedToFence || _currentBuildType == SelectedBuildType.Stairs && bestConnector.IsConnectedToStairs)
             {
                 // We have nothing to connect to
                 if (_lastSnappedConnector != null)
@@ -327,6 +345,7 @@ namespace CliffGame
                     OnGhostUnsnap?.Invoke();
                     _lastSnappedConnector = null;
                 }
+                
                 GhostifyModel(_modelParent, _ghostMaterialInvisible);
                 _isGhostInValidPosition = false;
                 return;
@@ -335,12 +354,12 @@ namespace CliffGame
             SnapGhostPrefabToConnector(bestConnector);
         }
 
-        private void SnapGhostPrefabToConnector(Connector connector)
+        private void SnapGhostPrefabToConnector(Connector bestConnector)
         {
             if(_ghostBuildGameObject == null) return;
         
             // Find the correct connector on the ghost prefab to snap to, and snap it to it
-            Transform ghostConnector = FindSnapConnector(connector.transform, _ghostBuildGameObject.transform.GetChild(1));
+            Transform ghostConnector = FindCorrectSnapConnectorOnGhost(bestConnector.transform, _ghostBuildGameObject.transform.GetChild(1));
             
             if(ghostConnector == null)
             {
@@ -349,21 +368,41 @@ namespace CliffGame
                 return;
             }
             
-            _ghostBuildGameObject.transform.position = connector.transform.position - (ghostConnector.position - _ghostBuildGameObject.transform.position);
+            _ghostBuildGameObject.transform.position = bestConnector.transform.position - (ghostConnector.position - _ghostBuildGameObject.transform.position);
 
             // Trigger OnGhostSnap action only when snapping to a new connector
-            if (_lastSnappedConnector != connector)
+            if (_lastSnappedConnector != bestConnector)
             {
                 OnGhostSnap?.Invoke();
-                _lastSnappedConnector = connector;
+                _lastSnappedConnector = bestConnector;
             }
 
-            if (_currentBuildType == SelectedBuildType.Wall)
+            if (_currentBuildType == SelectedBuildType.Fence || _currentBuildType == SelectedBuildType.Stairs)
             {
-                // Will rotate the wall to match the rotation of the connector it's snapping to
+                // First: rotate to match the connector
                 Quaternion newRotation = _ghostBuildGameObject.transform.rotation;
-                newRotation.eulerAngles = new Vector3(newRotation.eulerAngles.x, connector.transform.rotation.eulerAngles.y, newRotation.eulerAngles.z);
+                newRotation.eulerAngles = new Vector3(
+                    newRotation.eulerAngles.x,
+                    bestConnector.transform.rotation.eulerAngles.y,
+                    newRotation.eulerAngles.z
+                );
                 _ghostBuildGameObject.transform.rotation = newRotation;
+
+                // Second: ensure the forward faces away from the player camera
+                Vector3 cameraForward = Camera.main.transform.forward;
+                cameraForward.y = 0f;
+                cameraForward.Normalize();
+
+                Vector3 ghostForward = _ghostBuildGameObject.transform.forward;
+                ghostForward.y = 0f;
+                ghostForward.Normalize();
+
+                // If ghost is facing generally the opposite direction from the camera forward vector, flip it
+                float dot = Vector3.Dot(ghostForward, cameraForward);
+                if (dot < 0f)
+                {
+                    _ghostBuildGameObject.transform.Rotate(0f, 180f, 0f);
+                }
             }
 
             if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding))
@@ -377,9 +416,9 @@ namespace CliffGame
             _isGhostInValidPosition = true;
         }
 
-        private Transform FindSnapConnector(Transform snapConnector, Transform ghostConnectorParent)
+        private Transform FindCorrectSnapConnectorOnGhost(Transform bestConnectorTf, Transform ghostConnectorParent)
         {
-            ConnectorPosition oppositeConnectorTag = GetOppositePosition(snapConnector.GetComponent<Connector>());
+            ConnectorPosition oppositeConnectorTag = GetBestGhostConnector(bestConnectorTf.GetComponent<Connector>());
 
             foreach (Connector connector in ghostConnectorParent.GetComponentsInChildren<Connector>())
             {
@@ -392,20 +431,33 @@ namespace CliffGame
             return null;
         }
 
-        private ConnectorPosition GetOppositePosition(Connector connector)
+        // Important for choosing which connector on the ghost prefab to snap to the best connector found
+        private ConnectorPosition GetBestGhostConnector(Connector bestConnector)
         {
-            ConnectorPosition position = connector.ConnectorPosition;
+            ConnectorPosition position = bestConnector.ConnectorPosition;
 
-            // If we trying to build a wall and looking at a floor GO, the only thing the wall can connect to is the bottom connector of the floor
-            if (_currentBuildType == SelectedBuildType.Wall && connector.ConnectorParentType == SelectedBuildType.Floor)
+            // If we trying to build a fence and looking at a floor GO, the only thing the fence can connect to is the bottom connector of the floor
+            if (_currentBuildType == SelectedBuildType.Fence && bestConnector.ConnectorParentType == SelectedBuildType.Platform)
             {
                 return ConnectorPosition.Bottom;
             }
-
-            // If we are trying to build a floor on the top section of a wall, make sure to return the correct position
-            if (_currentBuildType == SelectedBuildType.Floor && connector.ConnectorParentType == SelectedBuildType.Wall && connector.ConnectorPosition == ConnectorPosition.Top)
+            else if(_currentBuildType == SelectedBuildType.Stairs && (bestConnector.ConnectorParentType == SelectedBuildType.Platform || bestConnector.ConnectorParentType == SelectedBuildType.Stairs))
             {
-                if (connector.transform.root.rotation.y == 0)
+                switch(bestConnector.ConnectorParentType)
+                {
+                    case SelectedBuildType.Platform:
+                        return ConnectorPosition.Bottom;
+                    case SelectedBuildType.Stairs:
+                        return ConnectorPosition.Bottom;
+                }
+                
+                return ConnectorPosition.Bottom;
+            }
+
+            // If we are trying to build a platform on the top section of a stair, make sure to return the correct position
+            if (_currentBuildType == SelectedBuildType.Platform && bestConnector.ConnectorParentType == SelectedBuildType.Stairs && bestConnector.ConnectorPosition == ConnectorPosition.Top)
+            {
+                if (bestConnector.transform.root.rotation.y == 0)
                 {
                     return GetConnectorClosestToPlayer(true);
                 }
@@ -437,11 +489,11 @@ namespace CliffGame
 
             if (topBottom)
             {
-                return cameraTransform.position.z >= _ghostBuildGameObject.transform.position.z ? ConnectorPosition.Bottom : ConnectorPosition.Top;
+                return cameraTransform.position.z >= _ghostBuildGameObject.transform.position.z ? ConnectorPosition.Top : ConnectorPosition.Bottom;
             }
             else
             {
-                return cameraTransform.position.x >= _ghostBuildGameObject.transform.position.x ? ConnectorPosition.Left : ConnectorPosition.Right;
+                return cameraTransform.position.x >= _ghostBuildGameObject.transform.position.x ? ConnectorPosition.Right : ConnectorPosition.Left;
             }
         }
 
@@ -483,10 +535,10 @@ namespace CliffGame
 
             if (foundValidHit)
             {
-                // Only place walls on floors
-                if (_currentBuildType == SelectedBuildType.Wall)
+                // Only place fences on floors
+                if (_currentBuildType == SelectedBuildType.Fence || _currentBuildType == SelectedBuildType.Stairs)
                 {
-                    // If we try to place a wall, but haven't snapped it to anything, we won't be able to place it
+                    // If we try to place a fence or stair, but haven't snapped it to anything, we won't be able to place it
                     GhostifyModel(_modelParent, _ghostMaterialInvisible);
                     _isGhostInValidPosition = false;
                     return;

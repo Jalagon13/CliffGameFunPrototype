@@ -107,7 +107,7 @@ namespace CliffGame
 
                 _repairInstructions.SetActive(true);
             }
-            else if(type == SelectedBuildType.Wall || type == SelectedBuildType.Floor)
+            else if(type == SelectedBuildType.Fence || type == SelectedBuildType.Platform)
             {
                 PopulateBuildReqs();
                 _repairInstructions.SetActive(false);
@@ -225,7 +225,7 @@ namespace CliffGame
 
                     _repairInstructions.SetActive(true);
                 }
-                else if(BuildingManager.Instance.CurrentBuildType == SelectedBuildType.Wall || BuildingManager.Instance.CurrentBuildType == SelectedBuildType.Floor)
+                else if(BuildingManager.Instance.CurrentBuildType == SelectedBuildType.Fence || BuildingManager.Instance.CurrentBuildType == SelectedBuildType.Platform)
                 {
                     PopulateBuildReqs();
                 }

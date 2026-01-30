@@ -183,6 +183,15 @@ namespace CliffGame
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CycleBuildVariant"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba2a38ef-ee35-4452-b2a0-2eb3cbd1a16d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -502,6 +511,17 @@ namespace CliffGame
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""TogglePauseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""23e75d63-39a5-4cf9-b4cb-e3f4a74499ea"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""CycleBuildVariant"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1207,6 +1227,7 @@ namespace CliffGame
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
             m_Player_TogglePauseMenu = m_Player.FindAction("TogglePauseMenu", throwIfNotFound: true);
+            m_Player_CycleBuildVariant = m_Player.FindAction("CycleBuildVariant", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
@@ -1311,6 +1332,7 @@ namespace CliffGame
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Sprint;
         private readonly InputAction m_Player_TogglePauseMenu;
+        private readonly InputAction m_Player_CycleBuildVariant;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -1362,6 +1384,10 @@ namespace CliffGame
             /// Provides access to the underlying input action "Player/TogglePauseMenu".
             /// </summary>
             public InputAction @TogglePauseMenu => m_Wrapper.m_Player_TogglePauseMenu;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/CycleBuildVariant".
+            /// </summary>
+            public InputAction @CycleBuildVariant => m_Wrapper.m_Player_CycleBuildVariant;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1418,6 +1444,9 @@ namespace CliffGame
                 @TogglePauseMenu.started += instance.OnTogglePauseMenu;
                 @TogglePauseMenu.performed += instance.OnTogglePauseMenu;
                 @TogglePauseMenu.canceled += instance.OnTogglePauseMenu;
+                @CycleBuildVariant.started += instance.OnCycleBuildVariant;
+                @CycleBuildVariant.performed += instance.OnCycleBuildVariant;
+                @CycleBuildVariant.canceled += instance.OnCycleBuildVariant;
             }
 
             /// <summary>
@@ -1459,6 +1488,9 @@ namespace CliffGame
                 @TogglePauseMenu.started -= instance.OnTogglePauseMenu;
                 @TogglePauseMenu.performed -= instance.OnTogglePauseMenu;
                 @TogglePauseMenu.canceled -= instance.OnTogglePauseMenu;
+                @CycleBuildVariant.started -= instance.OnCycleBuildVariant;
+                @CycleBuildVariant.performed -= instance.OnCycleBuildVariant;
+                @CycleBuildVariant.canceled -= instance.OnCycleBuildVariant;
             }
 
             /// <summary>
@@ -1840,6 +1872,13 @@ namespace CliffGame
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnTogglePauseMenu(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "CycleBuildVariant" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnCycleBuildVariant(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

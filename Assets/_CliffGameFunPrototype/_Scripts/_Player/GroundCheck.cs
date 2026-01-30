@@ -9,6 +9,9 @@ public class GroundCheck : MonoBehaviour
     [Tooltip("Is the player currently grounded")]
     public bool IsGrounded = true;
 
+    [Tooltip("Normal of the ground the player is standing on")]
+    public Vector3 GroundNormal { get; private set; } = Vector3.up;
+
     // Fired ONCE when the player lands
     public event Action Grounded;
 
@@ -19,11 +22,17 @@ public class GroundCheck : MonoBehaviour
         // Start the ray slightly above the feet to avoid self-collision
         Vector3 rayOrigin = transform.position + Vector3.up * 0.01f;
 
-        bool groundedNow = Physics.Raycast(
-            rayOrigin,
-            Vector3.down,
-            GroundDistance
-        );
+        RaycastHit hit;
+        bool groundedNow = Physics.Raycast(rayOrigin, Vector3.down, out hit, GroundDistance);
+
+        if (groundedNow)
+        {
+            GroundNormal = hit.normal;
+        }
+        else
+        {
+            GroundNormal = Vector3.up;
+        }
 
         // Landed this frame
         if (!_wasGrounded && groundedNow)
@@ -32,6 +41,7 @@ public class GroundCheck : MonoBehaviour
         }
 
         IsGrounded = groundedNow;
+        
         _wasGrounded = groundedNow;
     }
 

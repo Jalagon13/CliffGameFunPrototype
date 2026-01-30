@@ -20,11 +20,14 @@ namespace CliffGame
         public event EventHandler<InputAction.CallbackContext> OnSecondaryInteract;
         public event EventHandler<InputAction.CallbackContext> OnTertiaryInteract;
         public event EventHandler<InputAction.CallbackContext> OnTogglePauseMenu;
+        public event EventHandler<InputAction.CallbackContext> OnCycleBuildVariant;
+        
 
         private PlayerInput _playerInput;
         
         public bool IsHoldingDownSecondaryInteract { get; private set; }
         public bool IsHoldingDownPrimaryInteract { get; private set; }
+        public bool IsHoldingDownJump { get; private set; }
 
         private void Awake()
         {
@@ -40,6 +43,7 @@ namespace CliffGame
             _playerInput.Player.Look.performed += PlayerInput_OnLook;
             _playerInput.Player.Look.canceled += PlayerInput_OnLook;
             _playerInput.Player.Jump.started += PlayerInput_OnJump;
+            _playerInput.Player.Jump.canceled += PlayerInput_OnJump;
             _playerInput.Player.ToggleCraftingMenu.started += PlayerInput_OnToggleCraftingMenu;
             _playerInput.Player.PrimaryInteract.started += PlayerInput_OnPrimaryInteract;
             _playerInput.Player.PrimaryInteract.canceled += PlayerInput_OnPrimaryInteract;
@@ -48,6 +52,7 @@ namespace CliffGame
             _playerInput.Player.TertiaryInteract.started += PlayerInput_OnTertiaryInteract;
             _playerInput.Player.TertiaryInteract.canceled += PlayerInput_OnTertiaryInteract;
             _playerInput.Player.TogglePauseMenu.started += PlayerInput_OnTogglePauseMenu;
+            _playerInput.Player.CycleBuildVariant.started += PlayerInput_CycleBuildVariant;
 
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -57,6 +62,11 @@ namespace CliffGame
         {
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_CycleBuildVariant(InputAction.CallbackContext context)
+        {
+            OnCycleBuildVariant?.Invoke(this, context);
         }
 
         private void PlayerInput_OnTogglePauseMenu(InputAction.CallbackContext context)
@@ -104,6 +114,15 @@ namespace CliffGame
 
         private void PlayerInput_OnJump(InputAction.CallbackContext context)
         {
+            if (context.started)
+            {
+                IsHoldingDownJump = true;
+            }
+            else if (context.canceled)
+            {
+                IsHoldingDownJump = false;
+            }
+        
             OnJump?.Invoke(this, context);
         }
 

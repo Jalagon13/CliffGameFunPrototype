@@ -7,6 +7,14 @@ using UnityEngine.InputSystem;
 
 namespace CliffGame
 {
+    public enum CardinalDireciton
+    {
+        North,
+        South,
+        East,
+        West
+    }
+
     public enum PlayerMoveState
     {
         Walking,
@@ -59,6 +67,8 @@ namespace CliffGame
         [field: SerializeField]
         public PauseMenuUI PauseMenuUI { get; private set; }
         
+        public CardinalDireciton PlayerFacingDirection { get; private set; }
+        
         private void Awake()
         {
             Instance = this;
@@ -91,6 +101,30 @@ namespace CliffGame
             // GameInput.Instance.OnPrimaryInteract -= GameInput_OnPrimaryInteract;
             HealthManager.Instance.OnPlayerDeath -= HealthManager_OnPlayerDeath;
             CraftingManager.Instance.OnCraftingUIOpened -= CraftingManager_OnCraftingUIOpened;
+        }
+        
+        private void Update()
+        {
+            Vector3 camForward = _playerCamera.transform.forward;
+            camForward.y = 0f;                 // ignore vertical tilt
+            camForward.Normalize();
+
+            float northDot = Vector3.Dot(camForward, Vector3.forward); // +Z
+            float southDot = Vector3.Dot(camForward, Vector3.back);    // -Z
+            float eastDot = Vector3.Dot(camForward, Vector3.right);   // +X
+            float westDot = Vector3.Dot(camForward, Vector3.left);    // -X
+
+            float maxDot = Mathf.Max(northDot, southDot, eastDot, westDot);
+
+            if (maxDot == northDot)
+                PlayerFacingDirection = CardinalDireciton.North;
+            else if (maxDot == southDot)
+                PlayerFacingDirection = CardinalDireciton.South;
+            else if (maxDot == eastDot)
+                PlayerFacingDirection = CardinalDireciton.East;
+            else
+                PlayerFacingDirection = CardinalDireciton.West;
+            // Debug.Log($"Player facing direction: {PlayerFacingDirection}");
         }
 
         private void FixedUpdate()

@@ -95,6 +95,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CycleBuildVariant",
+                    "type": "Button",
+                    "id": "ba2a38ef-ee35-4452-b2a0-2eb3cbd1a16d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -414,6 +423,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "TogglePauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "23e75d63-39a5-4cf9-b4cb-e3f4a74499ea",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "CycleBuildVariant",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

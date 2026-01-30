@@ -107,7 +107,7 @@ namespace CliffGame
 
                 _repairInstructions.SetActive(true);
             }
-            else if(type == SelectedBuildType.Fence || type == SelectedBuildType.Platform)
+            else if(type == SelectedBuildType.Fence || type == SelectedBuildType.Platform || type == SelectedBuildType.Stairs)
             {
                 PopulateBuildReqs();
                 _repairInstructions.SetActive(false);

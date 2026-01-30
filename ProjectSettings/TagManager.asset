@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Buildables
   - Structure
+  - StairCenterCollider
   layers:
   - Default
   - TransparentFX

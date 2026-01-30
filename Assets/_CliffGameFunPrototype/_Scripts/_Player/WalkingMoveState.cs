@@ -20,14 +20,9 @@ namespace CliffGame
         public float runSpeed = 9f;
 
         [Header("Physics Settings")]
-        [SerializeField] 
-        private float _accelLerpSpeed = 14f;
-        
-        [SerializeField] 
-        private float _decelLerpSpeed = 10f;
-        
-        public float AccelerationRate = 40f;
-        public float AirMultiplier = 0.4f;
+        public float AccelerationRate = 5f;
+        [SerializeField] private float _groundDrag = 6f;
+        [SerializeField] private float _maxSlopeAngle = 50f;
 
         [Header("Falling Settings")]
         [SerializeField, Tooltip("How far you can fall for free (no damage)")] 
@@ -41,13 +36,16 @@ namespace CliffGame
 
         private Player _context;
         private Rigidbody _rigidbody;
-        private Vector3 _smoothedDesiredVelocity;
 
         [HideInInspector]
         public Vector2 DesiredMoveDirection;
         
         private Vector3 _captureExitVelocity;
+        private RaycastHit _slopeHit;
+
         public Vector3 CaptureExitVelocity => _captureExitVelocity;
+
+        private Vector3 _moveDirection;
 
         private void Awake()
         {
@@ -68,53 +66,112 @@ namespace CliffGame
             GameInput.Instance.OnMove -= GameInput_OnMove;
         }
 
+        private void Update()
+        {
+            SpeedControl();
+
+            if (_groundCheck.IsGrounded)
+            {
+                _rigidbody.linearDamping = _groundDrag;
+            }
+            else
+            {
+                _rigidbody.linearDamping = 0f;
+            }
+        }
+
+        private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
+        {
+            if (CraftingManager.Instance.IsCraftingUIOpen) return;
+
+            DesiredMoveDirection = e.ReadValue<Vector2>();
+        }
+
         public void EnterState()
         {
             // Debug.Log($"Entered Walk State");
         }
 
+        public void ExitState()
+        {
+            _captureExitVelocity = _rigidbody.linearVelocity;
+            // Debug.Log($"Exited Walk State with velocity: {_captureExitVelocity}");
+        }
+
         public void StateFixedUpdate()
         {
-            // ---- BASIC ACCELERATION-BASED WALKING ----
+            PlayerMovement();
+
+            HandleWind();
+            
+            HandleFallTracking();
+        }
+        
+        private void PlayerMovement()
+        {
             float targetSpeed = IsRunning ? runSpeed : speed;
 
             // Input direction in world space
-            Vector3 inputDir =
-                transform.forward * DesiredMoveDirection.y +
-                transform.right * DesiredMoveDirection.x;
+            _moveDirection = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
 
-            // Prevent faster diagonal movement
-            inputDir = Vector3.ClampMagnitude(inputDir, 1f);
+            if (OnSlope())
+            {
+                _rigidbody.AddForce(GetSlopeMoveDirection() * targetSpeed * AccelerationRate, ForceMode.Force);
 
-            bool hasInput = inputDir.sqrMagnitude > 0.0001f;
+                if (_rigidbody.linearVelocity.y < 0 && DesiredMoveDirection.sqrMagnitude != 0)
+                {
+                    _rigidbody.AddForce(Vector3.down * 80f, ForceMode.Force);
+                }
+            }
 
-            // Raw desired velocity from input
-            Vector3 rawDesiredVelocity = inputDir * targetSpeed;
+            if (_groundCheck.IsGrounded)
+            {
+                _rigidbody.AddForce(_moveDirection.normalized * (targetSpeed * AccelerationRate), ForceMode.Force);
+            }
 
-            // Reduce control in air
-            float controlMultiplier = _groundCheck.IsGrounded ? 1f : AirMultiplier;
-            rawDesiredVelocity *= controlMultiplier;
+            _rigidbody.useGravity = !OnSlope();
+        }
+        
+        private void SpeedControl()
+        {
+            if(OnSlope())
+            {
+                if(_rigidbody.linearVelocity.magnitude > speed)
+                {
+                    _rigidbody.linearVelocity = _rigidbody.linearVelocity.normalized * speed;
+                }
+            }
+            else
+            {
+                Vector3 flatVel = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
 
-            // Smooth desired velocity (Mario-style micro inertia)
-            float lerpSpeed = hasInput ? _accelLerpSpeed : _decelLerpSpeed;
+                // limit velocity if needed
+                if (flatVel.magnitude > speed)
+                {
+                    Vector3 clampedVel = flatVel.normalized * speed;
+                    _rigidbody.linearVelocity = new Vector3(clampedVel.x, _rigidbody.linearVelocity.y, clampedVel.z);
+                }
+            }
+        }
+        
+        private bool OnSlope()
+        {
+            if(Physics.Raycast(transform.position, Vector3.down, out _slopeHit, 0.3f))
+            {
+                float angle = Vector3.Angle(Vector3.up, _slopeHit.normal);
+                return angle < _maxSlopeAngle && angle != 0;
+            }
+            
+            return false;
+        }
+        
+        private Vector3 GetSlopeMoveDirection()
+        {
+            return Vector3.ProjectOnPlane(_moveDirection, _slopeHit.normal).normalized;
+        }
 
-            _smoothedDesiredVelocity = Vector3.Lerp(
-                _smoothedDesiredVelocity,
-                rawDesiredVelocity,
-                lerpSpeed * Time.fixedDeltaTime
-            );
-
-            // Current horizontal velocity (ignore Y)
-            Vector3 currentVelocity = _rigidbody.linearVelocity;
-            Vector3 currentHorizontalVelocity =
-                new Vector3(currentVelocity.x, 0f, currentVelocity.z);
-
-            // Accelerate toward smoothed desired velocity
-            Vector3 velocityDelta = _smoothedDesiredVelocity - currentHorizontalVelocity;
-            Vector3 acceleration = velocityDelta * AccelerationRate;
-
-            _rigidbody.AddForce(acceleration, ForceMode.Acceleration);
-
+        private void HandleWind()
+        {
             // ---- WIND FORCE (UNCHANGED) ----
             if (WindManager.Instance != null && WindManager.Instance.WindCanPushPlayer)
             {
@@ -135,21 +192,6 @@ namespace CliffGame
                 Vector3 windForce = Vector3.right * windForceOnPlayer;
                 _rigidbody.AddForce(windForce, ForceMode.Acceleration);
             }
-
-            HandleFallTracking();
-        }
-
-        public void ExitState()
-        {
-            _captureExitVelocity = _rigidbody.linearVelocity;
-            // Debug.Log($"Exited Walk State with velocity: {_captureExitVelocity}");
-        }
-
-        private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
-        {
-            if (CraftingManager.Instance.IsCraftingUIOpen) return;
-
-            DesiredMoveDirection = e.ReadValue<Vector2>();
         }
 
         private void HandleFallTracking()

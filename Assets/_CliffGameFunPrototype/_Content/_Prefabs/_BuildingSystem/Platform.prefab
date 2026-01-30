@@ -4890,10 +4890,12 @@ MonoBehaviour:
   ConnectorPosition: 2
   ConnectorParentType: 0
   IsConnectedToFloor: 0
-  IsConnectedToWall: 0
+  IsConnectedToFence: 0
+  IsConnectedToStairs: 0
   CanConnectTo: 1
   _canConnectToFloor: 1
   _canConnectToWall: 1
+  _canConnectToStairs: 1
 --- !u!135 &988648094821512587
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12450,10 +12452,12 @@ MonoBehaviour:
   ConnectorPosition: 1
   ConnectorParentType: 0
   IsConnectedToFloor: 0
-  IsConnectedToWall: 0
+  IsConnectedToFence: 0
+  IsConnectedToStairs: 0
   CanConnectTo: 1
   _canConnectToFloor: 1
   _canConnectToWall: 1
+  _canConnectToStairs: 1
 --- !u!135 &6250392016538147473
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -24521,10 +24525,12 @@ MonoBehaviour:
   ConnectorPosition: 0
   ConnectorParentType: 0
   IsConnectedToFloor: 0
-  IsConnectedToWall: 0
+  IsConnectedToFence: 0
+  IsConnectedToStairs: 0
   CanConnectTo: 1
   _canConnectToFloor: 1
   _canConnectToWall: 1
+  _canConnectToStairs: 1
 --- !u!135 &7351257273208605659
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -24594,10 +24600,12 @@ MonoBehaviour:
   ConnectorPosition: 3
   ConnectorParentType: 0
   IsConnectedToFloor: 0
-  IsConnectedToWall: 0
+  IsConnectedToFence: 0
+  IsConnectedToStairs: 0
   CanConnectTo: 1
   _canConnectToFloor: 1
   _canConnectToWall: 1
+  _canConnectToStairs: 1
 --- !u!135 &8891558304975700420
 SphereCollider:
   m_ObjectHideFlags: 0

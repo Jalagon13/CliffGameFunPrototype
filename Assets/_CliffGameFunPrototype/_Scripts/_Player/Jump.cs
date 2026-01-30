@@ -5,13 +5,15 @@ using System;
 
 public class Jump : MonoBehaviour
 {
+    [SerializeField] private float _jumpCooldown = 0.2f;
     public float JumpStrength = 2;
     public event Action OnJumped;
 
     [SerializeField, Tooltip("Prevents jumping when the transform is in mid-air.")]
     private GroundCheck _groundCheck;
     private Rigidbody _rigidbody;
-
+    private Timer _jumpCooldownTimer;
+    
     private void Reset()
     {
         // Try to get groundCheck.
@@ -22,6 +24,7 @@ public class Jump : MonoBehaviour
     {
         // Get rigidbody.
         _rigidbody = GetComponent<Rigidbody>();
+        _jumpCooldownTimer = new Timer(_jumpCooldown);
     }
     
     private void Start()
@@ -33,12 +36,20 @@ public class Jump : MonoBehaviour
     {
         GameInput.Instance.OnJump -= GameInput_OnJump;
     }
+    
+    private void Update()
+    {
+        _jumpCooldownTimer.Tick(Time.deltaTime);
+    }
 
     private void GameInput_OnJump(object sender, InputAction.CallbackContext e)
     {
-        if(!_groundCheck || _groundCheck.IsGrounded)
+        if(e.started && _jumpCooldownTimer.RemainingSeconds <= 0 && _groundCheck.IsGrounded)
         {
-            _rigidbody.AddForce(100 * JumpStrength * Vector3.up);
+            _rigidbody.linearVelocity = new(_rigidbody.linearVelocity.x, 0, _rigidbody.linearVelocity.z);
+            Debug.Log($"Jumped!");
+            _jumpCooldownTimer.Reset();
+            _rigidbody.AddForce(JumpStrength * Vector3.up, ForceMode.Impulse);
             OnJumped?.Invoke();
         }
     }

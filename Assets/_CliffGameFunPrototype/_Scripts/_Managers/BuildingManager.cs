@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SingularityGroup.HotReload;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -65,7 +66,7 @@ namespace CliffGame
         private Timer _destroyTimer;
         public Timer DestroyTimer => _destroyTimer;
         
-        private bool _isDestroying = false;
+        private bool _isDestroying = false, _usingUpstairs = true;
         private Transform _currentDestroyTarget = null;
 
         private void Awake()
@@ -80,12 +81,15 @@ namespace CliffGame
         {
             InventoryManager.Instance.OnSelectedSlotChanged += OnSelectedSlotChanged_CheckForHammer;
             GameInput.Instance.OnPrimaryInteract += GameInput_OnPrimaryInteract;
+            GameInput.Instance.OnCycleBuildVariant += GameInput_CycleBuildVariant;
         }
         
         private void OnDestroy()
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= OnSelectedSlotChanged_CheckForHammer;
             GameInput.Instance.OnPrimaryInteract -= GameInput_OnPrimaryInteract;
+            GameInput.Instance.OnCycleBuildVariant -= GameInput_CycleBuildVariant;
+            
             _destroyTimer.OnTimerEnd -= OnDestroyTimerEnd;
         }
 
@@ -108,13 +112,6 @@ namespace CliffGame
                     break;
 
                     case SelectedBuildType.Fence:
-                    if(_clickedThisFrame)
-                    {
-                        PlaceBuild();
-                        _clickedThisFrame = false;
-                    }
-                    break;
-
                     case SelectedBuildType.Stairs:
                     if (_clickedThisFrame)
                     {
@@ -136,10 +133,18 @@ namespace CliffGame
                 HandleDestroyTimer();
             }
         }
-        
+
         #region Input
 
-        // I might use this later for something
+        private void GameInput_CycleBuildVariant(object sender, InputAction.CallbackContext e)
+        {
+            if (_isHoldingHammar && _currentBuildType == SelectedBuildType.Stairs && e.started)
+            {
+                _usingUpstairs = !_usingUpstairs; // SUPER tentative only used for stairs for now
+                Debug.Log($"Using upstairs: {_usingUpstairs}");
+            }
+        }
+
         private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
         {
             if(!_isHoldingHammar || BuildWheelUI.BuildWheelUIOpen || Player.Instance.PauseMenuUI.PauseMenuOpen) return;
@@ -337,7 +342,8 @@ namespace CliffGame
                 }
             }
 
-            if (bestConnector == null || _currentBuildType == SelectedBuildType.Platform && bestConnector.IsConnectedToFloor || _currentBuildType == SelectedBuildType.Fence && bestConnector.IsConnectedToFence || _currentBuildType == SelectedBuildType.Stairs && bestConnector.IsConnectedToStairs)
+            if (bestConnector == null || _currentBuildType == SelectedBuildType.Platform && (bestConnector.IsConnectedToFloor || bestConnector.IsConnectedToStairs) || 
+                _currentBuildType == SelectedBuildType.Fence && bestConnector.IsConnectedToFence || _currentBuildType == SelectedBuildType.Stairs && bestConnector.IsConnectedToStairs)
             {
                 // We have nothing to connect to
                 if (_lastSnappedConnector != null)
@@ -350,7 +356,7 @@ namespace CliffGame
                 _isGhostInValidPosition = false;
                 return;
             }
-
+            
             SnapGhostPrefabToConnector(bestConnector);
         }
 
@@ -399,7 +405,16 @@ namespace CliffGame
 
                 // If ghost is facing generally the opposite direction from the camera forward vector, flip it
                 float dot = Vector3.Dot(ghostForward, cameraForward);
-                if (dot < 0f)
+                bool wantsNormalFacing = true;
+
+                if (_currentBuildType == SelectedBuildType.Stairs)
+                {
+                    wantsNormalFacing = _usingUpstairs;
+                }
+
+                bool isFacingAwayFromCamera = dot < 0f;
+
+                if (wantsNormalFacing && isFacingAwayFromCamera || !wantsNormalFacing && !isFacingAwayFromCamera)
                 {
                     _ghostBuildGameObject.transform.Rotate(0f, 180f, 0f);
                 }
@@ -411,9 +426,34 @@ namespace CliffGame
                 _isGhostInValidPosition = false;
                 return;
             }
+            
+            if(GhostStairsOverlappingExistingStairs())
+            {
+                GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                _isGhostInValidPosition = false;
+                return;
+            }
 
             GhostifyModel(_modelParent, _ghostMaterialValid);
             _isGhostInValidPosition = true;
+        }
+
+        private bool GhostStairsOverlappingExistingStairs()
+        {
+            if(_currentBuildType != SelectedBuildType.Stairs) return false;
+
+            SphereCollider stairCenterCollider = _ghostBuildGameObject.transform.GetChild(3).GetComponent<SphereCollider>();
+            Collider[] overlappingColliders = Physics.OverlapSphere(stairCenterCollider.bounds.center, stairCenterCollider.radius);
+
+            foreach (Collider c in overlappingColliders)
+            {
+                if (c.gameObject.transform.root.gameObject != _ghostBuildGameObject && c.gameObject.CompareTag("StairCenterCollider"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private Transform FindCorrectSnapConnectorOnGhost(Transform bestConnectorTf, Transform ghostConnectorParent)
@@ -443,27 +483,48 @@ namespace CliffGame
             }
             else if(_currentBuildType == SelectedBuildType.Stairs && (bestConnector.ConnectorParentType == SelectedBuildType.Platform || bestConnector.ConnectorParentType == SelectedBuildType.Stairs))
             {
-                switch(bestConnector.ConnectorParentType)
-                {
-                    case SelectedBuildType.Platform:
-                        return ConnectorPosition.Bottom;
-                    case SelectedBuildType.Stairs:
-                        return ConnectorPosition.Bottom;
-                }
-                
-                return ConnectorPosition.Bottom;
+                return _usingUpstairs ? ConnectorPosition.Bottom : ConnectorPosition.Top; // Top for down stairs and bottom for up stairs
             }
-
-            // If we are trying to build a platform on the top section of a stair, make sure to return the correct position
-            if (_currentBuildType == SelectedBuildType.Platform && bestConnector.ConnectorParentType == SelectedBuildType.Stairs && bestConnector.ConnectorPosition == ConnectorPosition.Top)
+            
+            // If i'm trying to place down a platform on a stair
+            if(_currentBuildType == SelectedBuildType.Platform && bestConnector.ConnectorParentType == SelectedBuildType.Stairs)
             {
-                if (bestConnector.transform.root.rotation.y == 0)
+                Vector3 cameraForward = Camera.main.transform.forward;
+                cameraForward.y = 0f;
+                cameraForward.Normalize();
+                
+                Vector3 connectorForward = bestConnector.transform.forward;
+                connectorForward.y = 0f;
+                connectorForward.Normalize();
+                
+                float dot = Vector3.Dot(cameraForward, connectorForward);
+                
+                if (dot > 0f)
                 {
-                    return GetConnectorClosestToPlayer(true);
-                }
-                else
-                {
-                    return GetConnectorClosestToPlayer(false);
+                    // Determine the cardinal direction the connector itself is facing (world +Z = North)
+                    // This is so we can return the correct opposite connector on the ghost prefab since for now the platforms are fixed in world space
+                    Vector3 facing = bestConnector.transform.forward;
+                    facing.y = 0f;
+                    facing.Normalize();
+
+                    float north = Vector3.Dot(facing, Vector3.forward); // +Z
+                    float south = Vector3.Dot(facing, Vector3.back);    // -Z
+                    float east  = Vector3.Dot(facing, Vector3.right);   // +X
+                    float west  = Vector3.Dot(facing, Vector3.left);    // -X
+
+                    float max = Mathf.Max(north, south, east, west);
+
+                    switch (max)
+                    {
+                        case var _ when max == north:
+                            return ConnectorPosition.Bottom;
+                        case var _ when max == south:
+                            return ConnectorPosition.Top;
+                        case var _ when max == east:
+                            return ConnectorPosition.Left;
+                        default:
+                            return ConnectorPosition.Right;
+                    }
                 }
             }
 
@@ -479,21 +540,6 @@ namespace CliffGame
                     return ConnectorPosition.Top;
                 default:
                     return ConnectorPosition.Bottom;
-            }
-        }
-
-        private ConnectorPosition GetConnectorClosestToPlayer(bool topBottom)
-        {
-            // Takes camera position and make sure the floor we are tring to place on top of the wall is facing the player instead of in a random position, QOL feature
-            Transform cameraTransform = Camera.main.transform;
-
-            if (topBottom)
-            {
-                return cameraTransform.position.z >= _ghostBuildGameObject.transform.position.z ? ConnectorPosition.Top : ConnectorPosition.Bottom;
-            }
-            else
-            {
-                return cameraTransform.position.x >= _ghostBuildGameObject.transform.position.x ? ConnectorPosition.Right : ConnectorPosition.Left;
             }
         }
 

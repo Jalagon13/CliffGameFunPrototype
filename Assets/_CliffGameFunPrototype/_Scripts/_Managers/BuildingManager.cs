@@ -25,9 +25,9 @@ namespace CliffGame
         public Action<SelectedBuildType> OnBuildTypeChanged;
 
         [Header("Build Objects")]
-        [SerializeField] private List<GameObject> _floorObjects = new();
-        [SerializeField] private List<GameObject> _wallObjects = new();
-        [SerializeField] private List<GameObject> _stairsObjects = new();
+        [SerializeField] private List<BuildPiece> _platformObjects = new();
+        [SerializeField] private List<BuildPiece> _wallObjects = new();
+        [SerializeField] private List<BuildPiece> _stairsObjects = new();
 
         [Header("Build Settings")]
         [field: SerializeField] 
@@ -59,7 +59,7 @@ namespace CliffGame
 
         [SerializeField] private int _currentBuildIndex;
 
-        private GameObject _ghostBuildGameObject;
+        private BuildPiece _ghostBuildPiece;
         private bool _isGhostInValidPosition = false;
         private Transform _modelParent = null;
         private bool _isHoldingHammar, _clickedThisFrame;
@@ -121,10 +121,10 @@ namespace CliffGame
                     break;
                 }
             }
-            else if (_ghostBuildGameObject != null)
+            else if (_ghostBuildPiece != null)
             {
-                Destroy(_ghostBuildGameObject);
-                _ghostBuildGameObject = null;
+                Destroy(_ghostBuildPiece.gameObject);
+                _ghostBuildPiece = null;
             }
 
             if (_currentBuildType == SelectedBuildType.DestroyMode)
@@ -185,10 +185,10 @@ namespace CliffGame
         
         private void ResetGhosts()
         {
-            if (_ghostBuildGameObject != null)
+            if (_ghostBuildPiece != null)
             {
-                Destroy(_ghostBuildGameObject);
-                _ghostBuildGameObject = null;
+                Destroy(_ghostBuildPiece.gameObject);
+                _ghostBuildPiece = null;
             }
 
             if (_lastHitDestroyTransform != null)
@@ -208,10 +208,10 @@ namespace CliffGame
                 _isHoldingHammar = false;
                 OnGhostUnsnap?.Invoke();
 
-                if (_ghostBuildGameObject != null)
+                if (_ghostBuildPiece != null)
                 {
-                    Destroy(_ghostBuildGameObject);
-                    _ghostBuildGameObject = null;
+                    Destroy(_ghostBuildPiece.gameObject);
+                    _ghostBuildPiece = null;
                 }
 
                 if (_lastHitDestroyTransform != null)
@@ -227,11 +227,11 @@ namespace CliffGame
 
         private void HandleGhostBuild()
         {
-            GameObject currentBuild = GetCurrentBuild();
+            BuildPiece currentBuild = GetCurrentBuild();
             CreateGhostPrefab(currentBuild);
 
             MoveGhostPrefabToRaycast();
-            CheckBuildValidity();
+            CheckBuildPieceValidity();
         }
 
         private void PlaceBuild()
@@ -239,29 +239,30 @@ namespace CliffGame
             if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding) || CraftingManager.Instance.IsCraftingUIOpen)
                 return;
 
-            if (_ghostBuildGameObject != null && _isGhostInValidPosition)
+            if (_ghostBuildPiece != null && _isGhostInValidPosition)
             {
-                GameObject newBuild = Instantiate(GetCurrentBuild(), _ghostBuildGameObject.transform.position, _ghostBuildGameObject.transform.rotation);
+                BuildPiece newBuildPiece = Instantiate(GetCurrentBuild(), _ghostBuildPiece.transform.position, _ghostBuildPiece.transform.rotation);
 
-                Destroy(_ghostBuildGameObject);
-                _ghostBuildGameObject = null;
+                Destroy(_ghostBuildPiece.gameObject);
+                _ghostBuildPiece = null;
 
-                foreach (Connector connector in newBuild.GetComponentsInChildren<Connector>())
+                foreach (Connector connector in newBuildPiece.GetComponentsInChildren<Connector>())
                 {
                     connector.UpdateConnectors(true);
                 }
                 
+                BuildPieceIntegrityManager.Instance.RegisterBuildPiece();
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StructureBuiltSFX, transform.position);
                 InventoryManager.Instance.RemoveItems(_itemsNeededForBuilding);
             }
         }
 
-        private GameObject GetCurrentBuild()
+        private BuildPiece GetCurrentBuild()
         {
             switch (_currentBuildType)
             {
                 case SelectedBuildType.Platform:
-                    return _floorObjects[_currentBuildIndex];
+                    return _platformObjects[_currentBuildIndex];
                 case SelectedBuildType.Fence:
                     return _wallObjects[_currentBuildIndex];
                 case SelectedBuildType.Stairs:
@@ -271,33 +272,33 @@ namespace CliffGame
             }
         }
 
-        private void CreateGhostPrefab(GameObject currentBuild)
+        private void CreateGhostPrefab(BuildPiece currentBuild)
         {
-            if (_ghostBuildGameObject == null)
+            if (_ghostBuildPiece == null)
             {
-                _ghostBuildGameObject = Instantiate(currentBuild);
+                _ghostBuildPiece = Instantiate(currentBuild);
 
-                if (_ghostBuildGameObject.TryGetComponent(out Platform floor))
+                if (_ghostBuildPiece.TryGetComponent(out Platform floor))
                 {
                     floor.enabled = false;
                     floor.DecalProjector.enabled = false;
                     floor.DecalProjector.gameObject.SetActive(false);
                 }
 
-                _modelParent = _ghostBuildGameObject.transform.GetChild(0);
+                _modelParent = _ghostBuildPiece.transform.GetChild(0);
 
                 // if(_ghostBuildGameObject.transform.GetChild(2).gameObject != null)
                 //     _ghostBuildGameObject.transform.GetChild(2).GetComponent<BoxCollider>().enabled = false;
 
 
                 GhostifyModel(_modelParent, _ghostMaterialInvisible); // Sets the correct material
-                GhostifyModel(_ghostBuildGameObject.transform); // Disables colliders on the ghostbuild so it doesn't affect the other colliders near it
+                GhostifyModel(_ghostBuildPiece.transform); // Disables colliders on the ghostbuild so it doesn't affect the other colliders near it
             }
         }
 
-        private void CheckBuildValidity()
+        private void CheckBuildPieceValidity()
         {
-            Collider[] colliders = Physics.OverlapSphere(_ghostBuildGameObject.transform.position, _connectorOverlapRadius, _connectorLayerMask);
+            Collider[] colliders = Physics.OverlapSphere(_ghostBuildPiece.transform.position, _connectorOverlapRadius, _connectorLayerMask);
             if (colliders.Length > 0)
             {
                 // Trying to connect to a prefab that already exists in the scene
@@ -310,10 +311,10 @@ namespace CliffGame
 
                 if (_isGhostInValidPosition)
                 {
-                    Collider[] overlapColliders = Physics.OverlapBox(_ghostBuildGameObject.transform.position, new Vector3(1f, 1f, 1f), _ghostBuildGameObject.transform.rotation);
+                    Collider[] overlapColliders = Physics.OverlapBox(_ghostBuildPiece.transform.position, new Vector3(1f, 1f, 1f), _ghostBuildPiece.transform.rotation);
                     foreach (Collider overlapCollider in overlapColliders)
                     {
-                        if (overlapCollider.gameObject != _ghostBuildGameObject && overlapCollider.transform.root.CompareTag("Buildables"))
+                        if (overlapCollider.gameObject != _ghostBuildPiece && overlapCollider.transform.root.CompareTag("BuildPiece"))
                         {
                             GhostifyModel(_modelParent, _ghostMaterialInvisible);
                             _isGhostInValidPosition = false;
@@ -333,7 +334,7 @@ namespace CliffGame
                 Connector connector = collider.GetComponent<Connector>();
                 if (connector.CanConnectTo)
                 {
-                    float distance = Vector3.Distance(_ghostBuildGameObject.transform.position, connector.transform.position);
+                    float distance = Vector3.Distance(_ghostBuildPiece.transform.position, connector.transform.position);
                     if (distance < closestDistance)
                     {
                         closestDistance = distance;
@@ -362,10 +363,10 @@ namespace CliffGame
 
         private void SnapGhostPrefabToConnector(Connector bestConnector)
         {
-            if(_ghostBuildGameObject == null) return;
+            if(_ghostBuildPiece == null) return;
         
             // Find the correct connector on the ghost prefab to snap to, and snap it to it
-            Transform ghostConnector = FindCorrectSnapConnectorOnGhost(bestConnector.transform, _ghostBuildGameObject.transform.GetChild(1));
+            Transform ghostConnector = FindCorrectSnapConnectorOnGhost(bestConnector.transform, _ghostBuildPiece.transform.GetChild(1));
             
             if(ghostConnector == null)
             {
@@ -374,7 +375,7 @@ namespace CliffGame
                 return;
             }
             
-            _ghostBuildGameObject.transform.position = bestConnector.transform.position - (ghostConnector.position - _ghostBuildGameObject.transform.position);
+            _ghostBuildPiece.transform.position = bestConnector.transform.position - (ghostConnector.position - _ghostBuildPiece.transform.position);
 
             // Trigger OnGhostSnap action only when snapping to a new connector
             if (_lastSnappedConnector != bestConnector)
@@ -386,20 +387,20 @@ namespace CliffGame
             if (_currentBuildType == SelectedBuildType.Fence || _currentBuildType == SelectedBuildType.Stairs)
             {
                 // First: rotate to match the connector
-                Quaternion newRotation = _ghostBuildGameObject.transform.rotation;
+                Quaternion newRotation = _ghostBuildPiece.transform.rotation;
                 newRotation.eulerAngles = new Vector3(
                     newRotation.eulerAngles.x,
                     bestConnector.transform.rotation.eulerAngles.y,
                     newRotation.eulerAngles.z
                 );
-                _ghostBuildGameObject.transform.rotation = newRotation;
+                _ghostBuildPiece.transform.rotation = newRotation;
 
                 // Second: ensure the forward faces away from the player camera
                 Vector3 cameraForward = Camera.main.transform.forward;
                 cameraForward.y = 0f;
                 cameraForward.Normalize();
 
-                Vector3 ghostForward = _ghostBuildGameObject.transform.forward;
+                Vector3 ghostForward = _ghostBuildPiece.transform.forward;
                 ghostForward.y = 0f;
                 ghostForward.Normalize();
 
@@ -416,7 +417,7 @@ namespace CliffGame
 
                 if (wantsNormalFacing && isFacingAwayFromCamera || !wantsNormalFacing && !isFacingAwayFromCamera)
                 {
-                    _ghostBuildGameObject.transform.Rotate(0f, 180f, 0f);
+                    _ghostBuildPiece.transform.Rotate(0f, 180f, 0f);
                 }
             }
 
@@ -442,12 +443,12 @@ namespace CliffGame
         {
             if(_currentBuildType != SelectedBuildType.Stairs) return false;
 
-            SphereCollider stairCenterCollider = _ghostBuildGameObject.transform.GetChild(3).GetComponent<SphereCollider>();
+            SphereCollider stairCenterCollider = _ghostBuildPiece.transform.GetChild(3).GetComponent<SphereCollider>();
             Collider[] overlappingColliders = Physics.OverlapSphere(stairCenterCollider.bounds.center, stairCenterCollider.radius);
 
             foreach (Collider c in overlappingColliders)
             {
-                if (c.gameObject.transform.root.gameObject != _ghostBuildGameObject && c.gameObject.CompareTag("StairCenterCollider"))
+                if (c.gameObject.transform.root.gameObject != _ghostBuildPiece && c.gameObject.CompareTag("StairCenterCollider"))
                 {
                     return true;
                 }
@@ -670,7 +671,7 @@ namespace CliffGame
                 break;
             }
 
-            _ghostBuildGameObject.transform.position = foundValidHit ? validHit.point : ray.origin + ray.direction * _buildRange;
+            _ghostBuildPiece.transform.position = foundValidHit ? validHit.point : ray.origin + ray.direction * _buildRange;
         }
 
         // Loops through all mesh renderers that are currently red and reset them to their original materials
@@ -750,19 +751,8 @@ namespace CliffGame
                 if (((1 << hit.transform.gameObject.layer) & _connectorLayerMask) != 0)
                     continue;
 
-                if (hit.transform.root.CompareTag("Buildables") || hit.transform.root.CompareTag("Structure"))
+                if (hit.transform.root.CompareTag("BuildPiece") || hit.transform.root.CompareTag("Placeable"))
                 {
-                    // if (hit.transform.root.CompareTag("Structure"))
-                    // {
-                    //     if (hit.transform.root.TryGetComponent(out CookingStation cookingStation))
-                    //     {
-                    //         if (cookingStation.IsCooking || cookingStation.HasFoodToPickUp)
-                    //         {
-                    //             continue;
-                    //         }
-                    //     }
-                    // }
-
                     // Found the first valid target
                     validHit = hit;
                     foundValidHit = true;
@@ -822,8 +812,8 @@ namespace CliffGame
                     // InventoryManager.Instance.AddItem(StructureManager.Instance.CurrentStructureItemSO, 1);
                 }
 
+                BuildPieceIntegrityManager.Instance.UnregisterBuildPiece();
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
-                // _hammer.PlayHammerSwing();
             }
         }
 

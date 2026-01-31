@@ -5142,8 +5142,8 @@ GameObject:
   - component: {fileID: 7933104754813079001}
   - component: {fileID: 3548051972024269963}
   m_Layer: 7
-  m_Name: WaterStillStruct
-  m_TagString: Structure
+  m_Name: WaterStillPlaceable
+  m_TagString: Placeable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

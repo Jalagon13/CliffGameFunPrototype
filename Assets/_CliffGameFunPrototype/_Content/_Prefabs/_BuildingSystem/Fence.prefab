@@ -69,10 +69,12 @@ MonoBehaviour:
   ConnectorPosition: 1
   ConnectorParentType: 1
   IsConnectedToFloor: 0
-  IsConnectedToWall: 0
+  IsConnectedToFence: 0
+  IsConnectedToStairs: 0
   CanConnectTo: 1
   _canConnectToFloor: 0
   _canConnectToWall: 0
+  _canConnectToStairs: 1
 --- !u!1 &4875664662248945301
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,9 +84,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9019991970971753759}
+  - component: {fileID: 4882380987825733645}
   m_Layer: 10
   m_Name: Fence
-  m_TagString: Buildables
+  m_TagString: BuildPiece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,6 +110,18 @@ Transform:
   - {fileID: 1132390481710409994}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4882380987825733645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4875664662248945301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5100d170b3f934638947a4994a281367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BuildPiece
 --- !u!1 &4955678714227277944
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,10 +225,12 @@ MonoBehaviour:
   ConnectorPosition: 0
   ConnectorParentType: 1
   IsConnectedToFloor: 0
-  IsConnectedToWall: 0
+  IsConnectedToFence: 0
+  IsConnectedToStairs: 0
   CanConnectTo: 1
   _canConnectToFloor: 0
   _canConnectToWall: 0
+  _canConnectToStairs: 1
 --- !u!1 &6320865685311036645
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,10 +385,12 @@ MonoBehaviour:
   ConnectorPosition: 3
   ConnectorParentType: 1
   IsConnectedToFloor: 0
-  IsConnectedToWall: 0
+  IsConnectedToFence: 0
+  IsConnectedToStairs: 0
   CanConnectTo: 1
   _canConnectToFloor: 1
   _canConnectToWall: 0
+  _canConnectToStairs: 1
 --- !u!1001 &2422996805756736773
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -144,8 +144,8 @@ GameObject:
   - component: {fileID: 7933104754813079001}
   - component: {fileID: 2497425369661444606}
   m_Layer: 7
-  m_Name: CookingStationStruct
-  m_TagString: Structure
+  m_Name: CookingStationPlaceable
+  m_TagString: Placeable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

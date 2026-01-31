@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Buildables
-  - Structure
   - StairCenterCollider
+  - BuildPiece
+  - Placeable
   layers:
   - Default
   - TransparentFX

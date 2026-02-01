@@ -40,6 +40,7 @@ namespace CliffGame
         [SerializeField] private LayerMask _playerLayerMask;
         [SerializeField] private float _buildRange = 4f;
         [SerializeField] private float _destroyDuration = 0.5f;
+        [SerializeField] private float _placeCooldown = 0.15f;
         [SerializeField] private InventoryItem[] _itemsNeededForBuilding;
         public InventoryItem[] ItemsNeededForBuilding => _itemsNeededForBuilding;
 
@@ -64,6 +65,7 @@ namespace CliffGame
         private bool _isHoldingHammar, _clickedThisFrame;
         private Timer _destroyTimer;
         public Timer DestroyTimer => _destroyTimer;
+        private Timer _placeCooldownTimer;
         
         private bool _isDestroying = false, _usingUpstairs = true;
         private Transform _currentDestroyTarget = null;
@@ -74,6 +76,8 @@ namespace CliffGame
 
             _destroyTimer = new(_destroyDuration);
             _destroyTimer.OnTimerEnd += OnDestroyTimerEnd;
+            _placeCooldownTimer = new Timer(_placeCooldown);
+            _placeCooldownTimer.SubtractTime(_placeCooldown); // start at 0 so we can place immediately
         }
         
         private void Start()
@@ -95,6 +99,8 @@ namespace CliffGame
         private void Update()
         {
             if(!_isHoldingHammar) return;
+
+            _placeCooldownTimer.Tick(Time.deltaTime);
         
             if ((_currentBuildType == BuildOption.Platform || _currentBuildType == BuildOption.Fence || _currentBuildType == BuildOption.Stairs) && 
                 Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.PauseMenuOpen)
@@ -104,18 +110,11 @@ namespace CliffGame
                 switch(_currentBuildType)
                 {
                     case BuildOption.Platform:
+                    case BuildOption.Fence:
+                    case BuildOption.Stairs:
                     if (GameInput.Instance.IsHoldingDownPrimaryInteract)
                     {
                         PlaceBuild();
-                    }
-                    break;
-
-                    case BuildOption.Fence:
-                    case BuildOption.Stairs:
-                    if (_clickedThisFrame)
-                    {
-                        PlaceBuild();
-                        _clickedThisFrame = false;
                     }
                     break;
                 }
@@ -126,7 +125,7 @@ namespace CliffGame
                 _ghostBuildPiece = null;
             }
 
-            if (_currentBuildType == BuildOption.DestroyMode)
+            if (_currentBuildType == BuildOption.DestroyMode && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.PauseMenuOpen && !BuildWheelUI.BuildWheelUIOpen)
             {
                 GhostDestroy();
                 HandleDestroyTimer();
@@ -235,6 +234,9 @@ namespace CliffGame
 
         private void PlaceBuild()
         {
+            if (_placeCooldownTimer.RemainingSeconds > 0f)
+                return;
+
             if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding) || CraftingManager.Instance.IsCraftingUIOpen)
                 return;
 
@@ -247,12 +249,13 @@ namespace CliffGame
 
                 foreach (Connector connector in newBuildPiece.GetComponentsInChildren<Connector>())
                 {
-                    connector.EstablishConnection();
+                    connector.EstablishConnection(true);
                 }
                 
                 BuildPieceIntegrityManager.Instance.RegisterBuildPiece(newBuildPiece);
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StructureBuiltSFX, transform.position);
                 InventoryManager.Instance.RemoveItems(_itemsNeededForBuilding);
+                _placeCooldownTimer.Reset();
             }
         }
 
@@ -418,6 +421,13 @@ namespace CliffGame
                 }
             }
 
+            if (!GhostConnectorOverlapsWithConnector(ghostConnector, closestConnector)) // This is such a weird bug to fix but basically makes sure the ghost connector is overlapping the real connector which should have been already handled in the above code but whatever
+            {
+                GhostifyModel(_modelParent, _ghostMaterialInvisible);
+                _isGhostInValidPosition = false;
+                return;
+            }
+
             if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding))
             {
                 GhostifyModel(_modelParent, _ghostMaterialInvalid);
@@ -434,6 +444,21 @@ namespace CliffGame
 
             GhostifyModel(_modelParent, _ghostMaterialValid);
             _isGhostInValidPosition = true;
+        }
+
+        private bool GhostConnectorOverlapsWithConnector(Transform ghostConnector, Connector closestConnector)
+        {
+            Collider[] overlappingColliders = Physics.OverlapSphere(ghostConnector.position, closestConnector.ConnectorCollider.radius, _connectorLayerMask);
+
+            foreach (Collider c in overlappingColliders)
+            {
+                if(c.GetInstanceID() == closestConnector.ConnectorCollider.GetInstanceID())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private bool GhostStairsOverlappingExistingStairs()
@@ -456,7 +481,7 @@ namespace CliffGame
 
         private Transform FindCorrectSnapConnectorOnGhost(Transform bestConnectorTf, Transform ghostConnectorParent)
         {
-            ConnectorPosition oppositeConnectorTag = GetBestGhostConnector(bestConnectorTf.GetComponent<Connector>());
+            ConnectorPosition oppositeConnectorTag = DetermineGhostConnectorPosition(bestConnectorTf.GetComponent<Connector>());
 
             foreach (Connector connector in ghostConnectorParent.GetComponentsInChildren<Connector>())
             {
@@ -470,7 +495,7 @@ namespace CliffGame
         }
 
         // Important for choosing which connector on the ghost prefab to snap to the best connector found
-        private ConnectorPosition GetBestGhostConnector(Connector bestConnector)
+        private ConnectorPosition DetermineGhostConnectorPosition(Connector bestConnector)
         {
             ConnectorPosition position = bestConnector.ConnectorPosition;
 
@@ -671,28 +696,17 @@ namespace CliffGame
             _ghostBuildPiece.transform.position = foundValidHit ? validHit.point : ray.origin + ray.direction * _buildRange;
         }
 
-        // Loops through all mesh renderers that are currently red and reset them to their original materials
-        private void ResetCurrentDestroyTarget()
-        {
-            int counter = 0;
-            foreach (MeshRenderer lastHitMeshRenderers in _currentDestroyTarget.GetComponentsInChildren<MeshRenderer>())
-            {
-                lastHitMeshRenderers.material = _lastHitMaterials[counter];
-                counter++;
-            }
-            _currentDestroyTarget = null;
-        }
-
         #endregion
 
         #region Destorying  
 
         private void HandleDestroyTimer()
         {
-            // Must be holding interact and hovering a valid target
+            // If we're not holding interact or not hovering anything, just stop destroying
             if (!GameInput.Instance.IsHoldingDownPrimaryInteract || _currentDestroyTarget == null)
             {
-                CancelDestroy();
+                _isDestroying = false;
+                _destroyTimer.Reset();
                 return;
             }
 
@@ -713,24 +727,17 @@ namespace CliffGame
             _isDestroying = false;
         }
 
-        private void CancelDestroy()
-        {
-            if (!_isDestroying) return;
-
-            _isDestroying = false;
-            _currentDestroyTarget = null;
-            _destroyTimer.Reset();
-        }
-
         private void GhostDestroy()
         {
             // Raycast out and find any build objects we can destroy
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            Camera cam = Camera.main;
+            Ray ray = new Ray(cam.transform.position, cam.transform.forward);
             RaycastHit[] hits = Physics.RaycastAll(ray, _buildRange);
 
             // Sort hits by distance (RaycastAll doesn’t guarantee order)
             Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
+            // Always clear any previous ghosted target when starting a new evaluation
             bool foundValidHit = false;
             RaycastHit validHit = default;
 
@@ -749,8 +756,15 @@ namespace CliffGame
                 }
             }
 
+            // Guarantee only ONE object is ever ghosted at a time
             if (foundValidHit)
             {
+                // If we are hovering a new target, reset the old one first
+                if (_currentDestroyTarget != null && validHit.transform.root != _currentDestroyTarget)
+                {
+                    ResetCurrentDestroyTarget();
+                }
+
                 if (_currentDestroyTarget == null)
                 {
                     _currentDestroyTarget = validHit.transform.root;
@@ -763,15 +777,27 @@ namespace CliffGame
 
                     GhostifyModel(_currentDestroyTarget.GetChild(0), _ghostMaterialInvalid);
                 }
-                else if (validHit.transform.root != _currentDestroyTarget)
+            }
+            else
+            {
+                // No valid hit at all, ensure nothing stays ghosted
+                if (_currentDestroyTarget != null)
                 {
                     ResetCurrentDestroyTarget();
                 }
             }
-            else if (_currentDestroyTarget != null)
+        }
+
+        // Loops through all mesh renderers that are currently red and reset them to their original materials
+        private void ResetCurrentDestroyTarget()
+        {
+            int counter = 0;
+            foreach (MeshRenderer lastHitMeshRenderers in _currentDestroyTarget.GetComponentsInChildren<MeshRenderer>())
             {
-                ResetCurrentDestroyTarget();
+                lastHitMeshRenderers.material = _lastHitMaterials[counter];
+                counter++;
             }
+            _currentDestroyTarget = null;
         }
 
         private void DestroyBuild()
@@ -779,24 +805,17 @@ namespace CliffGame
             // When we do left click while in destroy mode, destroy the build object we are looking at
             if (_currentDestroyTarget)
             {
-                bool isBuilding = false;
                 foreach (Connector connector in _currentDestroyTarget.GetComponentsInChildren<Connector>())
                 {
-                    isBuilding = true;
+                    connector.CleanupConnections();
                     connector.gameObject.SetActive(false);
-                    connector.UpdateConnectors(true);
                 }
 
                 var buildPiece = _currentDestroyTarget.GetComponent<BuildPiece>();
                 Destroy(_currentDestroyTarget.gameObject);
 
                 _currentDestroyTarget = null;
-
-                if (isBuilding)
-                {
-                    InventoryManager.Instance.AddItems(_itemsNeededForBuilding);
-                }
-
+                InventoryManager.Instance.AddItems(_itemsNeededForBuilding);
                 BuildPieceIntegrityManager.Instance.UnregisterBuildPiece(buildPiece);
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
             }

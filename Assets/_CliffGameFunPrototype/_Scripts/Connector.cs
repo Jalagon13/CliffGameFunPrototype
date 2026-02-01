@@ -20,8 +20,16 @@ namespace CliffGame
         public BuildOption[] AllowedConnectionTypes;
 
         private SphereCollider _connectorCollider;
-        private HashSet<Connector> _connectedConnectors = new();
+        public SphereCollider ConnectorCollider => _connectorCollider;
         
+        private HashSet<Connector> _connectedConnectors = new();
+
+        [SerializeField, Tooltip("DEBUG (Read Only): Connected build types")]
+        private List<BuildOption> _debugConnectedBuildTypes = new();
+
+        public IEnumerable<BuildOption> ConnectedBuildTypes => _connectedConnectors.Select(c => c.BuildPiece.BuildType);
+        public bool HasAnyConnection => _connectedConnectors.Count > 0;
+
         public BuildPiece BuildPiece { get; private set; }
         
 
@@ -32,22 +40,46 @@ namespace CliffGame
             _connectorCollider = GetComponent<SphereCollider>();
         }
 
-        private void OnDrawGizmos()
+        public bool CanConnectTo(BuildOption incomingBuildType)
         {
-            // _connectorCollider = GetComponent<SphereCollider>();
+            if(!AllowedConnectionTypes.Contains(incomingBuildType))
+                return false;
+                
+            if(!PassesOccupancyRules(incomingBuildType))
+                return false;
 
-            // Red: Can no longer be connected at all, Green: Can connect to both wall and floor, Yellow: Can only connect to floor, Blue: Can only connect to wall
-            // Gizmos.color = IsConnectedToFloor ? ((IsConnectedToFence || IsConnectedToStairs) ? Color.red : Color.blue) : ((!IsConnectedToFence || !IsConnectedToStairs) ? Color.green : Color.yellow);
-            // Gizmos.DrawWireSphere(transform.position, _connectorCollider.radius);
+            return true;
         }
 
-        public bool CanConnectTo(BuildOption currentSelectedBuildOption)
+        private bool PassesOccupancyRules(BuildOption incomingBuildType)
         {
-            bool canConnect = AllowedConnectionTypes.Contains(currentSelectedBuildOption);
-        
-            return canConnect;
+            if(incomingBuildType == BuildOption.Platform && (IsConnectedTo(BuildOption.Platform) || IsConnectedTo(BuildOption.Stairs)))
+                return false;
+
+            if (incomingBuildType == BuildOption.Stairs && (IsConnectedTo(BuildOption.Stairs) || IsConnectedTo(BuildOption.Fence)))
+                return false;
+
+            if (incomingBuildType == BuildOption.Fence && (IsConnectedTo(BuildOption.Fence) || IsConnectedTo(BuildOption.Stairs)))
+                return false;
+
+            return true;
         }
-        
+
+        public bool IsConnectedTo(BuildOption type)
+        {
+            return _connectedConnectors.Any(c => c.BuildPiece.BuildType == type);
+        }
+
+        private void RefreshDebugConnectedBuildTypes()
+        {
+            _debugConnectedBuildTypes.Clear();
+            foreach (var connector in _connectedConnectors)
+            {
+                if (connector.BuildPiece != null)
+                    _debugConnectedBuildTypes.Add(connector.BuildPiece.BuildType);
+            }
+        }
+
         public void EstablishConnection(bool rootCall = false)
         {
             Collider[] collidersTouchingConnectorCollider = Physics.OverlapSphere(transform.position, _connectorCollider.radius);
@@ -62,60 +94,75 @@ namespace CliffGame
                 
                 // Connection establishing logic
                 _connectedConnectors.Add(foundConnector);
+                RefreshDebugConnectedBuildTypes();
+                // Debug.Log($"Connector on {BuildPiece.BuildType} connected to {foundConnector.BuildPiece.BuildType}");
                 
                 if(rootCall)
                 {
                     foundConnector.EstablishConnection();
+                    foundConnector.RefreshDebugConnectedBuildTypes();
                 }
             }
         }
 
-        public void UpdateConnectors(bool rootCall = false)
+        public void CleanupConnections()
         {
-            // Collider[] colliders = Physics.OverlapSphere(transform.position, _connectorCollider.radius);
+            // Tell all connected connectors to forget about me
+            foreach (var connected in _connectedConnectors)
+            {
+                connected.RemoveConnection(this);
+            }
 
-            // IsConnectedToFloor = !_canConnectToFloor;
-            // IsConnectedToFence = !_canConnectToWall;
-            // IsConnectedToStairs = !_canConnectToStairs;
+            // Clear my own connections
+            _connectedConnectors.Clear();
 
-            // foreach (Collider collider in colliders)
-            // {
-            //     if (collider.GetInstanceID() == GetComponent<Collider>().GetInstanceID()) continue;
+            // Refresh debug view
+            RefreshDebugConnectedBuildTypes();
+        }
 
-            //     if (!collider.gameObject.activeInHierarchy) continue;
+        private void RemoveConnection(Connector connector)
+        {
+            if (_connectedConnectors.Remove(connector))
+            {
+                RefreshDebugConnectedBuildTypes();
+            }
+        }
 
-            //     if (collider.gameObject.layer == gameObject.layer)
-            //     {
-            //         Connector foundConnector = collider.GetComponent<Connector>();
+        private void OnDrawGizmos()
+        {
+            if (_connectorCollider == null)
+                _connectorCollider = GetComponent<SphereCollider>();
 
-            //         if (foundConnector.ConnectorParentType == BuildOption.Platform)
-            //         {
-            //             IsConnectedToFloor = true;
-            //         }
+            // Color rules (debug):
+            // Green  = no connections (fully available)
+            // Yellow = partially occupied (has connections but still usable)
+            // Red    = fully blocked (cannot connect to anything anymore)
 
-            //         if (foundConnector.ConnectorParentType == BuildOption.Fence)
-            //         {
-            //             IsConnectedToFence = true;
-            //         }
+            Gizmos.color = Color.green;
 
-            //         if (foundConnector.ConnectorParentType == BuildOption.Stairs)
-            //         {
-            //             IsConnectedToStairs = true;
-            //         }
+            if (_connectedConnectors != null && _connectedConnectors.Count > 0)
+            {
+                // Default to partially occupied
+                Gizmos.color = Color.yellow;
 
-            //         if (rootCall)
-            //         {
-            //             foundConnector.UpdateConnectors();
-            //         }
-            //     }
-            // }
+                // If this connector can no longer accept any allowed build type, mark as blocked
+                bool canAcceptAnything = false;
+                foreach (var buildOption in AllowedConnectionTypes)
+                {
+                    if (CanConnectTo(buildOption))
+                    {
+                        canAcceptAnything = true;
+                        break;
+                    }
+                }
 
-            // CanConnectTo = true;
+                if (!canAcceptAnything)
+                {
+                    Gizmos.color = Color.red;
+                }
+            }
 
-            // if (IsConnectedToFloor && IsConnectedToFence && IsConnectedToStairs)
-            // {
-            //     CanConnectTo = false;
-            // }
+            Gizmos.DrawWireSphere(transform.position, _connectorCollider.radius);
         }
     }
 }

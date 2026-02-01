@@ -81,13 +81,11 @@ namespace CliffGame
 
         private void ManageDestruction()
         {
-            Debug.Log($"Managing destruction");
-
             foreach (Connector connector in transform.GetComponentsInChildren<Connector>())
             {
                 // Debug.Log($"disablign connector");
+                connector.CleanupConnections();
                 connector.gameObject.SetActive(false);
-                connector.UpdateConnectors(true);
             }
 
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);

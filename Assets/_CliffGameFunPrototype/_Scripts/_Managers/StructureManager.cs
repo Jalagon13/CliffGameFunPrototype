@@ -156,7 +156,7 @@ namespace CliffGame
                         if (overlapCollider.gameObject == _ghostStructureGameObject) continue;
 
                         if (overlapCollider.gameObject != _ghostStructureGameObject &&
-                            overlapCollider.transform.root.CompareTag("Structure")/*  &&
+                            overlapCollider.transform.root.CompareTag("Placeable")/*  &&
                             !isConnector */) // <-- notice the NOT here
                         {
                             GhostifyModel(_modelParent, _ghostMaterialInvalid);
@@ -253,13 +253,11 @@ namespace CliffGame
 
             if (item.Item is StructureItemSO structureData)
             {
-                Debug.Log($"Structure Building Mode Enabled");
                 _isBuilding = true;
                 _currentStructureItemSO = structureData;
             }
             else
             {
-                Debug.Log($"Structure Building Mode Disabled");
                 _isBuilding = false;
                 _currentStructureItemSO = null;
             }

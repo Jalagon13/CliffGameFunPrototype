@@ -4888,14 +4888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Connector
   ConnectorPosition: 2
-  ConnectorParentType: 0
-  IsConnectedToFloor: 0
-  IsConnectedToFence: 0
-  IsConnectedToStairs: 0
-  CanConnectTo: 1
-  _canConnectToFloor: 1
-  _canConnectToWall: 1
-  _canConnectToStairs: 1
+  AllowedConnectionTypes: 000000000100000002000000
 --- !u!135 &988648094821512587
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12450,14 +12443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Connector
   ConnectorPosition: 1
-  ConnectorParentType: 0
-  IsConnectedToFloor: 0
-  IsConnectedToFence: 0
-  IsConnectedToStairs: 0
-  CanConnectTo: 1
-  _canConnectToFloor: 1
-  _canConnectToWall: 1
-  _canConnectToStairs: 1
+  AllowedConnectionTypes: 000000000100000002000000
 --- !u!135 &6250392016538147473
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12551,6 +12537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5100d170b3f934638947a4994a281367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BuildPiece
+  <BuildType>k__BackingField: 0
 --- !u!114 &7598075245066883551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24536,14 +24523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Connector
   ConnectorPosition: 0
-  ConnectorParentType: 0
-  IsConnectedToFloor: 0
-  IsConnectedToFence: 0
-  IsConnectedToStairs: 0
-  CanConnectTo: 1
-  _canConnectToFloor: 1
-  _canConnectToWall: 1
-  _canConnectToStairs: 1
+  AllowedConnectionTypes: 000000000100000002000000
 --- !u!135 &7351257273208605659
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -24611,14 +24591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Connector
   ConnectorPosition: 3
-  ConnectorParentType: 0
-  IsConnectedToFloor: 0
-  IsConnectedToFence: 0
-  IsConnectedToStairs: 0
-  CanConnectTo: 1
-  _canConnectToFloor: 1
-  _canConnectToWall: 1
-  _canConnectToStairs: 1
+  AllowedConnectionTypes: 000000000100000002000000
 --- !u!135 &8891558304975700420
 SphereCollider:
   m_ObjectHideFlags: 0

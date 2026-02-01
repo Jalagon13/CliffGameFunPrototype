@@ -85,7 +85,7 @@ namespace CliffGame
             }
         }
 
-        private void CheckForRepairState(SelectedBuildType type)
+        private void CheckForRepairState(BuildOption type)
         {
             if (_structReqHolder.transform.childCount > 0)
             {
@@ -95,7 +95,7 @@ namespace CliffGame
                 }
             }
 
-            if (type == SelectedBuildType.RepairMode)
+            if (type == BuildOption.RepairMode)
             {
                 foreach (InventoryItem item in BuildingManager.Instance.ItemsNeededForRepairing)
                 {
@@ -107,7 +107,7 @@ namespace CliffGame
 
                 _repairInstructions.SetActive(true);
             }
-            else if(type == SelectedBuildType.Fence || type == SelectedBuildType.Platform || type == SelectedBuildType.Stairs)
+            else if(type == BuildOption.Fence || type == BuildOption.Platform || type == BuildOption.Stairs)
             {
                 PopulateBuildReqs();
                 _repairInstructions.SetActive(false);
@@ -195,7 +195,7 @@ namespace CliffGame
         {
             if(item.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer) 
             {
-                if(BuildingManager.Instance.CurrentBuildType == SelectedBuildType.DestroyMode)
+                if(BuildingManager.Instance.CurrentBuildType == BuildOption.DestroyMode)
                 {
                     if (_structReqHolder.transform.childCount > 0)
                     {
@@ -205,7 +205,7 @@ namespace CliffGame
                         }
                     }
                 }
-                else if(BuildingManager.Instance.CurrentBuildType == SelectedBuildType.RepairMode)
+                else if(BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode)
                 {
                     if (_structReqHolder.transform.childCount > 0)
                     {
@@ -225,7 +225,7 @@ namespace CliffGame
 
                     _repairInstructions.SetActive(true);
                 }
-                else if(BuildingManager.Instance.CurrentBuildType == SelectedBuildType.Fence || BuildingManager.Instance.CurrentBuildType == SelectedBuildType.Platform)
+                else if(BuildingManager.Instance.CurrentBuildType == BuildOption.Fence || BuildingManager.Instance.CurrentBuildType == BuildOption.Platform)
                 {
                     PopulateBuildReqs();
                 }

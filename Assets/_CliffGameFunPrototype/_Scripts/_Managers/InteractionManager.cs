@@ -68,7 +68,7 @@ namespace CliffGame
 
         private void TryToRepairFloor(object sender, InputAction.CallbackContext e)
         {
-            if(!e.started || BuildingManager.Instance.CurrentBuildType != SelectedBuildType.RepairMode || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen) return;
+            if(!e.started || BuildingManager.Instance.CurrentBuildType != BuildOption.RepairMode || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen) return;
 
             // Repair logic here
             if (InventoryManager.Instance.HasSelectedItem)

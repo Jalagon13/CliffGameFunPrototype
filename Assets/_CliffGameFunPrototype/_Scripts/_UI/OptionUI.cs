@@ -3,15 +3,6 @@ using UnityEngine.UI;
 
 namespace CliffGame
 {
-    public enum BuildOption
-    {
-        Fence,
-        Platform,
-        Stairs,
-        Destroy,
-        Repair
-    }
-
     public class OptionUI : MonoBehaviour
     {
         [SerializeField] private BuildOption _buildOption;
@@ -19,23 +10,23 @@ namespace CliffGame
         
         public void OnSelected()
         {
-            Debug.Log($"Selecting Option {_buildOption}");
+            // Debug.Log($"Selecting Option {_buildOption}");
             switch (_buildOption)
             {
                 case BuildOption.Fence:
-                    BuildingManager.Instance.SetBuildType(SelectedBuildType.Fence);
+                    BuildingManager.Instance.SetBuildType(BuildOption.Fence);
                     break;
                 case BuildOption.Platform:
-                    BuildingManager.Instance.SetBuildType(SelectedBuildType.Platform);
+                    BuildingManager.Instance.SetBuildType(BuildOption.Platform);
                     break;
                 case BuildOption.Stairs:
-                    BuildingManager.Instance.SetBuildType(SelectedBuildType.Stairs);
+                    BuildingManager.Instance.SetBuildType(BuildOption.Stairs);
                     break;
-                case BuildOption.Destroy:
-                    BuildingManager.Instance.SetBuildType(SelectedBuildType.DestroyMode);
+                case BuildOption.DestroyMode:
+                    BuildingManager.Instance.SetBuildType(BuildOption.DestroyMode);
                     break;
-                case BuildOption.Repair:
-                    BuildingManager.Instance.SetBuildType(SelectedBuildType.RepairMode);
+                case BuildOption.RepairMode:
+                    BuildingManager.Instance.SetBuildType(BuildOption.RepairMode);
                     break;
             }
             

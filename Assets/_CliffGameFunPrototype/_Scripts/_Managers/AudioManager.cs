@@ -27,7 +27,7 @@ namespace CliffGame
 
         private void Start()
         {
-            Debug.Log($"Amb started");
+            // Debug.Log($"Amb started");
             InitializeAmbience(FMODEvents.Instance.WindAmb);
             SetWindSeverity(0.1f);
         }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CliffGame
@@ -15,124 +17,105 @@ namespace CliffGame
     public class Connector : MonoBehaviour
     {
         public ConnectorPosition ConnectorPosition;
-        public SelectedBuildType ConnectorParentType;
-
-        [HideInInspector]
-        public bool IsConnectedToFloor = false;
-
-        [HideInInspector]
-        public bool IsConnectedToFence = false;
-
-        [HideInInspector]
-        public bool IsConnectedToStairs = false;
-
-        [HideInInspector]
-        public bool CanConnectTo = true;
-
-        [SerializeField]
-        private bool _canConnectToFloor = true;
-
-        [SerializeField]
-        private bool _canConnectToWall = true;
-
-        [SerializeField]
-        private bool _canConnectToStairs = true;
+        public BuildOption[] AllowedConnectionTypes;
 
         private SphereCollider _connectorCollider;
-        private Platform _floor;
+        private HashSet<Connector> _connectedConnectors = new();
         
-        public bool IsNotConnectedToAnything { get; private set; }
+        public BuildPiece BuildPiece { get; private set; }
         
 
         private void Awake()
         {
+            BuildPiece = transform.root.GetComponent<BuildPiece>();
+
             _connectorCollider = GetComponent<SphereCollider>();
-            _floor = transform.root.GetComponent<Platform>();
         }
 
         private void OnDrawGizmos()
         {
-            _connectorCollider = GetComponent<SphereCollider>();
+            // _connectorCollider = GetComponent<SphereCollider>();
 
             // Red: Can no longer be connected at all, Green: Can connect to both wall and floor, Yellow: Can only connect to floor, Blue: Can only connect to wall
-            Gizmos.color = IsConnectedToFloor ? ((IsConnectedToFence || IsConnectedToStairs) ? Color.red : Color.blue) : ((!IsConnectedToFence || !IsConnectedToStairs) ? Color.green : Color.yellow);
-            Gizmos.DrawWireSphere(transform.position, _connectorCollider.radius);
+            // Gizmos.color = IsConnectedToFloor ? ((IsConnectedToFence || IsConnectedToStairs) ? Color.red : Color.blue) : ((!IsConnectedToFence || !IsConnectedToStairs) ? Color.green : Color.yellow);
+            // Gizmos.DrawWireSphere(transform.position, _connectorCollider.radius);
+        }
+
+        public bool CanConnectTo(BuildOption currentSelectedBuildOption)
+        {
+            bool canConnect = AllowedConnectionTypes.Contains(currentSelectedBuildOption);
+        
+            return canConnect;
+        }
+        
+        public void EstablishConnection(bool rootCall = false)
+        {
+            Collider[] collidersTouchingConnectorCollider = Physics.OverlapSphere(transform.position, _connectorCollider.radius);
+            
+            foreach (Collider collider in collidersTouchingConnectorCollider)
+            {
+                if (collider.GetInstanceID() == _connectorCollider.GetInstanceID() || !collider.gameObject.activeInHierarchy || collider.gameObject.layer != gameObject.layer) continue;
+
+                Connector foundConnector = collider.GetComponent<Connector>();
+
+                if (foundConnector == null) continue;
+                
+                // Connection establishing logic
+                _connectedConnectors.Add(foundConnector);
+                
+                if(rootCall)
+                {
+                    foundConnector.EstablishConnection();
+                }
+            }
         }
 
         public void UpdateConnectors(bool rootCall = false)
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _connectorCollider.radius);
+            // Collider[] colliders = Physics.OverlapSphere(transform.position, _connectorCollider.radius);
 
-            IsConnectedToFloor = !_canConnectToFloor;
-            IsConnectedToFence = !_canConnectToWall;
-            IsConnectedToStairs = !_canConnectToStairs;
+            // IsConnectedToFloor = !_canConnectToFloor;
+            // IsConnectedToFence = !_canConnectToWall;
+            // IsConnectedToStairs = !_canConnectToStairs;
 
-            foreach (Collider collider in colliders)
-            {
-                if (collider.GetInstanceID() == GetComponent<Collider>().GetInstanceID()) continue;
+            // foreach (Collider collider in colliders)
+            // {
+            //     if (collider.GetInstanceID() == GetComponent<Collider>().GetInstanceID()) continue;
 
-                if (!collider.gameObject.activeInHierarchy) continue;
+            //     if (!collider.gameObject.activeInHierarchy) continue;
 
-                if (collider.gameObject.layer == gameObject.layer)
-                {
-                    Connector foundConnector = collider.GetComponent<Connector>();
+            //     if (collider.gameObject.layer == gameObject.layer)
+            //     {
+            //         Connector foundConnector = collider.GetComponent<Connector>();
 
-                    if (foundConnector.ConnectorParentType == SelectedBuildType.Platform)
-                    {
-                        IsConnectedToFloor = true;
-                    }
+            //         if (foundConnector.ConnectorParentType == BuildOption.Platform)
+            //         {
+            //             IsConnectedToFloor = true;
+            //         }
 
-                    if (foundConnector.ConnectorParentType == SelectedBuildType.Fence)
-                    {
-                        IsConnectedToFence = true;
-                    }
+            //         if (foundConnector.ConnectorParentType == BuildOption.Fence)
+            //         {
+            //             IsConnectedToFence = true;
+            //         }
 
-                    if (foundConnector.ConnectorParentType == SelectedBuildType.Stairs)
-                    {
-                        IsConnectedToStairs = true;
-                    }
+            //         if (foundConnector.ConnectorParentType == BuildOption.Stairs)
+            //         {
+            //             IsConnectedToStairs = true;
+            //         }
 
-                    if (rootCall)
-                    {
-                        foundConnector.UpdateConnectors();
-                    }
-                }
-            }
+            //         if (rootCall)
+            //         {
+            //             foundConnector.UpdateConnectors();
+            //         }
+            //     }
+            // }
 
-            CanConnectTo = true;
+            // CanConnectTo = true;
 
-            if (IsConnectedToFloor && IsConnectedToFence && IsConnectedToStairs)
-            {
-                CanConnectTo = false;
-            }
-
-            IsNotConnectedToAnything = !IsConnectedToFloor && !IsConnectedToFence && !IsConnectedToStairs;
-            
-            if(CheckIfBuildingIsNotConntectedToAnything())
-            {
-                if(_floor.DestroyIfNotConntectedToAnything)
-                {
-                    Destroy(_floor.gameObject);
-                }
-            }
-        }
-
-        // Still WIP. Only works if the platform is not connected to anything but like bunches of platforms not connected to the cliff still stand
-        private bool CheckIfBuildingIsNotConntectedToAnything()
-        {
-            if (transform.parent == null)
-                return true;
-
-            foreach (Transform item in transform.parent)
-            {
-                Connector connector = item.GetComponent<Connector>();
-                if (connector == null) continue;
-
-                if (!connector.IsNotConnectedToAnything)
-                    return false; // At least one connector is connected
-            }
-
-            return true; // All connectors are unconnected
+            // if (IsConnectedToFloor && IsConnectedToFence && IsConnectedToStairs)
+            // {
+            //     CanConnectTo = false;
+            // }
         }
     }
 }

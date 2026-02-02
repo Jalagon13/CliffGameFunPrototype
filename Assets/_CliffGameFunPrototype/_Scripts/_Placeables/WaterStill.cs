@@ -4,7 +4,7 @@ using DG.Tweening;
 
 namespace CliffGame
 {
-    public class WaterStill : Resource
+    public class WaterStill : Placeable
     {
         public enum WaterStillState
         {

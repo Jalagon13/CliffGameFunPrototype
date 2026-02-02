@@ -6,7 +6,7 @@ namespace CliffGame
     public class StructureItemSO : ItemSO
     {
         [field: SerializeField]
-        public GameObject StructurePrefab { get; private set; }
+        public GameObject PlaceablePrefab { get; private set; }
 
         public override InventoryItem CreateInventoryItem(int quantity)
         {

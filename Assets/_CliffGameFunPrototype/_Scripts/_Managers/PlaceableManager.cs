@@ -4,9 +4,9 @@ using UnityEngine.InputSystem;
 
 namespace CliffGame
 {
-    public class StructureManager : MonoBehaviour
+    public class PlaceableManager : MonoBehaviour
     {
-        public static StructureManager Instance;
+        public static PlaceableManager Instance;
 
         [Header("Build Settings")]
         [SerializeField] private LayerMask _connectorLayerMask;
@@ -21,10 +21,11 @@ namespace CliffGame
         private StructureItemSO _currentStructureItemSO;
         private bool _isBuilding = false;
         private bool _clickedThisFrame = false;
-        private GameObject _ghostStructureGameObject;
+        private GameObject _ghostPlaceableGameObject;
         private StructureItemSO _previousStructureItemSO = null;
         private Transform _modelParent = null;
         private bool _isGhostInValidPosition = false;
+        private Platform _hoveredPlatform = null;
 
         private void Awake()
         {
@@ -49,7 +50,7 @@ namespace CliffGame
         {
             if (_isBuilding)
             {
-                GhostStructure();
+                GhostPlaceableHandle();
 
                 if (_clickedThisFrame)
                 {
@@ -57,49 +58,91 @@ namespace CliffGame
                     _clickedThisFrame = false;
                 }
             }
-            else if (_ghostStructureGameObject != null)
+            else if (_ghostPlaceableGameObject != null)
             {
-                Destroy(_ghostStructureGameObject);
-                _ghostStructureGameObject = null;
+                Destroy(_ghostPlaceableGameObject);
+                _ghostPlaceableGameObject = null;
             }
         }
 
+        #region Input
+
+        private void OnSelectedSlotChanged(int arg1, InventoryItem item)
+        {
+            _currentStructureItemSO = null;
+
+            if (item.Item is StructureItemSO structureData)
+            {
+                _isBuilding = true;
+                _currentStructureItemSO = structureData;
+            }
+            else
+            {
+                _isBuilding = false;
+                _currentStructureItemSO = null;
+            }
+        }
+
+        private void OnPrimaryInteract(object sender, InputAction.CallbackContext e)
+        {
+            if (!e.started || !_isBuilding) return;
+            _clickedThisFrame = true;
+        }
+
+        private void CheckIfHoldingStructureItem(object sender, InventoryManager.OnInventoryUpdatedEventArgs e)
+        {
+            if (InventoryManager.Instance.SelectedInventoryItem.Item is StructureItemSO structureData)
+            {
+                _isBuilding = true;
+                _currentStructureItemSO = structureData;
+            }
+            else
+            {
+                _isBuilding = false;
+                _currentStructureItemSO = null;
+            }
+        }
+
+        #endregion
+
         private void PlaceStructure()
         {
-            if (_ghostStructureGameObject != null && _isGhostInValidPosition)
+            if (_ghostPlaceableGameObject != null && _isGhostInValidPosition)
             {
-                Instantiate(_currentStructureItemSO.StructurePrefab, _ghostStructureGameObject.transform.position, _ghostStructureGameObject.transform.rotation);
+                GameObject placedGO = Instantiate(_currentStructureItemSO.PlaceablePrefab, _ghostPlaceableGameObject.transform.position, _ghostPlaceableGameObject.transform.rotation);
+                placedGO.transform.GetComponent<Placeable>().SetSupportedBy(_hoveredPlatform);
 
-                Destroy(_ghostStructureGameObject);
-                _ghostStructureGameObject = null;
+                Destroy(_ghostPlaceableGameObject);
+                _ghostPlaceableGameObject = null;
+                _hoveredPlatform = null;
 
                 InventoryManager.Instance.RemoveItem(_currentStructureItemSO, 1);
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StructureBuiltSFX, Player.Instance.transform.position);
             }
         }
 
-        private void GhostStructure()
+        private void GhostPlaceableHandle()
         {
-            CreateGhostStructurePrefab();
+            CreateGhostPlaceablePrefab();
             MoveGhostPrefabToRaycast();
             CheckBuildValidity();
         }
 
-        private void CreateGhostStructurePrefab()
+        private void CreateGhostPlaceablePrefab()
         {
-            if (_ghostStructureGameObject == null || _currentStructureItemSO != _previousStructureItemSO)
+            if (_ghostPlaceableGameObject == null || _currentStructureItemSO != _previousStructureItemSO)
             {
-                if (_ghostStructureGameObject != null)
+                if (_ghostPlaceableGameObject != null)
                 {
-                    Destroy(_ghostStructureGameObject);
+                    Destroy(_ghostPlaceableGameObject);
                 }
 
-                _ghostStructureGameObject = Instantiate(_currentStructureItemSO.StructurePrefab);
+                _ghostPlaceableGameObject = Instantiate(_currentStructureItemSO.PlaceablePrefab);
 
-                _modelParent = _ghostStructureGameObject.transform.GetChild(0);
+                _modelParent = _ghostPlaceableGameObject.transform.GetChild(0);
 
                 GhostifyModel(_modelParent, _ghostMaterialInvalid); // Sets the correct material
-                GhostifyModel(_ghostStructureGameObject.transform); // Disables colliders on the ghostbuild so it doesn't affect the other colliders near it
+                GhostifyModel(_ghostPlaceableGameObject.transform); // Disables colliders on the ghostbuild so it doesn't affect the other colliders near it
 
                 _previousStructureItemSO = _currentStructureItemSO;
             }
@@ -107,7 +150,7 @@ namespace CliffGame
 
         private void MoveGhostPrefabToRaycast()
         {
-            if (_ghostStructureGameObject == null) return;
+            if (_ghostPlaceableGameObject == null) return;
 
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit[] hits = Physics.RaycastAll(ray, _buildRange);
@@ -127,12 +170,12 @@ namespace CliffGame
                 break;
             }
 
-            _ghostStructureGameObject.transform.position = foundValidHit ? validHit.point : ray.origin + ray.direction * _buildRange;
+            _ghostPlaceableGameObject.transform.position = foundValidHit ? validHit.point : ray.origin + ray.direction * _buildRange;
         }
 
         private void CheckBuildValidity()
         {
-            if (_ghostStructureGameObject == null) return;
+            if (_ghostPlaceableGameObject == null) return;
 
             // Trying to create a brand new build piece
             GhostSeparateBuild();
@@ -140,7 +183,7 @@ namespace CliffGame
             if (_isGhostInValidPosition)
             {
                 // Get the BoxCollider of the structure model
-                BoxCollider boxCollider = _ghostStructureGameObject.transform.GetChild(0).GetChild(0).GetComponent<BoxCollider>();
+                BoxCollider boxCollider = _ghostPlaceableGameObject.transform.GetChild(0).GetChild(0).GetComponent<BoxCollider>();
                 if (boxCollider != null)
                 {
                     // Calculate world-space center of the box
@@ -153,11 +196,9 @@ namespace CliffGame
                     {
                         bool isConnector = ((1 << overlapCollider.gameObject.layer) & _connectorLayerMask) != 0;
                         if (isConnector) continue;
-                        if (overlapCollider.gameObject == _ghostStructureGameObject) continue;
+                        if (overlapCollider.gameObject == _ghostPlaceableGameObject) continue;
 
-                        if (overlapCollider.gameObject != _ghostStructureGameObject &&
-                            overlapCollider.transform.root.CompareTag("Placeable")/*  &&
-                            !isConnector */) // <-- notice the NOT here
+                        if (overlapCollider.transform.root.CompareTag("Placeable"))
                         {
                             GhostifyModel(_modelParent, _ghostMaterialInvalid);
                             _isGhostInValidPosition = false;
@@ -167,7 +208,7 @@ namespace CliffGame
                 }
                 else
                 {
-                    Debug.LogWarning($"Missing boxCollider for {_ghostStructureGameObject.name}");
+                    Debug.LogWarning($"Missing boxCollider for {_ghostPlaceableGameObject.name}");
                 }
             }
         }
@@ -183,22 +224,25 @@ namespace CliffGame
                 if (((1 << hit.transform.gameObject.layer) & _connectorLayerMask) != 0)
                     continue;
 
-                if (hit.transform.gameObject == _ghostStructureGameObject) continue;
+                if (hit.transform.gameObject == _ghostPlaceableGameObject) continue;
 
                 float angleToUp = Vector3.Angle(hit.normal, Vector3.up);
                 float angleToForward = Vector3.Angle(hit.normal, Player.Instance.transform.forward);
 
                 bool isBuildableSurface = ((1 << hit.transform.gameObject.layer) & _buildableSurfaceMask) != 0;
+                bool isPlatform = hit.transform.gameObject.TryGetComponent(out Platform platformComponent);
 
-                if (angleToUp < _maxGroundAngle && isBuildableSurface)
+                if (angleToUp < _maxGroundAngle && isBuildableSurface && isPlatform)
                 {
                     GhostifyModel(_modelParent, _ghostMaterialValid);
                     _isGhostInValidPosition = true;
+                    _hoveredPlatform = platformComponent;
                 }
                 else
                 {
                     GhostifyModel(_modelParent, _ghostMaterialInvalid);
                     _isGhostInValidPosition = false;
+                    _hoveredPlatform = null;
                 }
 
                 return;
@@ -207,6 +251,7 @@ namespace CliffGame
             // If no valid surface was found within range
             GhostifyModel(_modelParent, _ghostMaterialInvalid);
             _isGhostInValidPosition = false;
+            _hoveredPlatform = null;
         }
 
         private void GhostifyModel(Transform modelParent, Material ghostMaterial = null)
@@ -227,40 +272,5 @@ namespace CliffGame
             }
         }
 
-        private void OnPrimaryInteract(object sender, InputAction.CallbackContext e)
-        {
-            if (!e.started || !_isBuilding) return;
-            _clickedThisFrame = true;
-        }
-
-        private void CheckIfHoldingStructureItem(object sender, InventoryManager.OnInventoryUpdatedEventArgs e)
-        {
-            if(InventoryManager.Instance.SelectedInventoryItem.Item is StructureItemSO structureData)
-            {
-                _isBuilding = true;
-                _currentStructureItemSO = structureData;
-            }
-            else
-            {
-                _isBuilding = false;
-                _currentStructureItemSO = null;
-            }
-        }
-
-        private void OnSelectedSlotChanged(int arg1, InventoryItem item)
-        {
-            _currentStructureItemSO = null;
-
-            if (item.Item is StructureItemSO structureData)
-            {
-                _isBuilding = true;
-                _currentStructureItemSO = structureData;
-            }
-            else
-            {
-                _isBuilding = false;
-                _currentStructureItemSO = null;
-            }
-        }
     }
 }

@@ -10,7 +10,7 @@ namespace CliffGame
         Grown
     }
 
-    public class PlanterBox : Resource
+    public class PlanterBox : Placeable
     {
         [SerializeField] private Transform _growableGrowPoint;
     

@@ -4,7 +4,7 @@ using System;
 
 namespace CliffGame
 {
-    public class CookingStation : Resource
+    public class CookingStation : Placeable
     {
         [Header("Cooking Station Settings")]
         [SerializeField] private ConsumableItemSO _foodItemToCook;

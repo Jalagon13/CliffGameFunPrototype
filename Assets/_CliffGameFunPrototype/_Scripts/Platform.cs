@@ -8,6 +8,8 @@ namespace CliffGame
 {
     public class Platform : MonoBehaviour
     {
+        public event Action OnPlatformDestroyed;
+    
         [SerializeField] private bool _isStartingPlatform = false;
         [SerializeField] private int _hitPoints = 100;
         public int MaxHitPoints => _hitPoints;
@@ -42,6 +44,11 @@ namespace CliffGame
         private void Awake()
         {
             _currentHP = _hitPoints;
+        }
+        
+        private void OnDestroy()
+        {
+            OnPlatformDestroyed?.Invoke();
         }
         
         private IEnumerator Start()

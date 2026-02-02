@@ -12479,6 +12479,7 @@ GameObject:
   - component: {fileID: 2033269412382184172}
   - component: {fileID: 847669081259055926}
   - component: {fileID: 7598075245066883551}
+  - component: {fileID: 1564393933081264948}
   - component: {fileID: 3892629605381178607}
   m_Layer: 10
   m_Name: Platform
@@ -12555,8 +12556,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Floor
   _isStartingPlatform: 0
   _hitPoints: 100
-  _destroyIfNotConntectedToAnything: 1
-  <BuildItemRequirements>k__BackingField: []
   _rattleVFX: {fileID: 3892629605381178607}
   _destructionParticles: {fileID: 3947636531895734693, guid: e5f1ccd63da2f44378d6559a1a73df60, type: 3}
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
@@ -12572,6 +12571,18 @@ MonoBehaviour:
   - {fileID: 6625347915895830320}
   - {fileID: 6038337515971409271}
   - {fileID: 362440981991232527}
+--- !u!114 &1564393933081264948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5175794678529326981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c86f92b5ce8f445e58a75395a04d177f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructuralSupport
 --- !u!114 &3892629605381178607
 MonoBehaviour:
   m_ObjectHideFlags: 0

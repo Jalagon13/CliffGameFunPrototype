@@ -13,12 +13,6 @@ namespace CliffGame
         [SerializeField] private bool _isStartingPlatform = false;
         [SerializeField] private int _hitPoints = 100;
         public int MaxHitPoints => _hitPoints;
-        
-        [SerializeField] private bool _destroyIfNotConntectedToAnything = true;
-        public bool DestroyIfNotConntectedToAnything => _destroyIfNotConntectedToAnything;
-        
-        [field: SerializeField] 
-        public InventoryItem[] BuildItemRequirements { get; private set; }
 
         [Header("Game Feel Settings")]
         [SerializeField] private MMF_Player _rattleVFX;
@@ -28,17 +22,16 @@ namespace CliffGame
         [Header("Decal Settings")]
         [SerializeField] private DecalProjector _crackDecalProjector;
         public DecalProjector DecalProjector => _crackDecalProjector;
-
         [SerializeField] private GameObject _noCracksModel;
-
         [SerializeField] private Material[] _crackMaterialsArray; // light, medium, heavy, very heavy
         [SerializeField] private GameObject[] _crackModelsArray;  // light, medium, heavy, very heavy
 
         private float _currentHP;
         public int CurrentHitPoints => Mathf.RoundToInt(_currentHP);
-
+        
         private float _hpPercent;
         private int _lastCrackState = -1;
+        
         public bool IsRattling => _rattleVFX.IsPlaying;
 
         private void Awake()
@@ -80,7 +73,22 @@ namespace CliffGame
                 Destroy(gameObject);
             }
         }
-        
+
+        public void AddFloorHp(int amount)
+        {
+            _currentHP += amount;
+            if (_currentHP > _hitPoints)
+            {
+                _currentHP = _hitPoints;
+            }
+            else if (_currentHP < 0)
+            {
+                _currentHP = 0;
+            }
+
+            Debug.Log($"Adding floor hp {amount}, new hp: {_currentHP}");
+        }
+
         public void PlayRattleFeedbacks()
         {
             _rattleVFX?.PlayFeedbacks();
@@ -141,21 +149,6 @@ namespace CliffGame
         private void SetCrackDecal(Material decal)
         {
             _crackDecalProjector.material = decal;
-        }
-
-        public void AddFloorHp(int amount)
-        {
-            _currentHP += amount;
-            if (_currentHP > _hitPoints)
-            {
-                _currentHP = _hitPoints;
-            }
-            else if (_currentHP < 0)
-            {
-                _currentHP = 0;
-            }
-            
-            Debug.Log($"Adding floor hp {amount}, new hp: {_currentHP}");
         }
     }
 }

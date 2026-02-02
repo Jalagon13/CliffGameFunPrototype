@@ -80,6 +80,7 @@ namespace CliffGame
             StartCoroutine(DestroyUnsupportedPiecesRoutine(unsupported));
         }
 
+        // NTFS: Might be very buggy if I start another destroy routine while one is already running
         private IEnumerator DestroyUnsupportedPiecesRoutine(List<BuildPiece> unsupported)
         {
             Transform playerTransform = Player.Instance.transform;

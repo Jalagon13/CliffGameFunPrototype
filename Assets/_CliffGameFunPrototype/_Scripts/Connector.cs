@@ -27,9 +27,8 @@ namespace CliffGame
         [SerializeField, Tooltip("DEBUG (Read Only): Connected build types")]
         private List<BuildOption> _debugConnectedBuildTypes = new();
 
-        public IEnumerable<BuildOption> ConnectedBuildTypes => _connectedConnectors.Select(c => c.BuildPiece.BuildType);
+        public IEnumerable<BuildPiece> ConnectedBuildPieces => _connectedConnectors.Select(c => c.BuildPiece).Where(bp => bp != null);
         public bool HasAnyConnection => _connectedConnectors.Count > 0;
-
         public BuildPiece BuildPiece { get; private set; }
         
 

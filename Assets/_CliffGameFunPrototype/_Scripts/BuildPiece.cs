@@ -1,14 +1,44 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace CliffGame
 {
     public class BuildPiece : MonoBehaviour
     {
+        [SerializeField] private ParticleSystem _destructionParticles;
+
         [field: SerializeField]
         public BuildOption BuildType { get; private set; }
     
         public bool IsAnchored { get; private set; }
         
+        public IReadOnlyList<Connector> Connectors { get; private set; }
+
+        private void Awake()
+        {
+            Connectors = GetComponentsInChildren<Connector>();
+        }
+        
+        public void PlayDestructionGameFeel()
+        {
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
+            Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
+        }
+
+        public IEnumerable<BuildPiece> GetConnectedBuildPieces()
+        {
+            foreach (Connector connector in Connectors)
+            {
+                foreach (BuildPiece connectedBuildPiece in connector.ConnectedBuildPieces)
+                {
+                    if(connectedBuildPiece != this)
+                        yield return connectedBuildPiece;
+                }
+            }
+        }
+
         public void InitializeAnchoredStatus()
         {
             IsAnchored = false;
@@ -47,6 +77,22 @@ namespace CliffGame
             }
             
             // Debug.Log("BuildPiece is NOT anchored.");
+        }
+
+        public void CleanupConnectors()
+        {
+            foreach (var connector in GetComponentsInChildren<Connector>())
+            {
+                connector.CleanupConnections();
+                connector.gameObject.SetActive(false);
+            }
+        }
+
+        public void HandleDestroy()
+        {
+            CleanupConnectors();
+            PlayDestructionGameFeel();
+            Destroy(gameObject);
         }
     }
 }

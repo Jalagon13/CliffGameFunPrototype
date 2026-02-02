@@ -47,6 +47,8 @@ namespace CliffGame
         private IEnumerator Start()
         {
             if (!_isStartingPlatform) yield break;
+            
+            BuildPieceIntegrityManager.Instance.RegisterBuildPiece(transform.GetComponent<BuildPiece>());
 
             yield return new WaitForSeconds(4f);
 
@@ -81,12 +83,7 @@ namespace CliffGame
 
         private void ManageDestruction()
         {
-            foreach (Connector connector in transform.GetComponentsInChildren<Connector>())
-            {
-                // Debug.Log($"disablign connector");
-                connector.CleanupConnections();
-                connector.gameObject.SetActive(false);
-            }
+            transform.GetComponent<BuildPiece>().CleanupConnectors();
 
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
             Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);

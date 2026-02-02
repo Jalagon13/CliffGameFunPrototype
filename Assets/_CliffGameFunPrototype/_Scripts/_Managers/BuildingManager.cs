@@ -805,11 +805,7 @@ namespace CliffGame
             // When we do left click while in destroy mode, destroy the build object we are looking at
             if (_currentDestroyTarget)
             {
-                foreach (Connector connector in _currentDestroyTarget.GetComponentsInChildren<Connector>())
-                {
-                    connector.CleanupConnections();
-                    connector.gameObject.SetActive(false);
-                }
+                _currentDestroyTarget.GetComponent<BuildPiece>().CleanupConnectors();
 
                 var buildPiece = _currentDestroyTarget.GetComponent<BuildPiece>();
                 Destroy(_currentDestroyTarget.gameObject);

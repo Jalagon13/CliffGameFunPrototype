@@ -6,11 +6,11 @@ using UnityEngine.Rendering.Universal;
 
 namespace CliffGame
 {
-    public class Platform : MonoBehaviour
+    public class BuildPieceDurability : MonoBehaviour
     {
-        public event Action OnPlatformDestroyed;
+        public event Action OnBuildPieceDestoyed;
     
-        [SerializeField] private bool _isStartingPlatform = false;
+        [SerializeField] private bool _isStartingBuildPiece = false;
         [SerializeField] private int _hitPoints = 100;
         public int MaxHitPoints => _hitPoints;
 
@@ -41,12 +41,12 @@ namespace CliffGame
         
         private void OnDestroy()
         {
-            OnPlatformDestroyed?.Invoke();
+            OnBuildPieceDestoyed?.Invoke();
         }
         
         private IEnumerator Start()
         {
-            if (!_isStartingPlatform) yield break;
+            if (!_isStartingBuildPiece) yield break;
             
             BuildPieceIntegrityManager.Instance.RegisterBuildPiece(transform.GetComponent<BuildPiece>());
 
@@ -66,15 +66,9 @@ namespace CliffGame
             _hpPercent = Mathf.Clamp01(_currentHP / _hitPoints);
 
             UpdateCrackDecals();
-
-            if (_currentHP <= 0)
-            {
-                ManageDestruction();
-                Destroy(gameObject);
-            }
         }
 
-        public void AddFloorHp(int amount)
+        public void AddHp(int amount)
         {
             _currentHP += amount;
             if (_currentHP > _hitPoints)
@@ -87,6 +81,12 @@ namespace CliffGame
             }
 
             Debug.Log($"Adding floor hp {amount}, new hp: {_currentHP}");
+
+            if (_currentHP <= 0)
+            {
+                ManageDestruction();
+                Destroy(gameObject);
+            }
         }
 
         public void PlayRattleFeedbacks()
@@ -98,8 +98,10 @@ namespace CliffGame
 
         private void ManageDestruction()
         {
-            transform.GetComponent<BuildPiece>().CleanupConnectors();
+            BuildPiece bp = transform.GetComponent<BuildPiece>();
+            bp.CleanupConnectors();
 
+            BuildPieceIntegrityManager.Instance.UnregisterBuildPiece(bp);
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
             Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
         }

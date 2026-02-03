@@ -65,7 +65,7 @@ namespace CliffGame
         [SerializeField] private Transform _playerTransform;
 
         private Coroutine _windStormRoutine;
-        private readonly List<Platform> _foundationBuffer = new();
+        private readonly List<BuildPieceDurability> _foundationBuffer = new();
 
         private Timer _stormCooldownTimer;
 
@@ -112,9 +112,7 @@ namespace CliffGame
             if (_windStormRoutine != null)
                 return;
 
-            _windStormRoutine = StartCoroutine(
-                WindStormSequence(_startSeverity, _peakSeverity, _rampUpTime, _holdTime, _rampDownTime)
-            );
+            _windStormRoutine = StartCoroutine(WindStormSequence(_startSeverity, _peakSeverity, _rampUpTime, _holdTime, _rampDownTime));
             _stormCooldownTimer.IsPaused = true;
         }
 
@@ -125,28 +123,17 @@ namespace CliffGame
                 return;
 
             // Normalize wind severity between threshold and full storm (0–1)
-            float normalizedSeverity = Mathf.InverseLerp(
-                _windPushesPlayerThreshold,
-                1f,
-                _windSeverity
-            );
+            float normalizedSeverity = Mathf.InverseLerp(_windPushesPlayerThreshold, 1f, _windSeverity);
 
             // Shape the severity using the designer-controlled curve
             float curvedSeverity = _rattleSeverityCurve.Evaluate(normalizedSeverity);
 
             // Convert severity into a final rattle chance
-            float rattleChance = Mathf.Lerp(
-                _minRattleChance,
-                _maxRattleChance,
-                curvedSeverity
-            );
+            float rattleChance = Mathf.Lerp(_minRattleChance, _maxRattleChance, curvedSeverity);
             
             // Debug.Log($"Rattle Chance: {rattleChance}");
 
-            Collider[] hits = Physics.OverlapSphere(
-                Player.Instance.transform.position,
-                _radiusOfRattlingAroundPlayer
-            );
+            Collider[] hits = Physics.OverlapSphere(Player.Instance.transform.position, _radiusOfRattlingAroundPlayer);
 
             if (UnityEngine.Random.value < rattleChance)
             {
@@ -155,7 +142,7 @@ namespace CliffGame
 
                 foreach (var hit in hits)
                 {
-                    if (!hit.transform.root.TryGetComponent<Platform>(out var platform))
+                    if (!hit.transform.root.TryGetComponent<BuildPieceDurability>(out var platform))
                         continue;
 
                     if (platform.IsRattling)
@@ -248,11 +235,11 @@ namespace CliffGame
                 _radiusOfRattlingAroundPlayer
             );
 
-            List<Platform> validPlatforms = new();
+            List<BuildPieceDurability> validPlatforms = new();
 
             foreach (var hit in hits)
             {
-                if (!hit.transform.root.TryGetComponent<Platform>(out var platform))
+                if (!hit.transform.root.TryGetComponent<BuildPieceDurability>(out var platform))
                     continue;
 
                 if (!validPlatforms.Contains(platform))
@@ -262,7 +249,7 @@ namespace CliffGame
             if (validPlatforms.Count > 0)
             {
                 int randomIndex = UnityEngine.Random.Range(0, validPlatforms.Count);
-                validPlatforms[randomIndex].AddFloorHp(-_damagePerCrack);
+                validPlatforms[randomIndex].AddHp(-_damagePerCrack);
                 Debug.Log($"Wind cracked platform: {validPlatforms[randomIndex].name}");
             }
 

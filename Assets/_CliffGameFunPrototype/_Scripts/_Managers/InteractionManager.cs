@@ -32,14 +32,14 @@ namespace CliffGame
         private void Start()
         {
             Player.Instance.ToolHolder.OnToolSwingDown += TryToHitInteractable;
-            GameInput.Instance.OnPrimaryInteract += TryToRepairFloor;
+            GameInput.Instance.OnPrimaryInteract += TryToRepairBPDurability;
             GameInput.Instance.OnSecondaryInteract += Interact;
         }
         
         private void OnDestroy()
         {
             Player.Instance.ToolHolder.OnToolSwingDown -= TryToHitInteractable;
-            GameInput.Instance.OnPrimaryInteract -= TryToRepairFloor;
+            GameInput.Instance.OnPrimaryInteract -= TryToRepairBPDurability;
             GameInput.Instance.OnSecondaryInteract -= Interact;
         }
 
@@ -66,9 +66,9 @@ namespace CliffGame
             }
         }
 
-        private void TryToRepairFloor(object sender, InputAction.CallbackContext e)
+        private void TryToRepairBPDurability(object sender, InputAction.CallbackContext e)
         {
-            if(!e.started || BuildingManager.Instance.CurrentBuildType != BuildOption.RepairMode || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen) return;
+            if(!e.started || BuildingManager.Instance.CurrentBuildType != BuildOption.RepairMode || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen || Player.Instance.PauseMenuUI.PauseMenuOpen) return;
 
             // Repair logic here
             if (InventoryManager.Instance.HasSelectedItem)
@@ -78,19 +78,17 @@ namespace CliffGame
                     RaycastHit hit;
                     if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance))
                     {
-                        if (hit.collider.TryGetComponent(out Platform platform))
+                        if (hit.collider.transform.root.TryGetComponent(out BuildPieceDurability bpd))
                         {
                             if (InventoryManager.Instance.InventoryHasItems(BuildingManager.Instance.ItemsNeededForRepairing))
                             {
-                                if(platform.CurrentHitPoints >= platform.MaxHitPoints)
+                                if(bpd.CurrentHitPoints >= bpd.MaxHitPoints)
                                 {
-                                    Debug.Log("Platform is already at max HP, no need to repair.");
                                     return;
                                 }
                                 
-                                Debug.Log($"Hit repairable object: {hit.collider.name}");
-                                platform.AddFloorHp(toolItem.IntValue);
-                                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BuildingRepairedSFX, platform.transform.position);
+                                bpd.AddHp(toolItem.IntValue);
+                                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BuildingRepairedSFX, bpd.transform.position);
                                 InventoryManager.Instance.RemoveItems(BuildingManager.Instance.ItemsNeededForRepairing);
                             }
                         }

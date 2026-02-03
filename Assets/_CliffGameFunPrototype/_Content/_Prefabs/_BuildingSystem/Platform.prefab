@@ -12553,7 +12553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eccffe8f1c33f4eb882e72bee4156037, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Floor
-  _isStartingPlatform: 0
+  _isStartingBuildPiece: 0
   _hitPoints: 100
   _rattleVFX: {fileID: 3892629605381178607}
   _destructionParticles: {fileID: 3947636531895734693, guid: e5f1ccd63da2f44378d6559a1a73df60, type: 3}

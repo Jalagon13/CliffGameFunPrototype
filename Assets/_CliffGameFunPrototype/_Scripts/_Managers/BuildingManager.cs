@@ -272,7 +272,7 @@ namespace CliffGame
             {
                 _ghostBuildPiece = Instantiate(currentBuild);
 
-                if (_ghostBuildPiece.TryGetComponent(out Platform floor))
+                if (_ghostBuildPiece.TryGetComponent(out BuildPieceDurability floor))
                 {
                     floor.enabled = false;
                     floor.DecalProjector.enabled = false;

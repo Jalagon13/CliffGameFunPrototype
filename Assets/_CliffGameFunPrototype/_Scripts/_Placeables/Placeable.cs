@@ -5,17 +5,17 @@ namespace CliffGame
 {
     public class Placeable : Resource
     {
-        public Platform SupportedBy { get; private set; }
+        public BuildPieceDurability SupportedBy { get; private set; }
 
-        public void SetSupportedBy(Platform platform)
+        public void SetSupportedBy(BuildPieceDurability platform)
         {
             SupportedBy = platform;
-            SupportedBy.OnPlatformDestroyed += OnSupportedPlatformDestroyed;
+            SupportedBy.OnBuildPieceDestoyed += OnSupportedPlatformDestroyed;
         }
 
         private void OnSupportedPlatformDestroyed()
         {
-            SupportedBy.OnPlatformDestroyed -= OnSupportedPlatformDestroyed;
+            SupportedBy.OnBuildPieceDestoyed -= OnSupportedPlatformDestroyed;
             Destroy(gameObject);
         }
     }

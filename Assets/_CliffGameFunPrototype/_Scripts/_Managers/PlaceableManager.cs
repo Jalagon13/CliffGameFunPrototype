@@ -25,7 +25,7 @@ namespace CliffGame
         private StructureItemSO _previousStructureItemSO = null;
         private Transform _modelParent = null;
         private bool _isGhostInValidPosition = false;
-        private Platform _hoveredPlatform = null;
+        private BuildPieceDurability _hoveredPlatform = null;
 
         private void Awake()
         {
@@ -230,7 +230,7 @@ namespace CliffGame
                 float angleToForward = Vector3.Angle(hit.normal, Player.Instance.transform.forward);
 
                 bool isBuildableSurface = ((1 << hit.transform.gameObject.layer) & _buildableSurfaceMask) != 0;
-                bool isPlatform = hit.transform.gameObject.TryGetComponent(out Platform platformComponent);
+                bool isPlatform = hit.transform.gameObject.TryGetComponent(out BuildPieceDurability platformComponent);
 
                 if (angleToUp < _maxGroundAngle && isBuildableSurface && isPlatform)
                 {

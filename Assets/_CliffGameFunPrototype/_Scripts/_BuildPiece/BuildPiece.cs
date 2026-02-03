@@ -49,10 +49,16 @@ namespace CliffGame
         {
             IsAnchored = false;
 
-            Platform platform = GetComponent<Platform>();
+            BuildPieceDurability platform = GetComponent<BuildPieceDurability>();
             if (platform == null)
             {
                 // Debug.Log("BuildPiece is NOT anchored.");
+                return;
+            }
+            
+            if(BuildType != BuildOption.Platform)
+            {
+                // Only platforms can be anchored
                 return;
             }
 

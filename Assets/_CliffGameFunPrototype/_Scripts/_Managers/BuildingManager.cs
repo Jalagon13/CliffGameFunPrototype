@@ -374,6 +374,7 @@ namespace CliffGame
                 return;
             }
             
+            // Snap the ghost to the closest connector
             _ghostBuildPiece.transform.position = closestConnector.transform.position - (ghostConnector.position - _ghostBuildPiece.transform.position);
 
             // Trigger OnGhostSnap action only when snapping to a new connector
@@ -441,9 +442,23 @@ namespace CliffGame
                 _isGhostInValidPosition = false;
                 return;
             }
+            
+            // If the potential piece is not close enough to an anchor point, make it invalid
+            // if(!GhostBuildPieceCanBeSupported())
+            // {
+            //     GhostifyModel(_modelParent, _ghostMaterialInvalid);
+            //     _isGhostInValidPosition = false;
+            //     return;
+            // }
 
             GhostifyModel(_modelParent, _ghostMaterialValid);
             _isGhostInValidPosition = true;
+        }
+
+
+        private bool GhostBuildPieceCanBeSupported()
+        {
+            throw new NotImplementedException();
         }
 
         private bool GhostConnectorOverlapsWithConnector(Transform ghostConnector, Connector closestConnector)

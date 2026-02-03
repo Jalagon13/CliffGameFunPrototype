@@ -7,14 +7,17 @@ namespace CliffGame
 {
     public class BuildPieceIntegrityManager : MonoBehaviour
     {
-        [SerializeField]
-        private float destructionDelay = 0.1f;
-
         public static BuildPieceIntegrityManager Instance { get; private set; }
+        
+        [SerializeField]
+        private float _destructionDelay = 0.1f, _initialDestructionDelay = 0.5f;
+
+        [SerializeField]
+        private int _maxSupportedDistance = 5;
         
         private HashSet<BuildPiece> _registeredBuildPieces = new();
         private HashSet<BuildPiece> _supportedBuildPieces = new();
-        private Queue<BuildPiece> _snapShotQueue = new();
+        private Queue<(BuildPiece piece, int distance)> _snapShotQueue = new();
         
         private void Awake()
         {
@@ -39,29 +42,42 @@ namespace CliffGame
         
         private void ExecuteIntegrityCheck()
         {
+            foreach (BuildPiece buildPiece in _registeredBuildPieces)
+            {
+                buildPiece.SetDistanceFromAnchor(int.MaxValue);
+            }
+
             // Find all supported build pieces
             _supportedBuildPieces.Clear();
             _snapShotQueue.Clear();
 
             foreach (BuildPiece buildPiece in _registeredBuildPieces)
             {
-                if(buildPiece.IsAnchored)
+                if (buildPiece.IsAnchored)
                 {
+                    buildPiece.SetDistanceFromAnchor(0);
                     _supportedBuildPieces.Add(buildPiece);
-                    _snapShotQueue.Enqueue(buildPiece);
+                    _snapShotQueue.Enqueue((buildPiece, 0));
                 }
             }
             
-            while(_snapShotQueue.Count > 0)
+            while (_snapShotQueue.Count > 0)
             {
-                BuildPiece currentPiece = _snapShotQueue.Dequeue();
-                
+                var (currentPiece, currentDistance) = _snapShotQueue.Dequeue();
+
+                if (currentDistance >= _maxSupportedDistance)
+                    continue;
+
                 foreach (BuildPiece neighbor in currentPiece.GetConnectedBuildPieces())
                 {
-                    if(_supportedBuildPieces.Add(neighbor))
-                    {
-                        _snapShotQueue.Enqueue(neighbor);
-                    }
+                    int nextDistance = currentDistance + 1;
+
+                    if (nextDistance >= neighbor.DistanceFromAnchor)
+                        continue;
+
+                    neighbor.SetDistanceFromAnchor(nextDistance);
+                    _supportedBuildPieces.Add(neighbor);
+                    _snapShotQueue.Enqueue((neighbor, nextDistance));
                 }
             }
 
@@ -101,10 +117,12 @@ namespace CliffGame
                     return da.CompareTo(db);
                 });
             }
+            
+            yield return new WaitForSeconds(_initialDestructionDelay);
 
             foreach (BuildPiece buildPiece in unsupported)
             {
-                yield return new WaitForSeconds(destructionDelay);
+                yield return new WaitForSeconds(_destructionDelay);
                 
                 _registeredBuildPieces.Remove(buildPiece);
                 

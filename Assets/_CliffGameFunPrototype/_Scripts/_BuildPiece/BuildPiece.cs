@@ -15,6 +15,7 @@ namespace CliffGame
         public bool IsAnchored { get; private set; }
         
         public IReadOnlyList<Connector> Connectors { get; private set; }
+        public int DistanceFromAnchor { get; private set; }
 
         private void Awake()
         {
@@ -37,6 +38,11 @@ namespace CliffGame
                         yield return connectedBuildPiece;
                 }
             }
+        }
+
+        public void SetDistanceFromAnchor(int distance)
+        {
+            DistanceFromAnchor = distance;
         }
 
         public void InitializeAnchoredStatus()
@@ -71,12 +77,11 @@ namespace CliffGame
                 if (col is TerrainCollider)
                 {
                     IsAnchored = true;
-                    // Debug.Log("BuildPiece anchored to terrain.");
+                    DistanceFromAnchor = 0;
                     return;
                 }
             }
             
-            // Debug.Log("BuildPiece is NOT anchored.");
         }
 
         public void CleanupConnectors()

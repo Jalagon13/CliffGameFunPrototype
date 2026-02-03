@@ -21,11 +21,6 @@ namespace CliffGame
                 yield return new WaitForSeconds(_delayBetweenItemsGiven);
             }
             
-            if(_startingItems.Length > 0)
-            {
-                Debug.Log("Starting items added to inventory.");
-            }
-            
             InventoryManager.Instance.InventoryModel.UpdateInventory();
         }
     }

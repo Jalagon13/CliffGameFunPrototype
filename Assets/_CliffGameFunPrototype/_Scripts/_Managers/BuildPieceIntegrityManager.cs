@@ -14,6 +14,7 @@ namespace CliffGame
 
         [SerializeField]
         private int _maxSupportedDistance = 5;
+        public int MaxSupportedDistance => _maxSupportedDistance;
         
         private HashSet<BuildPiece> _registeredBuildPieces = new();
         private HashSet<BuildPiece> _supportedBuildPieces = new();

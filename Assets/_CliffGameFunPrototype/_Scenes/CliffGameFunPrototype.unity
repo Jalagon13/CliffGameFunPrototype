@@ -1399,7 +1399,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9091
+      value: 9100
       objectReference: {fileID: 0}
     - target: {fileID: 2386244143411771210, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1411,7 +1411,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7168
+      value: 7177
       objectReference: {fileID: 0}
     - target: {fileID: 3417812465825906931, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1431,7 +1431,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9130
+      value: 9139
       objectReference: {fileID: 0}
     - target: {fileID: 4323805193510765137, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1459,7 +1459,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8243
+      value: 8252
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1507,7 +1507,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8663
+      value: 8672
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1515,7 +1515,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8264
+      value: 8273
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15897,6 +15897,12 @@ MonoBehaviour:
   _ghostMaterialValid: {fileID: 2100000, guid: 206c5e23e8fe7483296565746246a68f, type: 2}
   _ghostMaterialInvisible: {fileID: 2100000, guid: 3107ba3cabaf847c5ab8dc6f5acd505c, type: 2}
   _ghostMaterialInvalid: {fileID: 2100000, guid: ed20caad1ba214755b4e240924bfacf4, type: 2}
+  _stabilityMaterials:
+  - {fileID: 2100000, guid: b5957ca19affd486fb0125077f02a155, type: 2}
+  - {fileID: 2100000, guid: 5e5dede9038a948b29cd8f0dca4e17dd, type: 2}
+  - {fileID: 2100000, guid: 72e7981738b4a4ef397d4fc444a793c9, type: 2}
+  - {fileID: 2100000, guid: ba9b73ed8ca3a43cd9ceba7149552ca2, type: 2}
+  - {fileID: 2100000, guid: fa956aab176984369acfdf4666be7f40, type: 2}
   _connectorOverlapRadius: 1
   _maxGroundAngle: 45
   _currentBuildIndex: 0
@@ -17554,8 +17560,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructuralIntegrityManager
   _destructionDelay: 0.1
-  _initialDestructionDelay: 0.175
-  _maxSupportedDistance: 3
+  _initialDestructionDelay: 0.325
+  _maxSupportedDistance: 4
 --- !u!114 &2141364074 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -1234806431069001368, guid: 9a8a9398340f545b791329ddccb0c7ad, type: 3}

@@ -49,11 +49,14 @@ namespace CliffGame
 
         private Connector _lastSnappedConnector = null; // Tracks the last connector the ghost was snapped to, for snap/unsnap events
         private List<Material> _lastHitMaterials = new();
+        private BuildPiece _lastStabilityPreviewPiece = null;
+        private List<Material> _lastStabilityOriginalMaterials = new();
 
         [Header("Ghost Settings")]
         [SerializeField] private Material _ghostMaterialValid;
         [SerializeField] private Material _ghostMaterialInvisible;
         [SerializeField] private Material _ghostMaterialInvalid;
+        [SerializeField] private Material[] _stabilityMaterials;
         [SerializeField] private float _connectorOverlapRadius = 1f;
         [SerializeField] private float _maxGroundAngle = 90f;
 
@@ -62,7 +65,7 @@ namespace CliffGame
         private BuildPiece _ghostBuildPiece;
         private bool _isGhostInValidPosition = false;
         private Transform _modelParent = null;
-        private bool _isHoldingHammar, _clickedThisFrame;
+        private bool _isHoldingHammar;
         private Timer _destroyTimer;
         public Timer DestroyTimer => _destroyTimer;
         private Timer _placeCooldownTimer;
@@ -83,14 +86,12 @@ namespace CliffGame
         private void Start()
         {
             InventoryManager.Instance.OnSelectedSlotChanged += OnSelectedSlotChanged_CheckForHammer;
-            GameInput.Instance.OnPrimaryInteract += GameInput_OnPrimaryInteract;
             GameInput.Instance.OnCycleBuildVariant += GameInput_CycleBuildVariant;
         }
         
         private void OnDestroy()
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= OnSelectedSlotChanged_CheckForHammer;
-            GameInput.Instance.OnPrimaryInteract -= GameInput_OnPrimaryInteract;
             GameInput.Instance.OnCycleBuildVariant -= GameInput_CycleBuildVariant;
             
             _destroyTimer.OnTimerEnd -= OnDestroyTimerEnd;
@@ -142,16 +143,6 @@ namespace CliffGame
                 // Debug.Log($"Using upstairs: {_usingUpstairs}");
             }
         }
-
-        private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
-        {
-            if(!_isHoldingHammar || BuildWheelUI.BuildWheelUIOpen || Player.Instance.PauseMenuUI.PauseMenuOpen) return;
-            
-            if(e.started)
-            {
-                _clickedThisFrame = true;
-            }
-        }
         
         public void SetBuildType(BuildOption buildType)
         {
@@ -187,6 +178,7 @@ namespace CliffGame
             {
                 Destroy(_ghostBuildPiece.gameObject);
                 _ghostBuildPiece = null;
+                RestoreStabilityPreview();
             }
 
             if (_currentDestroyTarget != null)
@@ -289,10 +281,6 @@ namespace CliffGame
 
                 _modelParent = _ghostBuildPiece.transform.GetChild(0);
 
-                // if(_ghostBuildGameObject.transform.GetChild(2).gameObject != null)
-                //     _ghostBuildGameObject.transform.GetChild(2).GetComponent<BoxCollider>().enabled = false;
-
-
                 GhostifyModel(_modelParent, _ghostMaterialInvisible); // Sets the correct material
                 GhostifyModel(_ghostBuildPiece.transform); // Disables colliders on the ghostbuild so it doesn't affect the other colliders near it
             }
@@ -320,6 +308,7 @@ namespace CliffGame
                         {
                             GhostifyModel(_modelParent, _ghostMaterialInvisible);
                             _isGhostInValidPosition = false;
+                            RestoreStabilityPreview();
                             return;
                         }
                     }
@@ -354,6 +343,7 @@ namespace CliffGame
                 
                 GhostifyModel(_modelParent, _ghostMaterialInvisible);
                 _isGhostInValidPosition = false;
+                RestoreStabilityPreview();
                 return;
             }
             
@@ -362,7 +352,11 @@ namespace CliffGame
 
         private void SnapGhostPrefabToConnector(Connector closestConnector)
         {
-            if(_ghostBuildPiece == null) return;
+            if(_ghostBuildPiece == null) 
+            { 
+                RestoreStabilityPreview(); 
+                return; 
+            }
         
             // Find the correct connector on the ghost prefab to snap to, and snap it to it
             Transform ghostConnector = FindCorrectSnapConnectorOnGhost(closestConnector.transform, _ghostBuildPiece.transform.GetChild(1));
@@ -371,6 +365,7 @@ namespace CliffGame
             {
                 GhostifyModel(_modelParent, _ghostMaterialInvisible);
                 _isGhostInValidPosition = false;
+                RestoreStabilityPreview();
                 return;
             }
             
@@ -426,6 +421,7 @@ namespace CliffGame
             {
                 GhostifyModel(_modelParent, _ghostMaterialInvisible);
                 _isGhostInValidPosition = false;
+                RestoreStabilityPreview();
                 return;
             }
 
@@ -433,6 +429,7 @@ namespace CliffGame
             {
                 GhostifyModel(_modelParent, _ghostMaterialInvalid);
                 _isGhostInValidPosition = false;
+                RestoreStabilityPreview();
                 return;
             }
             
@@ -440,25 +437,74 @@ namespace CliffGame
             {
                 GhostifyModel(_modelParent, _ghostMaterialInvalid);
                 _isGhostInValidPosition = false;
+                RestoreStabilityPreview();
                 return;
             }
-            
-            // If the potential piece is not close enough to an anchor point, make it invalid
-            // if(!GhostBuildPieceCanBeSupported())
-            // {
-            //     GhostifyModel(_modelParent, _ghostMaterialInvalid);
-            //     _isGhostInValidPosition = false;
-            //     return;
-            // }
 
             GhostifyModel(_modelParent, _ghostMaterialValid);
             _isGhostInValidPosition = true;
+            PreviewStabilityOnBuildPiece(closestConnector.BuildPiece);
         }
 
-
-        private bool GhostBuildPieceCanBeSupported()
+        private void PreviewStabilityOnBuildPiece(BuildPiece target)
         {
-            throw new NotImplementedException();
+            if (target == null) return;
+
+            // If we're already previewing this piece, do nothing
+            if (_lastStabilityPreviewPiece == target)
+                return;
+
+            // Restore previous previewed piece
+            RestoreStabilityPreview();
+
+            MeshRenderer[] renderers = target.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
+            _lastStabilityOriginalMaterials.Clear();
+
+            foreach (var r in renderers)
+            {
+                _lastStabilityOriginalMaterials.Add(r.material);
+            }
+
+            int maxDistance = BuildPieceIntegrityManager.Instance.MaxSupportedDistance;
+            int distance = Mathf.Clamp(target.DistanceFromAnchor, 0, maxDistance);
+
+            float t = maxDistance == 0 ? 0f : (float)distance / maxDistance;
+            int materialIndex = Mathf.Clamp(Mathf.RoundToInt(t * (_stabilityMaterials.Length - 1)), 0, _stabilityMaterials.Length - 1
+            );
+
+            foreach (var r in renderers)
+            {
+                Material[] mats = new Material[r.materials.Length];
+                for (int i = 0; i < mats.Length; i++)
+                    mats[i] = _stabilityMaterials[materialIndex];
+                r.materials = mats;
+            }
+
+            _lastStabilityPreviewPiece = target;
+        }
+
+        private void RestoreStabilityPreview()
+        {
+            if (_lastStabilityPreviewPiece == null)
+                return;
+
+            MeshRenderer[] renderers = _lastStabilityPreviewPiece.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
+
+            int index = 0;
+            foreach (var r in renderers)
+            {
+                if (index < _lastStabilityOriginalMaterials.Count)
+                {
+                    Material[] mats = new Material[r.materials.Length];
+                    for (int i = 0; i < mats.Length; i++)
+                        mats[i] = _lastStabilityOriginalMaterials[index];
+                    r.materials = mats;
+                    index++;
+                }
+            }
+
+            _lastStabilityPreviewPiece = null;
+            _lastStabilityOriginalMaterials.Clear();
         }
 
         private bool GhostConnectorOverlapsWithConnector(Transform ghostConnector, Connector closestConnector)
@@ -634,17 +680,20 @@ namespace CliffGame
                 {
                     GhostifyModel(_modelParent, _ghostMaterialValid);
                     _isGhostInValidPosition = false;
+                    RestoreStabilityPreview();
                 }
                 else
                 {
                     GhostifyModel(_modelParent, _ghostMaterialInvisible);
                     _isGhostInValidPosition = false;
+                    RestoreStabilityPreview();
                 }
             }
             else
             {
                 GhostifyModel(_modelParent, _ghostMaterialInvisible);
                 _isGhostInValidPosition = false;
+                RestoreStabilityPreview();
             }
         }
 
@@ -696,7 +745,7 @@ namespace CliffGame
                 if (hit.transform)
 
                     // Skip if collider is in the connector layer mask
-                    if (/* ((1 << hit.transform.gameObject.layer) & _connectorLayerMask) != 0 ||  */((1 << hit.transform.gameObject.layer) & _playerLayerMask) != 0)
+                    if (((1 << hit.transform.gameObject.layer) & _playerLayerMask) != 0)
                         continue;
 
                 if (hit.transform.root.TryGetComponent(out Player player))

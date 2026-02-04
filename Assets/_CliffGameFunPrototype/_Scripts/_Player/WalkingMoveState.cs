@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using FMOD.Studio;
+using FMODUnity;
 using SingularityGroup.HotReload;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +15,8 @@ namespace CliffGame
         [SerializeField] private float _walkSpeed = 3f;
         [SerializeField] private float _jumpForce = 10f;
         [SerializeField] private float _gravity = -30f;
+        [SerializeField] private float _inAirMoveMultiplier = 0.5f;
+        [SerializeField] private float _jumpCooldown = 0.5f;
         private float _verticalVelocity;
         
     
@@ -31,11 +35,16 @@ namespace CliffGame
         [HideInInspector]
         public Vector2 DesiredMoveDirection { get; private set; }
         
-        private Vector3 _moveDirection;
         private bool _isJumping;
+        private bool _wasGrounded;
+
+        private Timer _jumpCooldownTimer;
+
+        private EventInstance _stepsInstance;
 
         private void Awake()
         {
+            _jumpCooldownTimer = new Timer(_jumpCooldown);
             _context = GetComponent<Player>();
         }
 
@@ -44,6 +53,8 @@ namespace CliffGame
             GameInput.Instance.OnMove += GameInput_OnMove;
             CraftingManager.Instance.OnCraftingUIOpened += CraftingManager_OnCraftingUIOpened;
             Player.Instance.OnStateChanged += OnStateChange;
+
+            _stepsInstance = RuntimeManager.CreateInstance(FMODEvents.Instance.StepsSFX);
         }
 
         private void OnDestroy()
@@ -51,69 +62,83 @@ namespace CliffGame
             GameInput.Instance.OnMove -= GameInput_OnMove;
             CraftingManager.Instance.OnCraftingUIOpened -= CraftingManager_OnCraftingUIOpened;
             Player.Instance.OnStateChanged -= OnStateChange;
+
+            _stepsInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            _stepsInstance.release();
         }
 
-        public void StateFixedUpdate()
+        public void StateUpdate()
         {
+            TransitionCheck();
+            HandleFootsteps();
             MovePlayer();
             Jump();
-
             HandleWind();
             HandleFallTracking();
         }
 
+        private void TransitionCheck()
+        {
+            bool isGrounded = _characterController.isGrounded;
+
+            // Grounded -> AIR
+            if (_wasGrounded && !isGrounded)
+            {
+                OnLeftGround();
+            }
+
+            // Air -> GROUNDED
+            if (!_wasGrounded && isGrounded)
+            {
+                OnLanded();
+            }
+
+            _wasGrounded = isGrounded;
+        }
+
+        private void OnLeftGround()
+        {
+            // Debug.Log("Left ground");
+            
+            if(!_isJumping)
+            {
+                _verticalVelocity = 0f;
+            }
+        }
+
+        private void OnLanded()
+        {
+            // Debug.Log("Landed");
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.LandingSFX, transform.position);
+        }
+
         private void Jump()
         {
-            if(GameInput.Instance.IsHoldingDownJump && _characterController.isGrounded && !_isJumping)
+            _jumpCooldownTimer.Tick(Time.deltaTime);
+
+            if (GameInput.Instance.IsHoldingDownJump && _characterController.isGrounded && !_isJumping && _jumpCooldownTimer.RemainingSeconds <= 0f)
             {
                 _verticalVelocity = _jumpForce;
                 _isJumping = true;
+
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.JumpSFX, transform.position);
             }
-            
-            if(_isJumping && _characterController.isGrounded)
+
+            // Only trigger when we were jumping and just touched ground while falling
+            if (_isJumping && _characterController.isGrounded && _verticalVelocity <= 0f)
             {
                 _isJumping = false;
+                _jumpCooldownTimer.Reset();
+                _verticalVelocity = -2f;
             }
-        }
-
-        private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
-        {
-            if (CraftingManager.Instance.IsCraftingUIOpen) return;
-
-            DesiredMoveDirection = e.ReadValue<Vector2>();
-        }
-
-        private void OnStateChange(PlayerMoveState state1, PlayerMoveState state2)
-        {
-            if(state2 == PlayerMoveState.Dead)
-            {
-                DesiredMoveDirection = Vector2.zero;
-            }
-        }
-
-        private void CraftingManager_OnCraftingUIOpened()
-        {
-            DesiredMoveDirection = Vector2.zero;
-        }
-
-        public void EnterState()
-        {
-            // Debug.Log($"Entered Walk State");
-            DesiredMoveDirection = Vector2.zero;
-        }
-
-        public void ExitState()
-        {
-            // Debug.Log($"Exited Walk State with velocity: {_captureExitVelocity}");
-            DesiredMoveDirection = Vector2.zero;
         }
 
         private void MovePlayer()
         {
             Vector3 moveVector = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
-            moveVector = moveVector * _walkSpeed * Time.deltaTime;
+            moveVector = moveVector * _walkSpeed * (_characterController.isGrounded ? 1 : _inAirMoveMultiplier) * Time.deltaTime;
             _characterController.Move(moveVector);
-            
+             
             if(!_characterController.isGrounded)
             {
                 _verticalVelocity = _verticalVelocity + (_gravity * Time.deltaTime);
@@ -174,6 +199,69 @@ namespace CliffGame
             //         // Debug.Log($"Fall dmg: {finalDamage}, dist fell: {distanceFallen}");
             //     }
             // }
+        }
+
+        private void HandleFootsteps()
+        {
+            bool isGrounded = _characterController.isGrounded;
+            bool isMoving = DesiredMoveDirection.sqrMagnitude > 0.01f;
+
+            if (isGrounded && isMoving)
+            {
+                StartSteps();
+            }
+            else
+            {
+                PauseSteps();
+            }
+        }
+
+        private void StartSteps()
+        {
+            PLAYBACK_STATE state;
+            _stepsInstance.getPlaybackState(out state);
+
+            if (state == PLAYBACK_STATE.STOPPED)
+                _stepsInstance.start();
+            else
+                _stepsInstance.setPaused(false);
+        }
+
+        private void PauseSteps()
+        {
+            _stepsInstance.setPaused(true);
+        }
+
+        private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
+        {
+            if (CraftingManager.Instance.IsCraftingUIOpen) return;
+
+            DesiredMoveDirection = e.ReadValue<Vector2>();
+        }
+
+        private void OnStateChange(PlayerMoveState state1, PlayerMoveState state2)
+        {
+            if (state2 == PlayerMoveState.Dead)
+            {
+                DesiredMoveDirection = Vector2.zero;
+            }
+        }
+
+        private void CraftingManager_OnCraftingUIOpened()
+        {
+            DesiredMoveDirection = Vector2.zero;
+        }
+
+        public void EnterState()
+        {
+            // Debug.Log($"Entered Walk State");
+            DesiredMoveDirection = Vector2.zero;
+        }
+
+        public void ExitState()
+        {
+            // Debug.Log($"Exited Walk State with velocity: {_captureExitVelocity}");
+            DesiredMoveDirection = Vector2.zero;
         }
     }
 }

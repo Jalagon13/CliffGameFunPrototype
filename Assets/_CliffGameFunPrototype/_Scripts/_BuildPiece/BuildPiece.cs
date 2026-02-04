@@ -92,6 +92,8 @@ namespace CliffGame
 
         public void CleanupConnectors()
         {
+            if(this == null) return;
+        
             foreach (var connector in GetComponentsInChildren<Connector>())
             {
                 connector.CleanupConnections();

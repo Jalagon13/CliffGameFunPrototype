@@ -19,7 +19,7 @@ namespace CliffGame
             Cursor.visible = true;
         }
 
-        public void StateFixedUpdate()
+        public void StateUpdate()
         {
 
         }

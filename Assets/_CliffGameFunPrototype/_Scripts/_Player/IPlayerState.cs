@@ -5,7 +5,7 @@ namespace CliffGame
     public interface IPlayerState
     {
         void EnterState();
-        void StateFixedUpdate();
+        void StateUpdate();
         void ExitState();
     }
 }

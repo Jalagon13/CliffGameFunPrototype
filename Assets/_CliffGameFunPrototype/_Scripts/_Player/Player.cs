@@ -95,7 +95,7 @@ namespace CliffGame
         
         private void Update()
         {
-            _currentState.StateFixedUpdate();
+            _currentState.StateUpdate();
 
             Vector3 camForward = _playerCamera.transform.forward;
             camForward.y = 0f;                 // ignore vertical tilt

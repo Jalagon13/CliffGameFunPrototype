@@ -23,7 +23,7 @@ public class GroundCheck : MonoBehaviour
         Vector3 rayOrigin = transform.position + Vector3.up * 0.01f;
 
         RaycastHit hit;
-        bool groundedNow = Physics.Raycast(rayOrigin, Vector3.down, out hit, GroundDistance);
+        bool groundedNow = Physics.Raycast(rayOrigin, Vector3.down, out hit, GroundDistance/* , default, QueryTriggerInteraction.Ignore */);
 
         if (groundedNow)
         {

@@ -117,13 +117,12 @@ namespace CliffGame
             if (context.started)
             {
                 IsHoldingDownJump = true;
+                OnJump?.Invoke(this, context);
             }
             else if (context.canceled)
             {
                 IsHoldingDownJump = false;
             }
-        
-            OnJump?.Invoke(this, context);
         }
 
         private void PlayerInput_OnLook(InputAction.CallbackContext context)

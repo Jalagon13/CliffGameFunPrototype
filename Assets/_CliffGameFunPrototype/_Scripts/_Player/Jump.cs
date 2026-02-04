@@ -24,7 +24,7 @@ public class Jump : MonoBehaviour
     {
         // Get rigidbody.
         _rigidbody = GetComponent<Rigidbody>();
-        _jumpCooldownTimer = new Timer(_jumpCooldown);
+        // _jumpCooldownTimer = new Timer(_jumpCooldown);
     }
     
     private void Start()
@@ -39,18 +39,44 @@ public class Jump : MonoBehaviour
     
     private void Update()
     {
-        _jumpCooldownTimer.Tick(Time.deltaTime);
+        // _jumpCooldownTimer.Tick(Time.deltaTime);
     }
+
+    // private void GameInput_OnJump(object sender, InputAction.CallbackContext e)
+    // {
+    //     if(e.started && _groundCheck.IsGrounded)
+    //     {
+    //         // _rigidbody.linearVelocity = new(0, 0, 0);
+    //         Vector3 vel = _rigidbody.linearVelocity;
+    //         vel.y = 0f;
+    //         _rigidbody.linearVelocity = vel;
+
+    //         _rigidbody.AddForce(Vector3.up * JumpStrength, ForceMode.Impulse);
+    //         OnJumped?.Invoke();
+    //     }
+    // }
+
+    private bool _jumpRequested;
 
     private void GameInput_OnJump(object sender, InputAction.CallbackContext e)
     {
-        if(e.started && _jumpCooldownTimer.RemainingSeconds <= 0 && _groundCheck.IsGrounded)
+        if (e.started && _groundCheck.IsGrounded)
         {
-            _rigidbody.linearVelocity = new(_rigidbody.linearVelocity.x, 0, _rigidbody.linearVelocity.z);
-            Debug.Log($"Jumped!");
-            _jumpCooldownTimer.Reset();
-            _rigidbody.AddForce(JumpStrength * Vector3.up, ForceMode.Impulse);
-            OnJumped?.Invoke();
+            _jumpRequested = true;
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (!_jumpRequested) return;
+
+        Vector3 vel = _rigidbody.linearVelocity;
+        vel.y = 0f;
+        _rigidbody.linearVelocity = vel;
+
+        _rigidbody.AddForce(Vector3.up * JumpStrength, ForceMode.Impulse);
+        OnJumped?.Invoke();
+
+        _jumpRequested = false;
     }
 }

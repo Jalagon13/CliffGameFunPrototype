@@ -116,17 +116,17 @@ namespace CliffGame
 
             if (OnSlope())
             {
-                _rigidbody.AddForce(GetSlopeMoveDirection() * targetSpeed * AccelerationRate, ForceMode.Force);
+                _rigidbody.AddForce(GetSlopeMoveDirection() * targetSpeed * AccelerationRate, ForceMode.VelocityChange);
 
                 if (_rigidbody.linearVelocity.y < 0 && DesiredMoveDirection.sqrMagnitude != 0)
                 {
-                    _rigidbody.AddForce(Vector3.down * 80f, ForceMode.Force);
+                    _rigidbody.AddForce(Vector3.down * 80f, ForceMode.VelocityChange);
                 }
             }
 
             if (_groundCheck.IsGrounded)
             {
-                _rigidbody.AddForce(_moveDirection.normalized * (targetSpeed * AccelerationRate), ForceMode.Force);
+                _rigidbody.AddForce(_moveDirection.normalized * (targetSpeed * AccelerationRate), ForceMode.VelocityChange);
             }
 
             _rigidbody.useGravity = !OnSlope();

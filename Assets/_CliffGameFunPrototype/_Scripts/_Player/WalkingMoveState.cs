@@ -32,6 +32,7 @@ namespace CliffGame
         public Vector2 DesiredMoveDirection { get; private set; }
         
         private Vector3 _moveDirection;
+        private bool _isJumping;
 
         private void Awake()
         {
@@ -41,7 +42,6 @@ namespace CliffGame
         private void Start()
         {
             GameInput.Instance.OnMove += GameInput_OnMove;
-            GameInput.Instance.OnJump += GameInput_OnJump;
             CraftingManager.Instance.OnCraftingUIOpened += CraftingManager_OnCraftingUIOpened;
             Player.Instance.OnStateChanged += OnStateChange;
         }
@@ -49,9 +49,31 @@ namespace CliffGame
         private void OnDestroy()
         {
             GameInput.Instance.OnMove -= GameInput_OnMove;
-            GameInput.Instance.OnJump -= GameInput_OnJump;
             CraftingManager.Instance.OnCraftingUIOpened -= CraftingManager_OnCraftingUIOpened;
             Player.Instance.OnStateChanged -= OnStateChange;
+        }
+
+        public void StateFixedUpdate()
+        {
+            MovePlayer();
+            Jump();
+
+            HandleWind();
+            HandleFallTracking();
+        }
+
+        private void Jump()
+        {
+            if(GameInput.Instance.IsHoldingDownJump && _characterController.isGrounded && !_isJumping)
+            {
+                _verticalVelocity = _jumpForce;
+                _isJumping = true;
+            }
+            
+            if(_isJumping && _characterController.isGrounded)
+            {
+                _isJumping = false;
+            }
         }
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
@@ -59,14 +81,6 @@ namespace CliffGame
             if (CraftingManager.Instance.IsCraftingUIOpen) return;
 
             DesiredMoveDirection = e.ReadValue<Vector2>();
-        }
-
-        private void GameInput_OnJump(object sender, InputAction.CallbackContext e)
-        {
-            if(e.started && _characterController.isGrounded)
-            {
-                _verticalVelocity = _jumpForce;
-            }
         }
 
         private void OnStateChange(PlayerMoveState state1, PlayerMoveState state2)
@@ -94,22 +108,17 @@ namespace CliffGame
             DesiredMoveDirection = Vector2.zero;
         }
 
-        public void StateFixedUpdate()
-        {
-            MovePlayer();
-
-            HandleWind();
-            HandleFallTracking();
-        }
-        
         private void MovePlayer()
         {
             Vector3 moveVector = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
             moveVector = moveVector * _walkSpeed * Time.deltaTime;
             _characterController.Move(moveVector);
             
-            _verticalVelocity = _verticalVelocity + (_gravity * Time.deltaTime);
-            _characterController.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
+            if(!_characterController.isGrounded)
+            {
+                _verticalVelocity = _verticalVelocity + (_gravity * Time.deltaTime);
+                _characterController.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
+            }
         }
         
         private void HandleWind()

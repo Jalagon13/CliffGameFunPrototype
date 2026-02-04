@@ -13,13 +13,8 @@ namespace CliffGame
 
         public void EnterState()
         {
-            Debug.Log($"Entered Dead State");
+            // Debug.Log($"Entered Dead State");
             
-            _context.WalkingMoveState.DesiredMoveDirection = Vector2.zero;
-            _context.ClimbMoveState.DesiredMoveDirection = Vector2.zero;
-            _context.RigidBody.constraints = RigidbodyConstraints.FreezeAll;
-            _context.RigidBody.useGravity = false;
-
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
@@ -31,9 +26,8 @@ namespace CliffGame
 
         public void ExitState()
         {
-            Debug.Log($"Exited Dead State");
+            // Debug.Log($"Exited Dead State");
 
-            _context.RigidBody.useGravity = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }

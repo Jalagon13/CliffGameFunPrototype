@@ -39,7 +39,6 @@ namespace CliffGame
 
             Player.Instance.OnStateChanged += HandlePlayerStateChanged;
             Player.Instance.OnPlayerRespawn += OnRespawn;
-            Player.Instance.WalkingMoveState.GroundCheck.Grounded += OnGrounded;
 
             yield return null;
 
@@ -50,7 +49,6 @@ namespace CliffGame
         {
             Player.Instance.OnStateChanged -= HandlePlayerStateChanged;
             Player.Instance.OnPlayerRespawn -= OnRespawn;
-            Player.Instance.WalkingMoveState.GroundCheck.Grounded -= OnGrounded;
         }
 
         private void Update()
@@ -59,29 +57,21 @@ namespace CliffGame
 
             if (_isClimbing)
             {
-                if (Player.Instance.ClimbMoveState.IsMovingWhileClimbing)
-                {
-                    _staminaStat.SetDrainPerSecond(_climbMovingStaminaDecreasePerSecond);
-                    _staminaStat.UpdateStat(Time.deltaTime, true);
-                }
-                else
-                {
-                    _staminaStat.SetDrainPerSecond(_climbIdleStaminaDecreasePerSecond);
-                    _staminaStat.UpdateStat(Time.deltaTime, true);
-                }
+                // if (Player.Instance.ClimbMoveState.IsMovingWhileClimbing)
+                // {
+                //     _staminaStat.SetDrainPerSecond(_climbMovingStaminaDecreasePerSecond);
+                //     _staminaStat.UpdateStat(Time.deltaTime, true);
+                // }
+                // else
+                // {
+                //     _staminaStat.SetDrainPerSecond(_climbIdleStaminaDecreasePerSecond);
+                //     _staminaStat.UpdateStat(Time.deltaTime, true);
+                // }
 
             }
             else if (!IsExhausted && !Player.Instance.WalkingMoveState.IsFalling)
             {
                 _staminaStat.UpdateStat(Time.deltaTime, false);
-            }
-        }
-
-        private void OnGrounded()
-        {
-            if (IsExhausted)
-            {
-                IsExhausted = false;
             }
         }
 
@@ -92,14 +82,14 @@ namespace CliffGame
 
         private void HandlePlayerStateChanged(PlayerMoveState previousState, PlayerMoveState currentState)
         {
-            if (currentState == PlayerMoveState.Climbing)
-            {
-                _isClimbing = true;
-            }
-            else if (currentState == PlayerMoveState.Walking)
-            {
-                _isClimbing = false;
-            }
+            // if (currentState == PlayerMoveState.Climbing)
+            // {
+            //     _isClimbing = true;
+            // }
+            // else if (currentState == PlayerMoveState.Walking)
+            // {
+            //     _isClimbing = false;
+            // }
         }
 
         public void RestoreStamina(int amount)

@@ -7,8 +7,6 @@ namespace CliffGame
     public class FirstPersonAudio : MonoBehaviour
     {
         public WalkingMoveState WalkingMoveState;
-        public GroundCheck GroundCheck;
-        public Jump Jump;
 
         [Header("Movement")]
         public float VelocityThreshold = 0.01f;
@@ -24,122 +22,122 @@ namespace CliffGame
 
         private void Start()
         {
-            SubscribeToEvents();
+            // SubscribeToEvents();
 
-            _stepsInstance = RuntimeManager.CreateInstance(FMODEvents.Instance.StepsSFX);
-            _stepsInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
+            // _stepsInstance = RuntimeManager.CreateInstance(FMODEvents.Instance.StepsSFX);
+            // _stepsInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
 
-            _climbingInstance = RuntimeManager.CreateInstance(FMODEvents.Instance.ClimbingSFX);
-            _climbingInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
+            // _climbingInstance = RuntimeManager.CreateInstance(FMODEvents.Instance.ClimbingSFX);
+            // _climbingInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform));
         }
 
         private void OnDestroy()
         {
-            UnsubscribeToEvents();
+            // UnsubscribeToEvents();
 
-            _stepsInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            _stepsInstance.release();
+            // _stepsInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            // _stepsInstance.release();
 
-            _climbingInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            _climbingInstance.release();
+            // _climbingInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            // _climbingInstance.release();
         }
 
         private void FixedUpdate()
         {
-            float velocity = Vector3.Distance(_currentCharacterPosition, _lastCharacterPosition);
-            bool moving = velocity >= VelocityThreshold && Player.Instance.WalkingMoveState.DesiredMoveDirection.magnitude >= VelocityThreshold;
+            // float velocity = Vector3.Distance(_currentCharacterPosition, _lastCharacterPosition);
+            // bool moving = velocity >= VelocityThreshold && Player.Instance.WalkingMoveState.DesiredMoveDirection.magnitude >= VelocityThreshold;
 
-            bool grounded = GroundCheck.IsGrounded;
-            bool walking = Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking;
-            bool climbing = Player.Instance.CurrentMoveStateType == PlayerMoveState.Climbing;
+            // bool grounded = GroundCheck.IsGrounded;
+            // bool walking = Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking;
+            // bool climbing = Player.Instance.CurrentMoveStateType == PlayerMoveState.Climbing;
 
-            bool shouldPlaySteps = walking && grounded && moving /* && Player.Instance.WalkingMoveState.DesiredMoveDirection != Vector2.zero */;
+            // bool shouldPlaySteps = walking && grounded && moving /* && Player.Instance.WalkingMoveState.DesiredMoveDirection != Vector2.zero */;
 
-            // Update active sound position
-            if (_isMoving)
-            {
-                (_isClimbing ? _climbingInstance : _stepsInstance)
-                    .set3DAttributes(RuntimeUtils.To3DAttributes(transform));
-            }
+            // // Update active sound position
+            // if (_isMoving)
+            // {
+            //     (_isClimbing ? _climbingInstance : _stepsInstance)
+            //         .set3DAttributes(RuntimeUtils.To3DAttributes(transform));
+            // }
 
-            // ----------------------------------------------------------
-            // START MOVEMENT
-            // ----------------------------------------------------------
-            if (moving && !_isMoving)
-            {
-                if (shouldPlaySteps)
-                {
-                    StartSteps();
-                }
-                else if (climbing)
-                {
-                    StartClimbing();
-                }
-                else
-                {
-                    PauseSteps();
-                }
+            // // ----------------------------------------------------------
+            // // START MOVEMENT
+            // // ----------------------------------------------------------
+            // if (moving && !_isMoving)
+            // {
+            //     if (shouldPlaySteps)
+            //     {
+            //         StartSteps();
+            //     }
+            //     else if (climbing)
+            //     {
+            //         StartClimbing();
+            //     }
+            //     else
+            //     {
+            //         PauseSteps();
+            //     }
 
-                _isMoving = true;
-            }
+            //     _isMoving = true;
+            // }
 
-            // ----------------------------------------------------------
-            // STOP MOVEMENT
-            // ----------------------------------------------------------
-            else if (!moving && _isMoving)
-            {
-                PauseSteps();
-                PauseClimbing();
-                _isMoving = false;
-            }
+            // // ----------------------------------------------------------
+            // // STOP MOVEMENT
+            // // ----------------------------------------------------------
+            // else if (!moving && _isMoving)
+            // {
+            //     PauseSteps();
+            //     PauseClimbing();
+            //     _isMoving = false;
+            // }
 
-            // ----------------------------------------------------------
-            // SWITCHING MOVEMENT WHILE MOVING
-            // ----------------------------------------------------------
-            else if (moving && _isMoving)
-            {
-                bool climbingNow = climbing;
+            // // ----------------------------------------------------------
+            // // SWITCHING MOVEMENT WHILE MOVING
+            // // ----------------------------------------------------------
+            // else if (moving && _isMoving)
+            // {
+            //     bool climbingNow = climbing;
 
-                if (climbingNow != _isClimbing)
-                {
-                    PauseSteps();
-                    PauseClimbing();
+            //     if (climbingNow != _isClimbing)
+            //     {
+            //         PauseSteps();
+            //         PauseClimbing();
 
-                    // ---- TRANSITION ONE-SHOTS ----
-                    if (climbingNow && !_isClimbing)
-                    {
-                        // Walking -> Climbing
-                        AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WalkToClimbSFX, transform.position);
-                    }
-                    else if (!climbingNow && _isClimbing)
-                    {
-                        // Climbing -> Walking
-                        AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ClimbToWalkSFX, transform.position);
-                    }
+            //         // ---- TRANSITION ONE-SHOTS ----
+            //         if (climbingNow && !_isClimbing)
+            //         {
+            //             // Walking -> Climbing
+            //             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WalkToClimbSFX, transform.position);
+            //         }
+            //         else if (!climbingNow && _isClimbing)
+            //         {
+            //             // Climbing -> Walking
+            //             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ClimbToWalkSFX, transform.position);
+            //         }
 
-                    // ---- Start New Loop ----
-                    if (climbingNow)
-                    {
-                        StartClimbing();
-                    }
-                    else if (shouldPlaySteps)
-                    {
-                        StartSteps();
-                    }
+            //         // ---- Start New Loop ----
+            //         if (climbingNow)
+            //         {
+            //             StartClimbing();
+            //         }
+            //         else if (shouldPlaySteps)
+            //         {
+            //             StartSteps();
+            //         }
 
-                    _isClimbing = climbingNow;
-                }
-                else
-                {
-                    // ENFORCE footsteps rule EVERY SINGLE FRAME
-                    if (shouldPlaySteps)
-                        StartSteps();
-                    else
-                        PauseSteps(); // absolutely prevents airborne steps
-                }
-            }
+            //         _isClimbing = climbingNow;
+            //     }
+            //     else
+            //     {
+            //         // ENFORCE footsteps rule EVERY SINGLE FRAME
+            //         if (shouldPlaySteps)
+            //             StartSteps();
+            //         else
+            //             PauseSteps(); // absolutely prevents airborne steps
+            //     }
+            // }
 
-            _lastCharacterPosition = _currentCharacterPosition;
+            // _lastCharacterPosition = _currentCharacterPosition;
         }
 
         // ----------------------------------------------------------
@@ -164,53 +162,35 @@ namespace CliffGame
             _stepsInstance.setPaused(true);
         }
 
-        private void StartClimbing()
-        {
-            PLAYBACK_STATE state;
-            _climbingInstance.getPlaybackState(out state);
-
-            if (state == PLAYBACK_STATE.STOPPED)
-                _climbingInstance.start();
-            else
-                _climbingInstance.setPaused(false);
-
-            _isClimbing = true;
-        }
-
-        private void PauseClimbing()
-        {
-            _climbingInstance.setPaused(true);
-        }
-
         // ----------------------------------------------------------
         // GLOBAL ONE-SHOT EVENTS
         // ----------------------------------------------------------
 
         private void SubscribeToEvents()
         {
-            Player.Instance.OnStateChanged += OnMoveStateChanged;
-            GroundCheck.Grounded += PlayLandingAudio;
+            // Player.Instance.OnStateChanged += OnMoveStateChanged;
+            // GroundCheck.Grounded += PlayLandingAudio;
 
-            if (Jump)
-                Jump.OnJumped += PlayJumpAudio;
+            // if (Jump)
+            //     Jump.OnJumped += PlayJumpAudio;
         }
 
         private void UnsubscribeToEvents()
         {
-            Player.Instance.OnStateChanged -= OnMoveStateChanged;
-            GroundCheck.Grounded -= PlayLandingAudio;
+            // Player.Instance.OnStateChanged -= OnMoveStateChanged;
+            // GroundCheck.Grounded -= PlayLandingAudio;
 
-            if (Jump)
-                Jump.OnJumped -= PlayJumpAudio;
+            // if (Jump)
+            //     Jump.OnJumped -= PlayJumpAudio;
         }
 
         private void OnMoveStateChanged(PlayerMoveState prev, PlayerMoveState next)
         {
-            if (prev == PlayerMoveState.Climbing && next == PlayerMoveState.Walking)
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ClimbToWalkSFX, transform.position);
+            // if (prev == PlayerMoveState.Climbing && next == PlayerMoveState.Walking)
+            //     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ClimbToWalkSFX, transform.position);
 
-            else if (prev == PlayerMoveState.Walking && next == PlayerMoveState.Climbing)
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WalkToClimbSFX, transform.position);
+            // else if (prev == PlayerMoveState.Walking && next == PlayerMoveState.Climbing)
+            //     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WalkToClimbSFX, transform.position);
         }
 
         private void PlayLandingAudio()
@@ -226,7 +206,7 @@ namespace CliffGame
         private void Reset()
         {
             WalkingMoveState = GetComponentInParent<WalkingMoveState>();
-            GroundCheck = (transform.parent ?? transform).GetComponentInChildren<GroundCheck>();
+            // GroundCheck = (transform.parent ?? transform).GetComponentInChildren<GroundCheck>();
         }
     }
 }

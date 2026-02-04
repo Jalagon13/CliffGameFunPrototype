@@ -29,9 +29,6 @@ public class FirstPersonLook : MonoBehaviour
     private float _walkingFOV;
 
     [SerializeField] 
-    private float _climbingFOV = 70f;
-    
-    [SerializeField] 
     private float _fovLerpDuration = 0.25f;
 
     private void Start()
@@ -56,7 +53,7 @@ public class FirstPersonLook : MonoBehaviour
     {
         _fovTween?.Kill();
 
-        float target = newState == PlayerMoveState.Climbing ? _climbingFOV : _walkingFOV;
+        float target = _walkingFOV;
 
         _fovTween = DOTween.To(
             () => _cam.fieldOfView,
@@ -93,19 +90,6 @@ public class FirstPersonLook : MonoBehaviour
 
             transform.localRotation = Quaternion.AngleAxis(-_velocity.y, Vector3.right);
             _character.localRotation = Quaternion.AngleAxis(_velocity.x, Vector3.up);
-        }
-        else if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Climbing)
-        {
-            // Detach camera
-            if (transform.parent != null)
-            {
-                transform.SetParent(null);
-            }
-
-            transform.position = _character.position + _offset;
-
-            Quaternion camRot = Quaternion.Euler(-_velocity.y, _velocity.x, 0f);
-            transform.localRotation = camRot;
         }
     }
 

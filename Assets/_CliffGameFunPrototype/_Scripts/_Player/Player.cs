@@ -18,11 +18,9 @@ namespace CliffGame
     public enum PlayerMoveState
     {
         Walking,
-        Climbing,
         Dead
     }
 
-    [RequireComponent(typeof(ClimbMoveState))]
     [RequireComponent(typeof(WalkingMoveState))]
     [RequireComponent(typeof(DeadState))]
     public class Player : MonoBehaviour
@@ -53,12 +51,7 @@ namespace CliffGame
         private WalkingMoveState _walkingMoveState;
         public WalkingMoveState WalkingMoveState => _walkingMoveState;
         
-        private ClimbMoveState _climbMoveState;
-        public ClimbMoveState ClimbMoveState => _climbMoveState;
-        
         private DeadState _deadState;
-        
-        public Rigidbody RigidBody { get; private set; }
         
         [SerializeField] 
         private ToolHolder _toolHolder;
@@ -73,16 +66,13 @@ namespace CliffGame
         {
             Instance = this;
 
-            RigidBody = GetComponent<Rigidbody>();
             _walkingMoveState = GetComponent<WalkingMoveState>();
-            _climbMoveState = GetComponent<ClimbMoveState>();
             _deadState = GetComponent<DeadState>();
             _playerCamera = Camera.main;
 
             _states = new Dictionary<PlayerMoveState, IPlayerState>
             {
                 { PlayerMoveState.Walking, _walkingMoveState },
-                { PlayerMoveState.Climbing, _climbMoveState },
                 { PlayerMoveState.Dead, _deadState }
             };
 
@@ -93,18 +83,20 @@ namespace CliffGame
         {
             // GameInput.Instance.OnPrimaryInteract += GameInput_OnPrimaryInteract;
             HealthManager.Instance.OnPlayerDeath += HealthManager_OnPlayerDeath;
-            CraftingManager.Instance.OnCraftingUIOpened += CraftingManager_OnCraftingUIOpened;
+            
         }
         
         private void OnDestroy()
         {
             // GameInput.Instance.OnPrimaryInteract -= GameInput_OnPrimaryInteract;
             HealthManager.Instance.OnPlayerDeath -= HealthManager_OnPlayerDeath;
-            CraftingManager.Instance.OnCraftingUIOpened -= CraftingManager_OnCraftingUIOpened;
+            
         }
         
         private void Update()
         {
+            _currentState.StateFixedUpdate();
+
             Vector3 camForward = _playerCamera.transform.forward;
             camForward.y = 0f;                 // ignore vertical tilt
             camForward.Normalize();
@@ -129,7 +121,7 @@ namespace CliffGame
 
         private void FixedUpdate()
         {
-            _currentState.StateFixedUpdate();
+            
         }
 
         private void HealthManager_OnPlayerDeath()
@@ -137,21 +129,10 @@ namespace CliffGame
             TransitionState(PlayerMoveState.Dead);
         }
 
-        private void CraftingManager_OnCraftingUIOpened()
-        {
-            WalkingMoveState.DesiredMoveDirection = Vector2.zero;
-            ClimbMoveState.DesiredMoveDirection = Vector2.zero;
-        }
-
         public void RespawnButtonPressed()
         {
             TransitionState(PlayerMoveState.Walking);
         
-            RigidBody.constraints = RigidbodyConstraints.None;
-            RigidBody.freezeRotation = true;
-            RigidBody.linearVelocity = Vector3.zero;
-            RigidBody.angularVelocity = Vector3.zero;
-
             StartCoroutine(RespawnAtCorrectPosition());
 
             OnPlayerRespawn?.Invoke();
@@ -165,28 +146,6 @@ namespace CliffGame
                 transform.SetPositionAndRotation(_respawnTransform.position, Quaternion.identity);
             }
         }
-
-        // private void GameInput_OnPrimaryInteract(object sender, InputAction.CallbackContext e)
-        // {
-        //     if(CurrentMoveStateType == PlayerMoveState.Walking && !StaminaManager.Instance.IsExhausted)
-        //     {
-        //         if(e.started)
-        //         {
-        //             RaycastHit hit;
-        //             if(Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward, out hit, _climbRayDistance, _climbableLayer))
-        //             {
-        //                 TransitionState(PlayerMoveState.Climbing);
-        //             }
-        //         }
-        //     }
-        //     else if(CurrentMoveStateType == PlayerMoveState.Climbing)
-        //     {
-        //         if(e.started && !_climbMoveState.IsLerpingToLedge)
-        //         {
-        //             TransitionState(PlayerMoveState.Walking);
-        //         }
-        //     }
-        // }
 
         public void TransitionState(PlayerMoveState playerMoveState)
         {

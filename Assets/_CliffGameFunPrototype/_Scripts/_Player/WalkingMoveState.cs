@@ -6,24 +6,16 @@ using UnityEngine.InputSystem;
 
 namespace CliffGame
 {
-    [RequireComponent(typeof(Rigidbody))]
     public class WalkingMoveState : MonoBehaviour, IPlayerState
     {
-        public float speed = 5f;
-
-        [SerializeField] private GroundCheck _groundCheck;
-        public GroundCheck GroundCheck => _groundCheck;
-
-        [Header("Running")]
-        public bool canRun = true;
-        public bool IsRunning { get; private set; }
-        public float runSpeed = 9f;
-
-        [Header("Physics Settings")]
-        public float AccelerationRate = 5f;
-        [SerializeField] private float _groundDrag = 6f;
-        [SerializeField] private float _maxSlopeAngle = 50f;
-
+        [Header("Movement Settings")]
+        [SerializeField] private CharacterController _characterController;
+        [SerializeField] private float _walkSpeed = 3f;
+        [SerializeField] private float _jumpForce = 10f;
+        [SerializeField] private float _gravity = -30f;
+        private float _verticalVelocity;
+        
+    
         [Header("Falling Settings")]
         [SerializeField, Tooltip("How far you can fall for free (no damage)")] 
         private float _fallDamageThreshold = 5f;
@@ -35,49 +27,31 @@ namespace CliffGame
         public bool IsFalling => _isFallingFlag;
 
         private Player _context;
-        private Rigidbody _rigidbody;
 
         [HideInInspector]
-        public Vector2 DesiredMoveDirection;
+        public Vector2 DesiredMoveDirection { get; private set; }
         
-        private Vector3 _captureExitVelocity;
-        private RaycastHit _slopeHit;
-
-        public Vector3 CaptureExitVelocity => _captureExitVelocity;
-
         private Vector3 _moveDirection;
 
         private void Awake()
         {
             _context = GetComponent<Player>();
-            _rigidbody = GetComponent<Rigidbody>();
-            _rigidbody.linearDamping = 0f;
-            _rigidbody.angularDamping = 0f;
-            _rigidbody.freezeRotation = true;
         }
 
         private void Start()
         {
             GameInput.Instance.OnMove += GameInput_OnMove;
+            GameInput.Instance.OnJump += GameInput_OnJump;
+            CraftingManager.Instance.OnCraftingUIOpened += CraftingManager_OnCraftingUIOpened;
+            Player.Instance.OnStateChanged += OnStateChange;
         }
 
         private void OnDestroy()
         {
             GameInput.Instance.OnMove -= GameInput_OnMove;
-        }
-
-        private void Update()
-        {
-            SpeedControl();
-
-            if (_groundCheck.IsGrounded)
-            {
-                _rigidbody.linearDamping = _groundDrag;
-            }
-            else
-            {
-                _rigidbody.linearDamping = 0f;
-            }
+            GameInput.Instance.OnJump -= GameInput_OnJump;
+            CraftingManager.Instance.OnCraftingUIOpened -= CraftingManager_OnCraftingUIOpened;
+            Player.Instance.OnStateChanged -= OnStateChange;
         }
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
@@ -87,142 +61,110 @@ namespace CliffGame
             DesiredMoveDirection = e.ReadValue<Vector2>();
         }
 
+        private void GameInput_OnJump(object sender, InputAction.CallbackContext e)
+        {
+            if(e.started && _characterController.isGrounded)
+            {
+                _verticalVelocity = _jumpForce;
+            }
+        }
+
+        private void OnStateChange(PlayerMoveState state1, PlayerMoveState state2)
+        {
+            if(state2 == PlayerMoveState.Dead)
+            {
+                DesiredMoveDirection = Vector2.zero;
+            }
+        }
+
+        private void CraftingManager_OnCraftingUIOpened()
+        {
+            DesiredMoveDirection = Vector2.zero;
+        }
+
         public void EnterState()
         {
             // Debug.Log($"Entered Walk State");
+            DesiredMoveDirection = Vector2.zero;
         }
 
         public void ExitState()
         {
-            _captureExitVelocity = _rigidbody.linearVelocity;
             // Debug.Log($"Exited Walk State with velocity: {_captureExitVelocity}");
+            DesiredMoveDirection = Vector2.zero;
         }
 
         public void StateFixedUpdate()
         {
-            PlayerMovement();
+            MovePlayer();
 
             HandleWind();
-            
             HandleFallTracking();
         }
         
-        private void PlayerMovement()
+        private void MovePlayer()
         {
-            float targetSpeed = IsRunning ? runSpeed : speed;
-
-            // Input direction in world space
-            _moveDirection = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
-
-            if (OnSlope())
-            {
-                _rigidbody.AddForce(GetSlopeMoveDirection() * targetSpeed * AccelerationRate, ForceMode.VelocityChange);
-
-                if (_rigidbody.linearVelocity.y < 0 && DesiredMoveDirection.sqrMagnitude != 0)
-                {
-                    _rigidbody.AddForce(Vector3.down * 80f, ForceMode.VelocityChange);
-                }
-            }
-
-            if (_groundCheck.IsGrounded)
-            {
-                _rigidbody.AddForce(_moveDirection.normalized * (targetSpeed * AccelerationRate), ForceMode.VelocityChange);
-            }
-
-            _rigidbody.useGravity = !OnSlope();
-        }
-        
-        private void SpeedControl()
-        {
-            if(OnSlope())
-            {
-                if(_rigidbody.linearVelocity.magnitude > speed)
-                {
-                    _rigidbody.linearVelocity = _rigidbody.linearVelocity.normalized * speed;
-                }
-            }
-            else
-            {
-                Vector3 flatVel = new Vector3(_rigidbody.linearVelocity.x, 0f, _rigidbody.linearVelocity.z);
-
-                // limit velocity if needed
-                if (flatVel.magnitude > speed)
-                {
-                    Vector3 clampedVel = flatVel.normalized * speed;
-                    _rigidbody.linearVelocity = new Vector3(clampedVel.x, _rigidbody.linearVelocity.y, clampedVel.z);
-                }
-            }
-        }
-        
-        private bool OnSlope()
-        {
-            if(Physics.Raycast(transform.position, Vector3.down, out _slopeHit, 0.3f))
-            {
-                float angle = Vector3.Angle(Vector3.up, _slopeHit.normal);
-                return angle < _maxSlopeAngle && angle != 0;
-            }
+            Vector3 moveVector = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
+            moveVector = moveVector * _walkSpeed * Time.deltaTime;
+            _characterController.Move(moveVector);
             
-            return false;
+            _verticalVelocity = _verticalVelocity + (_gravity * Time.deltaTime);
+            _characterController.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
         }
         
-        private Vector3 GetSlopeMoveDirection()
-        {
-            return Vector3.ProjectOnPlane(_moveDirection, _slopeHit.normal).normalized;
-        }
-
         private void HandleWind()
         {
             // ---- WIND FORCE (UNCHANGED) ----
-            if (WindManager.Instance != null && WindManager.Instance.WindCanPushPlayer)
-            {
-                float windSeverity =
-                    WindManager.Instance.WindSeverity > WindManager.Instance.WindPushesPlayerThreshold
-                        ? WindManager.Instance.WindSeverity
-                        : 0f;
+            // if (WindManager.Instance != null && WindManager.Instance.WindCanPushPlayer)
+            // {
+            //     float windSeverity =
+            //         WindManager.Instance.WindSeverity > WindManager.Instance.WindPushesPlayerThreshold
+            //             ? WindManager.Instance.WindSeverity
+            //             : 0f;
 
-                float windForceOnPlayer =
-                    WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity;
+            //     float windForceOnPlayer =
+            //         WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity;
 
-                if (EquipmentSlotUI.PREVENT_WIND_WITH_BOOTS)
-                {
-                    windForceOnPlayer -= WindManager.Instance.MaxWindForceAtFullSeverity * 0.6667f;
-                    windForceOnPlayer = Mathf.Max(0f, windForceOnPlayer);
-                }
+            //     if (EquipmentSlotUI.PREVENT_WIND_WITH_BOOTS)
+            //     {
+            //         windForceOnPlayer -= WindManager.Instance.MaxWindForceAtFullSeverity * 0.6667f;
+            //         windForceOnPlayer = Mathf.Max(0f, windForceOnPlayer);
+            //     }
 
-                Vector3 windForce = Vector3.right * windForceOnPlayer;
-                _rigidbody.AddForce(windForce, ForceMode.Acceleration);
-            }
+            //     Vector3 windForce = Vector3.right * windForceOnPlayer;
+            //     _rigidbody.AddForce(windForce, ForceMode.Acceleration);
+            // }
         }
 
         private void HandleFallTracking()
         {
-            bool isGrounded = _groundCheck.IsGrounded;
-            bool isFallingNow = !isGrounded && _rigidbody.linearVelocity.y < -0.01f;
+            // bool isGrounded = _groundCheck.IsGrounded;
+            // bool isFallingNow = !isGrounded && _rigidbody.linearVelocity.y < -0.01f;
 
-            // ---- FALL START ----
-            if (isFallingNow && !_isFallingFlag)
-            {
-                _isFallingFlag = true;
-                _fallStartY = transform.position.y;
-            }
+            // // ---- FALL START ----
+            // if (isFallingNow && !_isFallingFlag)
+            // {
+            //     _isFallingFlag = true;
+            //     _fallStartY = transform.position.y;
+            // }
 
-            // ---- FALL END (LANDING) ----
-            if (!isFallingNow && _isFallingFlag && isGrounded)
-            {
-                float fallEndY = transform.position.y;
-                float distanceFallen = _fallStartY - fallEndY;
+            // // ---- FALL END (LANDING) ----
+            // if (!isFallingNow && _isFallingFlag && isGrounded)
+            // {
+            //     float fallEndY = transform.position.y;
+            //     float distanceFallen = _fallStartY - fallEndY;
 
-                _isFallingFlag = false;
+            //     _isFallingFlag = false;
                 
-                if(distanceFallen > _fallDamageThreshold)
-                {
-                    float damage = (distanceFallen - _fallDamageThreshold) * _fallDamageMultiplier;
-                    int finalDamage = Mathf.RoundToInt(damage);
+            //     if(distanceFallen > _fallDamageThreshold)
+            //     {
+            //         float damage = (distanceFallen - _fallDamageThreshold) * _fallDamageMultiplier;
+            //         int finalDamage = Mathf.RoundToInt(damage);
 
-                    HealthManager.Instance.DamageHealth(finalDamage);
-                    // Debug.Log($"Fall dmg: {finalDamage}, dist fell: {distanceFallen}");
-                }
-            }
+            //         HealthManager.Instance.DamageHealth(finalDamage);
+            //         // Debug.Log($"Fall dmg: {finalDamage}, dist fell: {distanceFallen}");
+            //     }
+            // }
         }
     }
 }

@@ -59,11 +59,11 @@ namespace CliffGame
 
         private void OnMoveStateChanged(PlayerMoveState prevState, PlayerMoveState newState)
         {
-            if (newState == PlayerMoveState.Climbing)
-            {
-                _staminaBar.ShowBar();
-                OnStaminaBarShown();
-            }
+            // if (newState == PlayerMoveState.Climbing)
+            // {
+            //     _staminaBar.ShowBar();
+            //     OnStaminaBarShown();
+            // }
         }
 
         private void HandleThirstChanged(int currentAmount, int maxAmount)

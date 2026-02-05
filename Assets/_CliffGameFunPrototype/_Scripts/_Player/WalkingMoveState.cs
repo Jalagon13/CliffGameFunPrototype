@@ -17,6 +17,7 @@ namespace CliffGame
         [SerializeField] private float _terminalVelocity = -50f;
         [SerializeField] private float _inAirMoveMultiplier = 0.5f;
         [SerializeField] private float _jumpCooldown = 0.5f;
+        [SerializeField] private float _jumpWindStrengthMulti = 1.5f;
         private float _verticalVelocity;
         private CharacterController _cc;
         
@@ -31,7 +32,6 @@ namespace CliffGame
         private bool _isFallingFlag;
         public bool IsFalling => _isFallingFlag;
 
-        private Player _context;
 
         [HideInInspector]
         public Vector3 DesiredMoveDirection { get; private set; }
@@ -40,11 +40,11 @@ namespace CliffGame
         private Timer _jumpCooldownTimer;
         private EventInstance _stepsInstance;
         private Vector3 _colliderHitNormal;
+        private Vector3 _windMove;
 
         private void Awake()
         {
             _jumpCooldownTimer = new Timer(_jumpCooldown);
-            _context = GetComponent<Player>();
             _cc = GetComponent<CharacterController>();
         }
 
@@ -70,11 +70,11 @@ namespace CliffGame
         public void StateUpdate()
         {
             WalkStateHandler();
+            HandleWind();
             MovePlayer();
             Jump();
             
             HandleFootsteps();
-            HandleWind();
             HandleFallTracking();
         }
 
@@ -124,7 +124,9 @@ namespace CliffGame
                 
                 finalMove += horizontalMove;
             }
-            
+
+            finalMove += _windMove;
+            Debug.DrawRay(transform.position, _windMove * 10f, Color.cyan);
             _verticalVelocity += _gravity * Time.deltaTime;
             
             if(_isGrounded)
@@ -149,26 +151,24 @@ namespace CliffGame
 
         private void HandleWind()
         {
-            // ---- WIND FORCE (UNCHANGED) ----
-            // if (WindManager.Instance != null && WindManager.Instance.WindCanPushPlayer)
-            // {
-            //     float windSeverity =
-            //         WindManager.Instance.WindSeverity > WindManager.Instance.WindPushesPlayerThreshold
-            //             ? WindManager.Instance.WindSeverity
-            //             : 0f;
+            _windMove = Vector3.zero;
 
-            //     float windForceOnPlayer =
-            //         WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity;
+            if (WindManager.Instance == null || !WindManager.Instance.WindCanPushPlayer)
+                return;
 
-            //     if (EquipmentSlotUI.PREVENT_WIND_WITH_BOOTS)
-            //     {
-            //         windForceOnPlayer -= WindManager.Instance.MaxWindForceAtFullSeverity * 0.6667f;
-            //         windForceOnPlayer = Mathf.Max(0f, windForceOnPlayer);
-            //     }
+            float windSeverity = WindManager.Instance.WindSeverity > WindManager.Instance.WindPushesPlayerThreshold ? WindManager.Instance.WindSeverity : 0f;
 
-            //     Vector3 windForce = Vector3.right * windForceOnPlayer;
-            //     _rigidbody.AddForce(windForce, ForceMode.Acceleration);
-            // }
+            if (windSeverity <= 0f)
+                return;
+
+            float windSpeed = WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity;
+
+            Vector3 windDirection = Vector3.right; // test direction for now
+
+            // Optional: reduce wind effect while grounded
+            float groundedMultiplier = _isGrounded ? 1f : _jumpWindStrengthMulti;
+
+            _windMove = windDirection * windSpeed * groundedMultiplier * Time.deltaTime;
         }
 
         private void HandleFallTracking()

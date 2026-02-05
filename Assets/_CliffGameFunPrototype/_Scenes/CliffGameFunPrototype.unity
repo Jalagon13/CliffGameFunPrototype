@@ -6713,6 +6713,10 @@ PrefabInstance:
       propertyPath: _terminalVelocity
       value: -45
       objectReference: {fileID: 0}
+    - target: {fileID: 114963311885979670, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _groundWindStrengthMulti
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 136877096903737240, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_Height
       value: 1.45
@@ -19780,41 +19784,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
   <WindCanPushPlayer>k__BackingField: 0
-  _windSeverity: 0.05
-  _windPushesPlayerThreshold: 0.025
+  _windSeverity: 0.1
+  _windPushesPlayerThreshold: 0.05
   _windTickInterval: 0.125
   _minRattleChance: 0.0185
   _maxRattleChance: 0.7
-  <MaxWindForceAtFullSeverity>k__BackingField: 70
+  <MaxWindForceAtFullSeverity>k__BackingField: 2.25
   _rattleSeverityCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
+      value: 0.35
+      inSlope: -0.01929804
+      outSlope: -0.01929804
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.030946601
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 1.4691627
+      outSlope: 1.4691627
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.023058236
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   _secondsPerCrack: 5
-  _timeInBetweenStormsInSec: 240
+  _timeInBetweenStormsInSec: 5
   _radiusOfRattlingAroundPlayer: 15
   _damagePerCrack: 25
-  _startSeverity: 0.05
+  _startSeverity: 0.1
   _peakSeverity: 1
   _rampUpTime: 3
   _holdTime: 15
@@ -19822,9 +19826,9 @@ MonoBehaviour:
   _minWindParticleSpeed: 10
   _maxWindParticleSpeed: 80
   _minWindParticleRateOverTime: 6
-  _maxWindParticleRateOverTime: 70
+  _maxWindParticleRateOverTime: 80
   _minWindParticleStartSize: 0.07
-  _maxWindParticleStartSize: 0.6
+  _maxWindParticleStartSize: 0.65
   _windStormParticles: {fileID: 6343057154601786188}
   _playerTransform: {fileID: 689656521}
 --- !u!1 &2103337018

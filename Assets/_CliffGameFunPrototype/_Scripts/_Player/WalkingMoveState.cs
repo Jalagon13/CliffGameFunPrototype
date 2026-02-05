@@ -11,13 +11,14 @@ namespace CliffGame
     public class WalkingMoveState : MonoBehaviour, IPlayerState
     {
         [Header("Movement Settings")]
-        [SerializeField] private CharacterController _characterController;
         [SerializeField] private float _walkSpeed = 3f;
         [SerializeField] private float _jumpForce = 10f;
         [SerializeField] private float _gravity = -30f;
+        [SerializeField] private float _terminalVelocity = -50f;
         [SerializeField] private float _inAirMoveMultiplier = 0.5f;
         [SerializeField] private float _jumpCooldown = 0.5f;
         private float _verticalVelocity;
+        private CharacterController _cc;
         
     
         [Header("Falling Settings")]
@@ -35,15 +36,16 @@ namespace CliffGame
         [HideInInspector]
         public Vector3 DesiredMoveDirection { get; private set; }
         
-        private bool _isJumping;
-        private bool _wasGrounded;
+        private bool _isGrounded, _isSliding;
         private Timer _jumpCooldownTimer;
         private EventInstance _stepsInstance;
+        private Vector3 _colliderHitNormal;
 
         private void Awake()
         {
             _jumpCooldownTimer = new Timer(_jumpCooldown);
             _context = GetComponent<Player>();
+            _cc = GetComponent<CharacterController>();
         }
 
         private void Start()
@@ -67,7 +69,7 @@ namespace CliffGame
 
         public void StateUpdate()
         {
-            TransitionCheck();
+            WalkStateHandler();
             MovePlayer();
             Jump();
             
@@ -76,73 +78,73 @@ namespace CliffGame
             HandleFallTracking();
         }
 
-        private void TransitionCheck()
+        private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            bool isGrounded = _characterController.isGrounded;
-
-            // Grounded -> AIR
-            if (_wasGrounded && !isGrounded)
-            {
-                OnLeftGround();
-            }
-
-            // Air -> GROUNDED
-            if (!_wasGrounded && isGrounded)
-            {
-                OnLanded();
-            }
-
-            _wasGrounded = isGrounded;
+            _colliderHitNormal = hit.normal;
         }
 
-        private void OnLeftGround()
+        private void WalkStateHandler()
         {
-            // Debug.Log("Left ground");
-            
-            if(!_isJumping)
-            {
-                _verticalVelocity = 0f;
-            }
-        }
-
-        private void OnLanded()
-        {
-            // Debug.Log("Landed");
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.LandingSFX, transform.position);
+            _isGrounded = _cc.isGrounded;
+            _isSliding = _isGrounded ? Vector3.Angle(Vector3.up, _colliderHitNormal) >= _cc.slopeLimit : false;
         }
 
         private void Jump()
         {
             _jumpCooldownTimer.Tick(Time.deltaTime);
 
-            if (GameInput.Instance.IsHoldingDownJump && _characterController.isGrounded && !_isJumping && _jumpCooldownTimer.RemainingSeconds <= 0f)
+            if (_isGrounded && !_isSliding)
             {
-                _verticalVelocity = _jumpForce;
-                _isJumping = true;
+                if (GameInput.Instance.IsHoldingDownJump && _jumpCooldownTimer.RemainingSeconds <= 0f)
+                {
+                    _verticalVelocity = _jumpForce;
+                    _jumpCooldownTimer.Reset();
 
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.JumpSFX, transform.position);
-            }
-
-            // Only trigger when we were jumping and just touched ground while falling
-            if (_isJumping && _characterController.isGrounded && _verticalVelocity <= 0f)
-            {
-                _isJumping = false;
-                _jumpCooldownTimer.Reset();
-                _verticalVelocity = -2f;
+                    AudioManager.Instance.PlayOneShot(FMODEvents.Instance.JumpSFX, transform.position);
+                }
             }
         }
 
         private void MovePlayer()
         {
-            Vector3 moveVector = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
-            moveVector = moveVector * _walkSpeed * (_characterController.isGrounded ? 1 : _inAirMoveMultiplier) * Time.deltaTime;
-            _characterController.Move(moveVector);
+            Vector3 finalMove = Vector3.zero;
 
-            if (!_characterController.isGrounded)
+            if (_isSliding)
             {
-                _verticalVelocity = _verticalVelocity + (_gravity * Time.deltaTime);
-                _characterController.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
+                Vector3 downhill = Vector3.ProjectOnPlane(Vector3.down, _colliderHitNormal).normalized;
+
+                float slideSpeed = Mathf.Abs(_verticalVelocity);
+
+                finalMove += downhill * slideSpeed * Time.deltaTime;
             }
+            else
+            {
+                Vector3 horizontalMove = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
+                horizontalMove *= _walkSpeed * (_isGrounded ? 1 : _inAirMoveMultiplier) * Time.deltaTime;
+                
+                finalMove += horizontalMove;
+            }
+            
+            _verticalVelocity += _gravity * Time.deltaTime;
+            
+            if(_isGrounded)
+            {
+                if(!_isSliding && _verticalVelocity < 0f)
+                {
+                    _verticalVelocity = -2f;
+                }
+            }
+            else
+            {
+                if(_verticalVelocity < _terminalVelocity)
+                {
+                    _verticalVelocity = _terminalVelocity;
+                }
+            }
+            
+            finalMove += Vector3.up * _verticalVelocity * Time.deltaTime;
+            
+            _cc.Move(finalMove);
         }
 
         private void HandleWind()
@@ -171,7 +173,7 @@ namespace CliffGame
 
         private void HandleFallTracking()
         {
-            bool isGrounded = _characterController.isGrounded;
+            bool isGrounded = _isGrounded;
 
             // Falling = not grounded AND moving downward
             bool isFallingNow = !isGrounded && _verticalVelocity < -0.1f;
@@ -184,7 +186,7 @@ namespace CliffGame
             }
 
             // ---- FALL END (LANDING) ----
-            if (_isFallingFlag && isGrounded)
+            if (_isFallingFlag && isGrounded && !_isSliding)
             {
                 float fallEndY = transform.position.y;
                 float distanceFallen = _fallStartY - fallEndY;
@@ -207,33 +209,17 @@ namespace CliffGame
 
         private void HandleFootsteps()
         {
-            bool isGrounded = _characterController.isGrounded;
             bool isMoving = DesiredMoveDirection.sqrMagnitude > 0.01f;
 
-            if (isGrounded && isMoving)
+            if (_isGrounded && isMoving && !_isSliding)
             {
-                StartSteps();
-            }
-            else
-            {
-                PauseSteps();
-            }
-        }
-
-        private void StartSteps()
-        {
-            PLAYBACK_STATE state;
-            _stepsInstance.getPlaybackState(out state);
-
-            if (state == PLAYBACK_STATE.STOPPED)
-                _stepsInstance.start();
-            else
                 _stepsInstance.setPaused(false);
-        }
-
-        private void PauseSteps()
-        {
-            _stepsInstance.setPaused(true);
+                _stepsInstance.start();
+            }
+            else
+            {
+                _stepsInstance.setPaused(true);
+            }
         }
 
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)

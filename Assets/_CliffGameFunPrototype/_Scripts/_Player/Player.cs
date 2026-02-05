@@ -45,9 +45,6 @@ namespace CliffGame
         private float _climbRayDistance = 2f;
         public float ClimbRayDistance => _climbRayDistance;
         
-        [SerializeField] 
-        private LayerMask _climbableLayer;
-        
         private WalkingMoveState _walkingMoveState;
         public WalkingMoveState WalkingMoveState => _walkingMoveState;
         

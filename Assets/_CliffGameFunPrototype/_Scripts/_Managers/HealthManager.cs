@@ -76,6 +76,7 @@ namespace CliffGame
             
             if(_healthStat.Current <= 0)
             {
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerHurtSFX, Player.Instance.transform.position);
                 OnPlayerDeath?.Invoke();
             }
             else

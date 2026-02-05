@@ -33,13 +33,11 @@ namespace CliffGame
         private Player _context;
 
         [HideInInspector]
-        public Vector2 DesiredMoveDirection { get; private set; }
+        public Vector3 DesiredMoveDirection { get; private set; }
         
         private bool _isJumping;
         private bool _wasGrounded;
-
         private Timer _jumpCooldownTimer;
-
         private EventInstance _stepsInstance;
 
         private void Awake()
@@ -70,9 +68,10 @@ namespace CliffGame
         public void StateUpdate()
         {
             TransitionCheck();
-            HandleFootsteps();
             MovePlayer();
             Jump();
+            
+            HandleFootsteps();
             HandleWind();
             HandleFallTracking();
         }
@@ -138,14 +137,14 @@ namespace CliffGame
             Vector3 moveVector = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
             moveVector = moveVector * _walkSpeed * (_characterController.isGrounded ? 1 : _inAirMoveMultiplier) * Time.deltaTime;
             _characterController.Move(moveVector);
-             
-            if(!_characterController.isGrounded)
+
+            if (!_characterController.isGrounded)
             {
                 _verticalVelocity = _verticalVelocity + (_gravity * Time.deltaTime);
                 _characterController.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
             }
         }
-        
+
         private void HandleWind()
         {
             // ---- WIND FORCE (UNCHANGED) ----
@@ -172,33 +171,38 @@ namespace CliffGame
 
         private void HandleFallTracking()
         {
-            // bool isGrounded = _groundCheck.IsGrounded;
-            // bool isFallingNow = !isGrounded && _rigidbody.linearVelocity.y < -0.01f;
+            bool isGrounded = _characterController.isGrounded;
 
-            // // ---- FALL START ----
-            // if (isFallingNow && !_isFallingFlag)
-            // {
-            //     _isFallingFlag = true;
-            //     _fallStartY = transform.position.y;
-            // }
+            // Falling = not grounded AND moving downward
+            bool isFallingNow = !isGrounded && _verticalVelocity < -0.1f;
 
-            // // ---- FALL END (LANDING) ----
-            // if (!isFallingNow && _isFallingFlag && isGrounded)
-            // {
-            //     float fallEndY = transform.position.y;
-            //     float distanceFallen = _fallStartY - fallEndY;
+            // ---- FALL START ----
+            if (isFallingNow && !_isFallingFlag)
+            {
+                _isFallingFlag = true;
+                _fallStartY = transform.position.y;
+            }
 
-            //     _isFallingFlag = false;
-                
-            //     if(distanceFallen > _fallDamageThreshold)
-            //     {
-            //         float damage = (distanceFallen - _fallDamageThreshold) * _fallDamageMultiplier;
-            //         int finalDamage = Mathf.RoundToInt(damage);
+            // ---- FALL END (LANDING) ----
+            if (_isFallingFlag && isGrounded)
+            {
+                float fallEndY = transform.position.y;
+                float distanceFallen = _fallStartY - fallEndY;
 
-            //         HealthManager.Instance.DamageHealth(finalDamage);
-            //         // Debug.Log($"Fall dmg: {finalDamage}, dist fell: {distanceFallen}");
-            //     }
-            // }
+                _isFallingFlag = false;
+
+                if (distanceFallen > _fallDamageThreshold)
+                {
+                    float damage =
+                        (distanceFallen - _fallDamageThreshold) * _fallDamageMultiplier;
+
+                    int finalDamage = Mathf.RoundToInt(damage);
+                    HealthManager.Instance.DamageHealth(finalDamage);
+
+                    // Optional debug
+                    Debug.Log($"Fall damage: {finalDamage}, Distance: {distanceFallen}");
+                }
+            }
         }
 
         private void HandleFootsteps()

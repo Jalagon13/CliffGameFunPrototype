@@ -6877,7 +6877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114963311885979670, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _jumpCooldown
-      value: 0.2
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 114963311885979670, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _maxSlopeAngle
@@ -6917,7 +6917,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7288749070935495780, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_SlopeLimit
-      value: 50
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 7288749070935495780, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_StepOffset
@@ -11313,7 +11313,7 @@ Transform:
   m_GameObject: {fileID: 1168353549}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500.3677, y: 220, z: 110.6}
+  m_LocalPosition: {x: 500.3677, y: 189, z: 110.6}
   m_LocalScale: {x: 200, y: 1, z: 150}
   m_ConstrainProportionsScale: 0
   m_Children: []

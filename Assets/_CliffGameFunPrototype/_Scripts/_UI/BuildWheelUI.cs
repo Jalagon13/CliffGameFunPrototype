@@ -124,7 +124,7 @@ namespace CliffGame
 
         private void GameInput_OnSecondaryInteract(object sender, InputAction.CallbackContext e)
         {
-            if (!e.started || CraftingManager.Instance.IsCraftingUIOpen) return;
+            if (!e.started || CraftingManager.Instance.IsCraftingUIOpen || Player.Instance.PauseMenuUI.IsPauseMenuOpen) return;
 
             if(InventoryManager.Instance.SelectedInventoryItem.HasItem && InventoryManager.Instance.SelectedInventoryItem.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer)
             {

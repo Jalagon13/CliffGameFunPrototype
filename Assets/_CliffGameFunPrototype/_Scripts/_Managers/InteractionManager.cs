@@ -68,7 +68,7 @@ namespace CliffGame
 
         private void TryToRepairBPDurability(object sender, InputAction.CallbackContext e)
         {
-            if(!e.started || BuildingManager.Instance.CurrentBuildType != BuildOption.RepairMode || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen || Player.Instance.PauseMenuUI.PauseMenuOpen) return;
+            if(!e.started || BuildingManager.Instance.CurrentBuildType != BuildOption.RepairMode || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen || Player.Instance.PauseMenuUI.IsPauseMenuOpen) return;
 
             // Repair logic here
             if (InventoryManager.Instance.HasSelectedItem)

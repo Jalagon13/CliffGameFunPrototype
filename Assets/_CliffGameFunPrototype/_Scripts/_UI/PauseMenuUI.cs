@@ -12,7 +12,7 @@ namespace CliffGame
         [SerializeField] private GameObject _pauseMenuUI;
     
         private bool _pauseMenuOpen;
-        public bool PauseMenuOpen => _pauseMenuOpen;
+        public bool IsPauseMenuOpen => _pauseMenuOpen;
     
         private void Start()
         {

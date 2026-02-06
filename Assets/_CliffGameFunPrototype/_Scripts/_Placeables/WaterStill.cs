@@ -59,7 +59,7 @@ namespace CliffGame
 
         private void Update()
         {
-            if (_waterExtractionTimer != null && !Player.Instance.PauseMenuUI.PauseMenuOpen)
+            if (_waterExtractionTimer != null && !Player.Instance.PauseMenuUI.IsPauseMenuOpen)
             {
                 _waterExtractionTimer.Tick(Time.deltaTime);
             }

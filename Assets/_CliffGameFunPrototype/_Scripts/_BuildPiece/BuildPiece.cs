@@ -17,6 +17,13 @@ namespace CliffGame
         public IReadOnlyList<Connector> Connectors { get; private set; }
         public int DistanceFromAnchor { get; private set; }
 
+        public bool IsRefundableOnDestroy { get; private set; }
+
+        public void MarkRefundable()
+        {
+            IsRefundableOnDestroy = true;
+        }
+
         private void Awake()
         {
             Connectors = GetComponentsInChildren<Connector>();
@@ -103,9 +110,21 @@ namespace CliffGame
 
         public void HandleDestroy()
         {
+            if (IsRefundableOnDestroy)
+            {
+                RefundCostToPlayer();
+                IsRefundableOnDestroy = false; // safety
+            }
+
             CleanupConnectors();
             PlayDestructionGameFeel();
             Destroy(gameObject);
+        }
+
+        private void RefundCostToPlayer()
+        {
+            Debug.Log($"Refunding");
+            InventoryManager.Instance.AddItems(BuildingManager.Instance.ItemsNeededForBuilding);
         }
     }
 }

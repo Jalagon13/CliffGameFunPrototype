@@ -33,7 +33,7 @@ namespace CliffGame
 
         private void Update()
         {
-            if (_cookingTimer != null && !Player.Instance.PauseMenuUI.PauseMenuOpen)
+            if (_cookingTimer != null && !Player.Instance.PauseMenuUI.IsPauseMenuOpen)
             {
                 _cookingTimer.Tick(Time.deltaTime);
             }

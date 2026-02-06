@@ -19,7 +19,12 @@ namespace CliffGame
         private HashSet<BuildPiece> _registeredBuildPieces = new();
         private HashSet<BuildPiece> _supportedBuildPieces = new();
         private Queue<(BuildPiece piece, int distance)> _snapShotQueue = new();
-        
+
+        private Coroutine _destructionRoutine;
+        private bool _destructionInProgress;
+        private bool _pendingIntegrityCheck;
+        private readonly HashSet<BuildPiece> _pendingPlacedPieces = new();
+
         private void Awake()
         {
             Instance = this;
@@ -30,7 +35,7 @@ namespace CliffGame
             buildPiece.InitializeAnchoredStatus();
             _registeredBuildPieces.Add(buildPiece);
 
-            ExecuteIntegrityCheck();
+            RequestIntegrityCheck(buildPiece);
         }
         
         public void UnregisterBuildPiece(BuildPiece buildPiece, bool executeIntegrityCheck = true)
@@ -38,10 +43,27 @@ namespace CliffGame
             _registeredBuildPieces.Remove(buildPiece);
 
             if (executeIntegrityCheck)
-                ExecuteIntegrityCheck();
+                RequestIntegrityCheck();
         }
         
-        private void ExecuteIntegrityCheck()
+        private void RequestIntegrityCheck(BuildPiece newlyPlacedPiece = null)
+        {
+            if (_destructionInProgress)
+            {
+                _pendingIntegrityCheck = true;
+
+                if (newlyPlacedPiece != null)
+                {
+                    _pendingPlacedPieces.Add(newlyPlacedPiece);
+                }
+
+                return;
+            }
+
+            ExecuteIntegrityCheck(newlyPlacedPiece);
+        }
+
+        private void ExecuteIntegrityCheck(BuildPiece newlyPlacedPiece = null)
         {
             foreach (BuildPiece buildPiece in _registeredBuildPieces)
             {
@@ -94,12 +116,27 @@ namespace CliffGame
             if (unsupported.Count == 0)
                 return;
 
-            StartCoroutine(DestroyUnsupportedPiecesRoutine(unsupported));
+            if (newlyPlacedPiece != null && unsupported.Contains(newlyPlacedPiece))
+            {
+                newlyPlacedPiece.MarkRefundable();
+            }
+
+            foreach (BuildPiece pendingPiece in _pendingPlacedPieces)
+            {
+                if (pendingPiece != null && _registeredBuildPieces.Contains(pendingPiece) && unsupported.Contains(pendingPiece))
+                {
+                    pendingPiece.MarkRefundable();
+                }
+            }
+
+            _destructionRoutine = StartCoroutine(DestroyUnsupportedPiecesRoutine(unsupported));
         }
 
         // NTFS: Might be very buggy if I start another destroy routine while one is already running
         private IEnumerator DestroyUnsupportedPiecesRoutine(List<BuildPiece> unsupported)
         {
+            _destructionInProgress = true;
+        
             Transform playerTransform = Player.Instance.transform;
 
             if (playerTransform != null)
@@ -123,12 +160,26 @@ namespace CliffGame
 
             foreach (BuildPiece buildPiece in unsupported)
             {
+                if (buildPiece == null || buildPiece.gameObject == null)
+                    continue;
+
                 yield return new WaitForSeconds(_destructionDelay);
                 
                 _registeredBuildPieces.Remove(buildPiece);
                 
                 buildPiece.HandleDestroy();
             }
+
+            _destructionInProgress = false;
+
+            if (_pendingIntegrityCheck)
+            {
+                _pendingIntegrityCheck = false;
+                Debug.Log($"Executing pending integrity check");
+                ExecuteIntegrityCheck();
+            }
+
+            _pendingPlacedPieces.Clear();
         }
     }
 }

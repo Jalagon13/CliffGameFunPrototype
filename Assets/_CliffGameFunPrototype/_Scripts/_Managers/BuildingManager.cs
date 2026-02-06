@@ -59,6 +59,10 @@ namespace CliffGame
         [SerializeField] private Material[] _stabilityMaterials;
         [SerializeField] private float _connectorOverlapRadius = 1f;
         [SerializeField] private float _maxGroundAngle = 90f;
+        [SerializeField, Range(0f, 1f)] private float _ghostTransparency = 0.5f;
+        [SerializeField] private float _ghostPulseDuration = 2f;
+        [SerializeField] private float _ghostPulseMinScale = 0.95f;
+        [SerializeField] private float _ghostPulseMaxScale = 1.05f;
 
         [SerializeField] private int _currentBuildIndex;
 
@@ -72,6 +76,9 @@ namespace CliffGame
         
         private bool _isDestroying = false, _usingUpstairs = true;
         private Transform _currentDestroyTarget = null;
+
+        private List<Material[]> _cachedGhostValidMaterials = new();
+        private Vector3 _initialGhostScale;
 
         private void Awake()
         {
@@ -104,9 +111,10 @@ namespace CliffGame
             _placeCooldownTimer.Tick(Time.deltaTime);
         
             if ((_currentBuildType == BuildOption.Platform || _currentBuildType == BuildOption.Fence || _currentBuildType == BuildOption.Stairs) && 
-                Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.PauseMenuOpen)
+                Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.IsPauseMenuOpen)
             {
                 HandleGhostBuild();
+                HandleGhostPulse();
                 
                 switch(_currentBuildType)
                 {
@@ -122,11 +130,10 @@ namespace CliffGame
             }
             else if (_ghostBuildPiece != null)
             {
-                Destroy(_ghostBuildPiece.gameObject);
-                _ghostBuildPiece = null;
+                DestroyGhostPiece();
             }
 
-            if (_currentBuildType == BuildOption.DestroyMode && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.PauseMenuOpen && !BuildWheelUI.BuildWheelUIOpen)
+            if (_currentBuildType == BuildOption.DestroyMode && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.IsPauseMenuOpen && !BuildWheelUI.BuildWheelUIOpen)
             {
                 GhostDestroy();
                 HandleDestroyTimer();
@@ -176,8 +183,7 @@ namespace CliffGame
         {
             if (_ghostBuildPiece != null)
             {
-                Destroy(_ghostBuildPiece.gameObject);
-                _ghostBuildPiece = null;
+                DestroyGhostPiece();
                 RestoreStabilityPreview();
             }
 
@@ -200,9 +206,10 @@ namespace CliffGame
 
                 if (_ghostBuildPiece != null)
                 {
-                    Destroy(_ghostBuildPiece.gameObject);
-                    _ghostBuildPiece = null;
+                    DestroyGhostPiece();
                 }
+
+                RestoreStabilityPreview();
 
                 if (_currentDestroyTarget != null)
                 {
@@ -236,8 +243,7 @@ namespace CliffGame
             {
                 BuildPiece newBuildPiece = Instantiate(GetCurrentBuild(), _ghostBuildPiece.transform.position, _ghostBuildPiece.transform.rotation);
 
-                Destroy(_ghostBuildPiece.gameObject);
-                _ghostBuildPiece = null;
+                DestroyGhostPiece();
 
                 foreach (Connector connector in newBuildPiece.GetComponentsInChildren<Connector>())
                 {
@@ -280,7 +286,9 @@ namespace CliffGame
                 }
 
                 _modelParent = _ghostBuildPiece.transform.GetChild(0);
+                _initialGhostScale = _modelParent.localScale;
 
+                CacheGhostValidMaterials();
                 GhostifyModel(_modelParent, _ghostMaterialInvisible); // Sets the correct material
                 GhostifyModel(_ghostBuildPiece.transform); // Disables colliders on the ghostbuild so it doesn't affect the other colliders near it
             }
@@ -441,7 +449,7 @@ namespace CliffGame
                 return;
             }
 
-            GhostifyModel(_modelParent, _ghostMaterialValid);
+            ApplyGhostValidMaterials();
             _isGhostInValidPosition = true;
             PreviewStabilityOnBuildPiece(closestConnector.BuildPiece);
         }
@@ -469,8 +477,7 @@ namespace CliffGame
             int distance = Mathf.Clamp(target.DistanceFromAnchor, 0, maxDistance);
 
             float t = maxDistance == 0 ? 0f : (float)distance / maxDistance;
-            int materialIndex = Mathf.Clamp(Mathf.RoundToInt(t * (_stabilityMaterials.Length - 1)), 0, _stabilityMaterials.Length - 1
-            );
+            int materialIndex = Mathf.Clamp(Mathf.RoundToInt(t * (_stabilityMaterials.Length - 1)), 0, _stabilityMaterials.Length - 1);
 
             foreach (var r in renderers)
             {
@@ -678,7 +685,7 @@ namespace CliffGame
                 // NTFS: Disabling this for now so you can ONLY place it on another platform MIGHT change this later
                 if (Vector3.Angle(validHit.normal, Vector3.up) < _maxGroundAngle)
                 {
-                    GhostifyModel(_modelParent, _ghostMaterialValid);
+                    ApplyGhostValidMaterials();
                     _isGhostInValidPosition = false;
                     RestoreStabilityPreview();
                 }
@@ -730,6 +737,81 @@ namespace CliffGame
             }
         }
 
+        private void CacheGhostValidMaterials()
+        {
+            ClearGhostMaterials();
+
+            if (_modelParent == null) return;
+
+            foreach (MeshRenderer renderer in _modelParent.GetComponentsInChildren<MeshRenderer>())
+            {
+                Material[] originalMats = renderer.sharedMaterials;
+                Material[] validMats = new Material[originalMats.Length];
+                for (int i = 0; i < originalMats.Length; i++)
+                {
+                    Material mat = new Material(originalMats[i]);
+                    if (mat.HasProperty("_Color"))
+                    {
+                        Color c = mat.color;
+                        c.a = _ghostTransparency;
+                        mat.color = c;
+                    }
+                    else if (mat.HasProperty("_BaseColor"))
+                    {
+                        Color c = mat.GetColor("_BaseColor");
+                        c.a = _ghostTransparency;
+                        mat.SetColor("_BaseColor", c);
+                    }
+
+                    mat.SetFloat("_Mode", 3); // Transparent
+                    mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                    mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    mat.SetInt("_ZWrite", 0);
+                    mat.DisableKeyword("_ALPHATEST_ON");
+                    mat.EnableKeyword("_ALPHABLEND_ON");
+                    mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                    mat.renderQueue = 3000;
+
+                    mat.SetFloat("_Surface", 1); // Transparent for URP
+                    mat.SetFloat("_Blend", 0); // Alpha for URP
+
+                    validMats[i] = mat;
+                }
+                _cachedGhostValidMaterials.Add(validMats);
+            }
+        }
+
+        private void ApplyGhostValidMaterials()
+        {
+            if (_modelParent == null) return;
+            MeshRenderer[] renderers = _modelParent.GetComponentsInChildren<MeshRenderer>();
+            if (renderers.Length != _cachedGhostValidMaterials.Count) return;
+
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                renderers[i].materials = _cachedGhostValidMaterials[i];
+            }
+        }
+
+        private void ClearGhostMaterials()
+        {
+            foreach (var matArray in _cachedGhostValidMaterials)
+            {
+                foreach (var mat in matArray) if (mat) Destroy(mat);
+            }
+            _cachedGhostValidMaterials.Clear();
+        }
+
+        private void DestroyGhostPiece()
+        {
+            if (_ghostBuildPiece != null)
+            {
+                Destroy(_ghostBuildPiece.gameObject);
+                _ghostBuildPiece = null;
+            }
+            ClearGhostMaterials();
+        }
+
         private void MoveGhostPrefabToRaycast()
         {
             if(BuildWheelUI.BuildWheelUIOpen) return;
@@ -758,6 +840,22 @@ namespace CliffGame
             }
 
             _ghostBuildPiece.transform.position = foundValidHit ? validHit.point : ray.origin + ray.direction * _buildRange;
+        }
+
+        private void HandleGhostPulse()
+        {
+            if (_ghostBuildPiece == null || _modelParent == null) return;
+
+            if (_isGhostInValidPosition)
+            {
+                float t = (1f - Mathf.Cos(Time.time * Mathf.PI / _ghostPulseDuration)) * 0.5f;
+                float scale = Mathf.Lerp(_ghostPulseMinScale, _ghostPulseMaxScale, t);
+                _modelParent.localScale = _initialGhostScale * scale;
+            }
+            else
+            {
+                _modelParent.localScale = _initialGhostScale;
+            }
         }
 
         #endregion

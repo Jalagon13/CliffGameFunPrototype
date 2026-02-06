@@ -2922,7 +2922,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BirdResource
   _minSpeed: 1.25
   _maxSpeed: 2.25
-  _travelDuration: 40
+  _travelDuration: 90
   _maxAngleDeviation: 15
   _detectionDistance: 2
   _obstacleLayerMask:

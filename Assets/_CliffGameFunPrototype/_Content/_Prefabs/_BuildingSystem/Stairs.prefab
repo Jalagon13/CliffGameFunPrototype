@@ -21771,6 +21771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BuildPiece
   _destructionParticles: {fileID: 3947636531895734693, guid: e5f1ccd63da2f44378d6559a1a73df60, type: 3}
+  _pieceCollider: {fileID: 1288505127804385180}
   <BuildType>k__BackingField: 2
 --- !u!114 &5912610928694051417
 MonoBehaviour:

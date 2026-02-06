@@ -68,8 +68,10 @@ namespace CliffGame
             UnequipTool();
 
             _currentHeldTool = toolItem;
-            _swingCooldownTimer = new Timer(_currentHeldTool.SwingCooldownInSeconds);
-            _swingCooldownTimer.RemainingSeconds = 0;
+            _swingCooldownTimer = new Timer(_currentHeldTool.SwingCooldownInSeconds)
+            {
+                RemainingSeconds = 0
+            };
 
             // Instantiate as a child so the prefab's local offset is preserved
             Instantiate(toolItem.HeldToolPrefab, transform);
@@ -93,10 +95,8 @@ namespace CliffGame
         private void TryPlaySwingAnimation()
         {
             // Only swing if a tool is equipped, not already swinging, and cooldown is over
-            if (_isSwinging || !ToolPrefabExists() || _swingCooldownTimer.RemainingSeconds > 0f)
+            if (_isSwinging || !ToolPrefabExists() || _swingCooldownTimer.RemainingSeconds > 0f || Player.Instance.PauseMenuUI.IsPauseMenuOpen || CraftingManager.Instance.IsCraftingUIOpen)
                 return;
-
-            
 
             _isSwinging = true;
 

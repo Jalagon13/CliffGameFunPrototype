@@ -8,6 +8,8 @@ namespace CliffGame
     public class BuildPiece : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _destructionParticles;
+        
+        [SerializeField] private BoxCollider _pieceCollider;
 
         [field: SerializeField]
         public BuildOption BuildType { get; private set; }
@@ -56,35 +58,21 @@ namespace CliffGame
         {
             IsAnchored = false;
 
-            BuildPieceDurability platform = GetComponent<BuildPieceDurability>();
-            if (platform == null)
+            if(BuildType != BuildOption.Platform && BuildType != BuildOption.Stairs)
             {
-                // Debug.Log("BuildPiece is NOT anchored.");
+                // Only platforms and stairs can be anchored
                 return;
             }
             
-            if(BuildType != BuildOption.Platform)
-            {
-                // Only platforms can be anchored
-                return;
-            }
-
-            BoxCollider boxCollider = platform.GetComponent<BoxCollider>();
-            if (boxCollider == null)
-            {
-                Debug.LogWarning($"Platform is missing BoxCollider component.");
-                return;
-            }
-
-            Vector3 worldCenter = boxCollider.transform.TransformPoint(boxCollider.center);
-            Vector3 worldHalfExtents = Vector3.Scale(boxCollider.size * 0.5f, boxCollider.transform.lossyScale);
-            Quaternion worldRotation = boxCollider.transform.rotation;
+            Vector3 worldCenter = _pieceCollider.transform.TransformPoint(_pieceCollider.center);
+            Vector3 worldHalfExtents = Vector3.Scale(_pieceCollider.size * 0.5f, _pieceCollider.transform.lossyScale);
+            Quaternion worldRotation = _pieceCollider.transform.rotation;
 
             Collider[] overlaps = Physics.OverlapBox(worldCenter, worldHalfExtents, worldRotation);
 
             foreach (Collider col in overlaps)
             {
-                if (col == boxCollider)
+                if (col == _pieceCollider)
                     continue;
 
                 if (col is TerrainCollider)
@@ -94,7 +82,6 @@ namespace CliffGame
                     return;
                 }
             }
-            
         }
 
         public void CleanupConnectors()

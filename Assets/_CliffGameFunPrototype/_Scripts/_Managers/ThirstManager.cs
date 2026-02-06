@@ -29,6 +29,9 @@ namespace CliffGame
 
         [SerializeField]
         private float _thirstPangIntervalSeconds = 10f;
+        
+        [SerializeField] 
+        private int _respawnThirstAmount = 65;
 
         private PlayerStat _thirstStat;
         public int CurrentThirst => _thirstStat.Current;
@@ -168,7 +171,7 @@ namespace CliffGame
         private void OnRespawn()
         {
             AddThirst(_maxThirst);
-            _thirstStat.SetCurrentStat(50);
+            _thirstStat.SetCurrentStat(_respawnThirstAmount);
         }
 
         public void AddThirst(int amount)

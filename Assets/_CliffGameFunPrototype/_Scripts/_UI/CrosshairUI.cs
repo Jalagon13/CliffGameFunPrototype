@@ -15,6 +15,7 @@ namespace CliffGame
         [SerializeField] private GameObject _buildInstructionTextHolder;
         [SerializeField] private GameObject _repairInstructions;
         [SerializeField] private GameObject _textAboveCrosshair;
+        [SerializeField] private GameObject _stairsChangeDirectionText;
         [SerializeField] private TMP_Text _textAboveCrosshairLabel;
 
         private Image _crosshairImage;
@@ -33,6 +34,7 @@ namespace CliffGame
 
             _interactRadialBar.gameObject.SetActive(false);
             _repairInstructions.SetActive(false);
+            _stairsChangeDirectionText.SetActive(false);
             HideTextAboveCrosshair();
         }
         
@@ -106,11 +108,20 @@ namespace CliffGame
                 }
 
                 _repairInstructions.SetActive(true);
+                _stairsChangeDirectionText.SetActive(false);
             }
-            else if(type == BuildOption.Fence || type == BuildOption.Platform || type == BuildOption.Stairs)
+            else if(type == BuildOption.Fence || type == BuildOption.Platform)
             {
                 PopulateBuildReqs();
                 _repairInstructions.SetActive(false);
+                _stairsChangeDirectionText.SetActive(false);
+            }
+            else if(type == BuildOption.Stairs)
+            {
+                PopulateBuildReqs();
+                _repairInstructions.SetActive(false);
+
+                _stairsChangeDirectionText.SetActive(true);
             }
         }
 

@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 795a739d1a5c0437dba736b626c776bf, type: 3}
-  m_Name: CookedBird
+  m_Name: Blueberry
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ConsumableItemSO
-  <InGameName>k__BackingField: Cooked Bird
+  <InGameName>k__BackingField: Blueberry
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
-  <UiDisplay>k__BackingField: {fileID: -1701940710063869023, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
+  <UiDisplay>k__BackingField: {fileID: 1935163884, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: 
-  <HealAmount>k__BackingField: 15
-  <ConsumeDuration>k__BackingField: 1
+  <HealAmount>k__BackingField: 1
+  <ConsumeDuration>k__BackingField: 0.5
   <ConsumableType>k__BackingField: 0

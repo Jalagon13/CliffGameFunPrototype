@@ -29,6 +29,9 @@ namespace CliffGame
 
         [SerializeField]
         private float _stomachGrowlIntervalSeconds = 10f;
+        
+        [SerializeField] 
+        private int _respawnHungerAmount = 65;
 
         private PlayerStat _hungerStat;
         public int CurrentHunger => _hungerStat.Current;
@@ -168,7 +171,7 @@ namespace CliffGame
         private void OnRespawn()
         {
             AddHunger(_maxHunger);
-            _hungerStat.SetCurrentStat(50);
+            _hungerStat.SetCurrentStat(_respawnHungerAmount);
         }
 
         public void AddHunger(int amount)

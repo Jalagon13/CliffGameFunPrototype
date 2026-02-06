@@ -909,7 +909,7 @@ namespace CliffGame
                 if (((1 << hit.transform.gameObject.layer) & _connectorLayerMask) != 0)
                     continue;
 
-                if (hit.transform.root.CompareTag("BuildPiece") || hit.transform.root.CompareTag("Placeable"))
+                if (hit.transform.root.CompareTag("BuildPiece"))
                 {
                     // Found the first valid target
                     validHit = hit;

@@ -132,12 +132,7 @@ namespace CliffGame
 
         private void SpawnResourceAt(Vector3 position, Vector3 normal)
         {
-            Resource resource = Instantiate(
-                WeightedResourceSelector.GetRandomResource(_resources),
-                position,
-                Quaternion.LookRotation(normal),
-                transform
-            );
+            Resource resource = Instantiate(WeightedResourceSelector.GetRandomResource(_resources), position, Quaternion.LookRotation(normal), transform);
             // Debug.Log($"{_activeResources.Count}/{_maxResources}: Spawned resource {resource.name} at {position}");
             _activeResources.Add(resource);
         }

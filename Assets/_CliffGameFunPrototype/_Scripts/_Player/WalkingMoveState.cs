@@ -73,8 +73,6 @@ namespace CliffGame
             HandleWind();
             MovePlayer();
             Jump();
-            
-            HandleFootsteps();
             HandleFallTracking();
         }
 
@@ -207,26 +205,23 @@ namespace CliffGame
             }
         }
 
-        private void HandleFootsteps()
-        {
-            bool isMoving = DesiredMoveDirection.sqrMagnitude > 0.01f;
-
-            if (_isGrounded && isMoving && !_isSliding)
-            {
-                _stepsInstance.setPaused(false);
-                _stepsInstance.start();
-            }
-            else
-            {
-                _stepsInstance.setPaused(true);
-            }
-        }
-
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
         {
             if (CraftingManager.Instance.IsCraftingUIOpen) return;
 
+            bool wasMoving = DesiredMoveDirection.sqrMagnitude > 0f;
             DesiredMoveDirection = e.ReadValue<Vector2>();
+            bool isMoving = DesiredMoveDirection.sqrMagnitude > 0f;
+
+            if (!wasMoving && isMoving && _isGrounded)
+            {
+                _stepsInstance.start();
+                _stepsInstance.setPaused(false);
+            }
+            else if (wasMoving && !isMoving)
+            {
+                _stepsInstance.setPaused(true);
+            }
         }
 
         private void OnStateChange(PlayerMoveState state1, PlayerMoveState state2)

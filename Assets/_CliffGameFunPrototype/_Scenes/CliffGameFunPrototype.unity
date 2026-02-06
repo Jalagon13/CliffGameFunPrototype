@@ -1613,7 +1613,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9364
+      value: 9514
       objectReference: {fileID: 0}
     - target: {fileID: 1848075474486708829, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1641,7 +1641,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7441
+      value: 7591
       objectReference: {fileID: 0}
     - target: {fileID: 3029735958138288004, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1677,7 +1677,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9403
+      value: 9553
       objectReference: {fileID: 0}
     - target: {fileID: 3926050539205680572, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1809,7 +1809,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8516
+      value: 8666
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1857,7 +1857,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8936
+      value: 9086
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1865,7 +1865,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8537
+      value: 8687
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5127,10 +5127,10 @@ MonoBehaviour:
   _cliffLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _minSpawnDistance: 1
-  _initialSpawnCount: 15
-  _maxResources: 35
-  _spawnAttemptInterval: 2.75
+  _minSpawnDistance: 1.25
+  _initialSpawnCount: 85
+  _maxResources: 125
+  _spawnAttemptInterval: 2.65
   _attemptsPerTick: 5
   _resources:
   - resourcePrefab: {fileID: 6733385212726564722, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
@@ -7839,6 +7839,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b0f05b04c91344f8da2db89156f31d8e, type: 2}
   - {fileID: 11400000, guid: 3e24266cef9f540c0959b541dd07ecfa, type: 2}
   - {fileID: 11400000, guid: 1e3064abad23d408a8dbfa4a43f94031, type: 2}
+  - {fileID: 11400000, guid: 01062f0c3296a4c759ea042e20b25548, type: 2}
   - {fileID: 11400000, guid: 03854f3548bbb4778a3b7c68ca31593f, type: 2}
   - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
 --- !u!1001 &826374936
@@ -15106,7 +15107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73254179b7c7140959f3022bdab3508b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.InteractionManager
-  _interactSearchDistance: 3.5
+  _interactSearchDistance: 3.25
   _interactLayer:
     serializedVersion: 2
     m_Bits: 1152
@@ -16437,7 +16438,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 500.009, y: 299.339, z: 60}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 512566103}
@@ -17785,13 +17786,7 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
     Quantity: 1
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 1233
-  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 123
-  - Item: {fileID: 11400000, guid: 9bb6b4429d8a240aa89bc4c5e6b6393a, type: 2}
-    Quantity: 12
-  - Item: {fileID: 11400000, guid: 3b850cbd57d474a1cb1247f48e2710af, type: 2}
-    Quantity: 123
+    Quantity: 155
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -18608,7 +18603,7 @@ MonoBehaviour:
   _playerLayerMask:
     serializedVersion: 2
     m_Bits: 256
-  _buildRange: 3.5
+  _buildRange: 3.25
   _destroyDuration: 0.35
   _placeCooldown: 0.15
   _itemsNeededForBuilding:
@@ -19787,9 +19782,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086b541bead394a5c8ead360709dff36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
-  <WindCanPushPlayer>k__BackingField: 0
-  _windSeverity: 0.1
-  _windPushesPlayerThreshold: 0.05
+  <WindCanPushPlayer>k__BackingField: 1
+  _windSeverity: 0.0625
+  _windPushesPlayerThreshold: 0.0375
   _windTickInterval: 0.125
   _minRattleChance: 0.0185
   _maxRattleChance: 0.7
@@ -19822,7 +19817,7 @@ MonoBehaviour:
   _timeInBetweenStormsInSec: 240
   _radiusOfRattlingAroundPlayer: 15
   _damagePerCrack: 25
-  _startSeverity: 0.1
+  _startSeverity: 0.0625
   _peakSeverity: 1
   _rampUpTime: 3
   _holdTime: 15

@@ -5204,7 +5204,7 @@ MonoBehaviour:
   - DropItem: {fileID: 11400000, guid: 9bb6b4429d8a240aa89bc4c5e6b6393a, type: 2}
     MinAmount: 1
     MaxAmount: 1
-  _crackParticles: {fileID: 0}
+  _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
   _hitSFX:
     Guid:
       Data1: 1630036399
@@ -5219,7 +5219,7 @@ MonoBehaviour:
       Data3: -564401781
       Data4: 1637590921
     Path: event:/Building/WoodDestroyedSFX
-  _waterUnitGenerationTimeInSec: 5
+  _waterUnitGenerationTimeInSec: 45
   _fiberNeededPerWaterUnit: 4
   _thirstReplenished: 35
   _fiberItemSO: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}

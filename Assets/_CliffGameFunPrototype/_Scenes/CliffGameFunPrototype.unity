@@ -172,6 +172,7 @@ MonoBehaviour:
   _buildRange: 4
   _ghostMaterialValid: {fileID: 2100000, guid: 206c5e23e8fe7483296565746246a68f, type: 2}
   _ghostMaterialInvalid: {fileID: 2100000, guid: ed20caad1ba214755b4e240924bfacf4, type: 2}
+  _ghostMaterialInvisible: {fileID: 0}
   _maxGroundAngle: 45
 --- !u!1 &26747704
 GameObject:
@@ -9303,7 +9304,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[RMB]
+  m_text: '[E]
 
     Place/Collect Meat'
   m_isRightToLeft: 0
@@ -10651,6 +10652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PauseMenuUI
   _pauseMenuUI: {fileID: 1857862469}
+  _shortUnpauseDelay: 0.15
 --- !u!43 &1135977428
 Mesh:
   m_ObjectHideFlags: 0
@@ -17791,8 +17793,8 @@ MonoBehaviour:
     Quantity: 1
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 123
-  - Item: {fileID: 11400000, guid: 9bb6b4429d8a240aa89bc4c5e6b6393a, type: 2}
-    Quantity: 12
+  - Item: {fileID: 11400000, guid: bd51402fb03d9454c9c56e4a8740140e, type: 2}
+    Quantity: 1
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -19820,7 +19822,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _secondsPerCrack: 5
-  _timeInBetweenStormsInSec: 240
+  _timeInBetweenStormsInSec: 5
   _radiusOfRattlingAroundPlayer: 15
   _damagePerCrack: 25
   _startSeverity: 0.0665

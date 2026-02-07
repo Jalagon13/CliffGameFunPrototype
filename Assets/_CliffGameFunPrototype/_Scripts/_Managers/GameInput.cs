@@ -21,6 +21,7 @@ namespace CliffGame
         public event EventHandler<InputAction.CallbackContext> OnTertiaryInteract;
         public event EventHandler<InputAction.CallbackContext> OnTogglePauseMenu;
         public event EventHandler<InputAction.CallbackContext> OnCycleBuildVariant;
+        public event EventHandler<InputAction.CallbackContext> OnInteract;
         
 
         private PlayerInput _playerInput;
@@ -53,6 +54,7 @@ namespace CliffGame
             _playerInput.Player.TertiaryInteract.canceled += PlayerInput_OnTertiaryInteract;
             _playerInput.Player.TogglePauseMenu.started += PlayerInput_OnTogglePauseMenu;
             _playerInput.Player.CycleBuildVariant.started += PlayerInput_CycleBuildVariant;
+            _playerInput.Player.Interact.started += PlayerInput_OnInteract;
 
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -62,6 +64,11 @@ namespace CliffGame
         {
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_OnInteract(InputAction.CallbackContext context)
+        {
+            OnInteract?.Invoke(this, context);
         }
 
         private void PlayerInput_CycleBuildVariant(InputAction.CallbackContext context)

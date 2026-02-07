@@ -101,15 +101,9 @@ namespace CliffGame
         {
             Debug.Log("[WaterStill] Attempting to add fiber");
 
-            if (!InventoryManager.Instance.HasSelectedItem)
+            if(!InventoryManager.Instance.InventoryHasItem(_fiberItemSO, 1))
             {
-                Debug.Log("[WaterStill] No item selected — cannot add fiber");
-                return;
-            }
-
-            if (InventoryManager.Instance.SelectedInventoryItem.Item != _fiberItemSO)
-            {
-                Debug.Log("[WaterStill] Selected item is not fiber");
+                Debug.Log($"[WaterStill] No {_fiberItemSO.InGameName} in inventory");
                 return;
             }
 

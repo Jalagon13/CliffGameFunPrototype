@@ -16,6 +16,7 @@ namespace CliffGame
         [Header("Ghost Settings")]
         [SerializeField] private Material _ghostMaterialValid;
         [SerializeField] private Material _ghostMaterialInvalid;
+        [SerializeField] private Material _ghostMaterialInvisible;
         [SerializeField] private float _maxGroundAngle = 45f;
 
         private StructureItemSO _currentStructureItemSO;
@@ -48,7 +49,7 @@ namespace CliffGame
 
         private void Update()
         {
-            if (_isBuilding)
+            if (_isBuilding && Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.IsPauseMenuOpen)
             {
                 GhostPlaceableHandle();
 
@@ -86,6 +87,9 @@ namespace CliffGame
         private void OnPrimaryInteract(object sender, InputAction.CallbackContext e)
         {
             if (!e.started || !_isBuilding) return;
+
+            if (CraftingManager.Instance.IsCraftingUIOpen || Player.Instance.PauseMenuUI.IsPauseMenuOpen) return;
+
             _clickedThisFrame = true;
         }
 
@@ -105,6 +109,15 @@ namespace CliffGame
 
         #endregion
 
+        #region Placing
+        
+        private void GhostPlaceableHandle()
+        {
+            CreateGhostPlaceablePrefab();
+            MoveGhostPrefabToRaycast();
+            CheckBuildValidity();
+        }
+
         private void PlaceStructure()
         {
             if (_ghostPlaceableGameObject != null && _isGhostInValidPosition)
@@ -121,13 +134,6 @@ namespace CliffGame
             }
         }
 
-        private void GhostPlaceableHandle()
-        {
-            CreateGhostPlaceablePrefab();
-            MoveGhostPrefabToRaycast();
-            CheckBuildValidity();
-        }
-
         private void CreateGhostPlaceablePrefab()
         {
             if (_ghostPlaceableGameObject == null || _currentStructureItemSO != _previousStructureItemSO)
@@ -141,7 +147,7 @@ namespace CliffGame
 
                 _modelParent = _ghostPlaceableGameObject.transform.GetChild(0);
 
-                GhostifyModel(_modelParent, _ghostMaterialInvalid); // Sets the correct material
+                GhostifyModel(_modelParent, _ghostMaterialInvisible); // Sets the correct material
                 GhostifyModel(_ghostPlaceableGameObject.transform); // Disables colliders on the ghostbuild so it doesn't affect the other colliders near it
 
                 _previousStructureItemSO = _currentStructureItemSO;
@@ -271,6 +277,8 @@ namespace CliffGame
                 }
             }
         }
+
+        #endregion
 
     }
 }

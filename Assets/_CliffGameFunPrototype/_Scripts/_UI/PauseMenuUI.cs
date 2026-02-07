@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,13 +11,14 @@ namespace CliffGame
         public static Action OnPauseMenuClosed;
     
         [SerializeField] private GameObject _pauseMenuUI;
+        [SerializeField] private float _shortUnpauseDelay = 0.2f;
     
         private bool _pauseMenuOpen;
         public bool IsPauseMenuOpen => _pauseMenuOpen;
     
         private void Start()
         {
-            Hide();
+            Hide(false);
         
             GameInput.Instance.OnTogglePauseMenu += GameInput_OnTogglePauseMenu;
         }
@@ -39,22 +41,19 @@ namespace CliffGame
                 return;
             }
         
-            _pauseMenuOpen = !_pauseMenuOpen;
-            
-            if (_pauseMenuOpen)
+            if (!_pauseMenuOpen)
             {
                 Show();
             }
             else
             {
-                Hide();
+                Hide(false);
             }
         }
         
         public void ResumeButtonPressed()
         {
-            _pauseMenuOpen = false;
-            Hide();
+            Hide(true);
         }
         
         public void QuitToMainMenuButtonPressed()
@@ -69,21 +68,44 @@ namespace CliffGame
             OnPauseMenuOpened?.Invoke();
             
             _pauseMenuUI.SetActive(true);
-            Time.timeScale = 0f;
+            _pauseMenuOpen = true;
             
+            Time.timeScale = 0f;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
         
-        private void Hide()
+        private void Hide(bool delay)
         {
-            OnPauseMenuClosed?.Invoke();
-            
-            _pauseMenuUI.SetActive(false);
+            if(delay)
+            {
+                StartCoroutine(Delay());
+            }
+            else
+            {
+                OnPauseMenuClosed?.Invoke();
+
+                Time.timeScale = 1f;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+
+                _pauseMenuUI.SetActive(false);
+                _pauseMenuOpen = false;
+            }
+        }
+        
+        private IEnumerator Delay()
+        {
             Time.timeScale = 1f;
+            
+            yield return new WaitForSecondsRealtime(_shortUnpauseDelay);
+            OnPauseMenuClosed?.Invoke();
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+
+            _pauseMenuUI.SetActive(false);
+            _pauseMenuOpen = false;
         }
     }
 }

@@ -54,26 +54,18 @@ namespace CliffGame
         {
             base.OnInteractWith();
 
-            if (InventoryManager.Instance.HasSelectedItem)
+            if (InventoryManager.Instance.InventoryHasItem(_foodItemToCook, 1))
             {
-                if (InventoryManager.Instance.SelectedInventoryItem.Item == _foodItemToCook)
+                if (!_isCooking)
                 {
-                    if (!_isCooking)
+                    if (!_hasFoodToPickup)
                     {
-                        if (!_hasFoodToPickup)
-                        {
-                            StartCooking();
-                        }
-                        else
-                        {
-                            TryToCollectCookedMeat();
-                        }
+                        StartCooking();
                     }
-                }
-                else
-                {
-                    // Has inventory item just not sparrow
-                    TryToCollectCookedMeat();
+                    else
+                    {
+                        TryToCollectCookedMeat();
+                    }
                 }
             }
             else

@@ -137,7 +137,7 @@ namespace CliffGame
             if (interactable is CookingStation)
             {
                 _crosshairImage.sprite = _rawBirdSprite;
-                ShowTextAboveCrosshair("Right Click <br> Cook / Collect Meat");
+                ShowTextAboveCrosshair("[E] <br> Cook / Collect Meat");
                 SetCrosshairAlpha(1f);
                 return;
             }
@@ -179,7 +179,7 @@ namespace CliffGame
                 case WaterStill.WaterStillState.CollectingFiber:
                     _crosshairImage.sprite = _fiberSprite;
                     ShowTextAboveCrosshair(
-                        $"Right Click <br> Insert Fiber ({waterStill.CurrentFiberStorage}/{waterStill.FiberNeededPerWaterUnit})"
+                        $"[E] <br> Insert Fiber ({waterStill.CurrentFiberStorage}/{waterStill.FiberNeededPerWaterUnit})"
                     );
                     break;
 
@@ -190,7 +190,7 @@ namespace CliffGame
 
                 case WaterStill.WaterStillState.WaterReady:
                     _crosshairImage.sprite = _defaultSprite;
-                    ShowTextAboveCrosshair("Right Click <br> Drink Water");
+                    ShowTextAboveCrosshair("[E] <br> Drink Water");
                     break;
             }
         }

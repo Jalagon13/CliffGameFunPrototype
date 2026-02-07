@@ -33,14 +33,14 @@ namespace CliffGame
         {
             Player.Instance.ToolHolder.OnToolSwingDown += TryToHitInteractable;
             GameInput.Instance.OnPrimaryInteract += TryToRepairBPDurability;
-            GameInput.Instance.OnSecondaryInteract += Interact;
+            GameInput.Instance.OnInteract += Interact;
         }
         
         private void OnDestroy()
         {
             Player.Instance.ToolHolder.OnToolSwingDown -= TryToHitInteractable;
             GameInput.Instance.OnPrimaryInteract -= TryToRepairBPDurability;
-            GameInput.Instance.OnSecondaryInteract -= Interact;
+            GameInput.Instance.OnInteract -= Interact;
         }
 
         private void Update()

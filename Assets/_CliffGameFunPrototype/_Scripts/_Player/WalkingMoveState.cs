@@ -18,6 +18,7 @@ namespace CliffGame
         [SerializeField] private float _inAirMoveMultiplier = 0.5f;
         [SerializeField] private float _jumpCooldown = 0.5f;
         [SerializeField] private float _jumpWindStrengthMulti = 1.5f;
+        [SerializeField] private float _windNegationThreshold = 0.25f;
         private float _verticalVelocity;
         private CharacterController _cc;
         
@@ -161,11 +162,20 @@ namespace CliffGame
 
             float windSpeed = WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity;
 
+            if (EquipmentSlotUI.PREVENT_WIND_WITH_BOOTS)
+            {
+                windSpeed /= 2f;
+                if (windSpeed < _windNegationThreshold)
+                {
+                    windSpeed = 0f;
+                }
+            }
+
             Vector3 windDirection = Vector3.right; // test direction for now
 
             // Optional: reduce wind effect while grounded
             float groundedMultiplier = _isGrounded ? 1f : _jumpWindStrengthMulti;
-
+            
             _windMove = windDirection * windSpeed * groundedMultiplier * Time.deltaTime;
         }
 

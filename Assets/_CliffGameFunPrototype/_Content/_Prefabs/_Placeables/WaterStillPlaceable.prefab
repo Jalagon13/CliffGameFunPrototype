@@ -5219,7 +5219,7 @@ MonoBehaviour:
       Data3: -564401781
       Data4: 1637590921
     Path: event:/Building/WoodDestroyedSFX
-  _waterUnitGenerationTimeInSec: 50
+  _waterUnitGenerationTimeInSec: 45
   _fiberNeededPerWaterUnit: 4
   _thirstReplenished: 20
   _fiberItemSO: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}

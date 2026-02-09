@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{25e4a1d6-9991-4a37-85df-aef48c1b7143}">
+		<property name="assetPath">
+			<value>SFX_ore_hit.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.30247916666666669</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b0f73c75-6694-43ea-9941-7d37677d3af1}</destination>
+		</relationship>
+	</object>
+</objects>

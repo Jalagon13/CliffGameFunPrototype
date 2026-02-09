@@ -4,6 +4,8 @@ namespace CliffGame
 {
     public class Hook : MonoBehaviour
     {
+        [SerializeField] private LayerMask _solidLayerMask;
+    
         private LineRenderer _hookLine;
         
         private void Awake()
@@ -25,7 +27,16 @@ namespace CliffGame
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"collided w {other.name}");
+            if (((1 << other.gameObject.layer) & _solidLayerMask) != 0)
+            {
+                HookshotManager.Instance.HookshotHolder.RegisterHit();
+            }
+        
+            if (other.TryGetComponent(out BirdResource bird))
+            {
+                bird.Catch(transform);
+                HookshotManager.Instance.HookshotHolder.RegisterHit();
+            }
         }
     }
 }

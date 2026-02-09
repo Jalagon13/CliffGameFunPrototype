@@ -10,6 +10,7 @@ namespace CliffGame
         [field: Header("Player SFX")]
         [field: SerializeField] public EventReference PlayerHurtSFX { get; private set; }
         [field: SerializeField] public EventReference ToolSwingSFX { get; private set; }
+        [field: SerializeField] public EventReference HookshotReleaseSFX { get; private set; }
         [field: SerializeField] public EventReference EatingSFX { get; private set; }
         [field: SerializeField] public EventReference GulpSFX { get; private set; }
         [field: SerializeField] public EventReference StomachGrowlSFX { get; private set; }
@@ -47,10 +48,10 @@ namespace CliffGame
         [field: SerializeField] public EventReference CampfireCooking { get; private set; }
         [field: SerializeField] public EventReference SplashSFX { get; private set; }
         
-        [field: Header("Npc SFX")]
-        [field: SerializeField] public EventReference BirdHurtSFX { get; private set; }
-        
         [field: Header("Resource SFX")]
+        [field: SerializeField] public EventReference BirdCaughtSFX { get; private set; }
+        [field: SerializeField] public EventReference StoneHitSFX { get; private set; }
+        [field: SerializeField] public EventReference StoneDestroyedSFX { get; private set; }
         [field: SerializeField] public EventReference LeafHitSFX { get; private set; }
 
 

@@ -2781,15 +2781,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Path
-      value: event:/GutsSquishSFX
+      value: event:/Resources/GutsSquishSFX
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Path
-      value: event:/GutsSquishSFX
+      value: event:/Resources/BirdCaughtSFX
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _requiredToolType
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Guid.Data1
@@ -2809,19 +2809,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data1
-      value: 220080990
+      value: -1593463993
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data2
-      value: 1314872062
+      value: 1330785323
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data3
-      value: 688282815
+      value: 618020996
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _destroySFX.Guid.Data4
-      value: 416755829
+      value: 1295926265
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.size
@@ -2921,10 +2921,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BirdResource
   _minSpeed: 1.5
-  _maxSpeed: 4.5
+  _maxSpeed: 3
   _travelDuration: 90
-  _maxAngleDeviation: 15
+  _maxAngleDeviation: 20
   _detectionDistance: 2
   _obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 65
+  _itemToDrop: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}

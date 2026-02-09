@@ -11,6 +11,8 @@ namespace CliffGame
         [SerializeField] private float _detectionDistance = 2f;
         [SerializeField] private LayerMask _obstacleLayerMask;
 
+        [SerializeField] private ItemSO _itemToDrop;
+
         private float _speed;
         private float _timer;
         private Vector3 _direction;
@@ -40,15 +42,6 @@ namespace CliffGame
             }
         }
 
-        private void OnTriggerStay(Collider other)
-        {
-            Debug.Log($"Collider {other.name}");
-            if(other.TryGetComponent(out Hook hook))
-            {
-                Debug.Log($"Hook hit!");
-            }
-        }
-
         public void Initialize(bool moveLeft)
         {
             _speed = Random.Range(_minSpeed, _maxSpeed);
@@ -62,6 +55,26 @@ namespace CliffGame
             _hasBeenInitialized = true;
 
             transform.GetChild(0).transform.localScale = new(1, 1, moveLeft ? -1 : 1);
+        }
+
+        public void Catch(Transform hookTransform)
+        {
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BirdCaughtSFX, transform.position);
+        
+            _hasBeenInitialized = false; // Stop movement logic
+            GetComponent<Collider>().enabled = false; // Prevent further collisions
+            
+            transform.SetParent(hookTransform);
+            transform.localPosition = Vector3.zero;
+        }
+
+        public void Collect()
+        {
+            if (_itemToDrop != null)
+            {
+                InventoryManager.Instance.AddItem(_itemToDrop, 1);
+            }
+            Destroy(gameObject);
         }
     }
 }

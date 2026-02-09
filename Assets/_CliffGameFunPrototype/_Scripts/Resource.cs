@@ -65,8 +65,6 @@ namespace CliffGame
         {
             if(Player.Instance.ToolHolder.CurrentHeldTool.ToolType != _requiredToolType) return;
         
-            AudioManager.Instance.PlayOneShot(_hitSFX, transform.position);
-            
             if(_crackParticles != null)
             {
                 Instantiate(_crackParticles.gameObject, transform.position, Quaternion.identity);
@@ -90,10 +88,16 @@ namespace CliffGame
                     {
                         InventoryManager.Instance.AddItem(drop.DropItem, 1);
                     }
+
+                    AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
                 }
                 
                 ResourceManager.Instance.UnregisterResource(this);
                 Destroy(gameObject);
+            }
+            else
+            {
+                AudioManager.Instance.PlayOneShot(_hitSFX, transform.position);
             }
         }
     }

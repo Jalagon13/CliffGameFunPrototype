@@ -13,6 +13,7 @@ namespace CliffGame
         private GameObject _hookshotModel;
         
         public bool HookSequenceExecuting { get; private set; }
+        private bool _shouldRetractEarly;
         
         private void Awake()
         {
@@ -44,13 +45,19 @@ namespace CliffGame
 
             float duration = currentHook.HookSequenceDuration;
             float range = currentHook.HookRange;
+            float speed = range / (duration / 2f);
 
             Vector3 targetPoint = Camera.main.transform.position + (Camera.main.transform.forward * range);
             Debug.Log($"Shooting hook with charge percent: {chargePercent}, duration: {duration}, range: {range}");
-            StartCoroutine(PerformHookSequence(targetPoint, duration, chargePercent));
+            StartCoroutine(PerformHookSequence(targetPoint, duration, chargePercent, speed));
         }
 
-        private IEnumerator PerformHookSequence(Vector3 targetPosition, float duration, float chargePercent)
+        public void RegisterHit()
+        {
+            _shouldRetractEarly = true;
+        }
+
+        private IEnumerator PerformHookSequence(Vector3 targetPosition, float duration, float chargePercent, float speed)
         {
             HookSequenceExecuting = true;
             _hook.SetActive(true);
@@ -58,10 +65,13 @@ namespace CliffGame
             float fullHalfDuration = duration / 2f;
             float actualDuration = fullHalfDuration * chargePercent;
             float timer = 0f;
+            _shouldRetractEarly = false;
             Vector3 startPosition = _shootPoint.position;
 
             while (timer < actualDuration)
             {
+                if (_shouldRetractEarly) break;
+
                 timer += Time.deltaTime;
                 float t = timer / fullHalfDuration;
                 _hook.transform.position = Vector3.Lerp(startPosition, targetPosition, t);
@@ -69,19 +79,29 @@ namespace CliffGame
             }
 
             Vector3 reachPosition = _hook.transform.position;
+            float returnDistance = Vector3.Distance(reachPosition, _shootPoint.position);
+            float returnDuration = (speed > 0f) ? returnDistance / speed : 0.25f;
+            returnDuration = Mathf.Max(returnDuration, 0.05f);
             
             timer = 0f;
 
-            while (timer < actualDuration)
+            while (timer < returnDuration)
             {
                 timer += Time.deltaTime;
-                float t = timer / actualDuration;
+                float t = timer / returnDuration;
                 _hook.transform.position = Vector3.Lerp(reachPosition, _shootPoint.position, t);
                 yield return null;
             }
 
             _hook.SetActive(false);
             HookSequenceExecuting = false;
+
+            // Check if we caught a bird
+            BirdResource[] caughtBirds = _hook.GetComponentsInChildren<BirdResource>();
+            foreach (BirdResource bird in caughtBirds)
+            {
+                bird.Collect();
+            }
         }
 
         private void OnHookshotEquipped()
@@ -93,7 +113,5 @@ namespace CliffGame
         {
             _hookshotModel.SetActive(false);
         }
-
-        
     }
 }

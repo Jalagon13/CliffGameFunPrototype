@@ -22,5 +22,10 @@ namespace CliffGame
                 _hookLine.SetPosition(1, transform.position);
             }
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            Debug.Log($"collided w {other.name}");
+        }
     }
 }

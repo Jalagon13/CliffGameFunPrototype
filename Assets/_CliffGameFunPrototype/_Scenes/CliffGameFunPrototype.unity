@@ -5274,11 +5274,13 @@ MonoBehaviour:
   _attemptsPerTick: 5
   _resources:
   - resourcePrefab: {fileID: 6733385212726564722, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
-    spawnWeight: 90
+    spawnWeight: 95
   - resourcePrefab: {fileID: 6733385212726564722, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
-    spawnWeight: 70
+    spawnWeight: 60
+  - resourcePrefab: {fileID: 6733385212726564722, guid: 285dc74de4f034239bc86a07346fb0cf, type: 3}
+    spawnWeight: 35
   - resourcePrefab: {fileID: 6733385212726564722, guid: b33445883b635420d93b380d00ff9d20, type: 3}
-    spawnWeight: 15
+    spawnWeight: 20
 --- !u!1 &522399308
 GameObject:
   m_ObjectHideFlags: 0
@@ -6909,7 +6911,7 @@ PrefabInstance:
       objectReference: {fileID: 115139681}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _maxSparrows
-      value: 4
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _canSpawnBirds
@@ -6917,15 +6919,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _ticksPerSecond
-      value: 50
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _spawnChancePerTick
-      value: 0.02
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _spawningPlaneSideLength
-      value: 7
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4843991343312101987, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}

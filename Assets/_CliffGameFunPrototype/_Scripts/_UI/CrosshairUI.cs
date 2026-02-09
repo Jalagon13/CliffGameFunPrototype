@@ -59,12 +59,17 @@ namespace CliffGame
 
             // Priority order: Destroying > Eating
             Timer destroyTimer = BuildingManager.Instance.DestroyTimer;
+            Timer hookshotTimer = HookshotManager.Instance.HookshotChargeTimer;
             Timer eatTimer = HungerManager.Instance.EatTimer;
             Timer drinkTimer = ThirstManager.Instance.DrinkTimer;
 
             if (IsTimerActive(destroyTimer))
             {
                 activeTimer = destroyTimer;
+            }
+            else if (IsTimerActive(hookshotTimer))
+            {
+                activeTimer = hookshotTimer;
             }
             else if (IsTimerActive(eatTimer))
             {

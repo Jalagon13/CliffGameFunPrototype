@@ -40,6 +40,15 @@ namespace CliffGame
             }
         }
 
+        private void OnTriggerStay(Collider other)
+        {
+            Debug.Log($"Collider {other.name}");
+            if(other.TryGetComponent(out Hook hook))
+            {
+                Debug.Log($"Hook hit!");
+            }
+        }
+
         public void Initialize(bool moveLeft)
         {
             _speed = Random.Range(_minSpeed, _maxSpeed);

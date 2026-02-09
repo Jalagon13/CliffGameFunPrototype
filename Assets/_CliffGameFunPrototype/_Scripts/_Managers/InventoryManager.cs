@@ -255,7 +255,8 @@ namespace CliffGame
                 CraftingManager.Instance.IsCraftingUIOpen || 
                 BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
                 Player.Instance.ToolHolder.IsSwinging || 
-                HungerManager.Instance.IsEating) return;
+                HungerManager.Instance.IsEating ||
+                HookshotManager.Instance.HookshotHolder.HookSequenceExecuting) return;
 
             Vector2 scrollDelta = context.ReadValue<Vector2>();
             int itemCount = _hotbarSlotAmount;
@@ -293,7 +294,8 @@ namespace CliffGame
                 CraftingManager.Instance.IsCraftingUIOpen || 
                 BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
                 Player.Instance.ToolHolder.IsSwinging ||
-                HungerManager.Instance.IsEating) return;
+                HungerManager.Instance.IsEating ||
+                HookshotManager.Instance.HookshotHolder.HookSequenceExecuting) return;
 
             var control = context.control; // The control (key/button) that triggered this
 

@@ -5301,7 +5301,7 @@ MonoBehaviour:
   - resourcePrefab: {fileID: 6733385212726564722, guid: 285dc74de4f034239bc86a07346fb0cf, type: 3}
     spawnWeight: 35
   - resourcePrefab: {fileID: 6733385212726564722, guid: b33445883b635420d93b380d00ff9d20, type: 3}
-    spawnWeight: 20
+    spawnWeight: 16
 --- !u!1 &522399308
 GameObject:
   m_ObjectHideFlags: 0
@@ -6932,7 +6932,7 @@ PrefabInstance:
       objectReference: {fileID: 115139681}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _maxSparrows
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _canSpawnBirds
@@ -6948,7 +6948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _spawningPlaneSideLength
-      value: 24
+      value: 28
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4843991343312101987, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
@@ -16134,10 +16134,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HungerManager
   _maxHunger: 100
-  _hungerDrainPerSecond: 0.1
+  _hungerDrainPerSecond: 0.0985
   _lowHungerThresholdPercent: 0.225
   _stomachGrowlIntervalSeconds: 9
-  _respawnHungerAmount: 65
+  _respawnHungerAmount: 70
 --- !u!114 &1628844531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16166,10 +16166,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ThirstManager
   _maxThirst: 100
-  _thirstDrainPerSecond: 0.13
+  _thirstDrainPerSecond: 0.1175
   _lowThirstThresholdPercent: 0.225
   _thirstPangIntervalSeconds: 9
-  _respawnThirstAmount: 65
+  _respawnThirstAmount: 70
 --- !u!1001 &1636102964
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18297,12 +18297,6 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
-    Quantity: 1
-  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 123
-  - Item: {fileID: 11400000, guid: 2a79da082856a45019d026c74424cc18, type: 2}
-    Quantity: 1
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -19124,7 +19118,9 @@ MonoBehaviour:
   _placeCooldown: 0.15
   _itemsNeededForBuilding:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 3
+    Quantity: 2
+  - Item: {fileID: 11400000, guid: 16315e06fbe8645e8be6994f23704482, type: 2}
+    Quantity: 1
   _itemsNeededForRepairing:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 1
@@ -20303,7 +20299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086b541bead394a5c8ead360709dff36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
-  <WindCanPushPlayer>k__BackingField: 0
+  <WindCanPushPlayer>k__BackingField: 1
   _windSeverity: 0.0665
   _windPushesPlayerThreshold: 0.0375
   _windTickInterval: 0.125

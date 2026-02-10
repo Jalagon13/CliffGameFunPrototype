@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e2f54c93ee34837bebdafe9124e96b, type: 3}
   m_Name: HookshotItem
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HookshotItemSO
-  <InGameName>k__BackingField: Hookshot
+  <InGameName>k__BackingField: Crude Hookshot
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: -1400016360, guid: 6bb471b23279f46c8a4c5356da367c85, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: Used for reeling in distance objects.
+  <Description>k__BackingField: A crude hook-and-rope tool for catching flying creatures.
   <ChargeDuration>k__BackingField: 1
   <HookRange>k__BackingField: 14
   <HookSequenceDuration>k__BackingField: 2

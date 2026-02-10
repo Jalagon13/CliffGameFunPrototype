@@ -40,7 +40,7 @@ namespace CliffGame
         private bool _isGrounded, _isSliding;
         private Timer _jumpCooldownTimer;
         private EventInstance _stepsInstance;
-        private Vector3 _colliderHitNormal;
+        private ControllerColliderHit _ccHit;
         private Vector3 _windMove;
 
         private void Awake()
@@ -75,17 +75,18 @@ namespace CliffGame
             MovePlayer();
             Jump();
             HandleFallTracking();
+            // Debug.Log($"Issliding: {_isSliding}, IsGrounded: {_isGrounded}");
         }
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            _colliderHitNormal = hit.normal;
+            _ccHit = hit;
         }
 
         private void WalkStateHandler()
         {
             _isGrounded = _cc.isGrounded;
-            _isSliding = _isGrounded ? Vector3.Angle(Vector3.up, _colliderHitNormal) >= _cc.slopeLimit : false;
+            _isSliding = _isGrounded ? Vector3.Angle(Vector3.up, _ccHit.normal) >= _cc.slopeLimit && _ccHit.collider.gameObject.layer == 6 : false;
         }
 
         private void Jump()
@@ -110,7 +111,7 @@ namespace CliffGame
 
             if (_isSliding)
             {
-                Vector3 downhill = Vector3.ProjectOnPlane(Vector3.down, _colliderHitNormal).normalized;
+                Vector3 downhill = Vector3.ProjectOnPlane(Vector3.down, _ccHit.normal).normalized;
 
                 float slideSpeed = Mathf.Abs(_verticalVelocity);
 
@@ -125,7 +126,7 @@ namespace CliffGame
             }
 
             finalMove += _windMove;
-            Debug.DrawRay(transform.position, _windMove * 10f, Color.cyan);
+            
             _verticalVelocity += _gravity * Time.deltaTime;
             
             if(_isGrounded)
@@ -146,6 +147,11 @@ namespace CliffGame
             finalMove += Vector3.up * _verticalVelocity * Time.deltaTime;
             
             _cc.Move(finalMove);
+
+            if ((_cc.collisionFlags & CollisionFlags.Above) != 0 && _verticalVelocity > 0f)
+            {
+                _verticalVelocity = 0f;
+            }
         }
 
         private void HandleWind()
@@ -164,7 +170,7 @@ namespace CliffGame
 
             if (EquipmentSlotUI.PREVENT_WIND_WITH_BOOTS)
             {
-                windSpeed /= 2f;
+                windSpeed *= 0.35f;
                 if (windSpeed < _windNegationThreshold)
                 {
                     windSpeed = 0f;
@@ -245,6 +251,7 @@ namespace CliffGame
         private void CraftingManager_OnCraftingUIOpened()
         {
             DesiredMoveDirection = Vector2.zero;
+            _stepsInstance.setPaused(true);
         }
 
         public void EnterState()

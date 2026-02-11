@@ -4120,10 +4120,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.GoalUI
   _endMessageGO: {fileID: 1469279642}
-  _timeBeforeMessage: 600
+  _timeBeforeMessage: 10
   _flashDuration: 3.5
   _flashInterval: 0.25
-  _lingerDuration: 30
+  _lingerDuration: 45
 --- !u!114 &365058427 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -1234806431069001368, guid: 9a8a9398340f545b791329ddccb0c7ad, type: 3}
@@ -5297,11 +5297,11 @@ MonoBehaviour:
   - resourcePrefab: {fileID: 6733385212726564722, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
     spawnWeight: 95
   - resourcePrefab: {fileID: 6733385212726564722, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
-    spawnWeight: 68
+    spawnWeight: 72
   - resourcePrefab: {fileID: 6733385212726564722, guid: 285dc74de4f034239bc86a07346fb0cf, type: 3}
-    spawnWeight: 28
+    spawnWeight: 25
   - resourcePrefab: {fileID: 6733385212726564722, guid: b33445883b635420d93b380d00ff9d20, type: 3}
-    spawnWeight: 15
+    spawnWeight: 13
 --- !u!1 &522399308
 GameObject:
   m_ObjectHideFlags: 0
@@ -6852,7 +6852,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114963311885979670, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _jumpForce
-      value: 6
+      value: 4.65
       objectReference: {fileID: 0}
     - target: {fileID: 114963311885979670, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _groundDrag
@@ -6940,11 +6940,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _ticksPerSecond
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _spawnChancePerTick
-      value: 0.02
+      value: 0.0215
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _spawningPlaneSideLength
@@ -18300,7 +18300,7 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
     Quantity: 1
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 123
+    Quantity: 999
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0

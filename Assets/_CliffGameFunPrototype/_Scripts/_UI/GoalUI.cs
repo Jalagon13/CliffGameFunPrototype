@@ -46,11 +46,6 @@ namespace CliffGame
         {
             if (_endMessageTimer == null) return;
 
-            // Pause timer when pause menu is open
-            _endMessageTimer.IsPaused = Player.Instance != null &&
-                                        Player.Instance.PauseMenuUI != null &&
-                                        Player.Instance.PauseMenuUI.IsPauseMenuOpen;
-
             _endMessageTimer.Tick(Time.deltaTime);
         }
 

@@ -18,3 +18,5 @@ MonoBehaviour:
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: 
   <HealAmount>k__BackingField: 3
+  <ConsumeDuration>k__BackingField: 0.75
+  <ConsumableType>k__BackingField: 0

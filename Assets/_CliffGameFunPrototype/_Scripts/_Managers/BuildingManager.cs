@@ -70,13 +70,14 @@ namespace CliffGame
         private bool _isGhostInValidPosition = false;
         private Transform _modelParent = null;
         private bool _isHoldingHammar;
+        
         private Timer _destroyTimer;
         public Timer DestroyTimer => _destroyTimer;
+        
         private Timer _placeCooldownTimer;
         
         private bool _isDestroying = false, _usingUpstairs = true;
         private Transform _currentDestroyTarget = null;
-
         private List<Material[]> _cachedGhostValidMaterials = new();
         private Vector3 _initialGhostScale;
 
@@ -111,7 +112,7 @@ namespace CliffGame
             _placeCooldownTimer.Tick(Time.deltaTime);
         
             if ((_currentBuildType == BuildOption.Platform || _currentBuildType == BuildOption.Fence || _currentBuildType == BuildOption.Stairs) && 
-                Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.IsPauseMenuOpen)
+                Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.IsPauseMenuOpen && !BuildWheelUI.BuildWheelUIOpen)
             {
                 HandleGhostBuild();
                 HandleGhostPulse();
@@ -326,6 +327,7 @@ namespace CliffGame
 
         private void GhostConnectBuild(Collider[] connectorColliders)
         {
+            // Out of all the connectors closest to the ghost piece, find the closest
             Connector closestConnector = null;
             float closestDistance = float.MaxValue;
             foreach (Collider collider in connectorColliders)
@@ -547,13 +549,13 @@ namespace CliffGame
             return false;
         }
 
-        private Transform FindCorrectSnapConnectorOnGhost(Transform bestConnectorTf, Transform ghostConnectorParent)
+        private Transform FindCorrectSnapConnectorOnGhost(Transform closestConnectorTf, Transform ghostConnectorParent)
         {
-            ConnectorPosition oppositeConnectorTag = DetermineGhostConnectorPosition(bestConnectorTf.GetComponent<Connector>());
+            ConnectorPosition correctConnector = DetermineGhostConnectorPosition(closestConnectorTf.GetComponent<Connector>());
 
             foreach (Connector connector in ghostConnectorParent.GetComponentsInChildren<Connector>())
             {
-                if (connector.ConnectorPosition == oppositeConnectorTag)
+                if (connector.ConnectorPosition == correctConnector)
                 {
                     return connector.transform;
                 }
@@ -563,63 +565,61 @@ namespace CliffGame
         }
 
         // Important for choosing which connector on the ghost prefab to snap to the best connector found
-        private ConnectorPosition DetermineGhostConnectorPosition(Connector bestConnector)
+        private ConnectorPosition DetermineGhostConnectorPosition(Connector closestConnector)
         {
-            ConnectorPosition position = bestConnector.ConnectorPosition;
+            ConnectorPosition closestConnectorPosition = closestConnector.ConnectorPosition;
 
             // If we trying to build a fence and looking at a floor GO, the only thing the fence can connect to is the bottom connector of the floor
-            if (_currentBuildType == BuildOption.Fence && bestConnector.BuildPiece.BuildType == BuildOption.Platform)
+            if (_currentBuildType == BuildOption.Fence && closestConnector.BuildPiece.BuildType == BuildOption.Platform)
             {
                 return ConnectorPosition.Bottom;
             }
-            else if(_currentBuildType == BuildOption.Stairs && (bestConnector.BuildPiece.BuildType == BuildOption.Platform || bestConnector.BuildPiece.BuildType == BuildOption.Stairs))
+            else if(_currentBuildType == BuildOption.Stairs && (closestConnector.BuildPiece.BuildType == BuildOption.Platform || closestConnector.BuildPiece.BuildType == BuildOption.Stairs))
             {
+                // If camera and correctrconnector cardinal direction are not facing the same cardinal direction, if _usingUpstaris == true, then return Top, if false, then return top
+                CardinalDireciton cameraDirection = GetCardinalDirection(Camera.main.transform.forward);
+                CardinalDireciton connectorDirection = GetCardinalDirection(closestConnector.transform.forward);
+                
+                Debug.Log($"cameraFacingDirection: {cameraDirection}, connectorFacingDirection: {connectorDirection}");
+                if(cameraDirection != connectorDirection)
+                {
+                    return ConnectorPosition.Top;
+                }
+
+                // If both camera and correctconnector facing the same cardinal direction, then execute this return
                 return _usingUpstairs ? ConnectorPosition.Bottom : ConnectorPosition.Top; // Top for down stairs and bottom for up stairs
             }
             
             // If i'm trying to place down a platform on a stair
-            if(_currentBuildType == BuildOption.Platform && bestConnector.BuildPiece.BuildType == BuildOption.Stairs)
+            if(_currentBuildType == BuildOption.Platform && closestConnector.BuildPiece.BuildType == BuildOption.Stairs)
             {
-                Vector3 cameraForward = Camera.main.transform.forward;
-                cameraForward.y = 0f;
-                cameraForward.Normalize();
-                
-                Vector3 connectorForward = bestConnector.transform.forward;
-                connectorForward.y = 0f;
-                connectorForward.Normalize();
-                
-                float dot = Vector3.Dot(cameraForward, connectorForward);
-                
-                if (dot > 0f)
+                // Determine the cardinal direction the connector itself is facing (world +Z = North)
+                // This is so we can return the correct opposite connector on the ghost prefab since for now the platforms are fixed in world space
+                Vector3 facing = closestConnector.transform.forward;
+                facing.y = 0f;
+                facing.Normalize();
+
+                float north = Vector3.Dot(facing, Vector3.forward); // +Z
+                float south = Vector3.Dot(facing, Vector3.back);    // -Z
+                float east = Vector3.Dot(facing, Vector3.right);   // +X
+                float west = Vector3.Dot(facing, Vector3.left);    // -X
+
+                float closestConnectorDirection = Mathf.Max(north, south, east, west);
+
+                switch (closestConnectorDirection)
                 {
-                    // Determine the cardinal direction the connector itself is facing (world +Z = North)
-                    // This is so we can return the correct opposite connector on the ghost prefab since for now the platforms are fixed in world space
-                    Vector3 facing = bestConnector.transform.forward;
-                    facing.y = 0f;
-                    facing.Normalize();
-
-                    float north = Vector3.Dot(facing, Vector3.forward); // +Z
-                    float south = Vector3.Dot(facing, Vector3.back);    // -Z
-                    float east  = Vector3.Dot(facing, Vector3.right);   // +X
-                    float west  = Vector3.Dot(facing, Vector3.left);    // -X
-
-                    float max = Mathf.Max(north, south, east, west);
-
-                    switch (max)
-                    {
-                        case var _ when max == north:
-                            return ConnectorPosition.Bottom;
-                        case var _ when max == south:
-                            return ConnectorPosition.Top;
-                        case var _ when max == east:
-                            return ConnectorPosition.Left;
-                        default:
-                            return ConnectorPosition.Right;
-                    }
+                    case var _ when closestConnectorDirection == north:
+                        return ConnectorPosition.Bottom;
+                    case var _ when closestConnectorDirection == south:
+                        return ConnectorPosition.Top;
+                    case var _ when closestConnectorDirection == east:
+                        return ConnectorPosition.Left;
+                    default: // (west)
+                        return ConnectorPosition.Right;
                 }
             }
 
-            switch (position)
+            switch (closestConnectorPosition)
             {
                 case ConnectorPosition.Left:
                     return ConnectorPosition.Right;
@@ -632,6 +632,24 @@ namespace CliffGame
                 default:
                     return ConnectorPosition.Bottom;
             }
+        }
+
+        private CardinalDireciton GetCardinalDirection(Vector3 forward)
+        {
+            forward.y = 0f;
+            forward.Normalize();
+
+            float north = Vector3.Dot(forward, Vector3.forward);
+            float south = Vector3.Dot(forward, Vector3.back);
+            float east = Vector3.Dot(forward, Vector3.right);
+            float west = Vector3.Dot(forward, Vector3.left);
+
+            float maxDot = Mathf.Max(north, south, east, west);
+
+            if (maxDot == north) return CardinalDireciton.North;
+            if (maxDot == south) return CardinalDireciton.South;
+            if (maxDot == east) return CardinalDireciton.East;
+            return CardinalDireciton.West;
         }
 
         private void GhostSeparateBuild()

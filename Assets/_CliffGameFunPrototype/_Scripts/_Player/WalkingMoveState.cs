@@ -181,7 +181,6 @@ namespace CliffGame
 
             // Optional: reduce wind effect while grounded
             float groundedMultiplier = _isGrounded ? 1f : _jumpWindStrengthMulti;
-            
             _windMove = windDirection * windSpeed * groundedMultiplier * Time.deltaTime;
         }
 

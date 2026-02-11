@@ -88,10 +88,9 @@ namespace CliffGame
                     {
                         InventoryManager.Instance.AddItem(drop.DropItem, 1);
                     }
-
-                    AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
                 }
                 
+                AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
                 ResourceManager.Instance.UnregisterResource(this);
                 Destroy(gameObject);
             }

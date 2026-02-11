@@ -62,7 +62,7 @@ namespace CliffGame
         {
             if (!e.started || _currentHookshot == null) return;
 
-            if (CraftingManager.Instance.IsCraftingUIOpen || Player.Instance.PauseMenuUI.IsPauseMenuOpen) return;
+            if (CraftingManager.Instance.IsCraftingUIOpen || Player.Instance.PauseMenuUI.IsPauseMenuOpen || _hookshotHolder.HookSequenceExecuting) return;
 
             StartCharging();
         }

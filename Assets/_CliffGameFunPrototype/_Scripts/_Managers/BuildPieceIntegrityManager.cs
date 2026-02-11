@@ -165,6 +165,8 @@ namespace CliffGame
 
                 yield return new WaitForSeconds(_destructionDelay);
                 
+                if (buildPiece == null) continue;
+                
                 _registeredBuildPieces.Remove(buildPiece);
                 
                 buildPiece.HandleDestroy();

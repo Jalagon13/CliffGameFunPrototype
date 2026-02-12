@@ -19,5 +19,5 @@ MonoBehaviour:
   <Description>k__BackingField: Useful for expanding your home.
   <ToolType>k__BackingField: 0
   <SwingCooldownInSeconds>k__BackingField: 0.15
-  <IntValue>k__BackingField: 50
+  <IntValue>k__BackingField: 15
   <HeldToolPrefab>k__BackingField: {fileID: 1131926571834917158, guid: 12137e5a4f0f13d45b921a301983726b, type: 3}

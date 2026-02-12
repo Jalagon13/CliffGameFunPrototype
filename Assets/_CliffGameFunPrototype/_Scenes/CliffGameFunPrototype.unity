@@ -5288,11 +5288,12 @@ MonoBehaviour:
   _cliffLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _minSpawnDistance: 1.325
+  _minSpawnDistance: 1.25
+  _minSpawnDistancePlayer: 0.5
   _initialSpawnCount: 85
   _maxResources: 125
-  _spawnAttemptInterval: 2.75
-  _attemptsPerTick: 5
+  _spawnAttemptInterval: 2.5
+  _attemptsPerTick: 6
   _resources:
   - resourcePrefab: {fileID: 6733385212726564722, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
     spawnWeight: 96
@@ -16134,7 +16135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HungerManager
   _maxHunger: 100
-  _hungerDrainPerSecond: 0.0985
+  _hungerDrainPerSecond: 0.0995
   _lowHungerThresholdPercent: 0.225
   _stomachGrowlIntervalSeconds: 9
   _respawnHungerAmount: 70
@@ -16166,7 +16167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ThirstManager
   _maxThirst: 100
-  _thirstDrainPerSecond: 0.1175
+  _thirstDrainPerSecond: 0.1225
   _lowThirstThresholdPercent: 0.225
   _thirstPangIntervalSeconds: 9
   _respawnThirstAmount: 70
@@ -20300,7 +20301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
   <WindCanPushPlayer>k__BackingField: 1
-  _windSeverity: 0.0665
+  _windSeverity: 0.06
   _windPushesPlayerThreshold: 0.0375
   _windTickInterval: 0.125
   _minRattleChance: 0.0185
@@ -20334,7 +20335,7 @@ MonoBehaviour:
   _timeInBetweenStormsInSec: 240
   _radiusOfRattlingAroundPlayer: 15
   _damagePerCrack: 25
-  _startSeverity: 0.0665
+  _startSeverity: 0.06
   _peakSeverity: 1
   _rampUpTime: 3
   _holdTime: 18
@@ -20936,7 +20937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructuralIntegrityManager
   _destructionDelay: 0.1
-  _initialDestructionDelay: 0.325
+  _initialDestructionDelay: 0.5
   _maxSupportedDistance: 4
 --- !u!114 &2141364074 stripped
 MonoBehaviour:

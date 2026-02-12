@@ -16,7 +16,7 @@ MonoBehaviour:
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: -2345204063719780061, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: 
+  <Description>k__BackingField: RMB to eat
   <HealAmount>k__BackingField: 3
   <ConsumeDuration>k__BackingField: 0.75
   <ConsumableType>k__BackingField: 0

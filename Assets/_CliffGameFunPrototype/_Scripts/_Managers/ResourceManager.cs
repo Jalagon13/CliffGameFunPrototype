@@ -20,6 +20,10 @@ namespace CliffGame
         [SerializeField]
         private float _minSpawnDistance = 2f;
 
+        [Tooltip("Minimum distance allowed from the player")]
+        [SerializeField]
+        private float _minSpawnDistancePlayer = 0.5f;
+
         [Header("Initial Spawn")]
         [Tooltip("How many resources to try to spawn at game start")]
         [SerializeField]
@@ -95,7 +99,8 @@ namespace CliffGame
                     if (!IsFarEnoughFromOtherResources(hit.point))
                         continue;
                         
-                    
+                    if (Player.Instance != null && Vector3.Distance(hit.point, Player.Instance.transform.position) < _minSpawnDistancePlayer)
+                        continue;
 
                     SpawnResourceAt(hit.point, hit.normal);
                     return;

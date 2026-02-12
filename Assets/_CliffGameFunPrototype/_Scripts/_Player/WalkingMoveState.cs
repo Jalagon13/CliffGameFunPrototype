@@ -20,6 +20,9 @@ namespace CliffGame
         [SerializeField] private float _jumpWindStrengthMulti = 1.5f;
         [SerializeField] private float _windNegationThreshold = 0.25f;
         [SerializeField] private float _windAccumulationThreshold = 0.002f;
+        [SerializeField] private float _stickToGroundForce = -5f;
+        [SerializeField] private float _coyoteTime = 0.15f;
+        [SerializeField] private float _minAirTimeForLandingSFX = 0.2f;
         private float _verticalVelocity;
         private CharacterController _cc;
         
@@ -43,6 +46,7 @@ namespace CliffGame
         private EventInstance _stepsInstance;
         private ControllerColliderHit _ccHit;
         private Vector3 _accumulatedWind;
+        private float _airTime;
 
         private void Awake()
         {
@@ -91,10 +95,23 @@ namespace CliffGame
             _isGrounded = _cc.isGrounded;
             _isSliding = _isGrounded ? Vector3.Angle(Vector3.up, _ccHit.normal) >= _cc.slopeLimit && _ccHit.collider.gameObject.layer == 6 : false;
 
+            if (!_isGrounded)
+            {
+                _airTime += Time.deltaTime;
+            }
+
             if (!wasGrounded && _isGrounded)
             {
-                _jumpCooldownTimer.Reset();
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.LandingSFX, transform.position);
+                if (_airTime > _minAirTimeForLandingSFX)
+                {
+                    _jumpCooldownTimer.Reset();
+                    AudioManager.Instance.PlayOneShot(FMODEvents.Instance.LandingSFX, transform.position);
+                }
+                _airTime = 0f;
+            }
+            else if (_isGrounded)
+            {
+                _airTime = 0f;
             }
         }
 
@@ -102,11 +119,12 @@ namespace CliffGame
         {
             _jumpCooldownTimer.Tick(Time.deltaTime);
 
-            if (_isGrounded && !_isSliding)
+            if ((_isGrounded || _airTime < _coyoteTime) && !_isSliding)
             {
                 if (GameInput.Instance.IsHoldingDownJump && _jumpCooldownTimer.RemainingSeconds <= 0f)
                 {
                     _verticalVelocity = _jumpForce;
+                    _airTime = _coyoteTime * 2f; // Prevent double jumping
 
                     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.JumpSFX, transform.position);
                 }
@@ -145,7 +163,7 @@ namespace CliffGame
             {
                 if(!_isSliding && _verticalVelocity < 0f)
                 {
-                    _verticalVelocity = -2f;
+                    _verticalVelocity = _stickToGroundForce;
                 }
             }
             else

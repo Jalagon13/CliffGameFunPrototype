@@ -19,6 +19,7 @@ namespace CliffGame
         [SerializeField] private float _jumpCooldown = 0.5f;
         [SerializeField] private float _jumpWindStrengthMulti = 1.5f;
         [SerializeField] private float _windNegationThreshold = 0.25f;
+        [SerializeField] private float _windAccumulationThreshold = 0.002f;
         private float _verticalVelocity;
         private CharacterController _cc;
         
@@ -41,7 +42,7 @@ namespace CliffGame
         private Timer _jumpCooldownTimer;
         private EventInstance _stepsInstance;
         private ControllerColliderHit _ccHit;
-        private Vector3 _windMove;
+        private Vector3 _accumulatedWind;
 
         private void Awake()
         {
@@ -125,7 +126,11 @@ namespace CliffGame
                 finalMove += horizontalMove;
             }
 
-            finalMove += _windMove;
+            if (_accumulatedWind.sqrMagnitude > _windAccumulationThreshold * _windAccumulationThreshold)
+            {
+                finalMove += _accumulatedWind;
+                _accumulatedWind = Vector3.zero;
+            }
             
             _verticalVelocity += _gravity * Time.deltaTime;
             
@@ -156,15 +161,19 @@ namespace CliffGame
 
         private void HandleWind()
         {
-            _windMove = Vector3.zero;
-
             if (WindManager.Instance == null || !WindManager.Instance.WindCanPushPlayer)
+            {
+                _accumulatedWind = Vector3.zero;
                 return;
+            }
 
             float windSeverity = WindManager.Instance.WindSeverity > WindManager.Instance.WindPushesPlayerThreshold ? WindManager.Instance.WindSeverity : 0f;
 
             if (windSeverity <= 0f)
+            {
+                _accumulatedWind = Vector3.zero;
                 return;
+            }
 
             float windSpeed = WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity;
 
@@ -181,7 +190,7 @@ namespace CliffGame
 
             // Optional: reduce wind effect while grounded
             float groundedMultiplier = _isGrounded ? 1f : _jumpWindStrengthMulti;
-            _windMove = windDirection * windSpeed * groundedMultiplier * Time.deltaTime;
+            _accumulatedWind += windDirection * windSpeed * groundedMultiplier * Time.deltaTime;
         }
 
         private void HandleFallTracking()

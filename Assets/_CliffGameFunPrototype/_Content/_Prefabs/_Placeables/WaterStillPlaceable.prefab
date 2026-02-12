@@ -5221,7 +5221,7 @@ MonoBehaviour:
     Path: event:/Building/WoodDestroyedSFX
   _waterUnitGenerationTimeInSec: 45
   _fiberNeededPerWaterUnit: 4
-  _thirstReplenished: 20
+  _thirstReplenished: 14
   _fiberItemSO: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
   _fiberModel: {fileID: 5160726101079451226}
   _waterModel: {fileID: 5727275453561733311}

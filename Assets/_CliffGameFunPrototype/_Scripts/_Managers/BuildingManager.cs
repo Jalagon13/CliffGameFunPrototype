@@ -580,7 +580,6 @@ namespace CliffGame
                 CardinalDireciton cameraDirection = GetCardinalDirection(Camera.main.transform.forward);
                 CardinalDireciton connectorDirection = GetCardinalDirection(closestConnector.transform.forward);
                 
-                Debug.Log($"cameraFacingDirection: {cameraDirection}, connectorFacingDirection: {connectorDirection}");
                 if(cameraDirection != connectorDirection)
                 {
                     return ConnectorPosition.Top;

@@ -16,7 +16,7 @@ namespace CliffGame
         [SerializeField] private float _gravity = -30f;
         [SerializeField] private float _terminalVelocity = -50f;
         [SerializeField] private float _inAirMoveMultiplier = 0.5f;
-        [SerializeField] private float _jumpCooldown = 0.5f;
+        [SerializeField] private float _jumpCooldown = 0.2f;
         [SerializeField] private float _jumpWindStrengthMulti = 1.5f;
         [SerializeField] private float _windNegationThreshold = 0.25f;
         [SerializeField] private float _windAccumulationThreshold = 0.002f;
@@ -76,6 +76,7 @@ namespace CliffGame
             MovePlayer();
             Jump();
             HandleFallTracking();
+            HandleFootsteps();
             // Debug.Log($"Issliding: {_isSliding}, IsGrounded: {_isGrounded}");
         }
 
@@ -86,8 +87,15 @@ namespace CliffGame
 
         private void WalkStateHandler()
         {
+            bool wasGrounded = _isGrounded;
             _isGrounded = _cc.isGrounded;
             _isSliding = _isGrounded ? Vector3.Angle(Vector3.up, _ccHit.normal) >= _cc.slopeLimit && _ccHit.collider.gameObject.layer == 6 : false;
+
+            if (!wasGrounded && _isGrounded)
+            {
+                _jumpCooldownTimer.Reset();
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.LandingSFX, transform.position);
+            }
         }
 
         private void Jump()
@@ -99,7 +107,6 @@ namespace CliffGame
                 if (GameInput.Instance.IsHoldingDownJump && _jumpCooldownTimer.RemainingSeconds <= 0f)
                 {
                     _verticalVelocity = _jumpForce;
-                    _jumpCooldownTimer.Reset();
 
                     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.JumpSFX, transform.position);
                 }
@@ -229,23 +236,30 @@ namespace CliffGame
             }
         }
 
+        private void HandleFootsteps()
+        {
+            bool isMoving = DesiredMoveDirection.sqrMagnitude > 0f;
+
+            if (isMoving && _isGrounded)
+            {
+                _stepsInstance.getPlaybackState(out PLAYBACK_STATE playbackState);
+                if (playbackState == PLAYBACK_STATE.STOPPED)
+                {
+                    _stepsInstance.start();
+                }
+                _stepsInstance.setPaused(false);
+            }
+            else
+            {
+                _stepsInstance.setPaused(true);
+            }
+        }
+
         private void GameInput_OnMove(object sender, InputAction.CallbackContext e)
         {
             if (CraftingManager.Instance.IsCraftingUIOpen) return;
 
-            bool wasMoving = DesiredMoveDirection.sqrMagnitude > 0f;
             DesiredMoveDirection = e.ReadValue<Vector2>();
-            bool isMoving = DesiredMoveDirection.sqrMagnitude > 0f;
-
-            if (!wasMoving && isMoving && _isGrounded)
-            {
-                _stepsInstance.start();
-                _stepsInstance.setPaused(false);
-            }
-            else if (wasMoving && !isMoving)
-            {
-                _stepsInstance.setPaused(true);
-            }
         }
 
         private void OnStateChange(PlayerMoveState state1, PlayerMoveState state2)

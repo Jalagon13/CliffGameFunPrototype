@@ -16,7 +16,7 @@ MonoBehaviour:
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 1204406958, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: Useful for expanding your home.
+  <Description>k__BackingField: Useful for building and repairing build pieces
   <ToolType>k__BackingField: 0
   <SwingCooldownInSeconds>k__BackingField: 0.15
   <IntValue>k__BackingField: 15

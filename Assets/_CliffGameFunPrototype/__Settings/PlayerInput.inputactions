@@ -34,6 +34,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ToggleJournalMenu",
+                    "type": "Button",
+                    "id": "934f571e-d921-44b0-8992-9de36a4f3c99",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TogglePauseMenu",
+                    "type": "Button",
+                    "id": "d4b4a67c-3d6b-4c33-aefe-f67f68017b6c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "PrimaryInteract",
                     "type": "Button",
                     "id": "6512db10-2756-417a-a102-83057ffa21c0",
@@ -82,15 +100,6 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "TogglePauseMenu",
-                    "type": "Button",
-                    "id": "d4b4a67c-3d6b-4c33-aefe-f67f68017b6c",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -410,6 +419,17 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "ToggleCraftingMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a7789783-59d5-44bf-8dce-c174169dadcf",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ToggleJournalMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

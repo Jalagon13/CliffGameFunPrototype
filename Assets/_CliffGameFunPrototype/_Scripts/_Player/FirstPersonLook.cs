@@ -100,7 +100,7 @@ public class FirstPersonLook : MonoBehaviour
         _startingSequence = DOTween.Sequence();
 
         // Fade out black screen
-        _startingSequence.Append(_blackScreen.DOFade(0f, _blackScreenFadeDuration));
+        _startingSequence.Append(_blackScreen.DOFade(0f, _blackScreenFadeDuration).SetEase(Ease.Linear));
         _startingSequence.AppendCallback(() => Destroy(_blackScreen.gameObject));
 
         // Initial delay

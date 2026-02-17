@@ -59,6 +59,9 @@ namespace CliffGame
         
         public CardinalDireciton PlayerFacingDirection { get; private set; }
         
+        [SerializeField] private FirstPersonLook _firstPersonLook;
+        public FirstPersonLook FirstPersonLook => _firstPersonLook;
+        
         private void Awake()
         {
             Instance = this;

@@ -6861,6 +6861,22 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _startDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _lookDownAngle
+      value: 68.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _lookLeftAngle
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _lookLeftDelay
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: maxSensitivity
       value: 0.6
       objectReference: {fileID: 0}
@@ -6869,9 +6885,37 @@ PrefabInstance:
       value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _lookRightAngle
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _lookRightDelay
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _lookDownDuration
+      value: 1.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _lookLeftDuration
+      value: 2.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _lookRightDuration
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _sensitivitySlider
       value: 
       objectReference: {fileID: 724230223}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _lookForwardDuration
+      value: 1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _blackScreenFadeDuration
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114963311885979670, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: speed
       value: 2.5
@@ -6924,6 +6968,10 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0.73
       objectReference: {fileID: 0}
+    - target: {fileID: 4791299541788846658, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _firstPersonLook
+      value: 
+      objectReference: {fileID: 872409842}
     - target: {fileID: 4791299541788846658, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _respawnTransform
       value: 
@@ -6984,6 +7032,7 @@ PrefabInstance:
     - {fileID: 4843991343312101987, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
     - {fileID: 114497868231759342, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
     - {fileID: 54063890643546284, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+    - {fileID: 114103969153859672, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4490257326247362, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
@@ -9366,8 +9415,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "* Find a way \n  back home\n\n* Craft a Building \n  Hammer\n\n* No Cheating\n\n*
-    No not having fun\n\n* Watch out for \n  wind storms!"
+  m_text: "* Find a way \n  off the cliff\n\n* Craft a Building \n  Hammer\n\n* No
+    Cheating\n\n* No not having fun\n\n* Watch out for \n  wind storms!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

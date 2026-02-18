@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace CliffGame
 {
+    // NTFS: Make it so when the bird chooses to attack, after it selects a platform, it first maneuvers itself to a point where it can 
+    // approach the piece straight on. 
+    // Also maybe I can have it as it is right now but just have the bird rotate to the correct orientation when it lands
+
     public enum BirdState { Patrolling, Approaching, Latched, Fleeing }
 
     public class BirdController : MonoBehaviour, IInteractable

@@ -699,6 +699,7 @@ MonoBehaviour:
   Banks:
   - Ambience
   - Building
+  - MonsterBird
   - Player
   - Resources
   - UI

@@ -66,6 +66,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd6da26e5f017400fbd6f1833f526bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Resource
-  _harvestDuration: 0.75
-  _harvestItem: {fileID: 11400000, guid: 538f7bfaf86764bd4ac49be7107ea497, type: 2}
-  _harvestAmount: 1
+  _willDespawnEventually: 1
+  _despawnTimerMin: 5
+  _despawnTimerMax: 25
+  _requiredToolType: 0
+  _maxLife: 3
+  _harvestDrops: []
+  _crackParticles: {fileID: 0}
+  _hitSFX:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  _destroySFX:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 

@@ -52,11 +52,11 @@ namespace CliffGame
 
             yield return new WaitForSeconds(4f);
 
-            PlayRattleFeedbacks();
+            TryPlayRattleFeedbacks();
 
             yield return new WaitForSeconds(4f);
 
-            PlayRattleFeedbacks();
+            TryPlayRattleFeedbacks();
         }
 
         private void Update()
@@ -89,8 +89,10 @@ namespace CliffGame
             }
         }
 
-        public void PlayRattleFeedbacks()
+        public void TryPlayRattleFeedbacks()
         {
+            if(IsRattling) return;
+        
             _rattleVFX?.PlayFeedbacks();
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodRattleSFX, transform.position);
             Instantiate(_crackParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);

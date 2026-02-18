@@ -13,6 +13,7 @@ namespace CliffGame
         [Header("Settings")]
         [SerializeField] private bool _attackRountineEnabled = true;
         [SerializeField] private float _timeBetweenAttacks = 300f; // 5 minutes
+        [SerializeField] private int _numberOfClosestPlatformsToConsider = 4;
         [SerializeField] private BirdController _birdController; // Reference to the actual bird object
 
         private void Awake()
@@ -75,7 +76,7 @@ namespace CliffGame
 
         private BuildPieceDurability GetRandomOuterPlatform()
         {
-            if (BuildPieceIntegrityManager.Instance == null) return null;
+            if (BuildPieceIntegrityManager.Instance == null || _birdController == null) return null;
 
             List<BuildPiece> allPieces = BuildPieceIntegrityManager.Instance.RegisteredBuildPieces.ToList();
             List<BuildPieceDurability> outerPieces = new();
@@ -93,7 +94,12 @@ namespace CliffGame
 
             if (outerPieces.Count == 0) return null;
 
-            return outerPieces[Random.Range(0, outerPieces.Count)];
+            // Sort the outer pieces by distance to the bird and take the closest ones
+            var closestPieces = outerPieces.OrderBy(p => Vector3.Distance(p.transform.position, _birdController.transform.position)).Take(_numberOfClosestPlatformsToConsider).ToList();
+
+            if (closestPieces.Count == 0) return null;
+
+            return closestPieces[Random.Range(0, closestPieces.Count)];
         }
     }
 }

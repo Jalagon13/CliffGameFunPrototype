@@ -153,7 +153,7 @@ namespace CliffGame
                 if (_foundationBuffer.Count > 0)
                 {
                     int randomIndex = UnityEngine.Random.Range(0, _foundationBuffer.Count);
-                    _foundationBuffer[randomIndex].PlayRattleFeedbacks();
+                    _foundationBuffer[randomIndex].TryPlayRattleFeedbacks();
                 }
             }
         }

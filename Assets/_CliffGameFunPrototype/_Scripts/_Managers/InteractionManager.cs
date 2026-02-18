@@ -62,6 +62,7 @@ namespace CliffGame
         {
             if(_currentlyHoveredInteractable != null)
             {
+                Debug.Log($"Trying to hit: {_currentlyHoveredInteractable}");
                 _currentlyHoveredInteractable.OnHitWithTool();
             }
         }
@@ -113,9 +114,17 @@ namespace CliffGame
             {
                 if (hit.collider.gameObject.layer == _playerLayer)
                     continue;
-
-                _currentlyHoveredInteractable = hit.collider.gameObject.transform.root.GetComponentInChildren<IInteractable>();
-                return _currentlyHoveredInteractable != null;
+                    
+                if(hit.collider.gameObject.transform.TryGetComponent(out Resource resource))
+                {
+                    _currentlyHoveredInteractable = resource;
+                    return true;
+                }
+                else
+                {
+                    _currentlyHoveredInteractable = hit.collider.gameObject.transform.root.GetComponentInChildren<IInteractable>();
+                    return _currentlyHoveredInteractable != null;
+                }
             }
 
             _currentlyHoveredInteractable = null;

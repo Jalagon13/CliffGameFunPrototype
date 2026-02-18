@@ -4,16 +4,13 @@ using UnityEngine;
 
 namespace CliffGame
 {
-    // NTFS: Make it so when the bird chooses to attack, after it selects a platform, it first maneuvers itself to a point where it can 
-    // approach the piece straight on. 
-    // Also maybe I can have it as it is right now but just have the bird rotate to the correct orientation when it lands
-
     public enum BirdState { Patrolling, Approaching, Latched, Fleeing }
 
     public class BirdController : MonoBehaviour, IInteractable
     {
         [SerializeField] private int _hitsRequiredToRepel = 5;
         [SerializeField] private float _latchDuration = 10f; // How long before platform breaks
+        [SerializeField] private float _latchModelSwitchDistance = 10f;
         [SerializeField] private ToolType _hitToolType;
 
         [Header("Patrol Settings")]
@@ -79,7 +76,7 @@ namespace CliffGame
             {
                 _currentHits++;
                 Debug.Log($"SMACK! Current hits: {_currentHits} out of {_hitsRequiredToRepel} needed to repel.");
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BirdCaughtSFX, transform.position);
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.MonsterBirdHurt, transform.position);
                 // Play "Squawk" sound
                 // Spawn feather particles
             }
@@ -137,49 +134,54 @@ namespace CliffGame
             SetState(BirdState.Latched);
             _currentHits = 0;
             float timer = 0f;
-            bool repelled = false;
-            Debug.Log($"Trying to pry off platform {target.name}...");
-            
-            // Wait while prying, checking for player hits or timeout
-            while (timer < _latchDuration)
+
+            if (target != null)
             {
-                timer += Time.deltaTime;
+                Debug.Log($"Trying to pry off platform {target.name}...");
+                float damagePerSecond = (float)target.MaxHitPoints / _latchDuration;
+                float accumulatedDamage = 0f;
 
-                // Play prying animation/sound
-
-                if (_currentHits >= _hitsRequiredToRepel)
+                // Wait while prying, checking for player hits or timeout
+                while (timer < _latchDuration)
                 {
-                    repelled = true;
-                    break; // Player saved the platform!
-                }
-                yield return null;
-            }
+                    if (target == null) break;
 
-            // Phase 3: Resolution
-            if (repelled)
-            {
-                // Bird takes off, leaving platform damaged but alive
-                target.AddHp(-50); // Deal some damage
-                Debug.Log("Bird repelled!");
-            }
-            else
-            {
-                // Bird destroys the platform
-                target.AddHp(-9999); // Destroy
-                Debug.Log("Platform destroyed by bird!");
+                    timer += Time.deltaTime;
+
+                    // Apply damage
+                    accumulatedDamage += damagePerSecond * Time.deltaTime;
+                    if (accumulatedDamage >= 1f)
+                    {
+                        int damageToApply = Mathf.FloorToInt(accumulatedDamage);
+                        target.AddHp(-damageToApply);
+                        target.TryPlayRattleFeedbacks();
+                        accumulatedDamage -= damageToApply;
+                    }
+
+                    if (target == null || target.CurrentHitPoints <= 0)
+                    {
+                        Debug.Log("Platform destroyed by bird!");
+                        break;
+                    }
+
+                    if (_currentHits >= _hitsRequiredToRepel)
+                    {
+                        Debug.Log("Bird repelled!");
+                        break; // Player saved the platform!
+                    }
+                    yield return null;
+                }
             }
 
             // Phase 4: Flee
             SetState(BirdState.Fleeing);
             // Fly away to a safe patrol point
             Debug.Log($"Flying away...");
+
+            // Return to the waypoint we were heading to before interruption
+            Transform returnPoint = _patrolWaypoints[_currentWaypointIndex];
+            yield return FlyTo(returnPoint.position, _attackSpeed);
             
-            if (_patrolWaypoints != null && _patrolWaypoints.Length > 0)
-            {
-                 // Return to the waypoint we were heading to before interruption
-                 Transform returnPoint = _patrolWaypoints[_currentWaypointIndex];
-                 yield return FlyTo(returnPoint.position, _attackSpeed);
-            }
             Debug.Log($"Has flown away");
 
             IsAttacking = false;
@@ -213,6 +215,22 @@ namespace CliffGame
                 {
                     Quaternion lookRot = Quaternion.LookRotation(direction);
                     transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * _rotationSpeed);
+                }
+
+                if (_currentState == BirdState.Approaching)
+                {
+                    if (Vector3.Distance(transform.position, targetPosition) <= _latchModelSwitchDistance)
+                    {
+                        if (_approachingModel != null && _approachingModel.activeSelf)
+                        {
+                            _approachingModel.SetActive(false);
+                            if (_latchedModel != null)
+                            {
+                                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.MonsterBirdWarning, transform.position);
+                                _latchedModel.SetActive(true);
+                            }
+                        }
+                    }
                 }
 
                 elapsed += Time.deltaTime;

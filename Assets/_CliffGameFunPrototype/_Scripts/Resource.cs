@@ -92,6 +92,7 @@ namespace CliffGame
                 
                 AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
                 ResourceManager.Instance.UnregisterResource(this);
+                Debug.Log($"Destroying resource: {gameObject.name}");
                 Destroy(gameObject);
             }
             else

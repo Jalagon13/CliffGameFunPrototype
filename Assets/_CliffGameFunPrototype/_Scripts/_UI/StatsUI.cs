@@ -115,7 +115,7 @@ namespace CliffGame
         {
             Debug.Log($"Stamina dropped below {_staminaDropThreshold * 100f}%");
             _staminaDropThresholdFeedback.PlayFeedbacks();
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StaminaWarningSFX, Player.Instance.transform.position);
+            // AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StaminaWarningSFX, Player.Instance.transform.position);
         }
     }
 }

@@ -85,7 +85,7 @@ namespace CliffGame
                 // Check if the piece has fewer than 4 neighbors (assuming a grid, < 4 means at least one side is open)
                 int neighborCount = piece.GetConnectedBuildPieces().Count();
                 
-                if (neighborCount < 4 && piece.TryGetComponent(out BuildPieceDurability durability))
+                if (neighborCount < 4 && !piece.IsAnchored && piece.TryGetComponent(out BuildPieceDurability durability))
                 {
                     outerPieces.Add(durability);
                 }

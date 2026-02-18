@@ -15,8 +15,14 @@ namespace CliffGame
         [Header("Patrol Settings")]
         [SerializeField] private float _patrolSpeed = 8f;
         [SerializeField] private float _attackSpeed = 15f;
+        [SerializeField] private float _rotationSpeed = 5f;
         [SerializeField] private Transform[] _patrolWaypoints;
 
+        [Header("Visual Models")]
+        [SerializeField] private GameObject _patrollingModel;
+        [SerializeField] private GameObject _approachingModel;
+        [SerializeField] private GameObject _latchedModel;
+        [SerializeField] private GameObject _fleeingModel;
 
         private BirdState _currentState;
         private int _currentHits;
@@ -79,7 +85,32 @@ namespace CliffGame
         {
             _currentState = newState;
             Debug.Log($"Bird state changed to: {_currentState}");
-            // Handle state enter logic (e.g. start animations)
+            
+            UpdateVisuals(_currentState);
+        }
+
+        private void UpdateVisuals(BirdState state)
+        {
+            if (_patrollingModel != null) _patrollingModel.SetActive(false);
+            if (_approachingModel != null) _approachingModel.SetActive(false);
+            if (_latchedModel != null) _latchedModel.SetActive(false);
+            if (_fleeingModel != null) _fleeingModel.SetActive(false);
+
+            switch (state)
+            {
+                case BirdState.Patrolling:
+                    if (_patrollingModel != null) _patrollingModel.SetActive(true);
+                    break;
+                case BirdState.Approaching:
+                    if (_approachingModel != null) _approachingModel.SetActive(true);
+                    break;
+                case BirdState.Latched:
+                    if (_latchedModel != null) _latchedModel.SetActive(true);
+                    break;
+                case BirdState.Fleeing:
+                    if (_fleeingModel != null) _fleeingModel.SetActive(true);
+                    break;
+            }
         }
 
         // Called by the Manager to start the sequence
@@ -177,7 +208,7 @@ namespace CliffGame
                 if (direction != Vector3.zero)
                 {
                     Quaternion lookRot = Quaternion.LookRotation(direction);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5f);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * _rotationSpeed);
                 }
 
                 elapsed += Time.deltaTime;

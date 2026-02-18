@@ -1,0 +1,197 @@
+using System;
+using System.Collections;
+using UnityEngine;
+
+namespace CliffGame
+{
+    public enum BirdState { Patrolling, Approaching, Latched, Fleeing }
+
+    public class BirdController : MonoBehaviour, IInteractable
+    {
+        [SerializeField] private int _hitsRequiredToRepel = 5;
+        [SerializeField] private float _latchDuration = 10f; // How long before platform breaks
+        [SerializeField] private ToolType _hitToolType;
+
+        [Header("Patrol Settings")]
+        [SerializeField] private float _patrolSpeed = 8f;
+        [SerializeField] private float _attackSpeed = 15f;
+        [SerializeField] private Transform[] _patrolWaypoints;
+
+
+        private BirdState _currentState;
+        private int _currentHits;
+        public bool IsAttacking { get; private set; }
+        
+        private Coroutine _activeBehavior;
+        private int _currentWaypointIndex = 0;
+
+        public ToolType BreakToolType => _hitToolType;
+
+        private void Start()
+        {
+            if (_patrolWaypoints != null && _patrolWaypoints.Length > 0)
+            {
+                transform.position = _patrolWaypoints[0].position;
+                StartPatrolling();
+            }
+        }
+
+        public void StartPatrolling()
+        {
+            if (_activeBehavior != null) StopCoroutine(_activeBehavior);
+            _activeBehavior = StartCoroutine(PatrolRoutine());
+        }
+
+        private IEnumerator PatrolRoutine()
+        {
+            SetState(BirdState.Patrolling);
+            Debug.Log($"Patrol routine started");
+            
+            if (_patrolWaypoints == null || _patrolWaypoints.Length == 0) yield break;
+
+            while (true)
+            {
+                Transform targetWaypoint = _patrolWaypoints[_currentWaypointIndex];
+                
+                // Fly to waypoint
+                yield return FlyTo(targetWaypoint.position, _patrolSpeed);
+
+                // Update index for next time
+                _currentWaypointIndex = (_currentWaypointIndex + 1) % _patrolWaypoints.Length;
+            }
+        }
+
+        public void OnHitWithTool()
+        {
+            if (Player.Instance.ToolHolder.CurrentHeldTool.ToolType != _hitToolType) return;
+
+            if (_currentState == BirdState.Latched)
+            {
+                _currentHits++;
+                Debug.Log($"SMACK! Current hits: {_currentHits} out of {_hitsRequiredToRepel} needed to repel.");
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BirdCaughtSFX, transform.position);
+                // Play "Squawk" sound
+                // Spawn feather particles
+            }
+        }
+
+        public void SetState(BirdState newState)
+        {
+            _currentState = newState;
+            Debug.Log($"Bird state changed to: {_currentState}");
+            // Handle state enter logic (e.g. start animations)
+        }
+
+        // Called by the Manager to start the sequence
+        public IEnumerator ExecuteAttackSequence(BuildPieceDurability target)
+        {
+            if (IsAttacking) yield break;
+            IsAttacking = true;
+
+            // Interrupt patrol
+            if (_activeBehavior != null) StopCoroutine(_activeBehavior);
+
+            // Phase 1: Approach
+            SetState(BirdState.Approaching);
+            // MoveTo(target.transform.position)... wait until arrived
+            Debug.Log($"Moving to target platform: {target.gameObject.name} {target.transform.position}");
+            yield return FlyTo(target.transform.position, _attackSpeed);
+            Debug.Log($"Arrived at target platform: {target.gameObject.name} {target.transform.position}");
+
+            // Phase 2: Latch and Pry
+            SetState(BirdState.Latched);
+            _currentHits = 0;
+            float timer = 0f;
+            bool repelled = false;
+            Debug.Log($"Trying to pry off platform {target.name}...");
+            
+            // Wait while prying, checking for player hits or timeout
+            while (timer < _latchDuration)
+            {
+                timer += Time.deltaTime;
+
+                // Play prying animation/sound
+
+                if (_currentHits >= _hitsRequiredToRepel)
+                {
+                    repelled = true;
+                    break; // Player saved the platform!
+                }
+                yield return null;
+            }
+
+            // Phase 3: Resolution
+            if (repelled)
+            {
+                // Bird takes off, leaving platform damaged but alive
+                target.AddHp(-50); // Deal some damage
+                Debug.Log("Bird repelled!");
+            }
+            else
+            {
+                // Bird destroys the platform
+                target.AddHp(-9999); // Destroy
+                Debug.Log("Platform destroyed by bird!");
+            }
+
+            // Phase 4: Flee
+            SetState(BirdState.Fleeing);
+            // Fly away to a safe patrol point
+            Debug.Log($"Flying away...");
+            
+            if (_patrolWaypoints != null && _patrolWaypoints.Length > 0)
+            {
+                 // Return to the waypoint we were heading to before interruption
+                 Transform returnPoint = _patrolWaypoints[_currentWaypointIndex];
+                 yield return FlyTo(returnPoint.position, _attackSpeed);
+            }
+            Debug.Log($"Has flown away");
+
+            IsAttacking = false;
+            
+            // Resume patrol
+            StartPatrolling();
+
+            // Return control to the Manager loop
+        }
+
+        private IEnumerator FlyTo(Vector3 targetPosition, float speed)
+        {
+            Vector3 startPos = transform.position;
+            float distance = Vector3.Distance(startPos, targetPosition);
+            float duration = distance / speed;
+            float elapsed = 0f;
+
+            if (duration <= 0.01f)
+            {
+                transform.position = targetPosition;
+                yield break;
+            }
+
+            while (elapsed < duration)
+            {
+                transform.position = Vector3.Lerp(startPos, targetPosition, elapsed / duration);
+                
+                // Face direction
+                Vector3 direction = (targetPosition - startPos).normalized;
+                if (direction != Vector3.zero)
+                {
+                    Quaternion lookRot = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5f);
+                }
+
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            transform.position = targetPosition;
+        }
+
+        public void OnInteractWith()
+        {
+            
+        }
+
+        // ... Movement coroutines (MoveToTargetRoutine, FlyAwayRoutine) go here
+    }
+}

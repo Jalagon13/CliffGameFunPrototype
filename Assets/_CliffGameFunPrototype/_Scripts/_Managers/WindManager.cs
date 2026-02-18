@@ -39,6 +39,9 @@ namespace CliffGame
         private AnimationCurve _rattleSeverityCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         [Header("Storm Settings")]
+        [SerializeField] 
+        private bool _playWindstorms;
+
         [SerializeField, Tooltip("How often does a crack happen during a storm in seconds")]
         private float _secondsPerCrack = 3f;
 
@@ -62,7 +65,6 @@ namespace CliffGame
         [SerializeField] private float _minWindParticleStartSize = 0.125f;
         [SerializeField] private float _maxWindParticleStartSize = 0.25f;
         [SerializeField] private ParticleSystem _windStormParticles;
-        [SerializeField] private Transform _playerTransform;
 
         private Coroutine _windStormRoutine;
         private readonly List<BuildPieceDurability> _foundationBuffer = new();
@@ -95,7 +97,7 @@ namespace CliffGame
         private void TickStormCooldown()
         {
             // Do nothing if a storm is currently running
-            if (_windStormRoutine != null)
+            if (_windStormRoutine != null || _playWindstorms == false)
                 return;
 
             _stormCooldownTimer.Tick(Time.deltaTime);
@@ -103,13 +105,8 @@ namespace CliffGame
 
         private void OnStormCooldownEnded(object sender, EventArgs e)
         {
-            StartScheduledWindStorm();
-        }
-
-        private void StartScheduledWindStorm()
-        {
             // If a windstorm is already running, do nothing
-            if (_windStormRoutine != null)
+            if (_windStormRoutine != null || _playWindstorms == false)
                 return;
 
             _windStormRoutine = StartCoroutine(WindStormSequence(_startSeverity, _peakSeverity, _rampUpTime, _holdTime, _rampDownTime));

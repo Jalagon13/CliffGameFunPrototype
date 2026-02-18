@@ -114,7 +114,7 @@ namespace CliffGame
                 if (hit.collider.gameObject.layer == _playerLayer)
                     continue;
 
-                _currentlyHoveredInteractable = hit.collider.GetComponent<IInteractable>();
+                _currentlyHoveredInteractable = hit.collider.gameObject.transform.root.GetComponentInChildren<IInteractable>();
                 return _currentlyHoveredInteractable != null;
             }
 

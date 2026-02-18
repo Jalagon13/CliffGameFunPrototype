@@ -17,6 +17,7 @@ namespace CliffGame
         public int MaxSupportedDistance => _maxSupportedDistance;
         
         private HashSet<BuildPiece> _registeredBuildPieces = new();
+        public IEnumerable<BuildPiece> RegisteredBuildPieces => _registeredBuildPieces;
         private HashSet<BuildPiece> _supportedBuildPieces = new();
         private Queue<(BuildPiece piece, int distance)> _snapShotQueue = new();
 

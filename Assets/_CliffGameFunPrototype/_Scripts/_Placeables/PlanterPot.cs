@@ -1,4 +1,5 @@
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace CliffGame
@@ -10,13 +11,15 @@ namespace CliffGame
         Grown
     }
 
-    public class PlanterBox : Placeable
+    public class PlanterBox : MonoBehaviour, IInteractable
     {
         [SerializeField] private Transform _growableGrowPoint;
     
         private PlantableItemSO _currentPlantableItem;
         private PlanterBoxState _currentState = PlanterBoxState.Empty;
         public PlanterBoxState CurrentState => _currentState;
+
+        public ToolType BreakToolType => ToolType.None;
 
         private Timer _growthTimer;
         private Growable _currentGrowableInstance;
@@ -29,10 +32,9 @@ namespace CliffGame
             }
         }
 
-        public override void OnInteractWith()
+        public void OnInteractWith()
         {
-            base.OnInteractWith();
-
+            Debug.Log($"Interacted with this platner pot {gameObject.name}");
             switch (_currentState)
             {
                 case PlanterBoxState.Growing:
@@ -54,14 +56,6 @@ namespace CliffGame
             _growthTimer.SubtractTime(seconds);
         }
         
-        public override void OnHitWithTool()
-        {
-            if (_currentState == PlanterBoxState.Empty) // Only execute hit if it is currently not in use
-            {
-                base.OnHitWithTool();
-            }
-        }
-
         private void TryPlantSelectedItem()
         {
             if (!InventoryManager.Instance.HasSelectedItem) return;
@@ -147,6 +141,11 @@ namespace CliffGame
         protected virtual void OnPlanterCleared()
         {
             // Logic for when planter is reset
+        }
+
+        public void OnHitWithTool()
+        {
+            
         }
     }
 }

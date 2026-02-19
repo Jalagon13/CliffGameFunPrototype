@@ -169,7 +169,10 @@ MonoBehaviour:
   _buildableSurfaceMask:
     serializedVersion: 2
     m_Bits: 1024
-  _buildRange: 4
+  _cliffSurfaceMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _buildRange: 3.25
   _ghostMaterialValid: {fileID: 2100000, guid: 206c5e23e8fe7483296565746246a68f, type: 2}
   _ghostMaterialInvalid: {fileID: 2100000, guid: ed20caad1ba214755b4e240924bfacf4, type: 2}
   _ghostMaterialInvisible: {fileID: 0}
@@ -3325,7 +3328,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9670
+      value: 9685
       objectReference: {fileID: 0}
     - target: {fileID: 1848075474486708829, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -3353,7 +3356,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7747
+      value: 7762
       objectReference: {fileID: 0}
     - target: {fileID: 3029735958138288004, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -3389,7 +3392,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9709
+      value: 9724
       objectReference: {fileID: 0}
     - target: {fileID: 3926050539205680572, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -3521,7 +3524,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8822
+      value: 8837
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3569,7 +3572,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9242
+      value: 9257
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -3577,7 +3580,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8843
+      value: 8858
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11653,7 +11656,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _canSpawnBirds
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _ticksPerSecond
@@ -30902,6 +30905,12 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
     Quantity: 1
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: 75dd4fdcb257243c88ae818291a5f0de, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: 906fc7e709ae94c59bdbc7a22473cb4b, type: 2}
     Quantity: 999
 --- !u!1 &1886760191
 GameObject:

@@ -11,6 +11,7 @@ namespace CliffGame
         [Header("Build Settings")]
         [SerializeField] private LayerMask _connectorLayerMask;
         [SerializeField] private LayerMask _buildableSurfaceMask;
+        [SerializeField] private LayerMask _cliffSurfaceMask;
         [SerializeField] private float _buildRange = 4f;
 
         [Header("Ghost Settings")]
@@ -19,11 +20,11 @@ namespace CliffGame
         [SerializeField] private Material _ghostMaterialInvisible;
         [SerializeField] private float _maxGroundAngle = 45f;
 
-        private StructureItemSO _currentStructureItemSO;
+        private PlaceableItemSO _currentPlaceableItemSO;
         private bool _isBuilding = false;
         private bool _clickedThisFrame = false;
         private GameObject _ghostPlaceableGameObject;
-        private StructureItemSO _previousStructureItemSO = null;
+        private PlaceableItemSO _previousStructureItemSO = null;
         private Transform _modelParent = null;
         private bool _isGhostInValidPosition = false;
         private BuildPieceDurability _hoveredPlatform = null;
@@ -70,17 +71,17 @@ namespace CliffGame
 
         private void OnSelectedSlotChanged(int arg1, InventoryItem item)
         {
-            _currentStructureItemSO = null;
+            _currentPlaceableItemSO = null;
 
-            if (item.Item is StructureItemSO structureData)
+            if (item.Item is PlaceableItemSO structureData)
             {
                 _isBuilding = true;
-                _currentStructureItemSO = structureData;
+                _currentPlaceableItemSO = structureData;
             }
             else
             {
                 _isBuilding = false;
-                _currentStructureItemSO = null;
+                _currentPlaceableItemSO = null;
             }
         }
 
@@ -95,15 +96,15 @@ namespace CliffGame
 
         private void CheckIfHoldingStructureItem(object sender, InventoryManager.OnInventoryUpdatedEventArgs e)
         {
-            if (InventoryManager.Instance.SelectedInventoryItem.Item is StructureItemSO structureData)
+            if (InventoryManager.Instance.SelectedInventoryItem.Item is PlaceableItemSO structureData)
             {
                 _isBuilding = true;
-                _currentStructureItemSO = structureData;
+                _currentPlaceableItemSO = structureData;
             }
             else
             {
                 _isBuilding = false;
-                _currentStructureItemSO = null;
+                _currentPlaceableItemSO = null;
             }
         }
 
@@ -122,35 +123,38 @@ namespace CliffGame
         {
             if (_ghostPlaceableGameObject != null && _isGhostInValidPosition)
             {
-                GameObject placedGO = Instantiate(_currentStructureItemSO.PlaceablePrefab, _ghostPlaceableGameObject.transform.position, _ghostPlaceableGameObject.transform.rotation);
-                placedGO.transform.GetComponent<Placeable>().SetSupportedBy(_hoveredPlatform);
+                GameObject placedGO = Instantiate(_currentPlaceableItemSO.PlaceablePrefab, _ghostPlaceableGameObject.transform.position, _ghostPlaceableGameObject.transform.rotation);
+                if(!_currentPlaceableItemSO.IsCliffPlaceable)
+                {
+                    placedGO.transform.GetComponent<Placeable>().SetSupportedBy(_hoveredPlatform);
+                }
 
                 Destroy(_ghostPlaceableGameObject);
                 _ghostPlaceableGameObject = null;
                 _hoveredPlatform = null;
 
-                InventoryManager.Instance.RemoveItem(_currentStructureItemSO, 1);
+                InventoryManager.Instance.RemoveItem(_currentPlaceableItemSO, 1);
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StructureBuiltSFX, Player.Instance.transform.position);
             }
         }
 
         private void CreateGhostPlaceablePrefab()
         {
-            if (_ghostPlaceableGameObject == null || _currentStructureItemSO != _previousStructureItemSO)
+            if (_ghostPlaceableGameObject == null || _currentPlaceableItemSO != _previousStructureItemSO)
             {
                 if (_ghostPlaceableGameObject != null)
                 {
                     Destroy(_ghostPlaceableGameObject);
                 }
 
-                _ghostPlaceableGameObject = Instantiate(_currentStructureItemSO.PlaceablePrefab);
+                _ghostPlaceableGameObject = Instantiate(_currentPlaceableItemSO.PlaceablePrefab);
 
                 _modelParent = _ghostPlaceableGameObject.transform.GetChild(0);
 
                 GhostifyModel(_modelParent, _ghostMaterialInvisible); // Sets the correct material
                 GhostifyModel(_ghostPlaceableGameObject.transform); // Disables colliders on the ghostbuild so it doesn't affect the other colliders near it
 
-                _previousStructureItemSO = _currentStructureItemSO;
+                _previousStructureItemSO = _currentPlaceableItemSO;
             }
         }
 
@@ -176,7 +180,24 @@ namespace CliffGame
                 break;
             }
 
-            _ghostPlaceableGameObject.transform.position = foundValidHit ? validHit.point : ray.origin + ray.direction * _buildRange;
+            if (foundValidHit)
+            {
+                _ghostPlaceableGameObject.transform.position = validHit.point;
+
+                if (_currentPlaceableItemSO != null && _currentPlaceableItemSO.IsCliffPlaceable && Mathf.Abs(Vector3.Dot(validHit.normal, Vector3.up)) < 0.99f)
+                {
+                    _ghostPlaceableGameObject.transform.rotation = Quaternion.LookRotation(Vector3.up, validHit.normal);
+                }
+                else
+                {
+                    _ghostPlaceableGameObject.transform.up = validHit.normal;
+                }
+            }
+            else
+            {
+                _ghostPlaceableGameObject.transform.position = ray.origin + ray.direction * _buildRange;
+                _ghostPlaceableGameObject.transform.up = Vector3.up;
+            }
         }
 
         private void CheckBuildValidity()
@@ -236,9 +257,16 @@ namespace CliffGame
                 float angleToForward = Vector3.Angle(hit.normal, Player.Instance.transform.forward);
 
                 bool isBuildableSurface = ((1 << hit.transform.gameObject.layer) & _buildableSurfaceMask) != 0;
+                bool isCliffSurface = ((1 << hit.transform.gameObject.layer) & _cliffSurfaceMask) != 0;
                 bool isPlatform = hit.transform.gameObject.TryGetComponent(out BuildPieceDurability platformComponent);
 
-                if (angleToUp < _maxGroundAngle && isBuildableSurface && isPlatform)
+                if(_currentPlaceableItemSO.IsCliffPlaceable && _currentPlaceableItemSO.IsPlacementAngleValid(angleToUp) && isCliffSurface)
+                {
+                    GhostifyModel(_modelParent, _ghostMaterialValid);
+                    _isGhostInValidPosition = true;
+                    _hoveredPlatform = platformComponent;
+                }
+                else if (_currentPlaceableItemSO.IsPlacementAngleValid(angleToUp) && isBuildableSurface && isPlatform)
                 {
                     GhostifyModel(_modelParent, _ghostMaterialValid);
                     _isGhostInValidPosition = true;

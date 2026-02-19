@@ -2920,8 +2920,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2122637f3cc8e4966ad85d5b1440141c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BirdResource
-  _minSpeed: 1.5
-  _maxSpeed: 3
+  _minSpeed: 2
+  _maxSpeed: 3.5
   _travelDuration: 90
   _maxAngleDeviation: 20
   _detectionDistance: 2

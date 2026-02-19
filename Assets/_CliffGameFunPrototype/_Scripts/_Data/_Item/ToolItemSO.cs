@@ -7,7 +7,8 @@ namespace CliffGame
         Hammer,
         Axe,
         Pickaxe,
-        Spear
+        Spear,
+        None
     }
 
     [CreateAssetMenu(fileName = "New Tool Item Data", menuName = "Item/Tool")]

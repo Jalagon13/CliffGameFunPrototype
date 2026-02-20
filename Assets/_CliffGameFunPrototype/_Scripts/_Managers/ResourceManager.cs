@@ -102,6 +102,9 @@ namespace CliffGame
                     if (Player.Instance != null && Vector3.Distance(hit.point, Player.Instance.transform.position) < _minSpawnDistancePlayer)
                         continue;
 
+                    if (IsOverlappingWithPlaceable(hit.point))
+                        continue;
+
                     SpawnResourceAt(hit.point, hit.normal);
                     return;
                 }
@@ -133,6 +136,19 @@ namespace CliffGame
             }
 
             return true;
+        }
+
+        private bool IsOverlappingWithPlaceable(Vector3 point)
+        {
+            Collider[] colliders = Physics.OverlapSphere(point, _minSpawnDistance);
+            foreach (Collider collider in colliders)
+            {
+                if (collider.transform.root.CompareTag("Placeable") || collider.transform.root.CompareTag("BuildPiece"))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void SpawnResourceAt(Vector3 position, Vector3 normal)

@@ -38,10 +38,7 @@ namespace CliffGame
                     if (amount <= 0)
                         continue;
 
-                    for (int i = 0; i < amount; i++)
-                    {
-                        InventoryManager.Instance.AddItem(drop.DropItem, 1);
-                    }
+                    InventoryManager.Instance.AddItem(drop.DropItem, amount);
                 }
 
                 AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);

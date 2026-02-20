@@ -18,5 +18,10 @@ namespace CliffGame
             SupportedBy.OnBuildPieceDestoyed -= OnSupportedPlatformDestroyed;
             Destroy(gameObject);
         }
+        
+        public virtual void OnSpawnAsGhost()
+        {
+            
+        }
     }
 }

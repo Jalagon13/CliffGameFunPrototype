@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 125ebcb13b37d4c0ab7c192dcbe7694f, type: 3}
-  m_Name: SaplingItem
+  m_Name: CliffBerrySeeds
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlantableItemSO
-  <InGameName>k__BackingField: Sapling
+  <InGameName>k__BackingField: Cliff Berry Seeds
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 811161192, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1

@@ -10,6 +10,7 @@ namespace CliffGame
 
         [Header("Build Settings")]
         [SerializeField] private LayerMask _connectorLayerMask;
+        [SerializeField] private LayerMask _interactorLayerMask;
         [SerializeField] private LayerMask _buildableSurfaceMask;
         [SerializeField] private LayerMask _cliffSurfaceMask;
         [SerializeField] private float _buildRange = 4f;
@@ -148,6 +149,7 @@ namespace CliffGame
                 }
 
                 _ghostPlaceableGameObject = Instantiate(_currentPlaceableItemSO.PlaceablePrefab);
+                _ghostPlaceableGameObject.GetComponent<Placeable>().OnSpawnAsGhost();
 
                 _modelParent = _ghostPlaceableGameObject.transform.GetChild(0);
 
@@ -172,6 +174,9 @@ namespace CliffGame
             {
                 // Skip if collider is in the connector or interactable layer
                 if (((1 << hit.transform.gameObject.layer) & _connectorLayerMask) != 0)
+                    continue;
+
+                if (((1 << hit.transform.gameObject.layer) & _interactorLayerMask) != 0)
                     continue;
 
                 // Use this hit
@@ -221,22 +226,26 @@ namespace CliffGame
                     Collider[] overlapColliders = Physics.OverlapBox(worldCenter, halfSize, rotation);
                     foreach (Collider overlapCollider in overlapColliders)
                     {
+                        if (overlapCollider.gameObject == _ghostPlaceableGameObject) continue;
+                        
+                        Debug.Log($"Overlap collider: {overlapCollider.gameObject.name} {overlapCollider.gameObject.tag})");
                         bool isConnector = ((1 << overlapCollider.gameObject.layer) & _connectorLayerMask) != 0;
                         if (isConnector) continue;
-                        if (overlapCollider.gameObject == _ghostPlaceableGameObject) continue;
-
-                        if (overlapCollider.transform.root.CompareTag("Placeable"))
+                        
+                        if(((1 << overlapCollider.gameObject.layer) & _buildableSurfaceMask) != 0)
                         {
                             GhostifyModel(_modelParent, _ghostMaterialInvalid);
                             _isGhostInValidPosition = false;
+                            Debug.Log($"=======1 {overlapCollider.transform.gameObject.name}");
                             return;
                         }
+                        
 
-                        // TO DO WHEN YOU COME BACK: Figure out why it detects Placeable and set it to invalid but not for Resources
-                        if (overlapCollider.transform.root.CompareTag("Resource"))
+                        if (overlapCollider.transform.root.CompareTag("Placeable") || overlapCollider.transform.CompareTag("Resource"))
                         {
                             GhostifyModel(_modelParent, _ghostMaterialInvalid);
                             _isGhostInValidPosition = false;
+                            Debug.Log($"=======2 {overlapCollider.transform.gameObject.name}");
                             return;
                         }
                     }
@@ -245,6 +254,7 @@ namespace CliffGame
                 {
                     Debug.LogWarning($"Missing boxCollider for {_ghostPlaceableGameObject.name}");
                 }
+                Debug.Log($"=======3");
             }
         }
 

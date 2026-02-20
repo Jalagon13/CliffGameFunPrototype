@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 488513511907690825}
   m_Layer: 7
   m_Name: _BaseRsc
-  m_TagString: Untagged
+  m_TagString: Resource
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -66,9 +66,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd6da26e5f017400fbd6f1833f526bf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Resource
-  _willDespawnEventually: 1
-  _despawnTimerMin: 5
-  _despawnTimerMax: 25
   _requiredToolType: 0
   _maxLife: 3
   _harvestDrops: []

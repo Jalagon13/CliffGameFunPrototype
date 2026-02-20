@@ -170,7 +170,7 @@ namespace CliffGame
             RaycastHit validHit = default;
             foreach (RaycastHit hit in hits)
             {
-                // Skip if collider is in the connector layer mask
+                // Skip if collider is in the connector or interactable layer
                 if (((1 << hit.transform.gameObject.layer) & _connectorLayerMask) != 0)
                     continue;
 
@@ -226,6 +226,14 @@ namespace CliffGame
                         if (overlapCollider.gameObject == _ghostPlaceableGameObject) continue;
 
                         if (overlapCollider.transform.root.CompareTag("Placeable"))
+                        {
+                            GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                            _isGhostInValidPosition = false;
+                            return;
+                        }
+
+                        // TO DO WHEN YOU COME BACK: Figure out why it detects Placeable and set it to invalid but not for Resources
+                        if (overlapCollider.transform.root.CompareTag("Resource"))
                         {
                             GhostifyModel(_modelParent, _ghostMaterialInvalid);
                             _isGhostInValidPosition = false;

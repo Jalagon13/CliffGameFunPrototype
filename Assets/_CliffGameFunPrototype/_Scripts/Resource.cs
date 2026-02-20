@@ -16,7 +16,7 @@ namespace CliffGame
         private int _currentLife;
 
         [System.Serializable]
-        private class HarvestDrop
+        protected class HarvestDrop
         {
             [Tooltip("Item to drop when the resource is destroyed")]
             public ItemSO DropItem;
@@ -29,7 +29,7 @@ namespace CliffGame
         }
 
         [SerializeField]
-        private List<HarvestDrop> _harvestDrops = new List<HarvestDrop>();
+        protected List<HarvestDrop> _harvestDrops = new List<HarvestDrop>();
         
         [Header("Feel Settings")]
         [SerializeField] 
@@ -39,7 +39,7 @@ namespace CliffGame
         private EventReference _hitSFX;
 
         [SerializeField]
-        private EventReference _destroySFX;
+        protected EventReference _destroySFX;
 
         protected virtual void Awake()
         {

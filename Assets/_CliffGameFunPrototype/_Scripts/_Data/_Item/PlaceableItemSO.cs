@@ -16,8 +16,6 @@ namespace CliffGame
         private float _minCliffPlacementAngle = 80f;
         private float _maxCliffPlacementAngle = 100f;
 
-
-
         public bool IsPlacementAngleValid(float angle)
         {
             if(IsCliffPlaceable)

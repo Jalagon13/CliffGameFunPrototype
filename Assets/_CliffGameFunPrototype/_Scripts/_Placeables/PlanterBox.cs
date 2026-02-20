@@ -13,6 +13,7 @@ namespace CliffGame
 
     public class PlanterBox : MonoBehaviour, IInteractable
     {
+        [SerializeField] private Trellis _parentTrellis;
         [SerializeField] private Transform _growableGrowPoint;
     
         private PlantableItemSO _currentPlantableItem;
@@ -23,6 +24,7 @@ namespace CliffGame
 
         private Timer _growthTimer;
         private Growable _currentGrowableInstance;
+
 
         private void Update()
         {
@@ -71,6 +73,8 @@ namespace CliffGame
 
         private void StartGrowing(PlantableItemSO plantable)
         {
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.LeafHitSFX, transform.position);
+
             _currentPlantableItem = plantable;
             _currentState = PlanterBoxState.Growing;
 
@@ -88,7 +92,7 @@ namespace CliffGame
             OnGrowthFinished();
         }
 
-        private void CancelGrowth()
+        public void CancelGrowth()
         {
             if (_currentPlantableItem != null)
             {
@@ -115,7 +119,7 @@ namespace CliffGame
         protected virtual void OnGrowthStarted()
         {
             // Add visuals, sounds, UI updates here
-            _currentGrowableInstance = Instantiate(_currentPlantableItem.GrowablePrefab, _growableGrowPoint.position, Quaternion.identity);
+            _currentGrowableInstance = Instantiate(_currentPlantableItem.GrowablePrefab, _growableGrowPoint.position, _growableGrowPoint.rotation);
             _currentGrowableInstance.InitializeGrowable(this);
         }
 
@@ -145,7 +149,7 @@ namespace CliffGame
 
         public void OnHitWithTool()
         {
-            
+            _parentTrellis.OnHitWithTool();
         }
     }
 }

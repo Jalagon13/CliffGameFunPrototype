@@ -5,13 +5,17 @@ namespace CliffGame
     public class Growable : Resource
     {
         private float _growthPercentage; // 0 to 1
-        private bool _canBeHit;
+        private bool _canBeHarvested;
         private PlanterBox _parentPlanterBox;
+        private Collider _growableCollider;
 
         protected override void Awake()
         {
             base.Awake();
-        
+
+            _growableCollider = GetComponent<Collider>();
+            _growableCollider.enabled = false;
+
             SetVisualScale(0f);
         }
         
@@ -19,7 +23,34 @@ namespace CliffGame
         {
             _parentPlanterBox?.ClearPlanterBox();
         }
-        
+
+        public override void OnInteractWith()
+        {
+            if(_canBeHarvested)
+            {
+                foreach (HarvestDrop drop in _harvestDrops)
+                {
+                    if (drop.DropItem == null)
+                        continue;
+
+                    int amount = Random.Range(drop.MinAmount, drop.MaxAmount + 1);
+
+                    if (amount <= 0)
+                        continue;
+
+                    for (int i = 0; i < amount; i++)
+                    {
+                        InventoryManager.Instance.AddItem(drop.DropItem, 1);
+                    }
+                }
+
+                AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
+                Debug.Log($"Harvested resource: {gameObject.name}");
+                Destroy(gameObject);
+            }
+        }
+
+
         public void InitializeGrowable(PlanterBox planterBox)
         {
             _parentPlanterBox = planterBox;
@@ -33,7 +64,7 @@ namespace CliffGame
 
             if (_growthPercentage >= 1f)
             {
-                _canBeHit = true;
+                _canBeHarvested = true;
                 OnFullyGrown();
             }
         }
@@ -46,16 +77,14 @@ namespace CliffGame
 
         public override void OnHitWithTool()
         {
-            if (!_canBeHit) return;
-
-            base.OnHitWithTool();
+            
         }
 
         protected virtual void OnFullyGrown()
         {
             // Hook for visuals, VFX, sounds, etc when fully grown
-            
-            
+            _growableCollider.enabled = true;
+
         }
     }
 }

@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7218931383824330388}
+  - component: {fileID: 2835861217259994796}
+  - component: {fileID: 1481705724249963972}
   m_Layer: 7
   m_Name: TrellisPlaceable
   m_TagString: Placeable
@@ -30,13 +32,69 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2713529031193369601}
-  - {fileID: 6248086736181446899}
-  - {fileID: 6585800559810563194}
-  - {fileID: 133776835924105087}
-  - {fileID: 7111937303094881798}
+  - {fileID: 7978958200344918347}
   - {fileID: 692735888949825618}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2835861217259994796
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733463368129604257}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.6, y: 0.2, z: 1.6}
+  m_Center: {x: 0, y: 0.1, z: 0}
+--- !u!114 &1481705724249963972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733463368129604257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e15e45866464446cbf623d8a3c4a691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Trellis
+  _requiredToolType: 1
+  _maxLife: 3
+  _harvestDrops:
+  - DropItem: {fileID: 11400000, guid: 906fc7e709ae94c59bdbc7a22473cb4b, type: 2}
+    MinAmount: 1
+    MaxAmount: 1
+  _crackParticles: {fileID: 0}
+  _hitSFX:
+    Guid:
+      Data1: 1630036399
+      Data2: 1268181368
+      Data3: 1761201055
+      Data4: 668498223
+    Path: event:/Building/WoodHitSFX
+  _destroySFX:
+    Guid:
+      Data1: -287471169
+      Data2: 1100837610
+      Data3: -564401781
+      Data4: 1637590921
+    Path: event:/Building/WoodDestroyedSFX
+  _planterBoxes:
+  - {fileID: 2698022631287711093}
+  - {fileID: 6962845251994099375}
+  - {fileID: 6712515057929291093}
+  - {fileID: 1275202317938528302}
 --- !u!1 &1764322145061303972
 GameObject:
   m_ObjectHideFlags: 0
@@ -34214,13 +34272,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1938218809909784154}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.4, y: 0, z: -0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5077431036786059808}
-  m_Father: {fileID: 7218931383824330388}
+  m_Father: {fileID: 7978958200344918347}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5943745759506422957
 BoxCollider:
@@ -34255,6 +34313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119e1dd5e9f754a65b3672eef2bf96a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlanterBox
+  _parentTrellis: {fileID: 1481705724249963972}
   _growableGrowPoint: {fileID: 5077431036786059808}
 --- !u!1 &2633273054887153005
 GameObject:
@@ -34346,13 +34405,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3148076083637247208}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.4, y: 0, z: 0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2283897004626145325}
-  m_Father: {fileID: 7218931383824330388}
+  m_Father: {fileID: 7978958200344918347}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5496887431598687645
 BoxCollider:
@@ -34387,6 +34446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119e1dd5e9f754a65b3672eef2bf96a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlanterBox
+  _parentTrellis: {fileID: 1481705724249963972}
   _growableGrowPoint: {fileID: 2283897004626145325}
 --- !u!1 &3988527265395506915
 GameObject:
@@ -34414,13 +34474,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3988527265395506915}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.4, y: 0, z: -0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5085608433997479111}
-  m_Father: {fileID: 7218931383824330388}
+  m_Father: {fileID: 7978958200344918347}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &4003801567501058215
 BoxCollider:
@@ -34455,6 +34515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119e1dd5e9f754a65b3672eef2bf96a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlanterBox
+  _parentTrellis: {fileID: 1481705724249963972}
   _growableGrowPoint: {fileID: 5085608433997479111}
 --- !u!1 &4115452569901806489
 GameObject:
@@ -34542,13 +34603,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5109543047991708309}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.4, y: 0, z: 0.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6571409645750665582}
-  m_Father: {fileID: 7218931383824330388}
+  m_Father: {fileID: 7978958200344918347}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5911750843710890660
 BoxCollider:
@@ -34583,6 +34644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119e1dd5e9f754a65b3672eef2bf96a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlanterBox
+  _parentTrellis: {fileID: 1481705724249963972}
   _growableGrowPoint: {fileID: 6571409645750665582}
 --- !u!1 &5214134940377551240
 GameObject:
@@ -34680,6 +34742,41 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 133776835924105087}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5638484340786178471
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7978958200344918347}
+  m_Layer: 7
+  m_Name: PlanterBoxes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7978958200344918347
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5638484340786178471}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6248086736181446899}
+  - {fileID: 6585800559810563194}
+  - {fileID: 133776835924105087}
+  - {fileID: 7111937303094881798}
+  m_Father: {fileID: 7218931383824330388}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6856047292798973708
 GameObject:

@@ -186,13 +186,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1a916b23c6c14e55804264b0f5f74a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Growable
-  _requiredToolType: 1
-  _maxLife: 3
-  _harvestItems:
-  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 4
-  - Item: {fileID: 11400000, guid: 34bda5c88630143b38e30dc4c8d538a3, type: 2}
-    Quantity: 2
+  _requiredToolType: 4
+  _maxLife: 0
+  _harvestDrops:
+  - DropItem: {fileID: 11400000, guid: 3b850cbd57d474a1cb1247f48e2710af, type: 2}
+    MinAmount: 1
+    MaxAmount: 3
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
   _hitSFX:
     Guid:
@@ -203,11 +202,11 @@ MonoBehaviour:
     Path: event:/Building/WoodHitSFX
   _destroySFX:
     Guid:
-      Data1: -287471169
-      Data2: 1100837610
-      Data3: -564401781
-      Data4: 1637590921
-    Path: event:/Building/WoodDestroyedSFX
+      Data1: 1936509638
+      Data2: 1090928179
+      Data3: -1568273238
+      Data4: -1783474564
+    Path: event:/Resources/LeafCrunchSFX
 --- !u!1001 &7680363682141897862
 PrefabInstance:
   m_ObjectHideFlags: 0

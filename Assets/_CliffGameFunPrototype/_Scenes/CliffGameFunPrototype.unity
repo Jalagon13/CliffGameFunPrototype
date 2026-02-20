@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructureManager
   _connectorLayerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 640
   _buildableSurfaceMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -30912,6 +30912,10 @@ MonoBehaviour:
     Quantity: 999
   - Item: {fileID: 11400000, guid: 906fc7e709ae94c59bdbc7a22473cb4b, type: 2}
     Quantity: 999
+  - Item: {fileID: 11400000, guid: 9bb6b4429d8a240aa89bc4c5e6b6393a, type: 2}
+    Quantity: 123
+  - Item: {fileID: 11400000, guid: 7c6a432ee975d4d63bd3bedd71f680fa, type: 2}
+    Quantity: 123
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0

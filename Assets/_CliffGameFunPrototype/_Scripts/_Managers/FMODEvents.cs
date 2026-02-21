@@ -21,9 +21,9 @@ namespace CliffGame
         [field: SerializeField] public EventReference LandingSFX { get; private set; }
         [field: SerializeField] public EventReference StepsSFX { get; private set; }
 
-        [field: Header("Monster Bird SFX")]
-        [field: SerializeField] public EventReference MonsterBirdWarning { get; private set; }
-        [field: SerializeField] public EventReference MonsterBirdHurt { get; private set; }
+        [field: Header("Giant SFX")]
+        [field: SerializeField] public EventReference GiantBatWarningSFX { get; private set; }
+        [field: SerializeField] public EventReference GiantBatHurtSFX { get; private set; }
 
         [field: Header("UI SFX")]
         [field: SerializeField] public EventReference ItemPickupSFX { get; private set; }

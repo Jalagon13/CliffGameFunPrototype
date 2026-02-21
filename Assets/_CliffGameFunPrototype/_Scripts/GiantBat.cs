@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CliffGame
 {
     [RequireComponent(typeof(FlyingAI))]
-    public class GiantBat : MonoBehaviour
+    public class GiantBat : Resource
     {
         private enum BatState
         {
@@ -25,9 +25,10 @@ namespace CliffGame
         [SerializeField] private float _attackInterval = 30f;
         [SerializeField] private float _attackSpeed = 15f;
         [SerializeField] private float _attackDuration = 5f;
-        [SerializeField] private int _damagePerSecond = 10;
+        [SerializeField] private int _damagePerAttackDuration = 50;
         [SerializeField] private int _numberOfClosestPlatformsToConsider = 4;
         [SerializeField] private float _warningDistance = 10f;
+        [SerializeField] private int _numOfHitsForItToFlyAway = 3;
 
         private Vector3 _patrolPivot; 
         private FlyingAI _flyingAI;
@@ -37,9 +38,11 @@ namespace CliffGame
         private float _damageAccumulator;
         private BuildPieceDurability _targetPlatform;
         private bool _hasPlayedWarning;
+        private int _currentHits;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _flyingAI = GetComponent<FlyingAI>();
         }
 
@@ -73,6 +76,18 @@ namespace CliffGame
             }
         }
 
+        public override void OnHitWithTool()
+        {
+            if (Player.Instance.ToolHolder.CurrentHeldTool.ToolType == BreakToolType && _currentState == BatState.Attacking)
+            {
+                _currentHits++;
+                Debug.Log($"GiantBat has been hit while attacking. Hits: {_currentHits}/{_numOfHitsForItToFlyAway}");
+            }
+        
+            // Still call the base method to allow it to take damage and eventually be destroyed.
+            base.OnHitWithTool();
+        }
+
         private void SetState(BatState newState)
         {
             Debug.Log($"GiantBat: Entering state {newState}");
@@ -100,6 +115,7 @@ namespace CliffGame
                 case BatState.Attacking:
                     _flyingAI.Stop();
                     _damageAccumulator = 0f;
+                    _currentHits = 0;
                     break;
                 case BatState.Fleeing:
                     _flyingAI.SetSpeed(_attackSpeed);
@@ -166,22 +182,38 @@ namespace CliffGame
                 return;
             }
 
+            if (_currentHits >= _numOfHitsForItToFlyAway)
+            {
+                Debug.Log("GiantBat: Repelled by player hits!");
+                SetState(BatState.Fleeing);
+                return;
+            }
+
             _stateTimer += Time.deltaTime;
 
             // Damage logic
-            _damageAccumulator += _damagePerSecond * Time.deltaTime;
+            float damagePerSecond = (float)_damagePerAttackDuration / _attackDuration;
+            _damageAccumulator += damagePerSecond * Time.deltaTime;
             if (_damageAccumulator >= 1f)
             {
                 int damageToApply = Mathf.FloorToInt(_damageAccumulator);
                 Debug.Log($"GiantBat: Dealing {damageToApply} damage to {_targetPlatform.name}");
                 _targetPlatform.AddHp(-damageToApply);
+
+                if (_targetPlatform == null || _targetPlatform.CurrentHitPoints <= 0)
+                {
+                    Debug.Log("GiantBat: Target destroyed.");
+                    SetState(BatState.Fleeing);
+                    return;
+                }
+
                 _targetPlatform.TryPlayRattleFeedbacks();
                 _damageAccumulator -= damageToApply;
             }
 
-            if (_stateTimer >= _attackDuration || _targetPlatform.CurrentHitPoints <= 0)
+            if (_stateTimer >= _attackDuration)
             {
-                Debug.Log("GiantBat: Attack finished or target destroyed.");
+                Debug.Log("GiantBat: Attack finished.");
                 SetState(BatState.Fleeing);
             }
         }

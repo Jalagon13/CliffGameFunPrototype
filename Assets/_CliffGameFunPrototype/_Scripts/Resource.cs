@@ -7,7 +7,7 @@ namespace CliffGame
 {
     public class Resource : MonoBehaviour, IInteractable
     {
-        [Header("Game Settings")]
+        [Header("Resource Settings")]
         [SerializeField] 
         private ToolType _requiredToolType;
     

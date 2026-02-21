@@ -103,7 +103,6 @@ GameObject:
   - component: {fileID: 124991110451011126}
   - component: {fileID: 81448068208000304}
   - component: {fileID: 114657890492222300}
-  - component: {fileID: 114103969153859672}
   - component: {fileID: 3483584220158204957}
   - component: {fileID: 9218301476393375430}
   m_Layer: 0
@@ -208,29 +207,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec72980442fddac4d86e75ab24b4d027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _executeStartingSequence: 1
   _character: {fileID: 4207293392497186}
   _sensitivitySlider: {fileID: 0}
   minSensitivity: 0.1
   maxSensitivity: 5
+  _fovLerpDuration: 0.25
   Sensitivity: 0.2
   Smoothing: 1.5
-  _fovLerpDuration: 0.25
---- !u!114 &114103969153859672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1593727746557118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 780f90e951d635f439326ea715cd97e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultFOV: 60
-  maxZoomFOV: 15
-  currentZoom: 0
-  sensitivity: 1
+  _blackScreenFadeDuration: 2
+  _startDelay: 1
+  _lookDownDuration: 1.5
+  _lookLeftDuration: 1.5
+  _lookLeftDelay: 0.5
+  _lookRightDuration: 1.5
+  _lookRightDelay: 0.5
+  _lookForwardDuration: 1.5
+  _lookDownAngle: 60
+  _lookLeftAngle: 80
+  _lookRightAngle: 80
 --- !u!114 &3483584220158204957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,11 +361,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Player
   _respawnTransform: {fileID: 0}
   _climbRayDistance: 1.25
-  _climbableLayer:
-    serializedVersion: 2
-    m_Bits: 64
   _toolHolder: {fileID: 8638897331038210049}
   <PauseMenuUI>k__BackingField: {fileID: 0}
+  _firstPersonLook: {fileID: 0}
 --- !u!114 &114963311885979670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,12 +376,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fca36bd81de7c4cafce7bbf02ca611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterController: {fileID: 7288749070935495780}
   _walkSpeed: 3
   _jumpForce: 10
   _gravity: -30
+  _terminalVelocity: -50
   _inAirMoveMultiplier: 0.5
   _jumpCooldown: 0.5
+  _jumpWindStrengthMulti: 1.5
+  _windNegationThreshold: 0.25
+  _windAccumulationThreshold: 0.002
+  _stickToGroundForce: -5
+  _coyoteTime: 0.15
+  _minAirTimeForLandingSFX: 0.2
   _fallDamageThreshold: 4
   _fallDamageMultiplier: 2
 --- !u!114 &5662476774981885568

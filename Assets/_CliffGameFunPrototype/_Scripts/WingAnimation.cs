@@ -14,9 +14,11 @@ namespace CliffGame
         private bool _startAtPositiveRotation = true;
 
         private float _timer;
+        private float _originalZ;
 
         private void Start()
         {
+            _originalZ = transform.localEulerAngles.z;
             _timer = _startAtPositiveRotation ? _cycleDuration : 0f;
         }
 
@@ -31,7 +33,7 @@ namespace CliffGame
             float zRotation = Mathf.Lerp(-_maxZRotationDegrees, _maxZRotationDegrees, t);
 
             Vector3 currentEuler = transform.localEulerAngles;
-            transform.localRotation = Quaternion.Euler(currentEuler.x, currentEuler.y, zRotation);
+            transform.localRotation = Quaternion.Euler(currentEuler.x, currentEuler.y, _originalZ + zRotation);
         }
     }
 }

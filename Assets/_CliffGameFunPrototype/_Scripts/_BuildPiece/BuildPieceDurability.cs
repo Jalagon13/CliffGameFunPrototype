@@ -31,6 +31,7 @@ namespace CliffGame
         
         private float _hpPercent;
         private int _lastCrackState = -1;
+        public bool IsTargeted { get; set; }
         
         public bool IsRattling => _rattleVFX.IsPlaying;
 
@@ -80,7 +81,7 @@ namespace CliffGame
                 _currentHP = 0;
             }
 
-            Debug.Log($"Adding floor hp {amount}, new hp: {_currentHP}");
+            // Debug.Log($"Adding floor hp {amount}, new hp: {_currentHP}");
 
             if (_currentHP <= 0)
             {

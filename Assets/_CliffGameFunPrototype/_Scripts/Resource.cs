@@ -46,7 +46,7 @@ namespace CliffGame
             _currentLife = _maxLife;
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             if (ResourceManager.Instance != null)
             {

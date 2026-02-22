@@ -1,16 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 namespace Ultrabolt.SkyEngine
 {
 	[RequireComponent(typeof(WorldTimeEvent))]
 	public class SkyCore : MonoBehaviour
 	{
+		public static SkyCore Instance { get; private set; }
+		public GameTime CurrentGameTime => lastTimeState;
+
 		public enum Weather { Clear, LowCloud, HighCloud, Rain }
 
 		#region Variables
-		public Text statsText;
+		public TextMeshProUGUI statsText;
 
 		// Stars
 		public GameObject starDome;
@@ -54,9 +58,15 @@ namespace Ultrabolt.SkyEngine
 
 		private float sunIntensity, moonIntensity;
 		private GameTime lastTimeState;
+		private bool _timeInitialized;
 		#endregion
 
 		public void SetWeather(int value) => weather = (Weather)value;
+
+		private void Awake()
+		{
+			Instance = this;
+		}
 
 		private void Start()
 		{
@@ -113,7 +123,13 @@ namespace Ultrabolt.SkyEngine
 			}
 
 			// Day Time
-			GameTime state = GetTimeState(timeOfDay);
+			GameTime state = CalculateTimeState(timeOfDay);
+			if (!_timeInitialized || state != lastTimeState)
+			{
+				_timeInitialized = true;
+				lastTimeState = state;
+				timeEvents.TriggerEventsFor(dayCount, lastTimeState);
+			}
 			dayState = state.ToString();
 
 			UpdateWeather();
@@ -195,15 +211,12 @@ namespace Ultrabolt.SkyEngine
 			starMat.color = new Color(1, 1, 1, Mathf.Lerp(starMat.color.a, nightFactor, t));
 		}
 
-		GameTime GetTimeState(float t)
+		GameTime CalculateTimeState(float t)
 		{
-			if (t < 0.1f) lastTimeState = GameTime.Morning;
-			else if (t < 0.4f) lastTimeState = GameTime.MidNoon;
-			else if (t < 0.6f) lastTimeState = GameTime.Evening;
-			else lastTimeState = GameTime.Night;
-
-			timeEvents.TriggerEventsFor(dayCount, lastTimeState);
-			return lastTimeState;
+			if (t < 0.1f) return GameTime.Morning;
+			else if (t < 0.4f) return GameTime.MidNoon;
+			else if (t < 0.6f) return GameTime.Evening;
+			return GameTime.Night;
 		}
 
 		private void ApplyAmbient()

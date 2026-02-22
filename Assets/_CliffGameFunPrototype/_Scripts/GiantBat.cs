@@ -12,7 +12,8 @@ namespace CliffGame
             Patrolling,
             Approaching,
             Attacking,
-            Fleeing
+            Fleeing,
+            MorningFlee
         }
 
         [Header("Patrol Settings")]
@@ -30,6 +31,9 @@ namespace CliffGame
         [SerializeField] private float _warningDistance = 10f;
         [SerializeField] private int _numOfHitsForItToFlyAway = 3;
 
+        [Header("Morning Flee Settings")]
+        [SerializeField] private float _morningFleeDuration = 4f;
+
         private Vector3 _patrolPivot; 
         private FlyingAI _flyingAI;
         private BatState _currentState;
@@ -46,8 +50,27 @@ namespace CliffGame
             _flyingAI = GetComponent<FlyingAI>();
         }
 
+        protected override void OnDestroy()
+        {
+            if (NpcManager.Instance != null)
+            {
+                NpcManager.Instance.OnMorningRise -= OnMorningRise;
+            }
+
+            if (_targetPlatform != null)
+            {
+                _targetPlatform.IsTargeted = false;
+            }
+            base.OnDestroy();
+        }
+
         private void Start()
         {
+            if (NpcManager.Instance != null)
+            {
+                NpcManager.Instance.OnMorningRise += OnMorningRise;
+            }
+
             if (_setPivotToStartPos)
             {
                 _patrolPivot = transform.position;
@@ -73,6 +96,9 @@ namespace CliffGame
                 case BatState.Fleeing:
                     HandleFleeing();
                     break;
+                case BatState.MorningFlee:
+                    HandleMorningFlee();
+                    break;
             }
         }
 
@@ -81,16 +107,22 @@ namespace CliffGame
             if (Player.Instance.ToolHolder.CurrentHeldTool.ToolType == BreakToolType && _currentState == BatState.Attacking)
             {
                 _currentHits++;
-                Debug.Log($"GiantBat has been hit while attacking. Hits: {_currentHits}/{_numOfHitsForItToFlyAway}");
+                // Debug.Log($"GiantBat has been hit while attacking. Hits: {_currentHits}/{_numOfHitsForItToFlyAway}");
             }
         
             // Still call the base method to allow it to take damage and eventually be destroyed.
             base.OnHitWithTool();
         }
 
+        private void OnMorningRise()
+        {
+            Debug.Log($"Morning flee triggered!");
+            SetState(BatState.MorningFlee);
+        }
+
         private void SetState(BatState newState)
         {
-            Debug.Log($"GiantBat: Entering state {newState}");
+            // Debug.Log($"GiantBat: Entering state {newState}");
             _currentState = newState;
             _stateTimer = 0f;
 
@@ -119,7 +151,28 @@ namespace CliffGame
                     break;
                 case BatState.Fleeing:
                     _flyingAI.SetSpeed(_attackSpeed);
+                    if (_targetPlatform != null)
+                    {
+                        _targetPlatform.IsTargeted = false;
+                        _targetPlatform = null;
+                    }
                     PickNewPatrolPoint(); // Fly back to patrol area
+                    break;
+                case BatState.MorningFlee:
+                    _flyingAI.SetSpeed(_attackSpeed);
+                    
+                    if (_targetPlatform != null)
+                    {
+                        _targetPlatform.IsTargeted = false;
+                        _targetPlatform = null;
+                    }
+                    
+                    if (Player.Instance != null)
+                    {
+                        Vector3 directionAway = (transform.position - Player.Instance.transform.position).normalized;
+                        // Fly far away in the opposite direction
+                        _flyingAI.SetDestination(transform.position + directionAway * 200f);
+                    }
                     break;
             }
         }
@@ -132,21 +185,22 @@ namespace CliffGame
                 BuildPieceDurability target = FindTargetPlatform();
                 if (target != null)
                 {
-                    Debug.Log($"GiantBat: Target found: {target.name}");
+                    // Debug.Log($"GiantBat: Target found: {target.name}");
                     _targetPlatform = target;
+                    _targetPlatform.IsTargeted = true;
                     SetState(BatState.Approaching);
                     return;
                 }
                 else
                 {
-                    Debug.Log("GiantBat: No target found, retrying later.");
+                    // Debug.Log("GiantBat: No target found, retrying later.");
                     _attackCooldownTimer = 5f; // Retry later if no target found
                 }
             }
 
             if (_flyingAI.HasReachedDestination)
             {
-                Debug.Log("GiantBat: Reached patrol point, picking new one.");
+                // Debug.Log("GiantBat: Reached patrol point, picking new one.");
                 PickNewPatrolPoint();
             }
         }
@@ -155,7 +209,7 @@ namespace CliffGame
         {
             if (_targetPlatform == null)
             {
-                Debug.Log("GiantBat: Target lost during approach.");
+                // Debug.Log("GiantBat: Target lost during approach.");
                 SetState(BatState.Patrolling);
                 return;
             }
@@ -168,7 +222,7 @@ namespace CliffGame
 
             if (_flyingAI.HasReachedDestination)
             {
-                Debug.Log("GiantBat: Reached target, starting attack.");
+                // Debug.Log("GiantBat: Reached target, starting attack.");
                 SetState(BatState.Attacking);
             }
         }
@@ -177,14 +231,14 @@ namespace CliffGame
         {
             if (_targetPlatform == null)
             {
-                Debug.Log("GiantBat: Target lost during attack.");
+                // Debug.Log("GiantBat: Target lost during attack.");
                 SetState(BatState.Fleeing);
                 return;
             }
 
             if (_currentHits >= _numOfHitsForItToFlyAway)
             {
-                Debug.Log("GiantBat: Repelled by player hits!");
+                // Debug.Log("GiantBat: Repelled by player hits!");
                 SetState(BatState.Fleeing);
                 return;
             }
@@ -197,12 +251,12 @@ namespace CliffGame
             if (_damageAccumulator >= 1f)
             {
                 int damageToApply = Mathf.FloorToInt(_damageAccumulator);
-                Debug.Log($"GiantBat: Dealing {damageToApply} damage to {_targetPlatform.name}");
+                // Debug.Log($"GiantBat: Dealing {damageToApply} damage to {_targetPlatform.name}");
                 _targetPlatform.AddHp(-damageToApply);
 
                 if (_targetPlatform == null || _targetPlatform.CurrentHitPoints <= 0)
                 {
-                    Debug.Log("GiantBat: Target destroyed.");
+                    // Debug.Log("GiantBat: Target destroyed.");
                     SetState(BatState.Fleeing);
                     return;
                 }
@@ -213,7 +267,7 @@ namespace CliffGame
 
             if (_stateTimer >= _attackDuration)
             {
-                Debug.Log("GiantBat: Attack finished.");
+                // Debug.Log("GiantBat: Attack finished.");
                 SetState(BatState.Fleeing);
             }
         }
@@ -222,9 +276,18 @@ namespace CliffGame
         {
             if (_flyingAI.HasReachedDestination)
             {
-                Debug.Log("GiantBat: Flee complete, returning to patrol.");
+                // Debug.Log("GiantBat: Flee complete, returning to patrol.");
                 _attackCooldownTimer = _attackInterval;
                 SetState(BatState.Patrolling);
+            }
+        }
+
+        private void HandleMorningFlee()
+        {
+            _stateTimer += Time.deltaTime;
+            if (_stateTimer >= _morningFleeDuration)
+            {
+                Destroy(gameObject);
             }
         }
 
@@ -237,7 +300,7 @@ namespace CliffGame
 
             Vector3 potentialPoint = _patrolPivot + randomOffset;
             
-            Debug.Log($"GiantBat: Picking new patrol point: {potentialPoint}");
+            // Debug.Log($"GiantBat: Picking new patrol point: {potentialPoint}");
             _flyingAI.SetDestination(potentialPoint);
         }
 
@@ -252,7 +315,7 @@ namespace CliffGame
             {
                 int neighborCount = piece.GetConnectedBuildPieces().Count();
                 
-                if (neighborCount < 4 && !piece.IsAnchored && piece.TryGetComponent(out BuildPieceDurability durability))
+                if (neighborCount < 4 && !piece.IsAnchored && piece.TryGetComponent(out BuildPieceDurability durability) && !durability.IsTargeted)
                 {
                     outerPieces.Add(durability);
                 }

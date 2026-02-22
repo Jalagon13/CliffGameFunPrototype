@@ -33,6 +33,7 @@ namespace Ultrabolt.SkyEngine
 
                     var nameProp = gameEvent.FindPropertyRelative("eventName");
                     var dayProp = gameEvent.FindPropertyRelative("day");
+                    var recurringProp = gameEvent.FindPropertyRelative("recurring");
                     var timeProp = gameEvent.FindPropertyRelative("time");
                     var actionsProp = gameEvent.FindPropertyRelative("actions");
 
@@ -47,7 +48,11 @@ namespace Ultrabolt.SkyEngine
                         }
                         EditorGUILayout.EndHorizontal();
 
-                        EditorGUILayout.PropertyField(dayProp);
+                        EditorGUILayout.PropertyField(recurringProp);
+                        if (!recurringProp.boolValue)
+                        {
+                            EditorGUILayout.PropertyField(dayProp);
+                        }
                         EditorGUILayout.PropertyField(timeProp);
                         EditorGUILayout.PropertyField(actionsProp);
 

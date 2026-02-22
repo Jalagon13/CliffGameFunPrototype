@@ -13,10 +13,10 @@ namespace Ultrabolt.SkyEngine
 		{
 			foreach (var e in gameEvents)
 			{
-				if (e.day == day && e.time == time && !e.activated)
+				if ((e.recurring || e.day == day) && e.time == time && (e.recurring || !e.activated))
 				{
 					e.actions.Invoke();
-					e.activated = true;
+					if (!e.recurring) e.activated = true;
 				}
 			}
 		}
@@ -27,6 +27,7 @@ namespace Ultrabolt.SkyEngine
 			public string eventName = "New Event";
 
 			public int day = 1;
+			public bool recurring;
 			public GameTime time;
 
 			public UnityEvent actions;

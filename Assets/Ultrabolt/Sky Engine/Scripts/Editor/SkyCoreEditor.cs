@@ -56,6 +56,7 @@ namespace Ultrabolt.SkyEngine
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("moonLight"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("skyTop"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("skyBottom"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("directionalLightColors"));
                 });
 
                 contentGUI = EditorGUIUtility.IconContent("BuildSettings.Web");

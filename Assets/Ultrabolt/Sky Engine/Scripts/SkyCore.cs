@@ -28,7 +28,7 @@ namespace Ultrabolt.SkyEngine
 		// Lights & Colors
 		public float lightFadeSpeed = 0.3f;
 		public Light sunLight, moonLight;
-		public Gradient skyTop, skyBottom;
+		public Gradient skyTop, skyBottom, directionalLightColors;
 
 		// Fog
 		public bool enableFog;
@@ -90,7 +90,7 @@ namespace Ultrabolt.SkyEngine
 			return $"{hours:D2}:{minutes:D2}";
 		}
 
-		private void Update()
+		private void LateUpdate()
 		{
 			if (statsText != null)
 				statsText.text = $"Day: {dayCount}\n{dayState}\n{GetWorldTime()}\nWeather: {weather}";
@@ -123,7 +123,7 @@ namespace Ultrabolt.SkyEngine
 
 		private void UpdateWeather()
 		{
-			Color lightGray20 = new Color(1f, 1f, 1f, 0.2f);
+			Color lightGray20 = new Color(1f, 1f, 1f, 1f);
 			Color lightGray40 = new Color(1f, 1f, 1f, 0.4f);
 			Color darkGray50 = new Color(0.4f, 0.4f, 0.4f, 0.5f);
 
@@ -175,6 +175,11 @@ namespace Ultrabolt.SkyEngine
 			// Sun & Moon
 			moon.transform.LookAt(cam.transform);
 			sun.transform.LookAt(cam.transform);
+
+			// Light Colors
+			Color lightColor = directionalLightColors.Evaluate(timeOfDay);
+			sunLight.color = lightColor;
+			moonLight.color = lightColor;
 
 			// Skybox colors
 			RenderSettings.skybox.SetColor("_SkyGradientTop", skyTop.Evaluate(timeOfDay));

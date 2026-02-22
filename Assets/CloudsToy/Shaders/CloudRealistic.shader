@@ -24,6 +24,7 @@ Category {
 			#pragma multi_compile_fog
 			
 			#include "UnityCG.cginc"
+			#include "Lighting.cginc"
 
 			sampler2D _MainTex;
 			fixed4 _TintColor;
@@ -73,6 +74,7 @@ Category {
 				#endif
 				
 				fixed4 col = 2.0f * i.color * _TintColor * tex2D(_MainTex, i.texcoord);
+				col.rgb *= _LightColor0.rgb;
 				UNITY_APPLY_FOG(i.fogCoord, col);
 				return col;
 			}

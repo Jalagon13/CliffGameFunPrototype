@@ -167,8 +167,8 @@ namespace CliffGame
                 InventoryItem item = _inventoryModel.InventoryItems[i];
 
                 if (!item.HasItem) continue;
+                if(item.Item is ToolItemSO || item.Item is HookshotItemSO) continue;
                 if (UnityEngine.Random.value < 0.5f) continue;
-                if(item.Item is ToolItemSO) continue;
 
                 // 50% chance the item gets deleted
                 int itemAmount = item.Quantity;

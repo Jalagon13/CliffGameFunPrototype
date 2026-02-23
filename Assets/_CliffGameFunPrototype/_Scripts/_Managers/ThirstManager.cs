@@ -165,6 +165,9 @@ namespace CliffGame
             if (consumableItem.ConsumableType != ConsumableType.Drink)
                 return;
 
+            if (CurrentThirst >= _maxThirst)
+                return;
+
             StartDrinking(consumableItem);
         }
 

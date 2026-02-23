@@ -38,6 +38,7 @@ namespace CliffGame
         
         [SerializeField] private LayerMask _connectorLayerMask;
         [SerializeField] private LayerMask _playerLayerMask;
+        [SerializeField] private LayerMask _cliffLayerMask;
         [SerializeField] private float _buildRange = 4f;
         [SerializeField] private float _destroyDuration = 0.5f;
         [SerializeField] private float _placeCooldown = 0.15f;
@@ -330,10 +331,14 @@ namespace CliffGame
             // Out of all the connectors closest to the ghost piece, find the closest
             Connector closestConnector = null;
             float closestDistance = float.MaxValue;
+            Vector3 camPos = Camera.main.transform.position;
+
             foreach (Collider collider in connectorColliders)
             {
                 Connector connector = collider.GetComponent<Connector>();
                 
+                if (Physics.Linecast(camPos, connector.transform.position, _cliffLayerMask)) continue;
+
                 float distance = Vector3.Distance(_ghostBuildPiece.transform.position, connector.transform.position);
                 if (distance < closestDistance)
                 {

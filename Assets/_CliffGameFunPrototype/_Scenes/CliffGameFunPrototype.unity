@@ -19220,6 +19220,10 @@ MonoBehaviour:
     Quantity: 999
   - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
     Quantity: 999
+  - Item: {fileID: 11400000, guid: 3b850cbd57d474a1cb1247f48e2710af, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: ba16adfc077834f39942abcbdcf53fd4, type: 2}
+    Quantity: 999
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -20112,6 +20116,9 @@ MonoBehaviour:
   _playerLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  _cliffLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
   _buildRange: 3.25
   _destroyDuration: 0.35
   _placeCooldown: 0.15

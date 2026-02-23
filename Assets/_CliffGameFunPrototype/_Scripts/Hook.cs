@@ -32,7 +32,7 @@ namespace CliffGame
                 HookshotManager.Instance.HookshotHolder.RegisterHit();
             }
         
-            if (other.TryGetComponent(out BirdResource bird))
+            if (other.TryGetComponent(out BirdNpc bird))
             {
                 bird.Catch(transform);
                 HookshotManager.Instance.HookshotHolder.RegisterHit();

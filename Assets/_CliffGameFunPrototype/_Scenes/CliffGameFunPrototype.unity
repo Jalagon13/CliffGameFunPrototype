@@ -4489,14 +4489,25 @@ MonoBehaviour:
   _npcPool:
   - Prefab: {fileID: 8979547436931850727, guid: dc8c0753a15c24c80b45613448a65e20, type: 3}
     SlotCost: 1
-    SpawnWeight: 100
+    SpawnWeight: 0
     SpawnDistanceFromCliff: 15
+    MinSpawnDistance: 10
+    MaxSpawnDistance: 30
+    SpawnZVarianceMin: -2
+    SpawnZVarianceMax: 2
     AllowedSpawnTimes: 03000000
+  - Prefab: {fileID: 8979547436931850727, guid: 9e0695773cad84794b5dd20ffdd664a5, type: 3}
+    SlotCost: 1
+    SpawnWeight: 100
+    SpawnDistanceFromCliff: 10
+    MinSpawnDistance: 5
+    MaxSpawnDistance: 15
+    SpawnZVarianceMin: -2
+    SpawnZVarianceMax: 2
+    AllowedSpawnTimes: 000000000100000002000000
   _canSpawnNpcs: 1
   _maxNpcSlotAmount: 6
   _spawnsPerMinute: 5
-  _minSpawnDistance: 10
-  _maxSpawnDistance: 40
   _cliffLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -7121,6 +7132,7 @@ PrefabInstance:
     - {fileID: 114497868231759342, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
     - {fileID: 54063890643546284, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
     - {fileID: 114103969153859672, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+    - {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4490257326247362, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
@@ -9181,6 +9193,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2164670322622657408, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: m_UseColorTemperature
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2720151930679185151, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -9537,17 +9553,25 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.33259168
       objectReference: {fileID: 0}
+    - target: {fileID: 5115829138058658757, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: m_UseColorTemperature
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6044982652475879444, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: m_LocalPosition.z
       value: -600
       objectReference: {fileID: 0}
     - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: gameEvents.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: gameEvents.Array.data[0].time
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: gameEvents.Array.data[1].time
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: gameEvents.Array.data[0].eventName
@@ -9558,7 +9582,19 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: gameEvents.Array.data[1].eventName
+      value: Birds run away event
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: gameEvents.Array.data[1].recurring
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: gameEvents.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: gameEvents.Array.data[1].actions.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
@@ -9566,7 +9602,15 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: gameEvents.Array.data[1].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: gameEvents.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 462178884}
+    - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: gameEvents.Array.data[1].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 462178884}
     - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
@@ -9574,15 +9618,31 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: gameEvents.Array.data[1].actions.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: gameEvents.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnMorningStarted
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: gameEvents.Array.data[1].actions.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnNightStarted
       objectReference: {fileID: 0}
     - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: gameEvents.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: CliffGame.NpcManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: gameEvents.Array.data[1].actions.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CliffGame.NpcManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: gameEvents.Array.data[0].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457054202449620937, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
+      propertyPath: gameEvents.Array.data[1].actions.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7680010530965896720, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
@@ -19270,10 +19330,8 @@ MonoBehaviour:
     Quantity: 999
   - Item: {fileID: 11400000, guid: 906fc7e709ae94c59bdbc7a22473cb4b, type: 2}
     Quantity: 999
-  - Item: {fileID: 11400000, guid: 9bb6b4429d8a240aa89bc4c5e6b6393a, type: 2}
-    Quantity: 123
-  - Item: {fileID: 11400000, guid: 7c6a432ee975d4d63bd3bedd71f680fa, type: 2}
-    Quantity: 123
+  - Item: {fileID: 11400000, guid: 2a79da082856a45019d026c74424cc18, type: 2}
+    Quantity: 1
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0

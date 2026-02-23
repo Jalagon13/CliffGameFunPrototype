@@ -97,8 +97,8 @@ namespace CliffGame
             HookSequenceExecuting = false;
 
             // Check if we caught a bird
-            BirdResource[] caughtBirds = _hook.GetComponentsInChildren<BirdResource>();
-            foreach (BirdResource bird in caughtBirds)
+            BirdNpc[] caughtBirds = _hook.GetComponentsInChildren<BirdNpc>();
+            foreach (BirdNpc bird in caughtBirds)
             {
                 bird.Collect();
             }

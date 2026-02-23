@@ -61,6 +61,27 @@ namespace CliffGame
             // Default resource interaction (can be empty)
         }
 
+        public void Collect()
+        {
+            foreach (HarvestDrop drop in _harvestDrops)
+            {
+                if (drop.DropItem == null)
+                    continue;
+
+                int amount = Random.Range(drop.MinAmount, drop.MaxAmount + 1);
+
+                if (amount <= 0)
+                    continue;
+
+                InventoryManager.Instance.AddItem(drop.DropItem, amount);
+            }
+            
+            AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
+            ResourceManager.Instance.UnregisterResource(this);
+            Debug.Log($"Destroying resource: {gameObject.name}");
+            Destroy(gameObject);
+        }
+
         public virtual void OnHitWithTool()
         {
             if(Player.Instance.ToolHolder.CurrentHeldTool.ToolType != _requiredToolType) return;
@@ -74,23 +95,7 @@ namespace CliffGame
 
             if (_currentLife <= 0)
             {
-                foreach (HarvestDrop drop in _harvestDrops)
-                {
-                    if (drop.DropItem == null)
-                        continue;
-
-                    int amount = Random.Range(drop.MinAmount, drop.MaxAmount + 1);
-
-                    if (amount <= 0)
-                        continue;
-
-                    InventoryManager.Instance.AddItem(drop.DropItem, amount);
-                }
-                
-                AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
-                ResourceManager.Instance.UnregisterResource(this);
-                Debug.Log($"Destroying resource: {gameObject.name}");
-                Destroy(gameObject);
+                Collect();
             }
             else
             {

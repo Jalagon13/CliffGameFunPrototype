@@ -10,6 +10,7 @@ namespace CliffGame
         public static NpcManager Instance;
         
         public event Action OnMorningRise;
+        public event Action OnNightRise;
         
         [Serializable]
         public class NpcSpawnEntry
@@ -18,6 +19,10 @@ namespace CliffGame
             public float SlotCost = 1f;
             [Range(0, 100)] public int SpawnWeight = 10;
             public float SpawnDistanceFromCliff = 20f;
+            public float MinSpawnDistance = 20f;
+            public float MaxSpawnDistance = 40f;
+            public float SpawnZVarianceMin = -2f;
+            public float SpawnZVarianceMax = 2f;
             public List<GameTime> AllowedSpawnTimes;
         }
 
@@ -34,8 +39,6 @@ namespace CliffGame
         private float _spawnsPerMinute = 5;
 
         [Header("Spawn Area")]
-        [SerializeField] private float _minSpawnDistance = 20f;
-        [SerializeField] private float _maxSpawnDistance = 40f;
         [SerializeField] private LayerMask _cliffLayerMask;
         
         private float _currentNpcCapacity = 0;
@@ -57,6 +60,12 @@ namespace CliffGame
         {
             Debug.Log($"Morning has risen!");
             OnMorningRise?.Invoke();
+        }
+        
+        public void OnNightStarted() // Connected to SkyCore event time system
+        {
+            Debug.Log($"Night has risen!");
+            OnNightRise?.Invoke();
         }
 
         private void TryToSpawnNpc()
@@ -91,9 +100,9 @@ namespace CliffGame
 
                 for (int attempt = 0; attempt < _maxSpawnAttempts; attempt++)
                 {
-                    Vector3 potentialSpawnPoint = GetRandomSpawnPoint(npcEntry.SpawnDistanceFromCliff, cliffZ);
+                    Vector3 potentialSpawnPoint = GetRandomSpawnPoint(npcEntry, cliffZ);
 
-                    if (SpawnSpotIsValid(potentialSpawnPoint))
+                    if (SpawnSpotIsValid(potentialSpawnPoint, npcEntry.MinSpawnDistance))
                     {
                         SpawnNpc(potentialSpawnPoint, npcEntry);
                         return;
@@ -102,17 +111,17 @@ namespace CliffGame
             }
         }
 
-        private Vector3 GetRandomSpawnPoint(float distanceFromCliff, float cliffZ)
+        private Vector3 GetRandomSpawnPoint(NpcSpawnEntry npcEntry, float cliffZ)
         {
             Vector3 playerPos = Player.Instance.transform.position;
             
             // 1. Determine the Z plane for this mob (Cliff Face + Desired Distance + small variance)
-            float targetZ = cliffZ + distanceFromCliff + UnityEngine.Random.Range(-2f, 2f);
+            float targetZ = cliffZ + npcEntry.SpawnDistanceFromCliff + UnityEngine.Random.Range(npcEntry.SpawnZVarianceMin, npcEntry.SpawnZVarianceMax);
 
             // 2. Calculate the maximum XY radius we can use while staying within _maxSpawnDistance of the player
             // Distance^2 = XY_Dist^2 + Z_Dist^2  =>  XY_Dist = Sqrt(MaxDist^2 - Z_Dist^2)
             float zDifference = targetZ - playerPos.z;
-            float maxDistSq = _maxSpawnDistance * _maxSpawnDistance;
+            float maxDistSq = npcEntry.MaxSpawnDistance * npcEntry.MaxSpawnDistance;
             float zDiffSq = zDifference * zDifference;
             
             float maxXYRadius = 0f;
@@ -134,13 +143,13 @@ namespace CliffGame
             return new Vector3(playerPos.x + randomXY.x, playerPos.y + randomXY.y, targetZ);
         }
 
-        private bool SpawnSpotIsValid(Vector3 potentialSpawnPoint)
+        private bool SpawnSpotIsValid(Vector3 potentialSpawnPoint, float minSpawnDistance)
         {
-            // // Check if the immediate area is clear of obstacles
-            // if (Physics.CheckSphere(potentialSpawnPoint, 1f)) return false;
+            // Check if the immediate area is clear of obstacles
+            if (Physics.CheckSphere(potentialSpawnPoint, 1f)) return false;
 
-            // // Ensure we aren't spawning too close to the player (respecting min distance)
-            // if (Vector3.Distance(potentialSpawnPoint, Player.Instance.transform.position) < _minSpawnDistance) return false;
+            // Ensure we aren't spawning too close to the player (respecting min distance)
+            if (Vector3.Distance(potentialSpawnPoint, Player.Instance.transform.position) < minSpawnDistance) return false;
 
             return true;
         }
@@ -150,12 +159,12 @@ namespace CliffGame
             if (_npcPool.Count == 0) return null;
 
             if (SkyCore.Instance == null) return null;
-            GameTime currentTime = SkyCore.Instance.CurrentGameTime;
+            
 
             int totalWeight = 0;
             foreach (var entry in _npcPool)
             {
-                if (entry.AllowedSpawnTimes != null && entry.AllowedSpawnTimes.Contains(currentTime))
+                if (IsSpawnAllowed(entry))
                 {
                     totalWeight += entry.SpawnWeight;
                 }
@@ -168,7 +177,7 @@ namespace CliffGame
 
             foreach (var entry in _npcPool)
             {
-                if (entry.AllowedSpawnTimes != null && entry.AllowedSpawnTimes.Contains(currentTime))
+                if (IsSpawnAllowed(entry))
                 {
                     currentWeight += entry.SpawnWeight;
                     if (randomValue < currentWeight) return entry;
@@ -176,6 +185,12 @@ namespace CliffGame
             }
 
             return null;
+        }
+
+        private bool IsSpawnAllowed(NpcSpawnEntry entry)
+        {
+            GameTime currentTime = SkyCore.Instance.CurrentGameTime;
+            return entry.AllowedSpawnTimes != null && entry.AllowedSpawnTimes.Contains(currentTime);
         }
 
         private void SpawnNpc(Vector3 potentialSpawnPoint, NpcSpawnEntry npcEntry)

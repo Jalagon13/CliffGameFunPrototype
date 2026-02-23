@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CliffGame
 {
     [RequireComponent(typeof(FlyingAI))]
-    public class GiantBat : Resource
+    public class GiantBatNpc : Resource
     {
         private enum BatState
         {
@@ -13,7 +13,7 @@ namespace CliffGame
             Approaching,
             Attacking,
             Fleeing,
-            MorningFlee
+            Despawning
         }
 
         [Header("Patrol Settings")]
@@ -32,12 +32,14 @@ namespace CliffGame
         [SerializeField] private int _numOfHitsForItToFlyAway = 3;
 
         [Header("Morning Flee Settings")]
-        [SerializeField] private float _morningFleeDuration = 4f;
+        [SerializeField] private float _flyingDurationBeforeDespawn = 4f;
+        [SerializeField] private float _lifeTime = 60f;
 
         private Vector3 _patrolPivot; 
         private FlyingAI _flyingAI;
         private BatState _currentState;
         private float _stateTimer;
+        private float _lifeTimeTimer;
         private float _attackCooldownTimer;
         private float _damageAccumulator;
         private BuildPieceDurability _targetPlatform;
@@ -50,26 +52,9 @@ namespace CliffGame
             _flyingAI = GetComponent<FlyingAI>();
         }
 
-        protected override void OnDestroy()
-        {
-            if (NpcManager.Instance != null)
-            {
-                NpcManager.Instance.OnMorningRise -= OnMorningRise;
-            }
-
-            if (_targetPlatform != null)
-            {
-                _targetPlatform.IsTargeted = false;
-            }
-            base.OnDestroy();
-        }
-
         private void Start()
         {
-            if (NpcManager.Instance != null)
-            {
-                NpcManager.Instance.OnMorningRise += OnMorningRise;
-            }
+            NpcManager.Instance.OnMorningRise += OnMorningRise;
 
             if (_setPivotToStartPos)
             {
@@ -80,8 +65,28 @@ namespace CliffGame
             SetState(BatState.Patrolling);
         }
 
+        protected override void OnDestroy()
+        {
+            NpcManager.Instance.OnMorningRise -= OnMorningRise;
+
+            if (_targetPlatform != null)
+            {
+                _targetPlatform.IsTargeted = false;
+            }
+            base.OnDestroy();
+        }
+
         private void Update()
         {
+            if (_currentState == BatState.Patrolling)
+            {
+                _lifeTimeTimer += Time.deltaTime;
+                if (_lifeTimeTimer >= _lifeTime)
+                {
+                    SetState(BatState.Despawning);
+                }
+            }
+
             switch (_currentState)
             {
                 case BatState.Patrolling:
@@ -96,18 +101,22 @@ namespace CliffGame
                 case BatState.Fleeing:
                     HandleFleeing();
                     break;
-                case BatState.MorningFlee:
-                    HandleMorningFlee();
+                case BatState.Despawning:
+                    HandleDespawning();
                     break;
             }
         }
 
         public override void OnHitWithTool()
         {
-            if (Player.Instance.ToolHolder.CurrentHeldTool.ToolType == BreakToolType && _currentState == BatState.Attacking)
+            if (Player.Instance.ToolHolder.CurrentHeldTool.ToolType == BreakToolType)
             {
-                _currentHits++;
-                // Debug.Log($"GiantBat has been hit while attacking. Hits: {_currentHits}/{_numOfHitsForItToFlyAway}");
+                if (_currentState == BatState.Attacking)
+                {
+                    _currentHits++;
+                    // Debug.Log($"GiantBat has been hit while attacking. Hits: {_currentHits}/{_numOfHitsForItToFlyAway}");
+                }
+                _lifeTimeTimer = 0f;
             }
         
             // Still call the base method to allow it to take damage and eventually be destroyed.
@@ -117,11 +126,13 @@ namespace CliffGame
         private void OnMorningRise()
         {
             Debug.Log($"Morning flee triggered!");
-            SetState(BatState.MorningFlee);
+            SetState(BatState.Despawning);
         }
 
         private void SetState(BatState newState)
         {
+            if (_currentState == BatState.Despawning && newState == BatState.Despawning) return;
+
             // Debug.Log($"GiantBat: Entering state {newState}");
             _currentState = newState;
             _stateTimer = 0f;
@@ -158,7 +169,7 @@ namespace CliffGame
                     }
                     PickNewPatrolPoint(); // Fly back to patrol area
                     break;
-                case BatState.MorningFlee:
+                case BatState.Despawning:
                     _flyingAI.SetSpeed(_attackSpeed);
                     
                     if (_targetPlatform != null)
@@ -282,10 +293,10 @@ namespace CliffGame
             }
         }
 
-        private void HandleMorningFlee()
+        private void HandleDespawning()
         {
             _stateTimer += Time.deltaTime;
-            if (_stateTimer >= _morningFleeDuration)
+            if (_stateTimer >= _flyingDurationBeforeDespawn)
             {
                 Destroy(gameObject);
             }

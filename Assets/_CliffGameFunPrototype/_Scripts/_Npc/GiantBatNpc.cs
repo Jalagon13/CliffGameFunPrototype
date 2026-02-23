@@ -326,7 +326,7 @@ namespace CliffGame
             {
                 int neighborCount = piece.GetConnectedBuildPieces().Count();
                 
-                if (neighborCount < 4 && !piece.IsAnchored && piece.TryGetComponent(out BuildPieceDurability durability) && !durability.IsTargeted)
+                if (neighborCount < 4 && piece.TryGetComponent(out BuildPieceDurability durability) && !durability.IsTargeted)
                 {
                     outerPieces.Add(durability);
                 }

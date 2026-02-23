@@ -33,6 +33,8 @@ namespace CliffGame
         private float _fallDamageThreshold = 5f;
         [SerializeField, Tooltip("How hard each extra meter of falling hurts")] 
         private float _fallDamageMultiplier = 2f;
+        [SerializeField, Tooltip("Distance fallen that causes instant death")]
+        private float _lethalFallDistance = 90f;
         private float _fallStartY;
         
         private bool _isFallingFlag;
@@ -232,6 +234,16 @@ namespace CliffGame
             {
                 _isFallingFlag = true;
                 _fallStartY = transform.position.y;
+            }
+
+            if (_isFallingFlag)
+            {
+                if (_fallStartY - transform.position.y >= _lethalFallDistance)
+                {
+                    HealthManager.Instance.DamageHealth(1000);
+                    _isFallingFlag = false;
+                    return;
+                }
             }
 
             // ---- FALL END (LANDING) ----

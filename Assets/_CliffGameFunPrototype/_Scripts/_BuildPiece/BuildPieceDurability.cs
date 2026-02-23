@@ -11,6 +11,7 @@ namespace CliffGame
         public event Action OnBuildPieceDestoyed;
     
         [SerializeField] private bool _isStartingBuildPiece = false;
+        public bool IsStartingBuildPiece => _isStartingBuildPiece;
         [SerializeField] private int _hitPoints = 100;
         public int MaxHitPoints => _hitPoints;
 
@@ -71,6 +72,8 @@ namespace CliffGame
 
         public void AddHp(int amount)
         {
+            if (_isStartingBuildPiece && amount < 0) return;
+
             _currentHP += amount;
             if (_currentHP > _hitPoints)
             {
@@ -123,6 +126,7 @@ namespace CliffGame
             if (crackState == _lastCrackState)
                 return;
 
+            bool isDamageIncreasing = crackState > _lastCrackState;
             _lastCrackState = crackState;
 
             if (crackState == 0)
@@ -146,8 +150,11 @@ namespace CliffGame
                 for (int i = 0; i < _crackModelsArray.Length; i++)
                     _crackModelsArray[i].SetActive(i == materialIndex);
 
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
-                Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
+                if (isDamageIncreasing)
+                {
+                    AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
+                    Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
+                }
             }
         }
 

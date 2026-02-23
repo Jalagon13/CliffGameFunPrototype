@@ -32,14 +32,14 @@ namespace CliffGame
         private void Start()
         {
             Player.Instance.ToolHolder.OnToolSwingDown += TryToHitInteractable;
-            GameInput.Instance.OnPrimaryInteract += TryToRepairBPDurability;
+            Player.Instance.ToolHolder.OnToolSwingDown += TryToRepairInteractable;
             GameInput.Instance.OnInteract += Interact;
         }
         
         private void OnDestroy()
         {
             Player.Instance.ToolHolder.OnToolSwingDown -= TryToHitInteractable;
-            GameInput.Instance.OnPrimaryInteract -= TryToRepairBPDurability;
+            Player.Instance.ToolHolder.OnToolSwingDown -= TryToRepairInteractable;
             GameInput.Instance.OnInteract -= Interact;
         }
 
@@ -67,14 +67,14 @@ namespace CliffGame
             }
         }
 
-        private void TryToRepairBPDurability(object sender, InputAction.CallbackContext e)
+        private void TryToRepairInteractable()
         {
-            if(!e.started || BuildingManager.Instance.CurrentBuildType != BuildOption.RepairMode || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen || Player.Instance.PauseMenuUI.IsPauseMenuOpen) return;
+            if (BuildingManager.Instance.CurrentBuildType != BuildOption.RepairMode || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen || Player.Instance.PauseMenuUI.IsPauseMenuOpen) return;
 
             // Repair logic here
             if (InventoryManager.Instance.HasSelectedItem)
             {
-                if(InventoryManager.Instance.SelectedInventoryItem.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer)
+                if (InventoryManager.Instance.SelectedInventoryItem.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer)
                 {
                     RaycastHit hit;
                     if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance))
@@ -83,11 +83,11 @@ namespace CliffGame
                         {
                             if (InventoryManager.Instance.InventoryHasItems(BuildingManager.Instance.ItemsNeededForRepairing))
                             {
-                                if(bpd.CurrentHitPoints >= bpd.MaxHitPoints)
+                                if (bpd.CurrentHitPoints >= bpd.MaxHitPoints)
                                 {
                                     return;
                                 }
-                                
+
                                 bpd.AddHp(toolItem.IntValue);
                                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BuildingRepairedSFX, bpd.transform.position);
                                 InventoryManager.Instance.RemoveItems(BuildingManager.Instance.ItemsNeededForRepairing);

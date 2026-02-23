@@ -721,7 +721,7 @@ namespace CliffGame
             }
         }
 
-        private void GhostifyModel(Transform modelParent, Material ghostMaterial = null)
+        public void GhostifyModel(Transform modelParent, Material ghostMaterial = null)
         {
             if (ghostMaterial != null)
             {
@@ -928,6 +928,9 @@ namespace CliffGame
 
                 if (hit.transform.root.CompareTag("BuildPiece"))
                 {
+                    if (hit.transform.root.TryGetComponent(out BuildPieceDurability durability) && durability.IsStartingBuildPiece)
+                        break;
+
                     // Found the first valid target
                     validHit = hit;
                     foundValidHit = true;
@@ -984,6 +987,9 @@ namespace CliffGame
             // When we do left click while in destroy mode, destroy the build object we are looking at
             if (_currentDestroyTarget)
             {
+                if (_currentDestroyTarget.TryGetComponent(out BuildPieceDurability durability) && durability.IsStartingBuildPiece)
+                    return;
+
                 _currentDestroyTarget.GetComponent<BuildPiece>().CleanupConnectors();
 
                 var buildPiece = _currentDestroyTarget.GetComponent<BuildPiece>();

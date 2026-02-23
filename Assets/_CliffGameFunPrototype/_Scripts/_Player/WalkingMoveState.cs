@@ -12,6 +12,7 @@ namespace CliffGame
     {
         [Header("Movement Settings")]
         [SerializeField] private float _walkSpeed = 3f;
+        [SerializeField] private float _sprintSpeed = 6f;
         [SerializeField] private float _jumpForce = 10f;
         [SerializeField] private float _gravity = -30f;
         [SerializeField] private float _terminalVelocity = -50f;
@@ -146,7 +147,8 @@ namespace CliffGame
             else
             {
                 Vector3 horizontalMove = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
-                horizontalMove *= _walkSpeed * (_isGrounded ? 1 : _inAirMoveMultiplier) * Time.deltaTime;
+                float speed = GameInput.Instance.IsHoldingDownSprint ? _sprintSpeed : _walkSpeed;
+                horizontalMove *= speed * (_isGrounded ? 1 : _inAirMoveMultiplier) * Time.deltaTime;
                 
                 finalMove += horizontalMove;
             }

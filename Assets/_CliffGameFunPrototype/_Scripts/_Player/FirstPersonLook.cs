@@ -20,9 +20,6 @@ public class FirstPersonLook : MonoBehaviour
     [SerializeField] private float minSensitivity = 0.1f;
     [SerializeField] private float maxSensitivity = 5f;
 
-    [SerializeField]
-    private float _fovLerpDuration = 0.25f;
-
     public float Sensitivity = 2;
     public float Smoothing = 1.5f;
 
@@ -44,6 +41,13 @@ public class FirstPersonLook : MonoBehaviour
     private Vector2 _lookInput;
     private Vector3 _offset;
 
+    [Header("FOV Settings")]
+    [SerializeField]
+    private float _fovLerpDuration = 0.25f;
+    
+    [SerializeField] 
+    private float _sprintingFOV = 90f;
+    
     private Camera _cam;
     private Tween _fovTween;
     private float _walkingFOV;
@@ -62,7 +66,8 @@ public class FirstPersonLook : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         GameInput.Instance.OnLook += GameInput_OnLook;
-        Player.Instance.OnStateChanged += OnMoveStateChanged;
+        GameInput.Instance.OnSprintStarted += OnSprintStarted;
+        GameInput.Instance.OnSprintEnded += OnSprintEnded;
         
         yield return null;
 
@@ -74,15 +79,9 @@ public class FirstPersonLook : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (GameInput.Instance != null)
-        {
-            GameInput.Instance.OnLook -= GameInput_OnLook;
-        }
-
-        if (Player.Instance != null)
-        {
-            Player.Instance.OnStateChanged -= OnMoveStateChanged;
-        }
+        GameInput.Instance.OnSprintStarted -= OnSprintStarted;
+        GameInput.Instance.OnSprintEnded -= OnSprintEnded;
+        GameInput.Instance.OnLook -= GameInput_OnLook;
 
         _startingSequence?.Kill();
         _fovTween?.Kill();
@@ -91,6 +90,30 @@ public class FirstPersonLook : MonoBehaviour
         {
             Destroy(_blackScreen.gameObject);
         }
+    }
+
+    private void OnSprintStarted(object sender, InputAction.CallbackContext e)
+    {
+        _fovTween?.Kill();
+
+        _fovTween = DOTween.To(
+            () => _cam.fieldOfView,
+            v => _cam.fieldOfView = v,
+            _sprintingFOV,
+            _fovLerpDuration
+        ).SetEase(Ease.OutQuad);
+    }
+
+    private void OnSprintEnded(object sender, InputAction.CallbackContext e)
+    {
+        _fovTween?.Kill();
+
+        _fovTween = DOTween.To(
+            () => _cam.fieldOfView,
+            v => _cam.fieldOfView = v,
+            _walkingFOV,
+            _fovLerpDuration
+        ).SetEase(Ease.OutQuad);
     }
 
     private void StartLookingSequence()
@@ -151,20 +174,6 @@ public class FirstPersonLook : MonoBehaviour
         rt.offsetMax = Vector2.zero;
 
         return cg;
-    }
-
-    private void OnMoveStateChanged(PlayerMoveState previous, PlayerMoveState newState)
-    {
-        _fovTween?.Kill();
-
-        float target = _walkingFOV;
-
-        _fovTween = DOTween.To(
-            () => _cam.fieldOfView,
-            v => _cam.fieldOfView = v,
-            target,
-            _fovLerpDuration
-        ).SetEase(Ease.OutQuad);
     }
 
     private void LateUpdate()

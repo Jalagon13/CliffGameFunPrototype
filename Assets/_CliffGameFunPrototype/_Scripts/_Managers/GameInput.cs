@@ -16,6 +16,8 @@ namespace CliffGame
         public event EventHandler<InputAction.CallbackContext> OnSelectSlot;
         public event EventHandler<InputAction.CallbackContext> OnToggleCraftingMenu;
         public event EventHandler<InputAction.CallbackContext> OnToggleJournalMenu;
+        public event EventHandler<InputAction.CallbackContext> OnSprintStarted;
+        public event EventHandler<InputAction.CallbackContext> OnSprintEnded;
         
         public event EventHandler<InputAction.CallbackContext> OnPrimaryInteract;
         public event EventHandler<InputAction.CallbackContext> OnSecondaryInteract;
@@ -30,6 +32,7 @@ namespace CliffGame
         public bool IsHoldingDownSecondaryInteract { get; private set; }
         public bool IsHoldingDownPrimaryInteract { get; private set; }
         public bool IsHoldingDownJump { get; private set; }
+        public bool IsHoldingDownSprint { get; private set; }
 
         private void Awake()
         {
@@ -57,6 +60,8 @@ namespace CliffGame
             _playerInput.Player.CycleBuildVariant.started += PlayerInput_CycleBuildVariant;
             _playerInput.Player.Interact.started += PlayerInput_OnInteract;
             _playerInput.Player.ToggleJournalMenu.started += PlayerInput_ToggleJournalMenu;
+            _playerInput.Player.Sprint.started += PlayerInput_Sprint;
+            _playerInput.Player.Sprint.canceled += PlayerInput_Sprint;
 
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -66,6 +71,20 @@ namespace CliffGame
         {
             _playerInput.Disable();
             _playerInput.Dispose();
+        }
+
+        private void PlayerInput_Sprint(InputAction.CallbackContext context)
+        {
+            if(context.started)
+            {
+                IsHoldingDownSprint = true;
+                OnSprintStarted?.Invoke(this, context);
+            }
+            else if(context.canceled)
+            {
+                IsHoldingDownSprint = false;
+                OnSprintEnded?.Invoke(this, context);
+            }
         }
 
         private void PlayerInput_ToggleJournalMenu(InputAction.CallbackContext context)
@@ -98,13 +117,12 @@ namespace CliffGame
             if(context.started)
             {
                 IsHoldingDownPrimaryInteract = true;
+                OnPrimaryInteract?.Invoke(this, context);
             }
             else if(context.canceled)
             {
                 IsHoldingDownPrimaryInteract = false;
             }
-
-            OnPrimaryInteract?.Invoke(this, context);
         }
 
         private void PlayerInput_OnSecondaryInteract(InputAction.CallbackContext context)
@@ -112,13 +130,12 @@ namespace CliffGame
             if (context.started)
             {
                 IsHoldingDownSecondaryInteract = true;
+                OnSecondaryInteract?.Invoke(this, context);
             }
             else if (context.canceled)
             {
                 IsHoldingDownSecondaryInteract = false;
             }
-
-            OnSecondaryInteract?.Invoke(this, context);
         }
 
         private void PlayerInput_OnToggleCraftingMenu(InputAction.CallbackContext context)

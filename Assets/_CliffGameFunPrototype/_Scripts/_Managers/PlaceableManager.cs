@@ -13,6 +13,7 @@ namespace CliffGame
         [SerializeField] private LayerMask _interactorLayerMask;
         [SerializeField] private LayerMask _buildableSurfaceMask;
         [SerializeField] private LayerMask _cliffSurfaceMask;
+        [SerializeField] private LayerMask _playerLayerMask;
         [SerializeField] private float _buildRange = 4f;
 
         [Header("Ghost Settings")]
@@ -241,6 +242,13 @@ namespace CliffGame
                         if (isConnector) continue;
                         
                         if(((1 << overlapCollider.gameObject.layer) & _buildableSurfaceMask) != 0)
+                        {
+                            GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                            _isGhostInValidPosition = false;
+                            return;
+                        }
+
+                        if (((1 << overlapCollider.gameObject.layer) & _playerLayerMask) != 0)
                         {
                             GhostifyModel(_modelParent, _ghostMaterialInvalid);
                             _isGhostInValidPosition = false;

@@ -193,6 +193,15 @@ namespace CliffGame
                 {
                     _ghostPlaceableGameObject.transform.rotation = Quaternion.LookRotation(Vector3.up, validHit.normal);
                 }
+                else if (_currentPlaceableItemSO != null && !_currentPlaceableItemSO.IsCliffPlaceable)
+                {
+                    Vector3 dirToPlayer = Player.Instance.transform.position - validHit.point;
+                    Vector3 forward = Vector3.ProjectOnPlane(dirToPlayer, validHit.normal).normalized;
+                    if (forward != Vector3.zero)
+                        _ghostPlaceableGameObject.transform.rotation = Quaternion.LookRotation(forward, validHit.normal);
+                    else
+                        _ghostPlaceableGameObject.transform.up = validHit.normal;
+                }
                 else
                 {
                     _ghostPlaceableGameObject.transform.up = validHit.normal;
@@ -228,7 +237,6 @@ namespace CliffGame
                     {
                         if (overlapCollider.gameObject == _ghostPlaceableGameObject) continue;
                         
-                        Debug.Log($"Overlap collider: {overlapCollider.gameObject.name} {overlapCollider.gameObject.tag})");
                         bool isConnector = ((1 << overlapCollider.gameObject.layer) & _connectorLayerMask) != 0;
                         if (isConnector) continue;
                         
@@ -236,7 +244,6 @@ namespace CliffGame
                         {
                             GhostifyModel(_modelParent, _ghostMaterialInvalid);
                             _isGhostInValidPosition = false;
-                            Debug.Log($"=======1 {overlapCollider.transform.gameObject.name}");
                             return;
                         }
                         
@@ -245,7 +252,6 @@ namespace CliffGame
                         {
                             GhostifyModel(_modelParent, _ghostMaterialInvalid);
                             _isGhostInValidPosition = false;
-                            Debug.Log($"=======2 {overlapCollider.transform.gameObject.name}");
                             return;
                         }
                     }
@@ -254,7 +260,6 @@ namespace CliffGame
                 {
                     Debug.LogWarning($"Missing boxCollider for {_ghostPlaceableGameObject.name}");
                 }
-                Debug.Log($"=======3");
             }
         }
 

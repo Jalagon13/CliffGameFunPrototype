@@ -32,7 +32,7 @@ namespace CliffGame
         {
             if(CraftingManager.Instance.IsCraftingUIOpen)
             {
-                CraftingManager.Instance.ToggleCraftingUI();   
+                CraftingManager.Instance.ToggleCraftingUI(false);   
                 return;
             }
             else if(BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen)

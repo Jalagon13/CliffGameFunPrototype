@@ -9,7 +9,7 @@ namespace CliffGame
     {
         public static CraftingManager Instance;
 
-        public event Action OnCraftingUIOpened;
+        public event Action<bool> OnCraftingUIOpened;
         public event Action OnCraftingUIClosed;
 
         private bool _craftingMenuUIOpened;
@@ -45,10 +45,19 @@ namespace CliffGame
 
         private void OnCraftingToggle(object sender, InputAction.CallbackContext context)
         {
-            if (!context.started || Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || 
-                Player.Instance.PauseMenuUI.IsPauseMenuOpen) return;
-                
-            if(BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen)
+            if (!context.started) return;
+
+            TryToToggleCraftingMenu(false);
+        }
+        
+        public void TryToToggleCraftingMenu(bool useCraftingTableRecipes)
+        {
+            if(Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || Player.Instance.PauseMenuUI.IsPauseMenuOpen)
+            {
+                return;
+            }
+        
+            if (BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen)
             {
                 BuildingManager.Instance.BuildWheelUI.ToggleBuildWheelUI();
                 return;
@@ -61,15 +70,15 @@ namespace CliffGame
             }
 
             // Otherwise toggle normally
-            ToggleCraftingUI();
+            ToggleCraftingUI(useCraftingTableRecipes);
         }
         
-        public void ToggleCraftingUI()
+        public void ToggleCraftingUI(bool useCraftingTableRecipes)
         {
             _craftingMenuUIOpened = !_craftingMenuUIOpened;
 
             if (_craftingMenuUIOpened)
-                OnCraftingUIOpened?.Invoke();
+                OnCraftingUIOpened?.Invoke(useCraftingTableRecipes);
             else
                 OnCraftingUIClosed?.Invoke();
         }

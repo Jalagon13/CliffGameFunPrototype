@@ -37846,7 +37846,10 @@ MonoBehaviour:
   _requiredToolType: 3
   _maxLife: 10
   _harvestDrops:
-  - DropItem: {fileID: 11400000, guid: 3b850cbd57d474a1cb1247f48e2710af, type: 2}
+  - DropItem: {fileID: 11400000, guid: fc9349e4fc87e483787f81a8837b8e27, type: 2}
+    MinAmount: 1
+    MaxAmount: 2
+  - DropItem: {fileID: 11400000, guid: 20756ec47ad404c13bb35d50264c2ac6, type: 2}
     MinAmount: 1
     MaxAmount: 2
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
@@ -37875,6 +37878,8 @@ MonoBehaviour:
   _numberOfClosestPlatformsToConsider: 4
   _warningDistance: 9
   _numOfHitsForItToFlyAway: 3
+  _flyingDurationBeforeDespawn: 4
+  _lifeTime: 60
 --- !u!114 &7039082888147559910
 MonoBehaviour:
   m_ObjectHideFlags: 0

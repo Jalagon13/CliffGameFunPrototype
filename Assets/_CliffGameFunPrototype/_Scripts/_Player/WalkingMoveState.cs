@@ -288,7 +288,7 @@ namespace CliffGame
             }
         }
 
-        private void CraftingManager_OnCraftingUIOpened()
+        private void CraftingManager_OnCraftingUIOpened(bool useCraftingTableRecipes)
         {
             DesiredMoveDirection = Vector2.zero;
             _stepsInstance.setPaused(true);

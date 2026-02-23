@@ -1620,7 +1620,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9688
+      value: 9694
       objectReference: {fileID: 0}
     - target: {fileID: 1848075474486708829, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1648,7 +1648,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7765
+      value: 7771
       objectReference: {fileID: 0}
     - target: {fileID: 3029735958138288004, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1684,7 +1684,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9727
+      value: 9733
       objectReference: {fileID: 0}
     - target: {fileID: 3926050539205680572, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1816,7 +1816,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8840
+      value: 8846
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1864,7 +1864,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9260
+      value: 9266
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1872,7 +1872,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8861
+      value: 8867
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8177,14 +8177,18 @@ MonoBehaviour:
   _hotbarRaisedYPosition: 200
   _craftSlotHolder: {fileID: 2080646905}
   _craftSlotUIPrefab: {fileID: 4398836320879300592, guid: a4b0fbe2c252a48c69c445dff71c090e, type: 3}
-  _availableRecipes:
+  _defaultRecipes:
   - {fileID: 11400000, guid: b0f05b04c91344f8da2db89156f31d8e, type: 2}
-  - {fileID: 11400000, guid: 80ebef25d0a3d4d43a1639967469cfbe, type: 2}
-  - {fileID: 11400000, guid: 3e24266cef9f540c0959b541dd07ecfa, type: 2}
+  - {fileID: 11400000, guid: 14d150780617d406f9b3616f7059b752, type: 2}
+  - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
+  _craftingTableRecipes:
   - {fileID: 11400000, guid: 1e3064abad23d408a8dbfa4a43f94031, type: 2}
   - {fileID: 11400000, guid: 01062f0c3296a4c759ea042e20b25548, type: 2}
   - {fileID: 11400000, guid: 03854f3548bbb4778a3b7c68ca31593f, type: 2}
   - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
+  - {fileID: 11400000, guid: 80ebef25d0a3d4d43a1639967469cfbe, type: 2}
+  - {fileID: 11400000, guid: b0f05b04c91344f8da2db89156f31d8e, type: 2}
+  - {fileID: 11400000, guid: 3e24266cef9f540c0959b541dd07ecfa, type: 2}
 --- !u!1001 &826374936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19322,16 +19326,10 @@ MonoBehaviour:
     Quantity: 1
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 999
-  - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
-    Quantity: 1
+  - Item: {fileID: 11400000, guid: 4fff58784637b460d927404e68c20f95, type: 2}
+    Quantity: 999
   - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
     Quantity: 999
-  - Item: {fileID: 11400000, guid: 75dd4fdcb257243c88ae818291a5f0de, type: 2}
-    Quantity: 999
-  - Item: {fileID: 11400000, guid: 906fc7e709ae94c59bdbc7a22473cb4b, type: 2}
-    Quantity: 999
-  - Item: {fileID: 11400000, guid: 2a79da082856a45019d026c74424cc18, type: 2}
-    Quantity: 1
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0

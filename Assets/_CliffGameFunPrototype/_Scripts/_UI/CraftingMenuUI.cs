@@ -14,12 +14,12 @@ namespace CliffGame
         [Header("Crafting")]
         [SerializeField] private GameObject _craftSlotHolder;
         [SerializeField] private CraftSlotUI _craftSlotUIPrefab;
-        [SerializeField] private List<RecipeSO> _availableRecipes;
+        [SerializeField] private List<RecipeSO> _defaultRecipes;
+        [SerializeField] private List<RecipeSO> _craftingTableRecipes;
 
         private void Start()
         {
             Hide();
-            InitializeCraftingSlots();
 
             CraftingManager.Instance.OnCraftingUIOpened += CraftingManager_OnCraftingUIOpened;
             CraftingManager.Instance.OnCraftingUIClosed += CraftingManager_OnCraftingUIClosed;
@@ -46,8 +46,17 @@ namespace CliffGame
             }
         }
 
-        private void CraftingManager_OnCraftingUIOpened()
+        private void CraftingManager_OnCraftingUIOpened(bool useCraftingTableRecipes)
         {
+            if(useCraftingTableRecipes)
+            {
+                InitializeCraftingSlots(_craftingTableRecipes);
+            }
+            else
+            {
+                InitializeCraftingSlots(_defaultRecipes);
+            }
+        
             // Show crafting UI
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -64,9 +73,14 @@ namespace CliffGame
             Hide();
         }
 
-        private void InitializeCraftingSlots()
+        private void InitializeCraftingSlots(List<RecipeSO> recipes)
         {
-            foreach (RecipeSO recipe in _availableRecipes)
+            foreach (Transform child in _craftSlotHolder.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            foreach (RecipeSO recipe in recipes)
             {
                 CraftSlotUI craftSlotUI = Instantiate(_craftSlotUIPrefab, _craftSlotHolder.transform);
                 craftSlotUI.InitializeCraftNode(recipe);

@@ -6,7 +6,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 972405431541523328}
+    m_TransformParent: {fileID: 4270367111518984378}
     m_Modifications:
     - target: {fileID: 1439603208813202615, guid: 66d0615cc71cd48408b75ff3f99c97af, type: 3}
       propertyPath: m_LocalScale.x
@@ -42,11 +42,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1439603208813202615, guid: 66d0615cc71cd48408b75ff3f99c97af, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1439603208813202615, guid: 66d0615cc71cd48408b75ff3f99c97af, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1439603208813202615, guid: 66d0615cc71cd48408b75ff3f99c97af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -84,7 +84,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _maxLife
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestItem
@@ -184,11 +184,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.data[0].MaxAmount
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.data[0].MinAmount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.data[1].MaxAmount
@@ -197,6 +197,78 @@ PrefabInstance:
     - target: {fileID: 488513511907690825, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _harvestDrops.Array.data[1].MinAmount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _maxLife
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _hitSFX.Path
+      value: event:/Building/WoodHitSFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _crackParticles
+      value: 
+      objectReference: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _destroySFX.Path
+      value: event:/Building/WoodDestroyedSFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _hitSFX.Guid.Data1
+      value: 1630036399
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _hitSFX.Guid.Data2
+      value: 1268181368
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _hitSFX.Guid.Data3
+      value: 1761201055
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _hitSFX.Guid.Data4
+      value: 668498223
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _maxShakeFrequency
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _destroySFX.Guid.Data1
+      value: -287471169
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _destroySFX.Guid.Data2
+      value: 1100837610
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _destroySFX.Guid.Data3
+      value: -564401781
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _destroySFX.Guid.Data4
+      value: 1637590921
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _harvestDrops.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _shakeThresholdPercentage
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _harvestDrops.Array.data[0].DropItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _harvestDrops.Array.data[0].MaxAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _harvestDrops.Array.data[0].MinAmount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3382507654136854854, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: m_Radius
@@ -249,13 +321,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6253507330619653563, guid: 207f2353357a24988826c819617406e8, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 6986527906290353793, guid: 207f2353357a24988826c819617406e8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6864240679296586908}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 207f2353357a24988826c819617406e8, type: 3}
---- !u!4 &972405431541523328 stripped
+--- !u!4 &4270367111518984378 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 6253507330619653563, guid: 207f2353357a24988826c819617406e8, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6986527906290353793, guid: 207f2353357a24988826c819617406e8, type: 3}
   m_PrefabInstance: {fileID: 6608546874453646907}
   m_PrefabAsset: {fileID: 0}

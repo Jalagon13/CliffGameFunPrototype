@@ -7,7 +7,7 @@ namespace CliffGame
     public class WeightedResource
     {
         [Tooltip("Resource prefab to spawn")]
-        public Resource resourcePrefab;
+        public NaturalResource resourcePrefab;
 
         [Range(0, 100)]
         [Tooltip("Relative spawn weight")]
@@ -19,7 +19,7 @@ namespace CliffGame
         /// <summary>
         /// Returns a Resource prefab chosen based on spawn weights.
         /// </summary>
-        public static Resource GetRandomResource(List<WeightedResource> resources)
+        public static NaturalResource GetRandomResource(List<WeightedResource> resources)
         {
             if (resources == null || resources.Count == 0)
                 return null;

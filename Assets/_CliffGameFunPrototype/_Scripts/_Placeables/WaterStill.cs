@@ -57,6 +57,11 @@ namespace CliffGame
             _waterModel.SetActive(false);
         }
 
+        private void OnDestroy()
+        {
+            StopProcessingVisuals();
+        }
+
         private void Update()
         {
             if (_waterExtractionTimer != null && !Player.Instance.PauseMenuUI.IsPauseMenuOpen)
@@ -242,11 +247,6 @@ namespace CliffGame
             {
                 _fiberVisualParent.localScale = Vector3.one;
             }
-        }
-
-        private void OnDestroy()
-        {
-            StopProcessingVisuals();
         }
     }
 }

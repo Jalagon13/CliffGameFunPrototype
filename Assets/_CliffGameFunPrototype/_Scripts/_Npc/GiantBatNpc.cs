@@ -65,7 +65,7 @@ namespace CliffGame
             SetState(BatState.Patrolling);
         }
 
-        protected override void OnDestroy()
+        private void OnDestroy()
         {
             NpcManager.Instance.OnMorningRise -= OnMorningRise;
 
@@ -73,7 +73,6 @@ namespace CliffGame
             {
                 _targetPlatform.IsTargeted = false;
             }
-            base.OnDestroy();
         }
 
         private void Update()

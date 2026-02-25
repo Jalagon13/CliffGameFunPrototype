@@ -5270,21 +5270,22 @@ MonoBehaviour:
   _cliffLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  _minSpawnDistance: 1.25
-  _minSpawnDistancePlayer: 0.5
+  _minSpawnDistance: 1.3
+  _minSpawnDistanceFromPlayerObjects: 0.15
   _initialSpawnCount: 85
+  _initialSpawnMinRemainingTime: 5
   _maxResources: 125
-  _spawnAttemptInterval: 2.5
+  _spawnAttemptInterval: 1
   _attemptsPerTick: 6
   _resources:
-  - resourcePrefab: {fileID: 6733385212726564722, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
-    spawnWeight: 96
-  - resourcePrefab: {fileID: 6733385212726564722, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
-    spawnWeight: 72
-  - resourcePrefab: {fileID: 6733385212726564722, guid: 285dc74de4f034239bc86a07346fb0cf, type: 3}
-    spawnWeight: 21
-  - resourcePrefab: {fileID: 6733385212726564722, guid: b33445883b635420d93b380d00ff9d20, type: 3}
-    spawnWeight: 12
+  - resourcePrefab: {fileID: 8969057494970469643, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
+    spawnWeight: 100
+  - resourcePrefab: {fileID: 8969057494970469643, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
+    spawnWeight: 70
+  - resourcePrefab: {fileID: 8969057494970469643, guid: 285dc74de4f034239bc86a07346fb0cf, type: 3}
+    spawnWeight: 20
+  - resourcePrefab: {fileID: 8969057494970469643, guid: b33445883b635420d93b380d00ff9d20, type: 3}
+    spawnWeight: 10
 --- !u!1 &522399308
 GameObject:
   m_ObjectHideFlags: 0
@@ -9239,7 +9240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: dayLength
-      value: 120
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: enableFog
@@ -9255,7 +9256,7 @@ PrefabInstance:
       objectReference: {fileID: 480573517}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: timeOfDay
-      value: 0.588
+      value: 0.067
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.key0.b
@@ -19213,18 +19214,6 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
-    Quantity: 1
-  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 999
-  - Item: {fileID: 11400000, guid: 4fff58784637b460d927404e68c20f95, type: 2}
-    Quantity: 999
-  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 999
-  - Item: {fileID: 11400000, guid: 3b850cbd57d474a1cb1247f48e2710af, type: 2}
-    Quantity: 999
-  - Item: {fileID: 11400000, guid: ba16adfc077834f39942abcbdcf53fd4, type: 2}
-    Quantity: 999
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -20127,7 +20116,7 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 2
   - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 2
+    Quantity: 1
   _itemsNeededForRepairing:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 1

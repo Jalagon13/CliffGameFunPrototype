@@ -7,7 +7,7 @@ namespace CliffGame
 {
     public class Resource : MonoBehaviour, IInteractable
     {
-        [Header("Resource Settings")]
+        [Header("Base Resource Settings")]
         [SerializeField] 
         private ToolType _requiredToolType;
     
@@ -33,13 +33,18 @@ namespace CliffGame
         
         [Header("Feel Settings")]
         [SerializeField] 
-        private ParticleSystem _crackParticles;
-        
+        protected ParticleSystem _crackParticles;
+
+        [SerializeField]
+        protected ParticleSystem _destroyParticles;
+
         [SerializeField]
         private EventReference _hitSFX;
 
         [SerializeField]
         protected EventReference _destroySFX;
+
+        public ToolType BreakToolType => _requiredToolType;
 
         protected virtual void Awake()
         {
@@ -48,13 +53,11 @@ namespace CliffGame
 
         protected virtual void OnDestroy()
         {
-            if (ResourceManager.Instance != null)
+            if (_destroyParticles != null && gameObject.scene.isLoaded)
             {
-                ResourceManager.Instance.UnregisterResource(this);
+                Instantiate(_destroyParticles.gameObject, transform.position, Quaternion.identity);
             }
         }
-
-        public ToolType BreakToolType => _requiredToolType;
 
         public virtual void OnInteractWith()
         {
@@ -77,8 +80,6 @@ namespace CliffGame
             }
             
             AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
-            ResourceManager.Instance.UnregisterResource(this);
-            Debug.Log($"Destroying resource: {gameObject.name}");
             Destroy(gameObject);
         }
 

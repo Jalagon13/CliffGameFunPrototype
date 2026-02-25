@@ -44,11 +44,9 @@ namespace CliffGame
             SetState(BirdState.Patrolling);
         }
 
-        protected override void OnDestroy()
+        private void OnDestroy()
         {
             NpcManager.Instance.OnNightRise -= OnNightRise;
-
-            base.OnDestroy();
         }
 
         private void OnNightRise()

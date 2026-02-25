@@ -20,14 +20,18 @@ namespace CliffGame
         [SerializeField]
         private float _minSpawnDistance = 2f;
 
-        [Tooltip("Minimum distance allowed from the player")]
+        [Tooltip("Minimum distance allowed between resources and player objects")]
         [SerializeField]
-        private float _minSpawnDistancePlayer = 0.5f;
+        private float _minSpawnDistanceFromPlayerObjects = 0.15f;
 
         [Header("Initial Spawn")]
         [Tooltip("How many resources to try to spawn at game start")]
         [SerializeField]
         private int _initialSpawnCount = 15;
+
+        [Tooltip("Minimum remaining seconds for initially spawned resources")]
+        [SerializeField]
+        private float _initialSpawnMinRemainingTime = 5f;
 
         [Tooltip("Maximum number of active resources allowed")]
         [SerializeField]
@@ -44,7 +48,7 @@ namespace CliffGame
         [SerializeField] 
         private List<WeightedResource> _resources;
 
-        private readonly List<Resource> _activeResources = new List<Resource>();
+        private readonly List<NaturalResource> _activeResources = new List<NaturalResource>();
 
         private void Awake()
         {
@@ -66,7 +70,7 @@ namespace CliffGame
                 if (_activeResources.Count >= _maxResources)
                     continue;
 
-                TrySpawnResource();
+                TrySpawnResource(false);
             }
         }
 
@@ -78,7 +82,7 @@ namespace CliffGame
             while (spawned < _initialSpawnCount && safetyIterations > 0)
             {
                 int beforeCount = _activeResources.Count;
-                TrySpawnResource();
+                TrySpawnResource(true);
 
                 if (_activeResources.Count > beforeCount)
                     spawned++;
@@ -87,8 +91,13 @@ namespace CliffGame
             }
         }
 
-        private void TrySpawnResource()
+        private void TrySpawnResource(bool isInitialSpawn = false)
         {
+            Vector3 bestPoint = Vector3.zero;
+            Vector3 bestNormal = Vector3.zero;
+            float bestDistance = -1f;
+            bool candidateFound = false;
+
             for (int i = 0; i < _attemptsPerTick; i++)
             {
                 Vector3 worldSamplePoint = GetRandomPointOnQuad();
@@ -96,18 +105,27 @@ namespace CliffGame
 
                 if (Physics.Raycast(ray, out RaycastHit hit, 100f, _cliffLayerMask))
                 {
-                    if (!IsFarEnoughFromOtherResources(hit.point))
-                        continue;
-                        
-                    if (Player.Instance != null && Vector3.Distance(hit.point, Player.Instance.transform.position) < _minSpawnDistancePlayer)
-                        continue;
-
                     if (IsOverlappingWithPlaceable(hit.point))
                         continue;
 
-                    SpawnResourceAt(hit.point, hit.normal);
-                    return;
+                    float dist = GetDistanceToNearestResource(hit.point);
+
+                    if (dist < _minSpawnDistance)
+                        continue;
+
+                    if (dist > bestDistance)
+                    {
+                        bestDistance = dist;
+                        bestPoint = hit.point;
+                        bestNormal = hit.normal;
+                        candidateFound = true;
+                    }
                 }
+            }
+
+            if (candidateFound)
+            {
+                SpawnResourceAt(bestPoint, bestNormal, isInitialSpawn);
             }
         }
 
@@ -123,24 +141,26 @@ namespace CliffGame
             return _resourceSamplingQuad.transform.TransformPoint(localPoint);
         }
 
-        private bool IsFarEnoughFromOtherResources(Vector3 point)
+        private float GetDistanceToNearestResource(Vector3 point)
         {
+            float minDistance = float.MaxValue;
+
             foreach (Resource resource in _activeResources)
             {
                 if (resource == null)
                     continue;
 
                 float dist = Vector3.Distance(point, resource.transform.position);
-                if (dist < _minSpawnDistance)
-                    return false;
+                if (dist < minDistance)
+                    minDistance = dist;
             }
 
-            return true;
+            return minDistance;
         }
 
         private bool IsOverlappingWithPlaceable(Vector3 point)
         {
-            Collider[] colliders = Physics.OverlapSphere(point, _minSpawnDistance);
+            Collider[] colliders = Physics.OverlapSphere(point, _minSpawnDistanceFromPlayerObjects);
             foreach (Collider collider in colliders)
             {
                 if (collider.transform.root.CompareTag("Placeable") || collider.transform.root.CompareTag("BuildPiece"))
@@ -151,14 +171,20 @@ namespace CliffGame
             return false;
         }
 
-        private void SpawnResourceAt(Vector3 position, Vector3 normal)
+        private void SpawnResourceAt(Vector3 position, Vector3 normal, bool isInitialSpawn = false)
         {
-            Resource resource = Instantiate(WeightedResourceSelector.GetRandomResource(_resources), position, Quaternion.LookRotation(normal), transform);
+            NaturalResource resource = Instantiate(WeightedResourceSelector.GetRandomResource(_resources), position, Quaternion.LookRotation(normal), transform);
             // Debug.Log($"{_activeResources.Count}/{_maxResources}: Spawned resource {resource.name} at {position}");
+            
+            if (isInitialSpawn)
+            {
+                resource.SetRandomInitialTime(_initialSpawnMinRemainingTime);
+            }
+            
             _activeResources.Add(resource);
         }
 
-        public void UnregisterResource(Resource resource)
+        public void UnregisterResource(NaturalResource resource)
         {
             if (_activeResources.Contains(resource))
             {

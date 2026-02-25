@@ -57,9 +57,10 @@ namespace CliffGame
             _waterModel.SetActive(false);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             StopProcessingVisuals();
+            base.OnDestroy();
         }
 
         private void Update()

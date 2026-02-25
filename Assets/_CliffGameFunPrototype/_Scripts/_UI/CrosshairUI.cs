@@ -19,6 +19,7 @@ namespace CliffGame
         [SerializeField] private TMP_Text _textAboveCrosshairLabel;
 
         private Image _crosshairImage;
+        private bool _isHoldingHammer;
         
         private void Awake()
         {
@@ -49,6 +50,10 @@ namespace CliffGame
             if(InteractionManager.Instance.CurrentlyHoveredInteractable != null)
             {
                 ShowInteractableInfo();
+            }
+            else if (_isHoldingHammer && InteractionManager.Instance.CurrentlyHoveredBuildPiece != null)
+            {
+                ShowBuildPieceInfo(InteractionManager.Instance.CurrentlyHoveredBuildPiece);
             }
             else
             {
@@ -200,6 +205,25 @@ namespace CliffGame
             }
         }
 
+        private void ShowBuildPieceInfo(BuildPiece buildPiece)
+        {
+            _crosshairImage.sprite = _hammerSprite;
+
+            if (buildPiece.IsAnchored)
+            {
+                ShowTextAboveCrosshair("Stability: 100%");
+            }
+            else
+            {
+                int currentDist = buildPiece.DistanceFromAnchor;
+                int maxDist = BuildPieceIntegrityManager.Instance.MaxSupportedDistance;
+                float stability = Mathf.Clamp01(1.1f - ((float)currentDist / maxDist));
+                
+                ShowTextAboveCrosshair($"Stability: {stability:P0}");
+            }
+            SetCrosshairAlpha(1f);
+        }
+
         private void HideInteractableInfo()
         {
             _crosshairImage.sprite = _defaultSprite;
@@ -211,6 +235,7 @@ namespace CliffGame
         {
             if(item.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer) 
             {
+                _isHoldingHammer = true;
                 if(BuildingManager.Instance.CurrentBuildType == BuildOption.DestroyMode)
                 {
                     if (_structReqHolder.transform.childCount > 0)
@@ -248,6 +273,7 @@ namespace CliffGame
             }
             else
             {
+                _isHoldingHammer = false;
                 for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
                 {
                     Destroy(_structReqHolder.transform.GetChild(i).gameObject);

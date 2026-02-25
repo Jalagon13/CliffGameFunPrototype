@@ -4506,7 +4506,7 @@ MonoBehaviour:
     MinSpawnDistance: 5
     MaxSpawnDistance: 15
     SpawnZVarianceMin: -2
-    SpawnZVarianceMax: 2
+    SpawnZVarianceMax: 4
     AllowedSpawnTimes: 000000000100000002000000
   _canSpawnNpcs: 1
   _maxNpcSlotAmount: 6
@@ -19214,6 +19214,12 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
+  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
+    Quantity: 999
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -20116,7 +20122,7 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 2
   - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 1
+    Quantity: 2
   _itemsNeededForRepairing:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 1
@@ -21932,7 +21938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructuralIntegrityManager
   _destructionDelay: 0.1
-  _initialDestructionDelay: 0.5
+  _initialDestructionDelay: 0.35
   _maxSupportedDistance: 4
 --- !u!114 &2141364074 stripped
 MonoBehaviour:

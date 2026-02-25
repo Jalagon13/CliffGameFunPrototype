@@ -19,9 +19,10 @@ namespace CliffGame
             SetVisualScale(0f);
         }
         
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             _parentPlanterBox?.ClearPlanterBox();
+            base.OnDestroy();
         }
 
         public override void OnInteractWith()

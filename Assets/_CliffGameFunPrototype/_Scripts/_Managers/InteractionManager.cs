@@ -23,6 +23,8 @@ namespace CliffGame
         private GameObject _currentlyHoveredBuildable;
         public GameObject CurrentlyHoveredBuildable => _currentlyHoveredBuildable;
 
+        public BuildPiece CurrentlyHoveredBuildPiece { get; private set; }
+
         private void Awake()
         {
             Instance = this;
@@ -48,6 +50,7 @@ namespace CliffGame
             if (GameInput.Instance == null) return;
 
             SearchForInteractable();
+            SearchForBuildPiece();
         }
 
         private void Interact(object sender, InputAction.CallbackContext e)
@@ -131,14 +134,14 @@ namespace CliffGame
             return false;
         }
         
-        private bool SearchForBuildable()
+        private void SearchForBuildPiece()
         {
             RaycastHit[] hits = Physics.RaycastAll(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, _interactSearchDistance, _buildLayer);
 
             if (hits.Length == 0)
             {
-                _currentlyHoveredBuildable = null;
-                return false;
+                CurrentlyHoveredBuildPiece = null;
+                return;
             }
 
             Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
@@ -148,12 +151,15 @@ namespace CliffGame
                 if (hit.collider.gameObject.layer == _playerLayer)
                     continue;
 
-                _currentlyHoveredBuildable = hit.collider.gameObject;
-                return true;
+                BuildPiece piece = hit.collider.GetComponentInParent<BuildPiece>();
+                if (piece != null)
+                {
+                    CurrentlyHoveredBuildPiece = piece;
+                    return;
+                }
             }
 
-            _currentlyHoveredBuildable = null;
-            return false;
+            CurrentlyHoveredBuildPiece = null;
         }
     }
 }

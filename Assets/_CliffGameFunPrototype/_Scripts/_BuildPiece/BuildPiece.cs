@@ -11,6 +11,12 @@ namespace CliffGame
         
         [SerializeField] private BoxCollider _pieceCollider;
 
+        [SerializeField] private InventoryItem[] _itemsNeededForBuilding;
+        public InventoryItem[] ItemsNeededForBuilding => _itemsNeededForBuilding;
+
+        [SerializeField] private InventoryItem[] _itemsNeededForRepairing;
+        public InventoryItem[] ItemsNeededForRepairing => _itemsNeededForRepairing;
+
         [field: SerializeField]
         public BuildOption BuildType { get; private set; }
     
@@ -111,7 +117,7 @@ namespace CliffGame
         private void RefundCostToPlayer()
         {
             Debug.Log($"Refunding");
-            InventoryManager.Instance.AddItems(BuildingManager.Instance.ItemsNeededForBuilding);
+            InventoryManager.Instance.AddItems(ItemsNeededForBuilding);
         }
     }
 }

@@ -117,6 +117,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BuildPiece
   _destructionParticles: {fileID: 3947636531895734693, guid: e5f1ccd63da2f44378d6559a1a73df60, type: 3}
+  _pieceCollider: {fileID: 1288505127804385180}
+  _itemsNeededForBuilding:
+  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
+    Quantity: 1
+  _itemsNeededForRepairing:
+  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 1
   <BuildType>k__BackingField: 1
 --- !u!1 &4955678714227277944
 GameObject:

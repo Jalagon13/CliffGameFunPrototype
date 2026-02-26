@@ -11,7 +11,7 @@ namespace CliffGame
         Left,
         Right,
         Top,
-        Bottom
+        Bottom,
     }
 
     public class Connector : MonoBehaviour

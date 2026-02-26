@@ -42,11 +42,6 @@ namespace CliffGame
         [SerializeField] private float _buildRange = 4f;
         [SerializeField] private float _destroyDuration = 0.5f;
         [SerializeField] private float _placeCooldown = 0.15f;
-        [SerializeField] private InventoryItem[] _itemsNeededForBuilding;
-        public InventoryItem[] ItemsNeededForBuilding => _itemsNeededForBuilding;
-
-        [SerializeField] private InventoryItem[] _itemsNeededForRepairing;
-        public InventoryItem[] ItemsNeededForRepairing => _itemsNeededForRepairing;
 
         private Connector _lastSnappedConnector = null; // Tracks the last connector the ghost was snapped to, for snap/unsnap events
         private List<Material> _lastHitMaterials = new();
@@ -238,7 +233,7 @@ namespace CliffGame
             if (_placeCooldownTimer.RemainingSeconds > 0f)
                 return;
 
-            if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding) || CraftingManager.Instance.IsCraftingUIOpen)
+            if (!InventoryManager.Instance.InventoryHasItems(GetCurrentBuild().ItemsNeededForBuilding) || CraftingManager.Instance.IsCraftingUIOpen)
                 return;
 
             if (_ghostBuildPiece != null && _isGhostInValidPosition)
@@ -254,12 +249,12 @@ namespace CliffGame
                 
                 BuildPieceIntegrityManager.Instance.RegisterBuildPiece(newBuildPiece);
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StructureBuiltSFX, transform.position);
-                InventoryManager.Instance.RemoveItems(_itemsNeededForBuilding);
+                InventoryManager.Instance.RemoveItems(GetCurrentBuild().ItemsNeededForBuilding);
                 _placeCooldownTimer.Reset();
             }
         }
 
-        private BuildPiece GetCurrentBuild()
+        public BuildPiece GetCurrentBuild()
         {
             switch (_currentBuildType)
             {
@@ -346,6 +341,34 @@ namespace CliffGame
                     closestConnector = connector;
                 }
             }
+            
+            if (closestConnector != null)
+            {
+                CardinalDireciton cameraDirection = GetCardinalDirection(Camera.main.transform.forward);
+
+                // If the closest connector is not facing the camera, check if there is an overlapping one that is
+                if (GetCardinalDirection(closestConnector.transform.forward) != cameraDirection)
+                {
+                    foreach (Collider collider in connectorColliders)
+                    {
+                        Connector otherConnector = collider.GetComponent<Connector>();
+                        if (otherConnector == closestConnector) continue;
+
+                        if (Physics.Linecast(camPos, otherConnector.transform.position, _cliffLayerMask)) continue;
+
+                        // Check if it overlaps with the closest connector
+                        if (Vector3.Distance(closestConnector.transform.position, otherConnector.transform.position) <= closestConnector.ConnectorCollider.radius)
+                        {
+                            // Prioritize if it faces the camera and is valid
+                            if (GetCardinalDirection(otherConnector.transform.forward) == cameraDirection && otherConnector.CanConnectTo(_currentBuildType))
+                            {
+                                closestConnector = otherConnector;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
 
             if(closestConnector == null || !closestConnector.CanConnectTo(_currentBuildType))
             {
@@ -417,14 +440,31 @@ namespace CliffGame
 
                 // If ghost is facing generally the opposite direction from the camera forward vector, flip it
                 float dot = Vector3.Dot(ghostForward, cameraForward);
+                
                 bool wantsNormalFacing = true;
+                bool isFacingAwayFromCamera = dot < 0f;
 
                 if (_currentBuildType == BuildOption.Stairs)
                 {
-                    wantsNormalFacing = _usingUpstairs;
+                    if(closestConnector.BuildPiece.BuildType == BuildOption.Platform)
+                    {
+                        wantsNormalFacing = _usingUpstairs;
+                    }
+                    else if(closestConnector.BuildPiece.BuildType == BuildOption.Stairs)
+                    {
+                        if(closestConnector.ConnectorPosition == ConnectorPosition.Top || closestConnector.ConnectorPosition == ConnectorPosition.Bottom)
+                        {
+                            wantsNormalFacing = _usingUpstairs;
+                        }
+                        else if (closestConnector.ConnectorPosition == ConnectorPosition.Left || closestConnector.ConnectorPosition == ConnectorPosition.Right)
+                        {
+                            if(isFacingAwayFromCamera)
+                            {
+                                wantsNormalFacing = false;
+                            }
+                        }
+                    }
                 }
-
-                bool isFacingAwayFromCamera = dot < 0f;
 
                 if (wantsNormalFacing && isFacingAwayFromCamera || !wantsNormalFacing && !isFacingAwayFromCamera)
                 {
@@ -440,7 +480,7 @@ namespace CliffGame
                 return;
             }
 
-            if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding))
+            if (!InventoryManager.Instance.InventoryHasItems(GetCurrentBuild().ItemsNeededForBuilding))
             {
                 GhostifyModel(_modelParent, _ghostMaterialInvalid);
                 _isGhostInValidPosition = false;
@@ -585,6 +625,19 @@ namespace CliffGame
                 CardinalDireciton cameraDirection = GetCardinalDirection(Camera.main.transform.forward);
                 CardinalDireciton connectorDirection = GetCardinalDirection(closestConnector.transform.forward);
                 
+                // If I am building stairs on stairs, if im building on the left or right, put it to the opposite connector
+                if(closestConnector.BuildPiece.BuildType == BuildOption.Stairs)
+                {
+                    if(closestConnector.ConnectorPosition == ConnectorPosition.Right)
+                    {
+                        return ConnectorPosition.Left;
+                    }
+                    else if(closestConnector.ConnectorPosition == ConnectorPosition.Left)
+                    {
+                        return ConnectorPosition.Right;
+                    }
+                }
+                
                 if(cameraDirection != connectorDirection)
                 {
                     return ConnectorPosition.Top;
@@ -665,7 +718,7 @@ namespace CliffGame
             }
 
             // If it does not have wood to place make it invalid
-            if (!InventoryManager.Instance.InventoryHasItems(_itemsNeededForBuilding))
+            if (!InventoryManager.Instance.InventoryHasItems(GetCurrentBuild().ItemsNeededForBuilding))
             {
                 GhostifyModel(_modelParent, _ghostMaterialInvisible);
                 _isGhostInValidPosition = false;
@@ -1001,7 +1054,7 @@ namespace CliffGame
                 Destroy(_currentDestroyTarget.gameObject);
 
                 _currentDestroyTarget = null;
-                InventoryManager.Instance.AddItems(_itemsNeededForBuilding);
+                InventoryManager.Instance.AddItems(buildPiece.ItemsNeededForBuilding);
                 BuildPieceIntegrityManager.Instance.UnregisterBuildPiece(buildPiece);
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
             }

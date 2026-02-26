@@ -109,14 +109,6 @@ namespace CliffGame
 
             if (type == BuildOption.RepairMode)
             {
-                foreach (InventoryItem item in BuildingManager.Instance.ItemsNeededForRepairing)
-                {
-                    StructReqUI structReq = Instantiate(_structReqPrefab, _structReqHolder.transform.position, Quaternion.identity);
-                    structReq.transform.SetParent(_structReqHolder.transform);
-
-                    structReq.Initialize(item);
-                }
-
                 _repairInstructions.SetActive(true);
                 _stairsChangeDirectionText.SetActive(false);
             }
@@ -256,14 +248,6 @@ namespace CliffGame
                         }
                     }
 
-                    foreach (InventoryItem item1 in BuildingManager.Instance.ItemsNeededForRepairing)
-                    {
-                        StructReqUI structReq = Instantiate(_structReqPrefab, _structReqHolder.transform.position, Quaternion.identity);
-                        structReq.transform.SetParent(_structReqHolder.transform);
-
-                        structReq.Initialize(item1);
-                    }
-
                     _repairInstructions.SetActive(true);
                 }
                 else if(BuildingManager.Instance.CurrentBuildType == BuildOption.Fence || BuildingManager.Instance.CurrentBuildType == BuildOption.Platform)
@@ -285,7 +269,7 @@ namespace CliffGame
 
         private void PopulateBuildReqs()
         {
-            foreach (InventoryItem item in BuildingManager.Instance.ItemsNeededForBuilding)
+            foreach (InventoryItem item in BuildingManager.Instance.GetCurrentBuild().ItemsNeededForBuilding)
             {
                 StructReqUI structReq = Instantiate(_structReqPrefab, _structReqHolder.transform.position, Quaternion.identity);
                 structReq.transform.SetParent(_structReqHolder.transform);

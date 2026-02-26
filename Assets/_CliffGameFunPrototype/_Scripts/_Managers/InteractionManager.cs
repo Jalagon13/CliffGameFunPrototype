@@ -84,7 +84,8 @@ namespace CliffGame
                     {
                         if (hit.collider.transform.root.TryGetComponent(out BuildPieceDurability bpd))
                         {
-                            if (InventoryManager.Instance.InventoryHasItems(BuildingManager.Instance.ItemsNeededForRepairing))
+                            BuildPiece bp = bpd.GetComponent<BuildPiece>();
+                            if (bp != null && InventoryManager.Instance.InventoryHasItems(bp.ItemsNeededForRepairing))
                             {
                                 if (bpd.CurrentHitPoints >= bpd.MaxHitPoints)
                                 {
@@ -93,7 +94,7 @@ namespace CliffGame
 
                                 bpd.AddHp(toolItem.IntValue);
                                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BuildingRepairedSFX, bpd.transform.position);
-                                InventoryManager.Instance.RemoveItems(BuildingManager.Instance.ItemsNeededForRepairing);
+                                InventoryManager.Instance.RemoveItems(bp.ItemsNeededForRepairing);
                             }
                         }
                     }

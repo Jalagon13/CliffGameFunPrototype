@@ -70,7 +70,7 @@ namespace CliffGame
 
         private void TryToSpawnNpc()
         {
-            if(!_canSpawnNpcs || Player.Instance == null) return;
+            if(!_canSpawnNpcs || Player.Instance == null || Player.Instance.FirstPersonLook.IsSequenceOngoing) return;
 
             // Check if we're at max capacity
             if (_currentNpcCapacity >= _maxNpcSlotAmount) return;

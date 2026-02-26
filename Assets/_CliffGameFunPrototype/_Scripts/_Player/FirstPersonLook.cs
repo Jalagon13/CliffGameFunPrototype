@@ -8,8 +8,12 @@ using System.Collections;
 
 public class FirstPersonLook : MonoBehaviour
 {
+    public Action OnStartSequenceFinished;
+
     [SerializeField] 
     private bool _executeStartingSequence = true;
+    public bool ExecuteStartingSequence => _executeStartingSequence;
+
 
     [SerializeField]
     private Transform _character;
@@ -27,6 +31,7 @@ public class FirstPersonLook : MonoBehaviour
     [SerializeField] private float _blackScreenFadeDuration = 2f;
     [SerializeField] private float _startDelay = 1.0f;
     [SerializeField] private float _lookDownDuration = 1.5f;
+    [SerializeField] private float _lookDownDelay = 0.5f;
     [SerializeField] private float _lookLeftDuration = 1.5f;
     [SerializeField] private float _lookLeftDelay = 0.5f;
     [SerializeField] private float _lookRightDuration = 1.5f;
@@ -132,6 +137,8 @@ public class FirstPersonLook : MonoBehaviour
         // 1. Look down 60 degrees
         _startingSequence.Append(DOTween.To(() => _velocity.y, x => _velocity.y = x, -_lookDownAngle, _lookDownDuration).SetEase(Ease.InOutQuad));
 
+        _startingSequence.AppendInterval(_lookDownDelay);
+
         // 2. Look left 80 degrees
         _startingSequence.Append(DOTween.To(() => _velocity.x, x => _velocity.x = x, -_lookLeftAngle, _lookLeftDuration).SetEase(Ease.InOutQuad));
 
@@ -147,7 +154,11 @@ public class FirstPersonLook : MonoBehaviour
         // 4. Look forward (0 degrees)
         _startingSequence.Append(DOTween.To(() => _velocity.x, x => _velocity.x = x, 0f, _lookForwardDuration).SetEase(Ease.InOutQuad));
 
-        _startingSequence.OnComplete(() => IsSequenceOngoing = false);
+        _startingSequence.OnComplete(() => 
+        {
+            IsSequenceOngoing = false;
+            OnStartSequenceFinished?.Invoke();
+        });
     }
 
     private CanvasGroup CreateBlackScreen()

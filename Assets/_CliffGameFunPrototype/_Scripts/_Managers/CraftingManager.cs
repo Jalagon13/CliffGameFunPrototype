@@ -52,7 +52,7 @@ namespace CliffGame
         
         public void TryToToggleCraftingMenu(bool useCraftingTableRecipes)
         {
-            if(Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || Player.Instance.PauseMenuUI.IsPauseMenuOpen)
+            if(Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || Player.Instance.PauseMenuUI.IsPauseMenuOpen || Player.Instance.FirstPersonLook.IsSequenceOngoing)
             {
                 return;
             }

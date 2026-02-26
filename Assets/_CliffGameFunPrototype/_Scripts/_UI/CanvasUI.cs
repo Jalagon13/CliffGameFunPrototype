@@ -7,10 +7,11 @@ namespace CliffGame
     public class CanvasUI : MonoBehaviour
     {
         [SerializeField] 
-        private GameObject _gameUI;
-        [SerializeField] 
         private float _fadeInDuration = 2f;
-        
+
+        [SerializeField]
+        private CanvasGroup _canvasGroup;
+
         private bool _hasInitialized = false;
         
         private void Start()
@@ -34,20 +35,13 @@ namespace CliffGame
 
         private void DoLateInitialization()
         {
-            _gameUI.SetActive(!Player.Instance.FirstPersonLook.ExecuteStartingSequence);
-                
+            _canvasGroup.alpha = Player.Instance.FirstPersonLook.ExecuteStartingSequence ? 0f : 1f;
         }
 
         private void OnStartSequenceFinished()
         {
-            _gameUI.SetActive(true);
-            CanvasGroup canvasGroup = _gameUI.GetComponent<CanvasGroup>();
-            if (canvasGroup == null)
-            {
-                canvasGroup = _gameUI.AddComponent<CanvasGroup>();
-            }
-            canvasGroup.alpha = 0f;
-            canvasGroup.DOFade(1f, _fadeInDuration);
+            _canvasGroup.alpha = 0f;
+            _canvasGroup.DOFade(1f, _fadeInDuration);
         }
     }
 }

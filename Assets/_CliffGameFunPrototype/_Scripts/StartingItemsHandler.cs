@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -11,7 +12,32 @@ namespace CliffGame
         [SerializeField]
         private InventoryItem[] _startingItems;
 
-        private IEnumerator Start()
+        private void Start()
+        {
+            if (Player.Instance.FirstPersonLook.ExecuteStartingSequence)
+            {
+                Player.Instance.FirstPersonLook.OnStartSequenceFinished += GiveStartingItems;
+            }
+            else
+            {
+                GiveStartingItems();
+            }
+        }
+        
+        private void OnDestroy()
+        {
+            if (Player.Instance.FirstPersonLook.ExecuteStartingSequence)
+            {
+                Player.Instance.FirstPersonLook.OnStartSequenceFinished -= GiveStartingItems;
+            }
+        }
+
+        private void GiveStartingItems()
+        {
+            StartCoroutine(GivePlayerStartingItems());
+        }
+
+        private IEnumerator GivePlayerStartingItems()
         {
             yield return new WaitForSeconds(_initialDelay); // Wait a frame to ensure InventoryManager is initialized
 
@@ -20,7 +46,7 @@ namespace CliffGame
                 InventoryManager.Instance.AddItem(item.Item, item.Quantity);
                 yield return new WaitForSeconds(_delayBetweenItemsGiven);
             }
-            
+
             InventoryManager.Instance.InventoryModel.UpdateInventory();
         }
     }

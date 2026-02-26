@@ -26,7 +26,6 @@ namespace CliffGame
         [SerializeField] private float _minAirTimeForLandingSFX = 0.2f;
         private float _verticalVelocity;
         private CharacterController _cc;
-        
     
         [Header("Falling Settings")]
         [SerializeField, Tooltip("How far you can fall for free (no damage)")] 
@@ -272,7 +271,7 @@ namespace CliffGame
         {
             bool isMoving = DesiredMoveDirection.sqrMagnitude > 0f;
 
-            if (isMoving && _isGrounded)
+            if (isMoving && _isGrounded && !_isSliding)
             {
                 _stepsInstance.getPlaybackState(out PLAYBACK_STATE playbackState);
                 if (playbackState == PLAYBACK_STATE.STOPPED)

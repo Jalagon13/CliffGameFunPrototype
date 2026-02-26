@@ -26,11 +26,7 @@ namespace CliffGame
             Instance = this;
 
             _healthStat = new PlayerStat(_maxHealth, _noVitalsHealthDrainPerSecond, _passiveHealthGenPerSecond);
-
-            _healthStat.OnValueChanged += (current, max) =>
-            {
-                OnHealthChanged?.Invoke(current, max);
-            };
+            _healthStat.OnValueChanged += HandleHealthChanged;
         }
 
         private IEnumerator Start()
@@ -44,17 +40,33 @@ namespace CliffGame
         private void OnDestroy()
         {
             Player.Instance.OnPlayerRespawn -= OnRespawn;
+            _healthStat.OnValueChanged -= HandleHealthChanged;
         }
 
         private void Update()
         {
-            if (HungerManager.Instance.CurrentHungerState == HungerState.Starving || ThirstManager.Instance.CurrentThirstState == ThirstState.Thirsty)
+            if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead) return;
+
+            if (HungerManager.Instance.CurrentHungerState == HungerState.Starving || ThirstManager.Instance.CurrentThirstState == ThirstState.Dehydrated)
             {
                 _healthStat.UpdateStat(Time.deltaTime, true);
             }
             else
             {
                 _healthStat.UpdateStat(Time.deltaTime, false);
+            }
+        }
+
+        private void HandleHealthChanged(int current, int max)
+        {
+            OnHealthChanged?.Invoke(current, max);
+
+            if (current <= 0)
+            {
+                if (Player.Instance != null && Player.Instance.CurrentMoveStateType != PlayerMoveState.Dead)
+                {
+                    OnPlayerDeath?.Invoke();
+                }
             }
         }
 
@@ -73,16 +85,7 @@ namespace CliffGame
         {
             int amountToDamage = Mathf.Abs(amount);
             _healthStat.ChangeCurrent(-amountToDamage);
-            
-            if(_healthStat.Current <= 0)
-            {
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerHurtSFX, Player.Instance.transform.position);
-                OnPlayerDeath?.Invoke();
-            }
-            else
-            {
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerHurtSFX, Player.Instance.transform.position);
-            }
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerHurtSFX, Player.Instance.transform.position);
         }
     }
 }

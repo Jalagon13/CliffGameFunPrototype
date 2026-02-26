@@ -55,8 +55,8 @@ namespace CliffGame
             if(incomingBuildType == BuildOption.Platform && (IsConnectedTo(BuildOption.Platform) || IsConnectedTo(BuildOption.Stairs)))
                 return false;
 
-            if (incomingBuildType == BuildOption.Stairs && (IsConnectedTo(BuildOption.Stairs) || IsConnectedTo(BuildOption.Fence)))
-                return false;
+            // if (incomingBuildType == BuildOption.Stairs && (IsConnectedTo(BuildOption.Stairs) || IsConnectedTo(BuildOption.Fence)))
+            //     return false;
 
             if (incomingBuildType == BuildOption.Fence && (IsConnectedTo(BuildOption.Fence) || IsConnectedTo(BuildOption.Stairs)))
                 return false;

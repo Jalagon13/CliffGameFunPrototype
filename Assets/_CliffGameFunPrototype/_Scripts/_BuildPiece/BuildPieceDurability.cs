@@ -51,6 +51,11 @@ namespace CliffGame
             if (!_isStartingBuildPiece) yield break;
             
             BuildPieceIntegrityManager.Instance.RegisterBuildPiece(transform.GetComponent<BuildPiece>());
+            
+            if(Player.Instance.FirstPersonLook.ExecuteStartingSequence)
+            {
+                yield return new WaitForSeconds(4f);
+            }
 
             yield return new WaitForSeconds(4f);
 

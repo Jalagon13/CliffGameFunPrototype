@@ -80,7 +80,7 @@ namespace CliffGame
                 if (InventoryManager.Instance.SelectedInventoryItem.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer)
                 {
                     RaycastHit hit;
-                    if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance))
+                    if (Physics.Raycast(Player.Instance.PlayerCamera.transform.position, Player.Instance.PlayerCamera.transform.forward, out hit, _interactSearchDistance, _buildLayer))
                     {
                         if (hit.collider.transform.root.TryGetComponent(out BuildPieceDurability bpd))
                         {
@@ -118,13 +118,18 @@ namespace CliffGame
             {
                 if (hit.collider.gameObject.layer == _playerLayer)
                     continue;
-                    
-                if(hit.collider.gameObject.transform.TryGetComponent(out Resource resource))
+
+                if (hit.collider.transform.TryGetComponent(out Resource resource))
                 {
                     _currentlyHoveredInteractable = resource;
                     return true;
                 }
-                else
+                else if (((1 << hit.collider.gameObject.layer) & _buildLayer) != 0)
+                {
+                    // It's a build piece, but not a resource. It blocks anything behind it.
+                    break;
+                }
+                else // It's not a resource or a build piece, check for other interactables
                 {
                     _currentlyHoveredInteractable = hit.collider.GetComponent<IInteractable>();
                     if (_currentlyHoveredInteractable != null) return true;

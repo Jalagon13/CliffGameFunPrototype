@@ -490,7 +490,7 @@ namespace CliffGame
             
             if(GhostStairsOverlappingExistingStairs())
             {
-                GhostifyModel(_modelParent, _ghostMaterialInvalid);
+                GhostifyModel(_modelParent, _ghostMaterialInvisible);
                 _isGhostInValidPosition = false;
                 RestoreStabilityPreview();
                 return;

@@ -78,7 +78,7 @@ namespace CliffGame
         public void StateUpdate()
         {
             WalkStateHandler();
-            // HandleWind(); // Temp delete in case I need it later
+            HandleWind(); // Temp delete in case I need it later
             MovePlayer();
             Jump();
             HandleFallTracking();

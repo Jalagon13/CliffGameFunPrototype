@@ -21367,11 +21367,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
   <WindCanPushPlayer>k__BackingField: 1
   _windSeverity: 0.06
-  _windPushesPlayerThreshold: 0.0375
+  _windPushesPlayerThreshold: 0.06
   _windTickInterval: 0.125
   _minRattleChance: 0.0185
   _maxRattleChance: 0.7
-  <MaxWindForceAtFullSeverity>k__BackingField: 2.1
+  <MaxWindForceAtFullSeverity>k__BackingField: 1.2
   _rattleSeverityCurve:
     serializedVersion: 2
     m_Curve:
@@ -21396,19 +21396,19 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _playWindstorms: 0
-  _secondsPerCrack: 3
-  _timeInBetweenStormsInSec: 6
+  _playWindstorms: 1
+  _secondsPerCrack: 210
+  _timeInBetweenStormsInSec: 10
   _radiusOfRattlingAroundPlayer: 15
   _damagePerCrack: 25
   _startSeverity: 0.06
-  _peakSeverity: 0.4
-  _rampUpTime: 8
+  _peakSeverity: 0.9
+  _rampUpTime: 6
   _holdTime: 9
-  _rampDownTime: 4
-  _minWindParticleSpeed: 10
+  _rampDownTime: 6
+  _minWindParticleSpeed: 20
   _maxWindParticleSpeed: 80
-  _minWindParticleRateOverTime: 6
+  _minWindParticleRateOverTime: 8
   _maxWindParticleRateOverTime: 80
   _minWindParticleStartSize: 0.07
   _maxWindParticleStartSize: 0.65

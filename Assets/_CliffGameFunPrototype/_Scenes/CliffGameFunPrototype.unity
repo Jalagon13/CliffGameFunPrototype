@@ -4719,7 +4719,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400158, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 24.6
       objectReference: {fileID: 0}
     - target: {fileID: 400158, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4786,8 +4786,36 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
+      propertyPath: MainColor.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
+      propertyPath: MainColor.b
+      value: 0.81960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
+      propertyPath: MainColor.g
+      value: 0.81960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
+      propertyPath: MainColor.r
+      value: 0.81960785
+      objectReference: {fileID: 0}
+    - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: isFadeInOut
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
+      propertyPath: CloudColor.b
+      value: 0.8207547
+      objectReference: {fileID: 0}
+    - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
+      propertyPath: CloudColor.g
+      value: 0.8207547
+      objectReference: {fileID: 0}
+    - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
+      propertyPath: CloudColor.r
+      value: 0.8207547
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: NumberClouds
@@ -4795,11 +4823,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: MaxDepthCloud
-      value: 280
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: MaxWidthCloud
-      value: 280
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: SecondColor.b
@@ -4815,7 +4843,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: MaxHeightCloud
-      value: 100
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: MaximunVelocity.x
@@ -9248,7 +9276,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: dayLength
-      value: 600
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: enableFog
@@ -9448,7 +9476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.ctime3
-      value: 28720
+      value: 26214
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.ctime4
@@ -9456,7 +9484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.ctime5
-      value: 36815
+      value: 39321
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.ctime6
@@ -9468,99 +9496,99 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key0.b
-      value: 0.3584906
+      value: 0.3882353
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key0.g
-      value: 0.11957736
+      value: 0.28627452
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key0.r
-      value: 0.08624065
+      value: 0.27450982
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key1.b
-      value: 0.49803922
+      value: 0.3647059
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key1.g
-      value: 0.6431373
+      value: 0.5411765
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key1.r
-      value: 0.84313726
+      value: 0.7764706
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key2.b
-      value: 1
+      value: 0.9245283
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key2.g
-      value: 1
+      value: 0.9245283
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key2.r
-      value: 1
+      value: 0.9245283
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key3.b
-      value: 1
+      value: 0.9254902
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key3.g
-      value: 1
+      value: 0.9254902
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key3.r
-      value: 1
+      value: 0.9254902
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key4.b
-      value: 0.4950605
+      value: 0.36124954
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key4.g
-      value: 0.64273
+      value: 0.5389225
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key4.r
-      value: 0.8396226
+      value: 0.7735849
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key5.b
-      value: 0.36078432
+      value: 0.38679248
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key5.g
-      value: 0.12156863
+      value: 0.28578192
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key5.r
-      value: 0.08627451
+      value: 0.27184942
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key6.b
-      value: 0.36078432
+      value: 0.3882353
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key6.g
-      value: 0.12156863
+      value: 0.28627452
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key6.r
-      value: 0.08627451
+      value: 0.27450982
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key7.b
-      value: 0.69803923
+      value: 0.18431373
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key7.g
-      value: 0.3764706
+      value: 0.039215688
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.key7.r
-      value: 0.33333334
+      value: 0.039215688
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: directionalLightColors.m_ColorSpace
@@ -21371,7 +21399,7 @@ MonoBehaviour:
   _windTickInterval: 0.125
   _minRattleChance: 0.0185
   _maxRattleChance: 0.7
-  <MaxWindForceAtFullSeverity>k__BackingField: 1.2
+  <MaxWindForceAtFullSeverity>k__BackingField: 1.15
   _rattleSeverityCurve:
     serializedVersion: 2
     m_Curve:
@@ -21397,8 +21425,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _playWindstorms: 1
-  _secondsPerCrack: 210
-  _timeInBetweenStormsInSec: 10
+  _secondsPerCrack: 3
+  _timeInBetweenStormsInSec: 210
   _radiusOfRattlingAroundPlayer: 15
   _damagePerCrack: 25
   _startSeverity: 0.06

@@ -32,7 +32,7 @@ namespace Ultrabolt.SkyEngine
 		// Lights & Colors
 		public float lightFadeSpeed = 0.3f;
 		public Light sunLight, moonLight;
-		public Gradient skyTop, skyBottom, directionalLightColors;
+		public Gradient skyTop, skyBottom, cloudColors, directionalLightColors;
 
 		// Fog
 		public bool enableFog;

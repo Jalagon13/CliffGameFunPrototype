@@ -512,7 +512,7 @@ namespace CliffGame
             // Restore previous previewed piece
             RestoreStabilityPreview();
 
-            MeshRenderer[] renderers = target.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
+            MeshRenderer[] renderers = target.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>(true);
             _lastStabilityOriginalMaterials.Clear();
 
             foreach (var r in renderers)
@@ -528,7 +528,7 @@ namespace CliffGame
 
             foreach (var r in renderers)
             {
-                Material[] mats = new Material[r.materials.Length];
+                Material[] mats = new Material[r.sharedMaterials.Length];
                 for (int i = 0; i < mats.Length; i++)
                     mats[i] = _stabilityMaterials[materialIndex];
                 r.materials = mats;
@@ -542,14 +542,14 @@ namespace CliffGame
             if (_lastStabilityPreviewPiece == null)
                 return;
 
-            MeshRenderer[] renderers = _lastStabilityPreviewPiece.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
+            MeshRenderer[] renderers = _lastStabilityPreviewPiece.transform.GetChild(0).GetComponentsInChildren<MeshRenderer>(true);
 
             int index = 0;
             foreach (var r in renderers)
             {
                 if (index < _lastStabilityOriginalMaterials.Count)
                 {
-                    Material[] mats = new Material[r.materials.Length];
+                    Material[] mats = new Material[r.sharedMaterials.Length];
                     for (int i = 0; i < mats.Length; i++)
                         mats[i] = _lastStabilityOriginalMaterials[index];
                     r.materials = mats;

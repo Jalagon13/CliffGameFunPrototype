@@ -9260,7 +9260,7 @@ PrefabInstance:
       objectReference: {fileID: 480573517}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: timeOfDay
-      value: 0.067
+      value: 0.495
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.key0.b

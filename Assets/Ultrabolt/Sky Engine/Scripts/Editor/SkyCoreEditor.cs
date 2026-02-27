@@ -74,6 +74,9 @@ namespace Ultrabolt.SkyEngine
                 {
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("timeSpeed"));
                     EditorGUILayout.PropertyField(serializedObject.FindProperty("dayLength"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("morningLimit"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("midNoonLimit"));
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("eveningLimit"));
                 });
 
                 contentGUI = EditorGUIUtility.IconContent("console.infoicon@2x");

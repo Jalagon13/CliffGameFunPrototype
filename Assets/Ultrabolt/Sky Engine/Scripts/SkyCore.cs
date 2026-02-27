@@ -32,7 +32,7 @@ namespace Ultrabolt.SkyEngine
 		// Lights & Colors
 		public float lightFadeSpeed = 0.3f;
 		public Light sunLight, moonLight;
-		public Gradient skyTop, skyBottom, cloudColors, directionalLightColors;
+		public Gradient skyTop, skyBottom, directionalLightColors;
 
 		// Fog
 		public bool enableFog;
@@ -42,6 +42,9 @@ namespace Ultrabolt.SkyEngine
 		// Time
 		public float timeSpeed = 1f;
 		public float dayLength = 120f;
+		[Range(0f, 1f)] public float morningLimit = 0.1f;
+		[Range(0f, 1f)] public float midNoonLimit = 0.4f;
+		[Range(0f, 1f)] public float eveningLimit = 0.6f;
 
 		// Info
 		public string dayState;
@@ -177,7 +180,7 @@ namespace Ultrabolt.SkyEngine
 		private void UpdateLighting()
 		{
 			//Moon Rise
-			if (timeOfDay > 0.45f && timeOfDay < 1f)
+			if (timeOfDay > eveningLimit && timeOfDay < 1f)
 			{
 				moonLight.intensity = Mathf.MoveTowards(moonLight.intensity, moonIntensity, Time.deltaTime * lightFadeSpeed * timeSpeed);
 				sunLight.intensity = Mathf.MoveTowards(sunLight.intensity, 0f, Time.deltaTime * lightFadeSpeed * timeSpeed);
@@ -213,9 +216,9 @@ namespace Ultrabolt.SkyEngine
 
 		GameTime CalculateTimeState(float t)
 		{
-			if (t < 0.1f) return GameTime.Morning;
-			else if (t < 0.4f) return GameTime.MidNoon;
-			else if (t < 0.6f) return GameTime.Evening;
+			if (t < morningLimit) return GameTime.Morning;
+			else if (t < midNoonLimit) return GameTime.MidNoon;
+			else if (t < eveningLimit) return GameTime.Evening;
 			return GameTime.Night;
 		}
 

@@ -78,7 +78,7 @@ namespace CliffGame
 
         private void Update()
         {
-            if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead) return;
+            if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || Player.Instance.FirstPersonLook.IsSequenceOngoing) return;
 
             _thirstStat.UpdateStat(Time.deltaTime, true);
 

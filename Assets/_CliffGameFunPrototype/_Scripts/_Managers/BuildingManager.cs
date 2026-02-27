@@ -166,10 +166,12 @@ namespace CliffGame
                     break;
                 case BuildOption.DestroyMode:
                     _currentBuildType = BuildOption.DestroyMode;
+                    RestoreStabilityPreview();
                     break;
                 case BuildOption.RepairMode:
                     _currentBuildType = BuildOption.RepairMode;
                     ResetGhosts();
+                    RestoreStabilityPreview();
                     break;
             }
 

@@ -37844,7 +37844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.GiantBat
   _requiredToolType: 3
-  _maxLife: 10
+  _maxLife: 6
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: fc9349e4fc87e483787f81a8837b8e27, type: 2}
     MinAmount: 1
@@ -37853,6 +37853,7 @@ MonoBehaviour:
     MinAmount: 1
     MaxAmount: 2
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
+  _destroyParticles: {fileID: 0}
   _hitSFX:
     Guid:
       Data1: -319167324
@@ -37871,15 +37872,16 @@ MonoBehaviour:
   _patrolRadiusVertical: 5
   _patrolSpeed: 3
   _setPivotToStartPos: 1
-  _attackInterval: 30
-  _attackSpeed: 7
+  _attackIntervalMin: 55
+  _attackIntervalMax: 105
+  _attackSpeed: 6
   _attackDuration: 10
   _damagePerAttackDuration: 100
   _numberOfClosestPlatformsToConsider: 4
-  _warningDistance: 9
+  _warningDistance: 10
   _numOfHitsForItToFlyAway: 3
-  _flyingDurationBeforeDespawn: 4
-  _lifeTime: 60
+  _flyingDurationBeforeDespawn: 5
+  _lifeTime: 170
 --- !u!114 &7039082888147559910
 MonoBehaviour:
   m_ObjectHideFlags: 0

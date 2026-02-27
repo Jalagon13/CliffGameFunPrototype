@@ -23,7 +23,8 @@ namespace CliffGame
         [SerializeField] private bool _setPivotToStartPos = true;
 
         [Header("Attack Settings")]
-        [SerializeField] private float _attackInterval = 30f;
+        [SerializeField] private float _attackIntervalMin = 55f;
+        [SerializeField] private float _attackIntervalMax = 105f;
         [SerializeField] private float _attackSpeed = 15f;
         [SerializeField] private float _attackDuration = 5f;
         [SerializeField] private int _damagePerAttackDuration = 50;
@@ -61,7 +62,7 @@ namespace CliffGame
                 _patrolPivot = transform.position;
             }
 
-            _attackCooldownTimer = _attackInterval;
+            _attackCooldownTimer = GetRandomAttackInterval();
             SetState(BatState.Patrolling);
         }
 
@@ -115,9 +116,14 @@ namespace CliffGame
                 if (_currentState == BatState.Attacking)
                 {
                     _currentHits++;
+                    _currentHits++;
                     // Debug.Log($"GiantBat has been hit while attacking. Hits: {_currentHits}/{_numOfHitsForItToFlyAway}");
                 }
                 _lifeTimeTimer = 0f;
+            }
+            else
+            {
+                _currentHits++;
             }
         
             // Still call the base method to allow it to take damage and eventually be destroyed.
@@ -289,7 +295,7 @@ namespace CliffGame
             if (_flyingAI.HasReachedDestination)
             {
                 // Debug.Log("GiantBat: Flee complete, returning to patrol.");
-                _attackCooldownTimer = _attackInterval;
+                _attackCooldownTimer = GetRandomAttackInterval();
                 SetState(BatState.Patrolling);
             }
         }
@@ -301,6 +307,13 @@ namespace CliffGame
             {
                 Destroy(gameObject);
             }
+        }
+        
+        private float GetRandomAttackInterval()
+        {
+            float attackInterval = Random.Range(_attackIntervalMin, _attackIntervalMax);
+            Debug.Log($"GiantBat: New attack interval: {attackInterval}");
+            return attackInterval;
         }
 
         private void PickNewPatrolPoint()
@@ -325,9 +338,16 @@ namespace CliffGame
 
             foreach (BuildPiece piece in allPieces)
             {
-                int neighborCount = piece.GetConnectedBuildPieces().Count();
+                int numOfBpdBuildPieces = 0;
+                foreach (BuildPiece bp in piece.GetConnectedBuildPieces())
+                {
+                    if(bp.BuildType == BuildOption.Platform || bp.BuildType == BuildOption.Stairs)
+                    {
+                        numOfBpdBuildPieces++;
+                    }
+                }
                 
-                if (neighborCount < 4 && piece.TryGetComponent(out BuildPieceDurability durability) && !durability.IsTargeted)
+                if (numOfBpdBuildPieces < 4 && piece.TryGetComponent(out BuildPieceDurability durability) && !durability.IsTargeted)
                 {
                     outerPieces.Add(durability);
                 }

@@ -1834,6 +1834,14 @@ PrefabInstance:
       propertyPath: _harvestItems.Array.data[1].Quantity
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: _willDespawn
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3382507654136854854, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: m_Radius
       value: 0.25
@@ -1928,12 +1936,13 @@ MonoBehaviour:
   _maxLife: 0
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: ad2f70919f7d046ed8001013ac529d7d, type: 2}
-    MinAmount: 1
+    MinAmount: 2
     MaxAmount: 3
   - DropItem: {fileID: 11400000, guid: 75dd4fdcb257243c88ae818291a5f0de, type: 2}
     MinAmount: 1
     MaxAmount: 2
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
+  _destroyParticles: {fileID: 0}
   _hitSFX:
     Guid:
       Data1: 1630036399

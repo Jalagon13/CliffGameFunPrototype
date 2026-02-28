@@ -16,6 +16,6 @@ MonoBehaviour:
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 8472705620699782314, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: 
+  <Description>k__BackingField: Unlocks more crafting recipes when placed
   <PlaceablePrefab>k__BackingField: {fileID: 3282181520534882374, guid: 9e3988ed3e85c4a3186f75c5cda214b7, type: 3}
   <IsCliffPlaceable>k__BackingField: 0

@@ -38120,9 +38120,9 @@ MonoBehaviour:
   - DropItem: {fileID: 11400000, guid: fc9349e4fc87e483787f81a8837b8e27, type: 2}
     MinAmount: 1
     MaxAmount: 2
-  - DropItem: {fileID: 11400000, guid: 20756ec47ad404c13bb35d50264c2ac6, type: 2}
+  - DropItem: {fileID: 11400000, guid: cdc3e36a2801e48d5bfcc02403891c1d, type: 2}
     MinAmount: 1
-    MaxAmount: 2
+    MaxAmount: 1
   _hitParticles: {fileID: 0}
   _killParticles: {fileID: 0}
   _hitSFX:
@@ -38143,8 +38143,8 @@ MonoBehaviour:
   _patrolRadiusVertical: 5
   _patrolSpeed: 3
   _setPivotToStartPos: 1
-  _attackIntervalMin: 55
-  _attackIntervalMax: 105
+  _attackIntervalMin: 75
+  _attackIntervalMax: 140
   _attackSpeed: 6
   _attackDuration: 15
   _damagePerAttackDuration: 100
@@ -38159,7 +38159,7 @@ MonoBehaviour:
       Data4: -1254761421
     Path: event:/GiantBat/GiantBatIncoming
   _flyingDurationBeforeDespawn: 5
-  _lifeTime: 170
+  _lifeTime: 235
 --- !u!114 &7039082888147559910
 MonoBehaviour:
   m_ObjectHideFlags: 0

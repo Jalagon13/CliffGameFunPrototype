@@ -16,7 +16,7 @@ MonoBehaviour:
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 904965497, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: Useful for hunting small creatures
+  <Description>k__BackingField: A great device for poking things.
   <ToolType>k__BackingField: 3
   <SwingCooldownInSeconds>k__BackingField: 0.3
   <NpcDamageAmount>k__BackingField: 4

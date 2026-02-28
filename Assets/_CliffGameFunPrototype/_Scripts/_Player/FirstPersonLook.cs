@@ -64,6 +64,11 @@ public class FirstPersonLook : MonoBehaviour
 
     private IEnumerator Start()
     {
+        if(_executeStartingSequence)
+        {
+            IsSequenceOngoing = true;
+        }
+    
         _cam = GetComponentInChildren<Camera>();
         _walkingFOV = _cam.fieldOfView;
 

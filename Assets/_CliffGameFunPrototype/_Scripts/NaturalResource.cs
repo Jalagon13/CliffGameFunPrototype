@@ -7,6 +7,7 @@ namespace CliffGame
     {
         [Header("Natural Resource Settings")]
         [SerializeField] private MMF_Player _shakeFeedbacks;
+        [SerializeField] private bool _willDespawn = true;
         [SerializeField] private float _despawnTimerDuration;
         [SerializeField] private float _minShakeFrequency = 2f;
         [SerializeField] private float _maxShakeFrequency = 10f;
@@ -19,8 +20,11 @@ namespace CliffGame
 
         protected override void Awake()
         {
-            _despawnTimer = new Timer(_despawnTimerDuration);
-            _despawnTimer.OnTimerEnd += OnDespawnTimerFinished;
+            if(_willDespawn)
+            {
+                _despawnTimer = new Timer(_despawnTimerDuration);
+                _despawnTimer.OnTimerEnd += OnDespawnTimerFinished;
+            }
             
             base.Awake();
         }

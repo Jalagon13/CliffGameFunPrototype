@@ -95,7 +95,19 @@ namespace CliffGame
 
                 int quantity = _inventoryAssociatedWith.InventoryItems[_inventoryIndex].Quantity;
                 string quantityString = quantity > 1 ? $"({quantity})" : string.Empty;
-                string itemText = $"{_item.Item.InGameName} {quantityString}<br>{_item.Item.GetDescription()}";
+                
+                InventoryItem item = _inventoryAssociatedWith.InventoryItems[_inventoryIndex];
+                string itemText;
+
+                // if (item.Item is ToolItemSO toolItem)
+                // {
+                //     itemText = $"{_item.Item.InGameName} {quantityString}<br>{_item.Item.GetDescription()}<br>Npc Damage: {toolItem.NpcDamageAmount}";
+                // }
+                // else
+                // {
+                    
+                // }
+                itemText = $"{_item.Item.InGameName} {quantityString}<br>{_item.Item.GetDescription()}";
 
                 Tooltip.JustText(itemText, Color.white, fontSize: 12f);
             }

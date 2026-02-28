@@ -4477,21 +4477,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.NpcManager
   _npcPool:
   - Prefab: {fileID: 8979547436931850727, guid: dc8c0753a15c24c80b45613448a65e20, type: 3}
-    SlotCost: 6
+    SlotCost: 2
     SpawnWeight: 100
-    SpawnDistanceFromCliff: 17
-    MinSpawnDistance: 10
+    SpawnDistanceFromCliff: 20
+    MinSpawnDistance: 5
     MaxSpawnDistance: 30
     SpawnZVarianceMin: -2
-    SpawnZVarianceMax: 2
+    SpawnZVarianceMax: 4
     AllowedSpawnTimes: 03000000
   - Prefab: {fileID: 8979547436931850727, guid: 9e0695773cad84794b5dd20ffdd664a5, type: 3}
     SlotCost: 1
     SpawnWeight: 100
-    SpawnDistanceFromCliff: 10
+    SpawnDistanceFromCliff: 13
     MinSpawnDistance: 5
     MaxSpawnDistance: 15
-    SpawnZVarianceMin: -2
+    SpawnZVarianceMin: -1
     SpawnZVarianceMax: 4
     AllowedSpawnTimes: 000000000100000002000000
   _canSpawnNpcs: 1
@@ -6345,7 +6345,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: How to play!
+  m_text: Objectives
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8220,13 +8220,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 14d150780617d406f9b3616f7059b752, type: 2}
   - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
   _craftingTableRecipes:
+  - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
+  - {fileID: 11400000, guid: 3e24266cef9f540c0959b541dd07ecfa, type: 2}
+  - {fileID: 11400000, guid: 80ebef25d0a3d4d43a1639967469cfbe, type: 2}
   - {fileID: 11400000, guid: 1e3064abad23d408a8dbfa4a43f94031, type: 2}
   - {fileID: 11400000, guid: 01062f0c3296a4c759ea042e20b25548, type: 2}
   - {fileID: 11400000, guid: 03854f3548bbb4778a3b7c68ca31593f, type: 2}
-  - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
-  - {fileID: 11400000, guid: 80ebef25d0a3d4d43a1639967469cfbe, type: 2}
-  - {fileID: 11400000, guid: b0f05b04c91344f8da2db89156f31d8e, type: 2}
-  - {fileID: 11400000, guid: 3e24266cef9f540c0959b541dd07ecfa, type: 2}
   - {fileID: 11400000, guid: c00b133f03aeb45318b659236bd1e58a, type: 2}
 --- !u!1001 &826374936
 PrefabInstance:
@@ -9270,7 +9269,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: dayLength
-      value: 900
+      value: 1200
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: enableFog
@@ -9286,7 +9285,7 @@ PrefabInstance:
       objectReference: {fileID: 480573517}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: timeOfDay
-      value: 0.15
+      value: 0.065
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.ctime3
@@ -10206,8 +10205,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "* Find a way \n  off the cliff\n\n* Craft a Building \n  Hammer\n\n* No
-    Cheating\n\n* No not having fun\n\n* Watch out for \n  wind storms!"
+  m_text: "* Stay Alive\n\n* Gather Resources\n\n* Build yourself a \nsuspended home
+    \nworthy of survival\n\n* Watch out for the \nman-eating bats!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17151,7 +17150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HungerManager
   _maxHunger: 100
-  _hungerDrainPerSecond: 0.0995
+  _hungerDrainPerSecond: 0.0962
   _lowHungerThresholdPercent: 0.225
   _stomachGrowlIntervalSeconds: 11
   _respawnHungerAmount: 70
@@ -17183,7 +17182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ThirstManager
   _maxThirst: 100
-  _thirstDrainPerSecond: 0.1225
+  _thirstDrainPerSecond: 0.1175
   _lowThirstThresholdPercent: 0.225
   _thirstPangIntervalSeconds: 11
   _respawnThirstAmount: 70

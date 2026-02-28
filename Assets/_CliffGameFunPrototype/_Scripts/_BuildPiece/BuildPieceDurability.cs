@@ -157,10 +157,15 @@ namespace CliffGame
 
                 if (isDamageIncreasing)
                 {
-                    AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
-                    Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
+                    PlayCrackingFX();
                 }
             }
+        }
+        
+        public void PlayCrackingFX()
+        {
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.WoodDestroyedSFX, transform.position);
+            Instantiate(_destructionParticles.gameObject, transform.position + Vector3.up * 0.25f, Quaternion.identity);
         }
 
         private void SetCrackDecal(Material decal)

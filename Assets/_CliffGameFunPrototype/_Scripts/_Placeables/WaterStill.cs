@@ -57,10 +57,9 @@ namespace CliffGame
             _waterModel.SetActive(false);
         }
 
-        protected override void OnDestroy()
+        protected void OnDestroy()
         {
             StopProcessingVisuals();
-            base.OnDestroy();
         }
 
         private void Update()
@@ -71,7 +70,7 @@ namespace CliffGame
             }
         }
 
-        public override void OnHitWithTool()
+        public override void OnHitWithTool(int damage)
         {
             // Same behavior as CookingStation: block hits while busy or ready
             if (_currentState == WaterStillState.ProcessingWater ||
@@ -81,7 +80,7 @@ namespace CliffGame
                 return;
             }
 
-            base.OnHitWithTool();
+            base.OnHitWithTool(damage);
         }
 
         public override void OnInteractWith()

@@ -18,6 +18,7 @@ MonoBehaviour:
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: 
   <ToolType>k__BackingField: 1
-  <SwingCooldownInSeconds>k__BackingField: 0.25
-  <IntValue>k__BackingField: 0
+  <SwingCooldownInSeconds>k__BackingField: 0.2
+  <NpcDamageAmount>k__BackingField: 2
+  <IntValue>k__BackingField: 2
   <HeldToolPrefab>k__BackingField: {fileID: 2488915889958085675, guid: c8abccebf51185b4097c6c21f9537b03, type: 3}

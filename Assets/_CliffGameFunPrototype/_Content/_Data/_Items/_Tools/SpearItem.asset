@@ -19,5 +19,6 @@ MonoBehaviour:
   <Description>k__BackingField: Useful for hunting small creatures
   <ToolType>k__BackingField: 3
   <SwingCooldownInSeconds>k__BackingField: 0.3
+  <NpcDamageAmount>k__BackingField: 4
   <IntValue>k__BackingField: 0
   <HeldToolPrefab>k__BackingField: {fileID: 8373242977027255922, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}

@@ -21,7 +21,10 @@ namespace CliffGame
         public float SwingCooldownInSeconds { get; private set; } = 0.325f;
         
         [field: SerializeField]
-        public int IntValue { get; private set; } // Can be damage or repair amount depending on tool type
+        public int NpcDamageAmount { get; private set; } = 2;
+        
+        [field: SerializeField, Tooltip("Can repair amount depending on tool type")]
+        public int IntValue { get; private set; }
 
         [field: SerializeField]
         public GameObject HeldToolPrefab { get; private set; } 

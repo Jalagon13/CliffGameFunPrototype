@@ -33,7 +33,6 @@ namespace CliffGame
         
         public void RegisterBuildPiece(BuildPiece buildPiece)
         {
-            Debug.Log($"Registering build piece: {buildPiece.name}");
             buildPiece.InitializeAnchoredStatus();
             _registeredBuildPieces.Add(buildPiece);
 

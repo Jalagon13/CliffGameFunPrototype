@@ -1623,7 +1623,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9916
+      value: 9940
       objectReference: {fileID: 0}
     - target: {fileID: 1848075474486708829, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1651,7 +1651,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 7993
+      value: 8017
       objectReference: {fileID: 0}
     - target: {fileID: 3029735958138288004, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1687,7 +1687,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9955
+      value: 9979
       objectReference: {fileID: 0}
     - target: {fileID: 3926050539205680572, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1819,7 +1819,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9068
+      value: 9092
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1867,7 +1867,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9488
+      value: 9512
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1875,7 +1875,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9089
+      value: 9113
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2252,20 +2252,6 @@ MonoBehaviour:
       Data3: 902090126
       Data4: -1541084137
     Path: event:/Player/SFX_Steps
-  <GiantBatWarningSFX>k__BackingField:
-    Guid:
-      Data1: 1587512949
-      Data2: 1310979677
-      Data3: 1508754080
-      Data4: -1696221277
-    Path: event:/MonsterBird/MonsterBirdWarning
-  <GiantBatHurtSFX>k__BackingField:
-    Guid:
-      Data1: -319167324
-      Data2: 1277480044
-      Data3: -348388988
-      Data4: -1490140580
-    Path: event:/MonsterBird/MonsterBirdDamaged
   <ItemPickupSFX>k__BackingField:
     Guid:
       Data1: -2060888172
@@ -4491,9 +4477,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.NpcManager
   _npcPool:
   - Prefab: {fileID: 8979547436931850727, guid: dc8c0753a15c24c80b45613448a65e20, type: 3}
-    SlotCost: 2
+    SlotCost: 6
     SpawnWeight: 100
-    SpawnDistanceFromCliff: 15
+    SpawnDistanceFromCliff: 17
     MinSpawnDistance: 10
     MaxSpawnDistance: 30
     SpawnZVarianceMin: -2
@@ -4719,11 +4705,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400158, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 24.6
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 400158, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 425
+      value: 355
       objectReference: {fileID: 0}
     - target: {fileID: 400158, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4755,7 +4741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: Side.x
-      value: 1200
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: Side.y
@@ -4763,7 +4749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: Side.z
-      value: 800
+      value: 700
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: FixedSize
@@ -4771,7 +4757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: IsAnimate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: SoftClouds
@@ -4819,15 +4805,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: NumberClouds
-      value: 75
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: MaxDepthCloud
-      value: 300
+      value: 315
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: MaxWidthCloud
-      value: 300
+      value: 325
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: SecondColor.b
@@ -4843,7 +4829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: MaxHeightCloud
-      value: 120
+      value: 135
       objectReference: {fileID: 0}
     - target: {fileID: 11436094, guid: 47481170a4bc3ac43997313e3a98b2ce, type: 3}
       propertyPath: MaximunVelocity.x
@@ -7049,7 +7035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _executeStartingSequence
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114963311885979670, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: speed
@@ -9300,7 +9286,7 @@ PrefabInstance:
       objectReference: {fileID: 480573517}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: timeOfDay
-      value: 0.59
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.ctime3
@@ -19346,14 +19332,6 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
-    Quantity: 1
-  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 999
-  - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
-    Quantity: 1
-  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 999
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -21427,7 +21405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086b541bead394a5c8ead360709dff36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
-  <WindCanPushPlayer>k__BackingField: 1
+  <WindCanPushPlayer>k__BackingField: 0
   _windSeverity: 0.06
   _windPushesPlayerThreshold: 0.06
   _windTickInterval: 0.125
@@ -21458,7 +21436,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _playWindstorms: 1
+  _playWindstorms: 0
   _secondsPerCrack: 3
   _timeInBetweenStormsInSec: 210
   _radiusOfRattlingAroundPlayer: 15

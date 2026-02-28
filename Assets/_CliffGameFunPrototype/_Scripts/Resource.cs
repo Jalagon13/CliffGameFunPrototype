@@ -5,6 +5,19 @@ using UnityEngine;
 
 namespace CliffGame
 {
+    [System.Serializable]
+    public class HarvestDrop
+    {
+        [Tooltip("Item to drop when the resource is destroyed")]
+        public ItemSO DropItem;
+
+        [Tooltip("Minimum amount of this item to drop")]
+        public int MinAmount = 1;
+
+        [Tooltip("Maximum amount of this item to drop")]
+        public int MaxAmount = 1;
+    }
+
     public class Resource : MonoBehaviour, IInteractable
     {
         [Header("Base Resource Settings")]
@@ -14,19 +27,6 @@ namespace CliffGame
         [SerializeField]
         private int _maxLife = 3;
         private int _currentLife;
-
-        [System.Serializable]
-        protected class HarvestDrop
-        {
-            [Tooltip("Item to drop when the resource is destroyed")]
-            public ItemSO DropItem;
-
-            [Tooltip("Minimum amount of this item to drop")]
-            public int MinAmount = 1;
-
-            [Tooltip("Maximum amount of this item to drop")]
-            public int MaxAmount = 1;
-        }
 
         [SerializeField]
         protected List<HarvestDrop> _harvestDrops = new List<HarvestDrop>();
@@ -51,39 +51,40 @@ namespace CliffGame
             _currentLife = _maxLife;
         }
 
-        protected virtual void OnDestroy()
-        {
-            if (_destroyParticles != null && gameObject.scene.isLoaded)
-            {
-                Instantiate(_destroyParticles.gameObject, transform.position, Quaternion.identity);
-            }
-        }
-
         public virtual void OnInteractWith()
         {
             // Default resource interaction (can be empty)
         }
 
-        public void Collect()
+        public void Collect(bool giveItems = true)
         {
-            foreach (HarvestDrop drop in _harvestDrops)
+            if(giveItems)
             {
-                if (drop.DropItem == null)
-                    continue;
+                foreach (HarvestDrop drop in _harvestDrops)
+                {
+                    if (drop.DropItem == null)
+                        continue;
 
-                int amount = Random.Range(drop.MinAmount, drop.MaxAmount + 1);
+                    int amount = Random.Range(drop.MinAmount, drop.MaxAmount + 1);
 
-                if (amount <= 0)
-                    continue;
+                    if (amount <= 0)
+                        continue;
 
-                InventoryManager.Instance.AddItem(drop.DropItem, amount);
+                    InventoryManager.Instance.AddItem(drop.DropItem, amount);
+                }
+
+                AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
+            }
+
+            if (_destroyParticles != null && gameObject.scene.isLoaded)
+            {
+                Instantiate(_destroyParticles.gameObject, transform.position, Quaternion.identity);
             }
             
-            AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
             Destroy(gameObject);
         }
 
-        public virtual void OnHitWithTool()
+        public virtual void OnHitWithTool(int damage)
         {
             if(Player.Instance.ToolHolder.CurrentHeldTool.ToolType != _requiredToolType) return;
         

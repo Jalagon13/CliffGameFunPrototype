@@ -17,7 +17,7 @@ namespace CliffGame
             _dirtMounts.gameObject.SetActive(false);
         }
     
-        public override void OnHitWithTool()
+        public override void OnHitWithTool(int damage)
         {
             bool areAllPlanterBoxesEmpty = true;
             foreach (PlanterBox planterBox in _planterBoxes)
@@ -32,7 +32,7 @@ namespace CliffGame
             if(areAllPlanterBoxesEmpty)
             {
                 Debug.Log($"All planter boxes are empty");
-                base.OnHitWithTool();
+                base.OnHitWithTool(damage);
             }
         }
         

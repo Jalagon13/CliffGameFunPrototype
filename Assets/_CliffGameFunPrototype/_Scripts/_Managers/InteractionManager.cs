@@ -66,7 +66,7 @@ namespace CliffGame
             if(_currentlyHoveredInteractable != null)
             {
                 // Debug.Log($"Trying to hit: {_currentlyHoveredInteractable}");
-                _currentlyHoveredInteractable.OnHitWithTool();
+                _currentlyHoveredInteractable.OnHitWithTool(Player.Instance.ToolHolder.CurrentHeldTool.NpcDamageAmount);
             }
         }
 

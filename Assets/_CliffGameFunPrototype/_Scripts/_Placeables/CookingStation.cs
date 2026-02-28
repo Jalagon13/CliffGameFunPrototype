@@ -39,7 +39,7 @@ namespace CliffGame
             }
         }
 
-        public override void OnHitWithTool()
+        public override void OnHitWithTool(int damage)
         {
             if(_isCooking || _hasFoodToPickup)
             {
@@ -47,7 +47,7 @@ namespace CliffGame
                 return;
             }
             
-            base.OnHitWithTool();
+            base.OnHitWithTool(damage);
         }
 
         public override void OnInteractWith()

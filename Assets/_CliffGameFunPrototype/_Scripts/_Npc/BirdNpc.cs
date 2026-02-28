@@ -3,7 +3,7 @@ using UnityEngine;
 namespace CliffGame
 {
     [RequireComponent(typeof(FlyingAI))]
-    public class BirdNpc : Resource
+    public class BirdNpc : Npc
     {
         private enum BirdState
         {
@@ -44,11 +44,9 @@ namespace CliffGame
             SetState(BirdState.Patrolling);
         }
 
-        protected override void OnDestroy()
+        protected void OnDestroy()
         {
             NpcManager.Instance.OnNightRise -= OnNightRise;
-            
-            base.OnDestroy();
         }
 
         private void OnNightRise()
@@ -138,13 +136,10 @@ namespace CliffGame
             _flyingAI.SetDestination(potentialPoint);
         }
 
-        public override void OnHitWithTool()
+        public override void OnHitWithTool(int damage)
         {
-            if (Player.Instance.ToolHolder.CurrentHeldTool.ToolType == BreakToolType)
-            {
-                _lifeTimeTimer = 0f;
-            }
-            base.OnHitWithTool();
+            _lifeTimeTimer = 0f;
+            base.OnHitWithTool(damage);
         }
 
         public void Catch(Transform hookTransform)

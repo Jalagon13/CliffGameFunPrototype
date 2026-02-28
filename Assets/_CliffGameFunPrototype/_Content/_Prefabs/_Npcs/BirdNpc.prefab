@@ -2835,13 +2835,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46eef5a3f226e40959b3da4dee5e346f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BirdNpc
-  _requiredToolType: 1
-  _maxLife: 3
+  _maxLife: 6
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}
     MinAmount: 1
     MaxAmount: 1
-  _crackParticles: {fileID: 0}
+  _hitParticles: {fileID: 0}
+  _killParticles: {fileID: 0}
   _hitSFX:
     Guid:
       Data1: -1593463993
@@ -2849,17 +2849,19 @@ MonoBehaviour:
       Data3: 618020996
       Data4: 1295926265
     Path: event:/Resources/BirdCaughtSFX
-  _destroySFX:
+  _killSFX:
     Guid:
-      Data1: -1593463993
-      Data2: 1330785323
-      Data3: 618020996
-      Data4: 1295926265
-    Path: event:/Resources/BirdCaughtSFX
+      Data1: 220080990
+      Data2: 1314872062
+      Data3: 688282815
+      Data4: 416755829
+    Path: event:/Resources/GutsSquishSFX
   _patrolRadiusHorizontal: 10
   _patrolRadiusVertical: 6
   _patrolSpeed: 1.5
   _setPivotToStartPos: 1
+  _flightDurationBeforeDespawn: 4
+  _lifeTime: 60
 --- !u!114 &7039082888147559910
 MonoBehaviour:
   m_ObjectHideFlags: 0

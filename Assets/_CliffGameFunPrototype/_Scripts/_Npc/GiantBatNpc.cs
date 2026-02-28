@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using FMODUnity;
 using UnityEngine;
 
 namespace CliffGame
 {
     [RequireComponent(typeof(FlyingAI))]
-    public class GiantBatNpc : Resource
+    public class GiantBatNpc : Npc
     {
-        private enum BatState
+        public enum BatState
         {
             Patrolling,
             Approaching,
@@ -30,7 +31,9 @@ namespace CliffGame
         [SerializeField] private int _damagePerAttackDuration = 50;
         [SerializeField] private int _numberOfClosestPlatformsToConsider = 4;
         [SerializeField] private float _warningDistance = 10f;
-        [SerializeField] private int _numOfHitsForItToFlyAway = 3;
+        [SerializeField] private int _damageTakenForItToRetreat = 3;
+        [SerializeField] protected EventReference _incomingSfx;
+
 
         [Header("Morning Flee Settings")]
         [SerializeField] private float _flyingDurationBeforeDespawn = 4f;
@@ -39,13 +42,17 @@ namespace CliffGame
         private Vector3 _patrolPivot; 
         private FlyingAI _flyingAI;
         private BatState _currentState;
+        public BatState State => _currentState;
+        
         private float _stateTimer;
         private float _lifeTimeTimer;
         private float _attackCooldownTimer;
         private float _damageAccumulator;
         private BuildPieceDurability _targetPlatform;
+        public BuildPieceDurability TargetPlatform => _targetPlatform;
+        
         private bool _hasPlayedWarning;
-        private int _currentHits;
+        private int _currentDamageTaken;
 
         protected override void Awake()
         {
@@ -66,7 +73,7 @@ namespace CliffGame
             SetState(BatState.Patrolling);
         }
 
-        protected override void OnDestroy()
+        protected void OnDestroy()
         {
             NpcManager.Instance.OnMorningRise -= OnMorningRise;
 
@@ -74,8 +81,6 @@ namespace CliffGame
             {
                 _targetPlatform.IsTargeted = false;
             }
-            
-            base.OnDestroy();
         }
 
         private void Update()
@@ -109,25 +114,18 @@ namespace CliffGame
             }
         }
 
-        public override void OnHitWithTool()
+        public override void OnHitWithTool(int damage)
         {
-            if (Player.Instance.ToolHolder.CurrentHeldTool.ToolType == BreakToolType)
+            if (_currentState == BatState.Attacking)
             {
-                if (_currentState == BatState.Attacking)
-                {
-                    _currentHits++;
-                    _currentHits++;
-                    // Debug.Log($"GiantBat has been hit while attacking. Hits: {_currentHits}/{_numOfHitsForItToFlyAway}");
-                }
-                _lifeTimeTimer = 0f;
+                _currentDamageTaken += damage;
+                // Debug.Log($"GiantBat has been hit while attacking. Hits: {_currentHits}/{_numOfHitsForItToFlyAway}");
             }
-            else
-            {
-                _currentHits++;
-            }
-        
+
+            _lifeTimeTimer = 0f;
+
             // Still call the base method to allow it to take damage and eventually be destroyed.
-            base.OnHitWithTool();
+            base.OnHitWithTool(damage);
         }
 
         private void OnMorningRise()
@@ -165,7 +163,7 @@ namespace CliffGame
                 case BatState.Attacking:
                     _flyingAI.Stop();
                     _damageAccumulator = 0f;
-                    _currentHits = 0;
+                    _currentDamageTaken = 0;
                     break;
                 case BatState.Fleeing:
                     _flyingAI.SetSpeed(_attackSpeed);
@@ -234,7 +232,7 @@ namespace CliffGame
 
             if (!_hasPlayedWarning && Vector3.Distance(transform.position, _targetPlatform.transform.position) <= _warningDistance)
             {
-                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.GiantBatWarningSFX, transform.position);
+                AudioManager.Instance.PlayOneShot(_incomingSfx, transform.position);
                 _hasPlayedWarning = true;
             }
 
@@ -254,7 +252,7 @@ namespace CliffGame
                 return;
             }
 
-            if (_currentHits >= _numOfHitsForItToFlyAway)
+            if (_currentDamageTaken >= _damageTakenForItToRetreat)
             {
                 // Debug.Log("GiantBat: Repelled by player hits!");
                 SetState(BatState.Fleeing);

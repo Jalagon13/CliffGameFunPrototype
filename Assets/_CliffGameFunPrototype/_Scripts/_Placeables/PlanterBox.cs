@@ -147,9 +147,9 @@ namespace CliffGame
             // Logic for when planter is reset
         }
 
-        public void OnHitWithTool()
+        public void OnHitWithTool(int damage)
         {
-            _parentTrellis.OnHitWithTool();
+            _parentTrellis.OnHitWithTool(damage);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace CliffGame
             base.Awake();
         }
 
-        protected override void OnDestroy()
+        protected void OnDestroy()
         {
             if (ResourceManager.Instance != null)
             {
@@ -37,8 +37,6 @@ namespace CliffGame
                 _despawnTimer.OnTimerEnd -= OnDespawnTimerFinished;
                 _despawnTimer = null;
             }
-            
-            base.OnDestroy();
         }
         
         private void Update()
@@ -94,15 +92,15 @@ namespace CliffGame
 
         private void OnDespawnTimerFinished(object sender, System.EventArgs e)
         {
-            Destroy(gameObject);
+            Collect(false);
         }
 
-        public override void OnHitWithTool()
+        public override void OnHitWithTool(int damage)
         {
             _despawnTimer.Reset();
             _shakeTimer = 0f;
         
-            base.OnHitWithTool();
+            base.OnHitWithTool(damage);
             
         }
     }

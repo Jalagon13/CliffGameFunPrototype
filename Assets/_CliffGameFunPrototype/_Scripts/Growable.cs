@@ -19,10 +19,9 @@ namespace CliffGame
             SetVisualScale(0f);
         }
         
-        protected override void OnDestroy()
+        protected void OnDestroy()
         {
             _parentPlanterBox?.ClearPlanterBox();
-            base.OnDestroy();
         }
 
         public override void OnInteractWith()
@@ -73,7 +72,7 @@ namespace CliffGame
             transform.localScale = Vector3.one * scale;
         }
 
-        public override void OnHitWithTool()
+        public override void OnHitWithTool(int damage)
         {
             
         }

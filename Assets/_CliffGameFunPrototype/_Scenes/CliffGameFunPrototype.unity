@@ -1623,7 +1623,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9940
+      value: 9952
       objectReference: {fileID: 0}
     - target: {fileID: 1848075474486708829, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1651,7 +1651,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8017
+      value: 8029
       objectReference: {fileID: 0}
     - target: {fileID: 3029735958138288004, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1687,7 +1687,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9979
+      value: 9991
       objectReference: {fileID: 0}
     - target: {fileID: 3926050539205680572, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1819,7 +1819,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9092
+      value: 9104
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1867,7 +1867,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9512
+      value: 9524
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1875,7 +1875,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9113
+      value: 9125
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4486,7 +4486,7 @@ MonoBehaviour:
     SpawnZVarianceMax: 4
     AllowedSpawnTimes: 03000000
   - Prefab: {fileID: 8979547436931850727, guid: 9e0695773cad84794b5dd20ffdd664a5, type: 3}
-    SlotCost: 1
+    SlotCost: 1.5
     SpawnWeight: 100
     SpawnDistanceFromCliff: 13
     MinSpawnDistance: 5
@@ -5293,9 +5293,9 @@ MonoBehaviour:
   _attemptsPerTick: 6
   _resources:
   - resourcePrefab: {fileID: 8969057494970469643, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
-    spawnWeight: 100
+    spawnWeight: 90
   - resourcePrefab: {fileID: 8969057494970469643, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
-    spawnWeight: 70
+    spawnWeight: 80
   - resourcePrefab: {fileID: 8969057494970469643, guid: 285dc74de4f034239bc86a07346fb0cf, type: 3}
     spawnWeight: 20
   - resourcePrefab: {fileID: 8969057494970469643, guid: b33445883b635420d93b380d00ff9d20, type: 3}
@@ -7035,7 +7035,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _executeStartingSequence
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114963311885979670, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: speed
@@ -9285,7 +9285,7 @@ PrefabInstance:
       objectReference: {fileID: 480573517}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: timeOfDay
-      value: 0.065
+      value: 0.0715
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.ctime3
@@ -9297,15 +9297,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.key0.b
-      value: 0.3137255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.key0.g
-      value: 0.08627451
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.key0.r
-      value: 0.05490196
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.key1.b
@@ -9393,15 +9393,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyBottom.key0.b
-      value: 0.3137255
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyBottom.key0.g
-      value: 0.08627451
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyBottom.key0.r
-      value: 0.05490196
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyBottom.key1.b
@@ -17150,7 +17150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HungerManager
   _maxHunger: 100
-  _hungerDrainPerSecond: 0.0962
+  _hungerDrainPerSecond: 0.1962
   _lowHungerThresholdPercent: 0.225
   _stomachGrowlIntervalSeconds: 11
   _respawnHungerAmount: 70
@@ -19331,6 +19331,18 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
+  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: 9bb6b4429d8a240aa89bc4c5e6b6393a, type: 2}
+    Quantity: 123
+  - Item: {fileID: 11400000, guid: ad2f70919f7d046ed8001013ac529d7d, type: 2}
+    Quantity: 123
+  - Item: {fileID: 11400000, guid: 3b850cbd57d474a1cb1247f48e2710af, type: 2}
+    Quantity: 123
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0

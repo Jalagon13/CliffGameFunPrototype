@@ -49,7 +49,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4050300785760338539
 Transform:
   m_ObjectHideFlags: 0
@@ -82,7 +82,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5545734824989528993
 Transform:
   m_ObjectHideFlags: 0
@@ -185,8 +185,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.65, y: 0.65, z: 0.65}
-  m_Center: {x: 0, y: 0.33, z: 0}
+  m_Size: {x: 0.65, y: 0.5, z: 0.65}
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!114 &2497425369661444606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,6 +206,7 @@ MonoBehaviour:
     MinAmount: 1
     MaxAmount: 1
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
+  _destroyParticles: {fileID: 0}
   _hitSFX:
     Guid:
       Data1: 1630036399
@@ -310,8 +311,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.65, y: 0.65, z: 0.65}
-  m_Center: {x: 0, y: 0.33, z: 0}
+  m_Size: {x: 0.65, y: 0.5, z: 0.65}
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!1001 &3520469084881865602
 PrefabInstance:
   m_ObjectHideFlags: 0

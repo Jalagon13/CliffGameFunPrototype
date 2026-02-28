@@ -12,13 +12,13 @@ namespace CliffGame
     public class ConsumableItemSO : ItemSO
     {
         [field: SerializeField]
-        public int HealAmount { get; private set; }
+        public int HungerAmount { get; private set; }
+
+        [field: SerializeField]
+        public int ThirstAmount { get; private set; }
 
         [field: SerializeField]
         public float ConsumeDuration { get; private set; } = 1f;
-        
-        [field: SerializeField]
-        public ConsumableType ConsumableType { get; private set; }
 
         public override InventoryItem CreateInventoryItem(int quantity)
         {

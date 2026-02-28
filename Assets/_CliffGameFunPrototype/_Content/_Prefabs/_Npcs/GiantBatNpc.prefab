@@ -38121,7 +38121,7 @@ MonoBehaviour:
     MinAmount: 1
     MaxAmount: 2
   - DropItem: {fileID: 11400000, guid: cdc3e36a2801e48d5bfcc02403891c1d, type: 2}
-    MinAmount: 1
+    MinAmount: 0
     MaxAmount: 1
   _hitParticles: {fileID: 0}
   _killParticles: {fileID: 0}
@@ -38143,7 +38143,7 @@ MonoBehaviour:
   _patrolRadiusVertical: 5
   _patrolSpeed: 3
   _setPivotToStartPos: 1
-  _attackIntervalMin: 75
+  _attackIntervalMin: 50
   _attackIntervalMax: 140
   _attackSpeed: 6
   _attackDuration: 15

@@ -162,10 +162,13 @@ namespace CliffGame
                 return;
             }
 
-            if (consumableItem.ConsumableType != ConsumableType.Drink)
+            if (consumableItem.ThirstAmount <= 0)
                 return;
 
             if (CurrentThirst >= _maxThirst)
+                return;
+                
+            if(consumableItem.HungerAmount > 0 && consumableItem.ThirstAmount <= 0)
                 return;
 
             StartDrinking(consumableItem);
@@ -207,9 +210,19 @@ namespace CliffGame
             _drinkTimer.OnTimerEnd -= OnDrinkTimerFinished;
 
             // Consume the drink
-            InventoryManager.Instance.RemoveItem(_currentConsumable, 1);
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.EatingSFX, Player.Instance.transform.position);
-            AddThirst(_currentConsumable.HealAmount);
+            if(_currentConsumable.ThirstAmount > 0 && _currentConsumable.HungerAmount > 0)
+            {
+                
+            }
+            else
+            {
+                // If its a duel thing, just let the hunger manager to these handling
+                InventoryManager.Instance.RemoveItem(_currentConsumable, 1);
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.EatingSFX, Player.Instance.transform.position);
+            }
+            
+            
+            AddThirst(_currentConsumable.ThirstAmount);
 
             // Check if player is still holding drink input
             bool stillHoldingDrink = GameInput.Instance.IsHoldingDownSecondaryInteract;

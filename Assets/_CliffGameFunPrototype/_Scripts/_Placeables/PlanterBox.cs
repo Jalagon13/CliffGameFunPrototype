@@ -15,6 +15,7 @@ namespace CliffGame
     {
         [SerializeField] private Trellis _parentTrellis;
         [SerializeField] private Transform _growableGrowPoint;
+        [SerializeField] private PlantableItemSO _plantItem;
     
         private PlantableItemSO _currentPlantableItem;
         private PlanterBoxState _currentState = PlanterBoxState.Empty;
@@ -24,7 +25,7 @@ namespace CliffGame
 
         private Timer _growthTimer;
         private Growable _currentGrowableInstance;
-
+        public Growable CurrentGrowableInstance => _currentGrowableInstance;
 
         private void Update()
         {
@@ -40,7 +41,7 @@ namespace CliffGame
             switch (_currentState)
             {
                 case PlanterBoxState.Growing:
-                    CancelGrowth();
+                    // CancelGrowth();
                     return;
 
                 case PlanterBoxState.Empty:
@@ -49,25 +50,22 @@ namespace CliffGame
 
                 case PlanterBoxState.Grown:
                     // Reserved for harvest interaction later
+                    Collect();
                     return;
             }
         }
-        
-        public void SubtractTime(int seconds)
+
+        private void Collect()
         {
-            _growthTimer.SubtractTime(seconds);
+            
         }
         
         private void TryPlantSelectedItem()
         {
-            if (!InventoryManager.Instance.HasSelectedItem) return;
-
-            InventoryItem selectedItem = InventoryManager.Instance.SelectedInventoryItem;
-
-            if (selectedItem.Item is PlantableItemSO plantableItem)
+            if (InventoryManager.Instance.InventoryHasItem(_plantItem, 1))
             {
-                StartGrowing(plantableItem);
-                InventoryManager.Instance.RemoveItem(plantableItem, 1);
+                StartGrowing(_plantItem);
+                InventoryManager.Instance.RemoveItem(_plantItem, 1);
             }
         }
 

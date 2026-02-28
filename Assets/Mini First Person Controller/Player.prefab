@@ -207,17 +207,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec72980442fddac4d86e75ab24b4d027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _executeStartingSequence: 1
+  _executeStartingSequence: 0
   _character: {fileID: 4207293392497186}
   _sensitivitySlider: {fileID: 0}
   minSensitivity: 0.1
   maxSensitivity: 5
-  _fovLerpDuration: 0.25
   Sensitivity: 0.2
   Smoothing: 1.5
   _blackScreenFadeDuration: 2
   _startDelay: 1
   _lookDownDuration: 1.5
+  _lookDownDelay: 0.5
   _lookLeftDuration: 1.5
   _lookLeftDelay: 0.5
   _lookRightDuration: 1.5
@@ -226,6 +226,8 @@ MonoBehaviour:
   _lookDownAngle: 60
   _lookLeftAngle: 80
   _lookRightAngle: 80
+  _fovLerpDuration: 0.25
+  _sprintingFOV: 90
 --- !u!114 &3483584220158204957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,7 +299,6 @@ GameObject:
   - component: {fileID: 4791299541788846658}
   - component: {fileID: 114963311885979670}
   - component: {fileID: 5662476774981885568}
-  - component: {fileID: 8974698583078845963}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -377,6 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _walkSpeed: 3
+  _sprintSpeed: 6
   _jumpForce: 10
   _gravity: -30
   _terminalVelocity: -50
@@ -390,6 +392,7 @@ MonoBehaviour:
   _minAirTimeForLandingSFX: 0.2
   _fallDamageThreshold: 4
   _fallDamageMultiplier: 2
+  _lethalFallDistance: 90
 --- !u!114 &5662476774981885568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,27 +405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5889e955a91d3474380e6dd5dd695919, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.DeadState
---- !u!114 &8974698583078845963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773623360729482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6635ffd4c4d3476794c7966537dd93a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BirdSpawner
-  _canSpawnBirds: 1
-  _terrain: {fileID: 0}
-  _birdResourcePrefab: {fileID: 8347050287948959519, guid: 8321dca69422d457ebbe2e22f0006ca5, type: 3}
-  _maxSparrows: 6
-  _spawningPlaneSideLength: 20
-  _spawningPlaneDistanceFromPlayer: 15
-  _obstacleAvoidanceRadius: 2
-  _ticksPerSecond: 20
-  _spawnChancePerTick: 0.0125
 --- !u!1 &5234949846655753315
 GameObject:
   m_ObjectHideFlags: 0

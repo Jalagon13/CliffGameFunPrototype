@@ -20,6 +20,7 @@ namespace CliffGame
 
         private Image _crosshairImage;
         private bool _isHoldingHammer;
+        private BuildPiece _lastHoveredBuildPiece;
         
         private void Awake()
         {
@@ -95,17 +96,13 @@ namespace CliffGame
                 _interactRadialBar.UpdateBar(0f, 0f, 1f);
                 _interactRadialBar.gameObject.SetActive(false);
             }
+
+            HandleRepairUI();
         }
 
         private void CheckForRepairState(BuildOption type)
         {
-            if (_structReqHolder.transform.childCount > 0)
-            {
-                for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
-                {
-                    Destroy(_structReqHolder.transform.GetChild(i).gameObject);
-                }
-            }
+            ClearStructReqs();
 
             if (type == BuildOption.RepairMode)
             {
@@ -135,7 +132,6 @@ namespace CliffGame
             _crosshairImage.sprite = _defaultSprite;
             HideTextAboveCrosshair();
 
-            // ---- Cooking Station ----
             if (interactable is CookingStation)
             {
                 _crosshairImage.sprite = _rawBirdSprite;
@@ -144,11 +140,32 @@ namespace CliffGame
                 return;
             }
 
-            // ---- Water Still ----
             if (interactable is WaterStill waterStill)
             {
-                
                 HandleWaterStillText(waterStill);
+                SetCrosshairAlpha(1f);
+                return;
+            }
+            
+            if(interactable is CraftingTable craftingTable)
+            {
+                ShowTextAboveCrosshair("[E] <br> Open Crafting Menu");
+                SetCrosshairAlpha(1f);
+                return;
+            }
+            
+            
+            if (interactable is PlanterBox planterBox)
+            {
+                HandlePlanterBoxText(planterBox);
+                SetCrosshairAlpha(1f);
+                return;
+            }
+            
+            
+            if(interactable is Growable growable)
+            {
+                HandleGrowableText(growable);
                 SetCrosshairAlpha(1f);
                 return;
             }
@@ -172,7 +189,35 @@ namespace CliffGame
 
             SetCrosshairAlpha(1f);
         }
-        
+
+        private void HandleGrowableText(Growable growable)
+        {
+            if(growable.CanBeHarvested)
+            {
+                ShowTextAboveCrosshair("[E] <br> Harvest");
+            }
+            else
+            {
+                ShowTextAboveCrosshair("Growing...");
+            }
+        }
+
+        private void HandlePlanterBoxText(PlanterBox planterBox)
+        {
+            switch(planterBox.CurrentState)
+            {
+                case PlanterBoxState.Empty:
+                    ShowTextAboveCrosshair("[E] <br> Plant Cliff Seed");
+                    break;
+                case PlanterBoxState.Growing:
+                    ShowTextAboveCrosshair("Growing...");
+                    break;
+                case PlanterBoxState.Grown:
+                    ShowTextAboveCrosshair("[E] <br> Harvest");
+                    break;
+            }       
+        }
+
         private void HandleWaterStillText(WaterStill waterStill)
         {
             switch (waterStill.CurrentState)
@@ -230,23 +275,11 @@ namespace CliffGame
                 _isHoldingHammer = true;
                 if(BuildingManager.Instance.CurrentBuildType == BuildOption.DestroyMode)
                 {
-                    if (_structReqHolder.transform.childCount > 0)
-                    {
-                        for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
-                        {
-                            Destroy(_structReqHolder.transform.GetChild(i).gameObject);
-                        }
-                    }
+                    ClearStructReqs();
                 }
                 else if(BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode)
                 {
-                    if (_structReqHolder.transform.childCount > 0)
-                    {
-                        for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
-                        {
-                            Destroy(_structReqHolder.transform.GetChild(i).gameObject);
-                        }
-                    }
+                    ClearStructReqs();
 
                     _repairInstructions.SetActive(true);
                 }
@@ -258,10 +291,7 @@ namespace CliffGame
             else
             {
                 _isHoldingHammer = false;
-                for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
-                {
-                    Destroy(_structReqHolder.transform.GetChild(i).gameObject);
-                }
+                ClearStructReqs();
 
                 HideBuildInstructionTexts();
             }
@@ -315,6 +345,49 @@ namespace CliffGame
 
             return timer.RemainingSeconds < timer.Duration &&
                    timer.RemainingSeconds > 0f;
+        }
+
+        private void HandleRepairUI()
+        {
+            if (BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode)
+            {
+                BuildPiece hovered = InteractionManager.Instance.CurrentlyHoveredBuildPiece;
+                if (hovered != _lastHoveredBuildPiece)
+                {
+                    _lastHoveredBuildPiece = hovered;
+                    UpdateRepairRequirements(hovered);
+                }
+            }
+            else
+            {
+                _lastHoveredBuildPiece = null;
+            }
+        }
+
+        private void UpdateRepairRequirements(BuildPiece piece)
+        {
+            ClearStructReqs();
+
+            if (piece != null)
+            {
+                foreach (InventoryItem item in piece.ItemsNeededForRepairing)
+                {
+                    StructReqUI structReq = Instantiate(_structReqPrefab, _structReqHolder.transform.position, Quaternion.identity);
+                    structReq.transform.SetParent(_structReqHolder.transform);
+                    structReq.Initialize(item);
+                }
+            }
+        }
+
+        private void ClearStructReqs()
+        {
+            if (_structReqHolder.transform.childCount > 0)
+            {
+                for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
+                {
+                    Destroy(_structReqHolder.transform.GetChild(i).gameObject);
+                }
+            }
         }
     }
 }

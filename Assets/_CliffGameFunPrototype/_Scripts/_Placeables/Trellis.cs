@@ -16,26 +16,24 @@ namespace CliffGame
             _dirtDecalProjecter.enabled = false;
             _dirtMounts.gameObject.SetActive(false);
         }
-    
-        public override void OnHitWithTool(int damage)
+
+        public override void Collect(bool giveItems = true)
         {
-            bool areAllPlanterBoxesEmpty = true;
-            foreach (PlanterBox planterBox in _planterBoxes)
+            foreach (PlanterBox pb in _planterBoxes)
             {
-                if(planterBox.CurrentState != PlanterBoxState.Empty)
+                if(pb.CurrentState == PlanterBoxState.Growing)
                 {
-                    areAllPlanterBoxesEmpty = false;
-                    break;
+                    pb.CancelGrowth();
+                }
+                else if(pb.CurrentState == PlanterBoxState.Grown)
+                {
+                    pb.CurrentGrowableInstance.Collect(true);
                 }
             }
-
-            if(areAllPlanterBoxesEmpty)
-            {
-                Debug.Log($"All planter boxes are empty");
-                base.OnHitWithTool(damage);
-            }
-        }
         
+            base.Collect(giveItems);
+        }
+                
         public override void OnInteractWith()
         {
             Debug.Log($"Interacting with trellis");

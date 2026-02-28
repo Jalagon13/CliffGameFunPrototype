@@ -70,12 +70,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Trellis
   _requiredToolType: 1
-  _maxLife: 3
+  _maxLife: 4
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: 906fc7e709ae94c59bdbc7a22473cb4b, type: 2}
     MinAmount: 1
     MaxAmount: 1
   _crackParticles: {fileID: 0}
+  _destroyParticles: {fileID: 0}
   _hitSFX:
     Guid:
       Data1: 1630036399
@@ -34317,6 +34318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlanterBox
   _parentTrellis: {fileID: 1481705724249963972}
   _growableGrowPoint: {fileID: 5077431036786059808}
+  _plantItem: {fileID: 11400000, guid: 75dd4fdcb257243c88ae818291a5f0de, type: 2}
 --- !u!1 &2633273054887153005
 GameObject:
   m_ObjectHideFlags: 0
@@ -34450,6 +34452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlanterBox
   _parentTrellis: {fileID: 1481705724249963972}
   _growableGrowPoint: {fileID: 2283897004626145325}
+  _plantItem: {fileID: 11400000, guid: 75dd4fdcb257243c88ae818291a5f0de, type: 2}
 --- !u!1 &3988527265395506915
 GameObject:
   m_ObjectHideFlags: 0
@@ -34519,6 +34522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlanterBox
   _parentTrellis: {fileID: 1481705724249963972}
   _growableGrowPoint: {fileID: 5085608433997479111}
+  _plantItem: {fileID: 11400000, guid: 75dd4fdcb257243c88ae818291a5f0de, type: 2}
 --- !u!1 &4115452569901806489
 GameObject:
   m_ObjectHideFlags: 0
@@ -34683,6 +34687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlanterBox
   _parentTrellis: {fileID: 1481705724249963972}
   _growableGrowPoint: {fileID: 6571409645750665582}
+  _plantItem: {fileID: 11400000, guid: 75dd4fdcb257243c88ae818291a5f0de, type: 2}
 --- !u!1 &5214134940377551240
 GameObject:
   m_ObjectHideFlags: 0

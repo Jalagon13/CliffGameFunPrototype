@@ -2858,7 +2858,7 @@ MonoBehaviour:
     Path: event:/Resources/GutsSquishSFX
   _patrolRadiusHorizontal: 10
   _patrolRadiusVertical: 6
-  _patrolSpeed: 1.5
+  _patrolSpeed: 1.75
   _setPivotToStartPos: 1
   _flightDurationBeforeDespawn: 4
   _lifeTime: 60

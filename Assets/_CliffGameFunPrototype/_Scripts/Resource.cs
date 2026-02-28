@@ -56,7 +56,7 @@ namespace CliffGame
             // Default resource interaction (can be empty)
         }
 
-        public void Collect(bool giveItems = true)
+        public virtual void Collect(bool giveItems = true)
         {
             if(giveItems)
             {

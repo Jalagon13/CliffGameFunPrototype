@@ -6,6 +6,8 @@ namespace CliffGame
     {
         private float _growthPercentage; // 0 to 1
         private bool _canBeHarvested;
+        public bool CanBeHarvested => _canBeHarvested;
+        
         private PlanterBox _parentPlanterBox;
         private Collider _growableCollider;
 
@@ -45,6 +47,11 @@ namespace CliffGame
                 Debug.Log($"Harvested resource: {gameObject.name}");
                 Destroy(gameObject);
             }
+        }
+        
+        public void Collect()
+        {
+            
         }
 
 

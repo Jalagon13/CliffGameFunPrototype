@@ -162,10 +162,13 @@ namespace CliffGame
                 return;
             }
             
-            if(consumableItem.ConsumableType != ConsumableType.Food)
+            if(consumableItem.HungerAmount <= 0)
                 return;
 
             if (CurrentHunger >= _maxHunger)
+                return;
+
+            if (consumableItem.HungerAmount <= 0 && consumableItem.ThirstAmount > 0)
                 return;
 
             StartEating(consumableItem);
@@ -213,7 +216,7 @@ namespace CliffGame
                 FMODEvents.Instance.EatingSFX,
                 Player.Instance.transform.position
             );
-            AddHunger(_currentConsumable.HealAmount);
+            AddHunger(_currentConsumable.HungerAmount);
 
             // Check if player is still holding eat input
             bool stillHoldingEat = GameInput.Instance.IsHoldingDownSecondaryInteract;

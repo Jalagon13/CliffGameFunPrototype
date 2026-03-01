@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WingAnimation
   _maxZRotationDegrees: 30
-  _cycleDuration: 0.55
+  _cycleDuration: 0.45
   _startAtPositiveRotation: 1
 --- !u!1 &1114620205449887490
 GameObject:
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WingAnimation
   _maxZRotationDegrees: 30
-  _cycleDuration: 0.55
+  _cycleDuration: 0.45
   _startAtPositiveRotation: 0
 --- !u!1 &1579547660120877639
 GameObject:
@@ -36650,8 +36650,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.GiantBatAnimations
   _wingAnimation: {fileID: 200333473021131695}
-  _bobAmount: 0.15
+  _bobAmount: 0.175
   _targetTransform: {fileID: 0}
+  _wingFlapSfx:
+    Guid:
+      Data1: -1076322698
+      Data2: 1229856515
+      Data3: -1478647408
+      Data4: -1557896319
+    Path: event:/GiantBat/GiantBatWingFlap
 --- !u!1 &5968672233126525726
 GameObject:
   m_ObjectHideFlags: 0
@@ -38123,8 +38130,8 @@ MonoBehaviour:
   - DropItem: {fileID: 11400000, guid: cdc3e36a2801e48d5bfcc02403891c1d, type: 2}
     MinAmount: 0
     MaxAmount: 1
-  _hitParticles: {fileID: 0}
-  _killParticles: {fileID: 0}
+  _hitParticles: {fileID: 3947636531895734693, guid: b8f6f3b74e19a4647a8cdfc0064a3558, type: 3}
+  _killParticles: {fileID: 3947636531895734693, guid: b8f6f3b74e19a4647a8cdfc0064a3558, type: 3}
   _hitSFX:
     Guid:
       Data1: 1441653220

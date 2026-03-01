@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ConsumableItemSO
   <InGameName>k__BackingField: Bat Meat
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
-  <UiDisplay>k__BackingField: {fileID: 2044576360, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
+  <UiDisplay>k__BackingField: {fileID: 396448133, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: RMB to eat
   <HungerAmount>k__BackingField: 10

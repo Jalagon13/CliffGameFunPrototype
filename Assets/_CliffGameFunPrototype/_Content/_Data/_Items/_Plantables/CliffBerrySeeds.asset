@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlantableItemSO
   <InGameName>k__BackingField: Cliff Berry Seeds
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
-  <UiDisplay>k__BackingField: {fileID: 811161192, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
+  <UiDisplay>k__BackingField: {fileID: 106546517, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: Plant on the cliff to grow Cliff Berries
   <GrowthTimeInSeconds>k__BackingField: 15

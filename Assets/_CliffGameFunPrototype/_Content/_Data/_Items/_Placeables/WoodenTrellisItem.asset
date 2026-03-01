@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructureItemSO
   <InGameName>k__BackingField: Wooden Trellis
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
-  <UiDisplay>k__BackingField: {fileID: 1005832525230143579, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
+  <UiDisplay>k__BackingField: {fileID: -373718583, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: Place on cliff to plant crops.
   <PlaceablePrefab>k__BackingField: {fileID: 1733463368129604257, guid: ae66c7acfe6cc4576939817d00450ef7, type: 3}

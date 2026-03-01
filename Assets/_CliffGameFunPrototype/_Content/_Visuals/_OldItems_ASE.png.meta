@@ -1327,7 +1327,7 @@ TextureImporter:
         width: 16
         height: 17
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -1336,6 +1336,72 @@ TextureImporter:
       bones: []
       spriteID: d855a4f72eb5744769da692fcf8eac8c
       internalID: 904965497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _OldItems_ASE_48
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 15
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c410ff72249134708be5c7a8f69a2e1a
+      internalID: -373718583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _OldItems_ASE_49
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bec4614f2124c43e99a2951e5c96e5b1
+      internalID: 396448133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: _OldItems_ASE_50
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ecb9bd9eb807494983bdccabf7ab948
+      internalID: 106546517
       vertices: []
       indices: 
       edges: []
@@ -1399,7 +1465,10 @@ TextureImporter:
       _OldItems_ASE_45: -4060317726986360481
       _OldItems_ASE_46: -1705656267893567320
       _OldItems_ASE_47: 1809685172947934342
+      _OldItems_ASE_48: -373718583
+      _OldItems_ASE_49: 396448133
       _OldItems_ASE_5: -2777964775342937541
+      _OldItems_ASE_50: 106546517
       _OldItems_ASE_6: 4418248290154484647
       _OldItems_ASE_7: 1119703803
       _OldItems_ASE_8: -2345204063719780061

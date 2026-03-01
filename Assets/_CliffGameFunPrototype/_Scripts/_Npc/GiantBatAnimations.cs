@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+using FMODUnity;
+using System.Collections;
 
 namespace CliffGame
 {
@@ -9,6 +11,7 @@ namespace CliffGame
         [SerializeField] private WingAnimation _wingAnimation;
         [SerializeField] private float _bobAmount = 0.5f;
         [SerializeField] private Transform _targetTransform;
+        [SerializeField] private EventReference _wingFlapSfx;
         
         private GiantBatNpc _npc;
         
@@ -37,12 +40,24 @@ namespace CliffGame
         {
             if(_npc.State == GiantBatNpc.BatState.Attacking && _npc.TargetPlatform != null)
             {
-                _npc.TargetPlatform.PlayCrackingFX();
+                if(UnityEngine.Random.value < 0.9)
+                    StartCoroutine(Delay());
+                    
+                AudioManager.Instance.PlayOneShot(_wingFlapSfx, transform.position);
             }
 
             Sequence bobSequence = DOTween.Sequence();
-            bobSequence.Append(_targetTransform.DOLocalMoveY(_bobAmount, 0.4f).SetRelative(true).SetEase(Ease.OutQuad));
-            bobSequence.Append(_targetTransform.DOLocalMoveY(-_bobAmount, 0.6f).SetRelative(true).SetEase(Ease.InQuad));
+            bobSequence.Append(_targetTransform.DOLocalMoveY(_bobAmount, 0.25f).SetRelative(true).SetEase(Ease.OutQuad));
+            bobSequence.Append(_targetTransform.DOLocalMoveY(-_bobAmount, 0.5f).SetRelative(true).SetEase(Ease.InQuad));
+        }
+        
+        private IEnumerator Delay()
+        {
+            yield return new WaitForSeconds(0.125f);
+            if(_npc.TargetPlatform != null)
+            {
+                _npc.TargetPlatform.PlayCrackingFX();
+            }
         }
     }
 }

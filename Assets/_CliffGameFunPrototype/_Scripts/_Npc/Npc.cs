@@ -44,6 +44,7 @@ namespace CliffGame
             }
             
             Debug.Log($"Damaged {gameObject.name} for {damage}, hp: {_currentLife}/{_maxLife}");
+            Instantiate(_hitParticles.gameObject, transform.position, Quaternion.identity);
 
             if (_currentLife <= 0)
             {

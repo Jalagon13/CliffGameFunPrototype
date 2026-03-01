@@ -1937,8 +1937,8 @@ MonoBehaviour:
   _maxLife: 0
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: ad2f70919f7d046ed8001013ac529d7d, type: 2}
-    MinAmount: 2
-    MaxAmount: 3
+    MinAmount: 1
+    MaxAmount: 2
   - DropItem: {fileID: 11400000, guid: 75dd4fdcb257243c88ae818291a5f0de, type: 2}
     MinAmount: 1
     MaxAmount: 2

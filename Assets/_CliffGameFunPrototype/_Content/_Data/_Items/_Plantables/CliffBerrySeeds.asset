@@ -17,5 +17,5 @@ MonoBehaviour:
   <UiDisplay>k__BackingField: {fileID: 106546517, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: Plant on the cliff to grow Cliff Berries
-  <GrowthTimeInSeconds>k__BackingField: 15
+  <GrowthTimeInSeconds>k__BackingField: 80
   <GrowablePrefab>k__BackingField: {fileID: 1193042686163046655, guid: 5f11abe12d65f4ad2b909f3541c56e23, type: 3}

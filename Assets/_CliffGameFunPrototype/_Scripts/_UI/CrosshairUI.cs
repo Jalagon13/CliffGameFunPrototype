@@ -349,7 +349,7 @@ namespace CliffGame
 
         private void HandleRepairUI()
         {
-            if (BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode)
+            if (_isHoldingHammer && BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode)
             {
                 BuildPiece hovered = InteractionManager.Instance.CurrentlyHoveredBuildPiece;
                 if (hovered != _lastHoveredBuildPiece)
@@ -360,7 +360,11 @@ namespace CliffGame
             }
             else
             {
-                _lastHoveredBuildPiece = null;
+                if (_lastHoveredBuildPiece != null)
+                {
+                    ClearStructReqs();
+                    _lastHoveredBuildPiece = null;
+                }
             }
         }
 

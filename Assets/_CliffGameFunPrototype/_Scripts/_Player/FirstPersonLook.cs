@@ -225,10 +225,10 @@ public class FirstPersonLook : MonoBehaviour
         }
     }
 
-    // private void OnSensitivityChanged(float value) // Connected to the slider
-    // {
-    //     Sensitivity = Mathf.Lerp(minSensitivity, maxSensitivity, value);
-    // }
+    public void OnSensitivityChanged(float value) // Connected to the slider
+    {
+        Sensitivity = Mathf.Lerp(minSensitivity, maxSensitivity, value);
+    }
 
     private void GameInput_OnLook(object sender, InputAction.CallbackContext e)
     {

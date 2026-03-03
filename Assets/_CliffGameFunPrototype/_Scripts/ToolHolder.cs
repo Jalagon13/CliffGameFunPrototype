@@ -11,6 +11,16 @@ namespace CliffGame
         [SerializeField] private float _returnTime = 0.15f;
         [SerializeField] private float _swingDownAngle = -50f;
         [SerializeField] private float _swingUpAngle = 40f;
+
+        [Header("Spear Stab Animation")]
+        [SerializeField] private float _spearStabPullbackDistanceZ = 0.15f;
+        [SerializeField] private float _spearStabThrustDistanceZ = 0.35f;
+        [SerializeField] private float _spearStabPullbackTime = 0.08f;
+        [SerializeField] private float _spearStabThrustTime = 0.09f;
+        [SerializeField] private float _spearStabRecoverTime = 0.12f;
+
+        [SerializeField] private float _chargePullbackDistanceZ = 0.25f;
+        [SerializeField] private float _chargePullbackLerpSpeed = 12f;
         // [SerializeField] private float _swingCooldownSeconds = 0.375f;
 
         private ToolItemSO _currentHeldTool;
@@ -18,12 +28,17 @@ namespace CliffGame
         
         private bool _isSwinging;
         public bool IsSwinging => _isSwinging;
+        private bool _modelsHiddenForTetherSequence;
+        private Vector3 _defaultLocalPosition;
+        private Quaternion _defaultLocalRotation;
         
         private Timer _swingCooldownTimer;
         public event Action OnToolSwingDown;
     
         private void Start()
         {
+            _defaultLocalPosition = transform.localPosition;
+            _defaultLocalRotation = transform.localRotation;
             InventoryManager.Instance.OnSelectedSlotChanged += OnSelectedSlotChanged;
             _swingCooldownTimer = new Timer(0);
             _swingCooldownTimer.RemainingSeconds = 0f;
@@ -37,10 +52,16 @@ namespace CliffGame
         private void Update()
         {
             _swingCooldownTimer?.Tick(Time.deltaTime);
+
+            UpdateChargePullback();
+
+            bool tetherSequenceExecuting = IsSpearTetherSequenceExecuting();
+            SyncHeldToolModelVisibility(tetherSequenceExecuting);
             
             if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead ||
                 CraftingManager.Instance.IsCraftingUIOpen || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
-                Player.Instance.ToolHolder.IsSwinging) return;
+                Player.Instance.ToolHolder.IsSwinging ||
+                tetherSequenceExecuting) return;
             
             if(GameInput.Instance.IsHoldingDownPrimaryInteract)
             {
@@ -92,11 +113,55 @@ namespace CliffGame
             return transform.childCount > 0;
         }
 
+        private bool IsSpearTetherSequenceExecuting()
+        {
+            return SpearTetherManager.Instance != null &&
+                   SpearTetherManager.Instance.SpearTetherHolder != null &&
+                   SpearTetherManager.Instance.SpearTetherHolder.SequenceExecuting;
+        }
+
+        private void SyncHeldToolModelVisibility(bool hideModels)
+        {
+            if (_modelsHiddenForTetherSequence == hideModels) return;
+
+            _modelsHiddenForTetherSequence = hideModels;
+
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Transform child = transform.GetChild(i);
+                if (child != null)
+                {
+                    child.gameObject.SetActive(!hideModels);
+                }
+            }
+        }
+
+        private void UpdateChargePullback()
+        {
+            if (_isSwinging)
+            {
+                return;
+            }
+
+            bool isCharging = SpearTetherManager.Instance != null && SpearTetherManager.Instance.IsCharging;
+            float targetZ = _defaultLocalPosition.z + (isCharging ? -_chargePullbackDistanceZ : 0f);
+
+            Vector3 current = transform.localPosition;
+            Vector3 target = new Vector3(_defaultLocalPosition.x, _defaultLocalPosition.y, targetZ);
+            transform.localPosition = Vector3.Lerp(current, target, _chargePullbackLerpSpeed * Time.deltaTime);
+        }
+
         private void TryPlaySwingAnimation()
         {
             // Only swing if a tool is equipped, not already swinging, and cooldown is over
             if (_isSwinging || !ToolPrefabExists() || _swingCooldownTimer.RemainingSeconds > 0f || Player.Instance.PauseMenuUI.IsPauseMenuOpen || CraftingManager.Instance.IsCraftingUIOpen)
                 return;
+
+            if (_currentHeldTool != null && _currentHeldTool.ToolType == ToolType.Spear)
+            {
+                TryPlaySpearStabAnimation();
+                return;
+            }
 
             _isSwinging = true;
 
@@ -145,6 +210,48 @@ namespace CliffGame
 
             swingSequence.OnComplete(() =>
             {
+                _isSwinging = false;
+                _swingCooldownTimer.Reset();
+            });
+        }
+
+        private void TryPlaySpearStabAnimation()
+        {
+            _isSwinging = true;
+
+            transform.localRotation = _defaultLocalRotation;
+
+            float baseZ = _defaultLocalPosition.z;
+            float pullbackZ = baseZ - _spearStabPullbackDistanceZ;
+            float thrustZ = baseZ + _spearStabThrustDistanceZ;
+
+            Sequence stabSequence = DOTween.Sequence();
+
+            // Pull hand/spear back before the stab.
+            stabSequence.Append(
+                transform.DOLocalMoveZ(pullbackZ, _spearStabPullbackTime).SetEase(Ease.OutQuad)
+            );
+
+            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.ToolSwingSFX, transform.position);
+
+            // Thrust forward to deliver the hit.
+            stabSequence.Append(
+                transform.DOLocalMoveZ(thrustZ, _spearStabThrustTime).SetEase(Ease.OutQuad)
+            );
+
+            stabSequence.AppendCallback(() =>
+            {
+                OnToolSwingDown?.Invoke();
+            });
+
+            // Recover to resting hand position.
+            stabSequence.Append(
+                transform.DOLocalMove(_defaultLocalPosition, _spearStabRecoverTime).SetEase(Ease.OutQuad)
+            );
+
+            stabSequence.OnComplete(() =>
+            {
+                transform.localPosition = _defaultLocalPosition;
                 _isSwinging = false;
                 _swingCooldownTimer.Reset();
             });

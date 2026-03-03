@@ -2858,7 +2858,7 @@ MonoBehaviour:
     Path: event:/Resources/GutsSquishSFX
   _patrolRadiusHorizontal: 10
   _patrolRadiusVertical: 6
-  _patrolSpeed: 1.75
+  _patrolSpeed: 1
   _setPivotToStartPos: 1
   _flightDurationBeforeDespawn: 4
   _lifeTime: 60
@@ -2874,8 +2874,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8d8e2dd94d54fcab70b9804f041018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.FlyingAI
-  _moveSpeed: 3
-  _rotationSpeed: 1.5
+  _moveSpeed: 1
+  _rotationSpeed: 2
   _reachThreshold: 0.01
   _freezeRotationX: 1
   _freezeRotationY: 0

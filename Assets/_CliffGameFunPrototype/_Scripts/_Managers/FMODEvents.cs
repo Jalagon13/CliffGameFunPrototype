@@ -1,5 +1,6 @@
 using FMODUnity;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CliffGame
 {
@@ -10,7 +11,8 @@ namespace CliffGame
         [field: Header("Player SFX")]
         [field: SerializeField] public EventReference PlayerHurtSFX { get; private set; }
         [field: SerializeField] public EventReference ToolSwingSFX { get; private set; }
-        [field: SerializeField] public EventReference HookshotReleaseSFX { get; private set; }
+        [field: FormerlySerializedAs("HookshotReleaseSFX")]
+        [field: SerializeField] public EventReference SpearTetherReleaseSFX { get; private set; }
         [field: SerializeField] public EventReference EatingSFX { get; private set; }
         [field: SerializeField] public EventReference GulpSFX { get; private set; }
         [field: SerializeField] public EventReference StomachGrowlSFX { get; private set; }

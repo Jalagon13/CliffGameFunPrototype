@@ -167,7 +167,7 @@ namespace CliffGame
                 InventoryItem item = _inventoryModel.InventoryItems[i];
 
                 if (!item.HasItem) continue;
-                if(item.Item is ToolItemSO || item.Item is HookshotItemSO) continue;
+                if(item.Item is ToolItemSO) continue;
                 if (UnityEngine.Random.value < 0.5f) continue;
 
                 // 50% chance the item gets deleted
@@ -256,7 +256,7 @@ namespace CliffGame
                 BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
                 Player.Instance.ToolHolder.IsSwinging || 
                 HungerManager.Instance.IsEating ||
-                HookshotManager.Instance.HookshotHolder.HookSequenceExecuting) return;
+                SpearTetherManager.Instance.SpearTetherHolder.SequenceExecuting) return;
 
             Vector2 scrollDelta = context.ReadValue<Vector2>();
             int itemCount = _hotbarSlotAmount;
@@ -295,7 +295,7 @@ namespace CliffGame
                 BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
                 Player.Instance.ToolHolder.IsSwinging ||
                 HungerManager.Instance.IsEating ||
-                HookshotManager.Instance.HookshotHolder.HookSequenceExecuting) return;
+                SpearTetherManager.Instance.SpearTetherHolder.SequenceExecuting) return;
 
             var control = context.control; // The control (key/button) that triggered this
 

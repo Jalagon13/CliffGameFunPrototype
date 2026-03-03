@@ -12,13 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 758ebea90039c4c65acaef5eef26b129, type: 3}
   m_Name: SpearItem
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ToolItemSO
-  <InGameName>k__BackingField: Spear
+  <InGameName>k__BackingField: Spear and Tether
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 904965497, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: A great device for poking things.
+  <Description>k__BackingField: A primitive spear tethered with twine for throwing
+    and retrieval.
   <ToolType>k__BackingField: 3
   <SwingCooldownInSeconds>k__BackingField: 0.3
   <NpcDamageAmount>k__BackingField: 4
   <IntValue>k__BackingField: 0
   <HeldToolPrefab>k__BackingField: {fileID: 8373242977027255922, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+  <CanThrowTethered>k__BackingField: 1
+  <TetherChargeDuration>k__BackingField: 1.1
+  <TetherRange>k__BackingField: 15
+  <TetherSequenceDuration>k__BackingField: 1.6
+  <TetherGravityMultiplier>k__BackingField: 0.3

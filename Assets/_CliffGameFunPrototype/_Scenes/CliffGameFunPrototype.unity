@@ -1293,6 +1293,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 185169974}
   m_CullTransparentMesh: 1
+--- !u!4 &204447231 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+  m_PrefabInstance: {fileID: 381890627}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &234414633
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2196,7 +2201,7 @@ MonoBehaviour:
       Data3: 1399760783
       Data4: 2056025222
     Path: event:/Player/SFX_ToolWoosh
-  <HookshotReleaseSFX>k__BackingField:
+  <SpearTetherReleaseSFX>k__BackingField:
     Guid:
       Data1: -903414477
       Data2: 1129781991
@@ -3845,96 +3850,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 355875720}
   m_CullTransparentMesh: 1
---- !u!1 &357618504
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 357618505}
-  - component: {fileID: 357618508}
-  - component: {fileID: 357618507}
-  m_Layer: 0
-  m_Name: Cube
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &357618505
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 357618504}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.13367495, y: 0.0806561, z: -0.031716377, w: 0.9872283}
-  m_LocalPosition: {x: 0.187, y: 0, z: 0.122}
-  m_LocalScale: {x: 0.25, y: 0.2, z: 0.6}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 438436749}
-  m_LocalEulerAnglesHint: {x: -15, y: 10, z: -5}
---- !u!23 &357618507
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 357618504}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 5c0de40c69f48b14eb67d6190333581f, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &357618508
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 357618504}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &365058427 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -1234806431069001368, guid: 9a8a9398340f545b791329ddccb0c7ad, type: 3}
@@ -3946,6 +3861,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6abda33777d5044809706d4a3845ddc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.SlotUI
+--- !u!1001 &381890627
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1047907301}
+    m_Modifications:
+    - target: {fileID: 8373242977027255922, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_Name
+      value: SpadeV1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.363
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185210957504066760, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
 --- !u!1 &399031508
 GameObject:
   m_ObjectHideFlags: 0
@@ -4094,7 +4066,7 @@ GameObject:
   - component: {fileID: 438436749}
   - component: {fileID: 438436750}
   m_Layer: 0
-  m_Name: HookshotHolder
+  m_Name: SpearTetherHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4108,12 +4080,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 438436748}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.066472314, z: -0, w: 0.9977883}
-  m_LocalPosition: {x: 0.38467407, y: -0.43101192, z: 0.38438034}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.379, y: -0.219, z: 0.388}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 357618505}
   - {fileID: 1011590280}
   m_Father: {fileID: 2006549897}
   m_LocalEulerAnglesHint: {x: 0, y: -7.623, z: 0}
@@ -4128,9 +4099,14 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b936d756000a4d65aca3853bb253ebc, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HookshotHolder
-  _hook: {fileID: 1047907300}
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.SpearTetherHolder
+  _spearProjectile: {fileID: 1047907300}
   _shootPoint: {fileID: 1011590280}
+  _throwPitchUpDegrees: -3.75
+  _reelCompleteDistance: 0.45
+  _alignRotationToVelocity: 1
+  _velocityAlignSlerpSpeed: 14
+  _minVelocityForRotation: 0.05
 --- !u!1 &445537586
 GameObject:
   m_ObjectHideFlags: 0
@@ -4488,11 +4464,11 @@ MonoBehaviour:
   - Prefab: {fileID: 8979547436931850727, guid: 9e0695773cad84794b5dd20ffdd664a5, type: 3}
     SlotCost: 1.5
     SpawnWeight: 100
-    SpawnDistanceFromCliff: 13
+    SpawnDistanceFromCliff: 10
     MinSpawnDistance: 5
     MaxSpawnDistance: 15
     SpawnZVarianceMin: -1
-    SpawnZVarianceMax: 4
+    SpawnZVarianceMax: 1
     AllowedSpawnTimes: 000000000100000002000000
   _canSpawnNpcs: 1
   _maxNpcSlotAmount: 6
@@ -6941,6 +6917,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.02
       objectReference: {fileID: 0}
+    - target: {fileID: 20437472682476688, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: near clip plane
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 54063890643546284, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_UseGravity
       value: 1
@@ -7035,7 +7015,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _executeStartingSequence
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114963311885979670, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: speed
@@ -7117,6 +7097,10 @@ PrefabInstance:
       propertyPath: <PauseMenuUI>k__BackingField
       value: 
       objectReference: {fileID: 1125035073}
+    - target: {fileID: 5959650992571449019, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.42
+      objectReference: {fileID: 0}
     - target: {fileID: 7288749070935495780, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_Height
       value: 1.4
@@ -7140,6 +7124,34 @@ PrefabInstance:
     - target: {fileID: 7288749070935495780, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: m_StepOffset
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8638897331038210049, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _spearStabThrustTime
+      value: 0.115
+      objectReference: {fileID: 0}
+    - target: {fileID: 8638897331038210049, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _spearStabRecoverTime
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8638897331038210049, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _spearStabPullbackTime
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8638897331038210049, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _chargePullbackDistanceZ
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8638897331038210049, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _chargePullbackLerpSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8638897331038210049, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _spearStabThrustDistanceZ
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 8638897331038210049, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+      propertyPath: _spearStabPullbackDistanceZ
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _terrain
@@ -7316,7 +7328,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.16
+  m_Value: 0.25
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -8221,7 +8233,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
   _craftingTableRecipes:
   - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
-  - {fileID: 11400000, guid: 3e24266cef9f540c0959b541dd07ecfa, type: 2}
   - {fileID: 11400000, guid: 80ebef25d0a3d4d43a1639967469cfbe, type: 2}
   - {fileID: 11400000, guid: 1e3064abad23d408a8dbfa4a43f94031, type: 2}
   - {fileID: 11400000, guid: 01062f0c3296a4c759ea042e20b25548, type: 2}
@@ -9858,7 +9869,7 @@ GameObject:
   - component: {fileID: 935853563}
   - component: {fileID: 935853564}
   m_Layer: 0
-  m_Name: HookshotManager
+  m_Name: SpearTetherManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9890,8 +9901,8 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc520db2e90e44ec1bb66f81ece59ad6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HookshotManager
-  _hookshotHolder: {fileID: 438436750}
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.SpearTetherManager
+  _spearTetherHolder: {fileID: 438436750}
 --- !u!43 &936029808
 Mesh:
   m_ObjectHideFlags: 0
@@ -10659,7 +10670,7 @@ Transform:
   m_GameObject: {fileID: 1011590279}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.23701295, y: 0.077167034, z: 0.40566254}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10750,8 +10761,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1047907301}
-  - component: {fileID: 1047907304}
-  - component: {fileID: 1047907303}
   - component: {fileID: 1047907307}
   - component: {fileID: 1047907302}
   - component: {fileID: 1047907305}
@@ -10773,9 +10782,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 204447231}
   m_Father: {fileID: 1011590280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1047907302
@@ -10797,65 +10807,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1047907303
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1047907300}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: -876546973899608171, guid: 5007682bc398b478cac008920be0dfb3, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1047907304
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1047907300}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Radius: 0.2
+  m_Center: {x: 0, y: 0, z: 1}
 --- !u!120 &1047907305
 LineRenderer:
   serializedVersion: 3
@@ -10915,7 +10868,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.09126854
+        value: 0.032972574
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -10976,7 +10929,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c0da62d4569b4fedb92ed875478c7c2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Hook
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.TetheredSpearProjectile
   _solidLayerMask:
     serializedVersion: 2
     m_Bits: 1088
@@ -19331,6 +19284,8 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
+  - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
+    Quantity: 1
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -21404,7 +21359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086b541bead394a5c8ead360709dff36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
-  <WindCanPushPlayer>k__BackingField: 1
+  <WindCanPushPlayer>k__BackingField: 0
   _windSeverity: 0.06
   _windPushesPlayerThreshold: 0.061
   _windTickInterval: 0.125
@@ -21435,7 +21390,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _playWindstorms: 1
+  _playWindstorms: 0
   _secondsPerCrack: 3
   _timeInBetweenStormsInSec: 300
   _radiusOfRattlingAroundPlayer: 15

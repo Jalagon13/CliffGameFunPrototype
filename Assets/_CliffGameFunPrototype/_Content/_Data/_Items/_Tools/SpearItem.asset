@@ -22,7 +22,7 @@ MonoBehaviour:
   <SwingCooldownInSeconds>k__BackingField: 0.3
   <NpcDamageAmount>k__BackingField: 4
   <IntValue>k__BackingField: 0
-  <HeldToolPrefab>k__BackingField: {fileID: 8373242977027255922, guid: ebc7f9d4d8f21a145b5f8bcb031a5ab1, type: 3}
+  <HeldToolPrefab>k__BackingField: {fileID: 8993926037787366457, guid: 04308fda487da47abba0feb18a01599e, type: 3}
   <CanThrowTethered>k__BackingField: 1
   <TetherChargeDuration>k__BackingField: 1.1
   <TetherRange>k__BackingField: 15

@@ -13,6 +13,8 @@ namespace CliffGame
             Patrolling,
             Approaching,
             Attacking,
+            Tethered,
+            TetherStunned,
             Fleeing,
             Despawning
         }
@@ -38,6 +40,10 @@ namespace CliffGame
         [Header("Morning Flee Settings")]
         [SerializeField] private float _flyingDurationBeforeDespawn = 4f;
         [SerializeField] private float _lifeTime = 60f;
+        
+        [Header("Tether Settings")]
+        [SerializeField] private float _tetherReelStopDistanceFromPlayer = 1.5f;
+        [SerializeField] private float _tetherStunDuration = 0.5f;
 
         private Vector3 _patrolPivot; 
         private FlyingAI _flyingAI;
@@ -53,6 +59,10 @@ namespace CliffGame
         
         private bool _hasPlayedWarning;
         private int _currentDamageTaken;
+        private Coroutine _tetherStunCoroutine;
+
+        public bool CanBeTethered => _currentState == BatState.Patrolling || _currentState == BatState.Attacking;
+        public float TetherReelStopDistanceFromPlayer => _tetherReelStopDistanceFromPlayer;
 
         protected override void Awake()
         {
@@ -76,6 +86,12 @@ namespace CliffGame
         protected void OnDestroy()
         {
             NpcManager.Instance.OnMorningRise -= OnMorningRise;
+            
+            if (_tetherStunCoroutine != null)
+            {
+                StopCoroutine(_tetherStunCoroutine);
+                _tetherStunCoroutine = null;
+            }
 
             if (_targetPlatform != null)
             {
@@ -104,6 +120,10 @@ namespace CliffGame
                     break;
                 case BatState.Attacking:
                     HandleAttacking();
+                    break;
+                case BatState.Tethered:
+                    break;
+                case BatState.TetherStunned:
                     break;
                 case BatState.Fleeing:
                     HandleFleeing();
@@ -164,6 +184,17 @@ namespace CliffGame
                     _flyingAI.Stop();
                     _damageAccumulator = 0f;
                     _currentDamageTaken = 0;
+                    break;
+                case BatState.Tethered:
+                    _flyingAI.Stop();
+                    if (_targetPlatform != null)
+                    {
+                        _targetPlatform.IsTargeted = false;
+                        _targetPlatform = null;
+                    }
+                    break;
+                case BatState.TetherStunned:
+                    _flyingAI.Stop();
                     break;
                 case BatState.Fleeing:
                     _flyingAI.SetSpeed(_attackSpeed);
@@ -361,6 +392,49 @@ namespace CliffGame
             if (closestPieces.Count == 0) return null;
 
             return closestPieces[Random.Range(0, closestPieces.Count)];
+        }
+
+        public bool CatchByTether(Transform spearTransform, bool ignoreStateCheck = false, bool preserveHitOffset = true)
+        {
+            if (spearTransform == null) return false;
+            if (!ignoreStateCheck && !CanBeTethered) return false;
+
+            // Preserve world-space hit offset so the bat does not snap unnaturally to spear center.
+            transform.SetParent(spearTransform, preserveHitOffset);
+            if (!preserveHitOffset)
+            {
+                transform.localPosition = Vector3.zero;
+            }
+
+            SetState(BatState.Tethered);
+            return true;
+        }
+
+        public void ReleaseFromTetherAndFlee()
+        {
+            if (_currentState != BatState.Tethered) return;
+
+            transform.SetParent(null, true);
+            SetState(BatState.TetherStunned);
+
+            if (_tetherStunCoroutine != null)
+            {
+                StopCoroutine(_tetherStunCoroutine);
+            }
+
+            _tetherStunCoroutine = StartCoroutine(TetherStunThenFlee());
+        }
+
+        private System.Collections.IEnumerator TetherStunThenFlee()
+        {
+            yield return new WaitForSeconds(_tetherStunDuration);
+
+            if (_currentState == BatState.TetherStunned)
+            {
+                SetState(BatState.Fleeing);
+            }
+
+            _tetherStunCoroutine = null;
         }
     }
 }

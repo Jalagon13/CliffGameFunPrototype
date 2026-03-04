@@ -14,10 +14,16 @@ namespace CliffGame
         [SerializeField] private bool _alignRotationToVelocity = true;
         [SerializeField] private float _velocityAlignSlerpSpeed = 14f;
         [SerializeField] private float _minVelocityForRotation = 0.05f;
+        [SerializeField] private float _npcReelDelaySeconds = 0.375f;
         public Transform ShootPoint => _shootPoint;
 
         public bool SequenceExecuting { get; private set; }
         private bool _shouldRetractEarly;
+        private bool _npcCatchLockedThisSequence;
+        private BirdNpc _pendingBirdCatch;
+        private GiantBatNpc _pendingBatCatch;
+        private Coroutine _pendingNpcCatchCoroutine;
+        private bool _isWaitingForNpcReelDelay;
 
         private void Awake()
         {
@@ -32,6 +38,7 @@ namespace CliffGame
         private void OnDestroy()
         {
             SpearTetherManager.Instance.OnSpearTetherRelease -= OnSpearTetherRelease;
+            ClearPendingNpcCatch();
         }
 
         private void OnSpearTetherRelease(float chargePercent)
@@ -61,11 +68,41 @@ namespace CliffGame
             _shouldRetractEarly = true;
         }
 
+        public bool TryQueueBirdCatch(BirdNpc bird)
+        {
+            if (bird == null || !CanQueueNpcCatch()) return false;
+
+            _npcCatchLockedThisSequence = true;
+            _pendingBirdCatch = bird;
+            StickProjectileToNpcDuringDelay(bird.transform);
+            StartPendingNpcCatchDelay();
+            return true;
+        }
+
+        public bool TryQueueGiantBatCatch(GiantBatNpc bat)
+        {
+            if (bat == null || !CanQueueNpcCatch()) return false;
+            if (!bat.CanBeTethered) return false;
+
+            _npcCatchLockedThisSequence = true;
+            _pendingBatCatch = bat;
+            StickProjectileToNpcDuringDelay(bat.transform);
+            StartPendingNpcCatchDelay();
+            return true;
+        }
+
+        public bool HasQueuedNpcCatch()
+        {
+            return _npcCatchLockedThisSequence;
+        }
+
         private IEnumerator PerformSpearTetherSequence(float duration, float chargePercent, float returnSpeed, float throwSpeed, Vector3 throwDirection, float gravityMultiplier)
         {
             SequenceExecuting = true;
             _spearProjectile.SetActive(true);
             Transform projectileTransform = _spearProjectile.transform;
+            _npcCatchLockedThisSequence = false;
+            ClearPendingNpcCatch();
 
             float fullHalfDuration = duration / 2f;
             float actualDuration = fullHalfDuration * chargePercent;
@@ -82,6 +119,11 @@ namespace CliffGame
             while (timer < actualDuration)
             {
                 if (_shouldRetractEarly) break;
+                if (_isWaitingForNpcReelDelay)
+                {
+                    yield return null;
+                    continue;
+                }
 
                 float deltaTime = Time.deltaTime;
                 timer += deltaTime;
@@ -108,6 +150,16 @@ namespace CliffGame
                 float deltaTime = Time.deltaTime;
                 timer += deltaTime;
 
+                GiantBatNpc tetheredBat = _spearProjectile.GetComponentInChildren<GiantBatNpc>();
+                if (tetheredBat != null && Player.Instance != null)
+                {
+                    float distanceToPlayer = Vector3.Distance(tetheredBat.transform.position, Player.Instance.transform.position);
+                    if (distanceToPlayer <= tetheredBat.TetherReelStopDistanceFromPlayer)
+                    {
+                        break;
+                    }
+                }
+
                 Vector3 toShootPoint = _shootPoint.position - projectileTransform.position;
                 if (toShootPoint.sqrMagnitude <= completeDistanceSqr)
                 {
@@ -127,6 +179,12 @@ namespace CliffGame
                 yield return null;
             }
 
+            GiantBatNpc[] tetheredBats = _spearProjectile.GetComponentsInChildren<GiantBatNpc>();
+            foreach (GiantBatNpc bat in tetheredBats)
+            {
+                bat.ReleaseFromTetherAndFlee();
+            }
+
             projectileTransform.position = _shootPoint.position;
             projectileTransform.SetParent(_shootPoint, false);
             projectileTransform.localPosition = Vector3.zero;
@@ -140,6 +198,9 @@ namespace CliffGame
             {
                 bird.Collect();
             }
+
+            _npcCatchLockedThisSequence = false;
+            ClearPendingNpcCatch();
         }
 
         private void AlignProjectileRotationToVelocity(Transform projectileTransform, Vector3 velocity, float deltaTime)
@@ -180,6 +241,82 @@ namespace CliffGame
             }
 
             return correctedDirection.normalized;
+        }
+
+        private bool CanQueueNpcCatch()
+        {
+            return SequenceExecuting && !_npcCatchLockedThisSequence;
+        }
+
+        private void StartPendingNpcCatchDelay()
+        {
+            if (_pendingNpcCatchCoroutine != null)
+            {
+                StopCoroutine(_pendingNpcCatchCoroutine);
+            }
+
+            _pendingNpcCatchCoroutine = StartCoroutine(DelayThenAttachCaughtNpcAndReel());
+        }
+
+        private IEnumerator DelayThenAttachCaughtNpcAndReel()
+        {
+            yield return new WaitForSeconds(_npcReelDelaySeconds);
+
+            _pendingNpcCatchCoroutine = null;
+
+            if (!SequenceExecuting)
+            {
+                ClearPendingNpcCatch();
+                yield break;
+            }
+
+            _isWaitingForNpcReelDelay = false;
+            _spearProjectile.transform.SetParent(null, true);
+
+            bool attachedNpc = false;
+
+            if (_pendingBirdCatch != null)
+            {
+                _pendingBirdCatch.Catch(_spearProjectile.transform);
+                attachedNpc = true;
+            }
+            else if (_pendingBatCatch != null)
+            {
+                attachedNpc = _pendingBatCatch.CatchByTether(_spearProjectile.transform, true);
+            }
+
+            _pendingBirdCatch = null;
+            _pendingBatCatch = null;
+
+            if (attachedNpc)
+            {
+                _shouldRetractEarly = true;
+            }
+            else
+            {
+                _npcCatchLockedThisSequence = false;
+            }
+        }
+
+        private void ClearPendingNpcCatch()
+        {
+            if (_pendingNpcCatchCoroutine != null)
+            {
+                StopCoroutine(_pendingNpcCatchCoroutine);
+                _pendingNpcCatchCoroutine = null;
+            }
+
+            _pendingBirdCatch = null;
+            _pendingBatCatch = null;
+            _isWaitingForNpcReelDelay = false;
+        }
+
+        private void StickProjectileToNpcDuringDelay(Transform npcTransform)
+        {
+            if (npcTransform == null) return;
+
+            _isWaitingForNpcReelDelay = true;
+            _spearProjectile.transform.SetParent(npcTransform, true);
         }
     }
 }

@@ -142,14 +142,16 @@ namespace CliffGame
             base.OnHitWithTool(damage);
         }
 
-        public void Catch(Transform hookTransform)
+        public void Catch(Transform hookTransform, bool preserveHitOffset = true)
         {
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BirdCaughtSFX, transform.position);
-
             GetComponent<Collider>().enabled = false; // Prevent further collisions
 
-            transform.SetParent(hookTransform);
-            transform.localPosition = Vector3.zero;
+            // Preserve world-space hit offset so the bird stays impaled where it was struck.
+            transform.SetParent(hookTransform, preserveHitOffset);
+            if (!preserveHitOffset)
+            {
+                transform.localPosition = Vector3.zero;
+            }
 
             SetState(BirdState.Caught);
         }

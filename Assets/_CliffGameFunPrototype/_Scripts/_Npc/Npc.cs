@@ -27,6 +27,9 @@ namespace CliffGame
 
         [SerializeField]
         protected EventReference _killSFX;
+        
+        [SerializeField]
+        private EventReference _tetherStabSFX;
 
         public ToolType BreakToolType => ToolType.None;
 
@@ -74,6 +77,12 @@ namespace CliffGame
 
             AudioManager.Instance.PlayOneShot(_killSFX, transform.position);
             Destroy(gameObject);
+        }
+
+        public virtual void OnTetherStabbed()
+        {
+            if (_tetherStabSFX.IsNull) return;
+            AudioManager.Instance.PlayOneShot(_tetherStabSFX, transform.position);
         }
 
         public void OnInteractWith()

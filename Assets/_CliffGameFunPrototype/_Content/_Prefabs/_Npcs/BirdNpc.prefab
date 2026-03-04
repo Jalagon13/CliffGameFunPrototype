@@ -2856,6 +2856,13 @@ MonoBehaviour:
       Data3: 688282815
       Data4: 416755829
     Path: event:/Resources/GutsSquishSFX
+  _tetherStabSFX:
+    Guid:
+      Data1: -1593463993
+      Data2: 1330785323
+      Data3: 618020996
+      Data4: 1295926265
+    Path: event:/Resources/BirdCaughtSFX
   _patrolRadiusHorizontal: 10
   _patrolRadiusVertical: 6
   _patrolSpeed: 1

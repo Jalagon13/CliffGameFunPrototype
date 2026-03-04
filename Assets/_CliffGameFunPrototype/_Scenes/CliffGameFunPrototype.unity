@@ -4045,6 +4045,7 @@ MonoBehaviour:
   _alignRotationToVelocity: 1
   _velocityAlignSlerpSpeed: 14
   _minVelocityForRotation: 0.05
+  _npcReelDelaySeconds: 0.375
 --- !u!1 &445537586
 GameObject:
   m_ObjectHideFlags: 0
@@ -7151,7 +7152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8638897331038210049, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _spearStabPullbackDistanceZ
-      value: 0.5
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 8974698583078845963, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _terrain
@@ -9296,7 +9297,7 @@ PrefabInstance:
       objectReference: {fileID: 480573517}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: timeOfDay
-      value: 0.07
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.ctime3
@@ -10807,7 +10808,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.2
+  m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 1}
 --- !u!120 &1047907305
 LineRenderer:
@@ -19286,6 +19287,12 @@ MonoBehaviour:
     Quantity: 1
   - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
     Quantity: 1
+  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 999
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0

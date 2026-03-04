@@ -27,15 +27,28 @@ namespace CliffGame
 
         private void OnTriggerEnter(Collider other)
         {
+            SpearTetherHolder holder = SpearTetherManager.Instance.SpearTetherHolder;
+
             if (((1 << other.gameObject.layer) & _solidLayerMask) != 0)
             {
-                SpearTetherManager.Instance.SpearTetherHolder.RegisterHit();
+                if (!holder.HasQueuedNpcCatch())
+                {
+                    holder.RegisterHit();
+                }
             }
 
             if (other.TryGetComponent(out BirdNpc bird))
             {
-                bird.Catch(transform);
-                SpearTetherManager.Instance.SpearTetherHolder.RegisterHit();
+                if (holder.TryQueueBirdCatch(bird))
+                {
+                    bird.OnTetherStabbed();
+                }
+            }
+
+            GiantBatNpc giantBat = other.GetComponentInParent<GiantBatNpc>();
+            if (giantBat != null && holder.TryQueueGiantBatCatch(giantBat))
+            {
+                giantBat.OnTetherStabbed();
             }
         }
     }

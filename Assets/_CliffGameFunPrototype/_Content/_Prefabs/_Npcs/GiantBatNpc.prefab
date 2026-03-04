@@ -38146,12 +38146,19 @@ MonoBehaviour:
       Data3: 1300642221
       Data4: -865684788
     Path: event:/GiantBat/GiantBatDeath
+  _tetherStabSFX:
+    Guid:
+      Data1: 1441653220
+      Data2: 1241082078
+      Data3: 11351722
+      Data4: 1272609593
+    Path: event:/GiantBat/GiantBatHit
   _patrolRadiusHorizontal: 8
   _patrolRadiusVertical: 5
   _patrolSpeed: 3
   _setPivotToStartPos: 1
-  _attackIntervalMin: 50
-  _attackIntervalMax: 140
+  _attackIntervalMin: 5
+  _attackIntervalMax: 14
   _attackSpeed: 6
   _attackDuration: 15
   _damagePerAttackDuration: 100
@@ -38167,6 +38174,8 @@ MonoBehaviour:
     Path: event:/GiantBat/GiantBatIncoming
   _flyingDurationBeforeDespawn: 5
   _lifeTime: 235
+  _tetherReelStopDistanceFromPlayer: 1.75
+  _tetherStunDuration: 1.25
 --- !u!114 &7039082888147559910
 MonoBehaviour:
   m_ObjectHideFlags: 0

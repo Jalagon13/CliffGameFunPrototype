@@ -132,7 +132,15 @@ namespace CliffGame
                 else // It's not a resource or a build piece, check for other interactables
                 {
                     _currentlyHoveredInteractable = hit.collider.GetComponent<IInteractable>();
-                    if (_currentlyHoveredInteractable != null) return true;
+                    if (_currentlyHoveredInteractable != null)
+                    {
+                        return true;
+                    }
+                    else if(hit.collider.gameObject.transform.root.GetComponent<IInteractable>() != null) // Check for interactable at root (for bats)
+                    {
+                        _currentlyHoveredInteractable = hit.collider.gameObject.transform.root.GetComponent<IInteractable>();
+                        return true;
+                    }
                 }
             }
 

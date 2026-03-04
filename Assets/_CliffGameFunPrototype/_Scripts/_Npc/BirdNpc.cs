@@ -1,14 +1,17 @@
+using System.Collections;
 using UnityEngine;
 
 namespace CliffGame
 {
     [RequireComponent(typeof(FlyingAI))]
-    public class BirdNpc : Npc
+    public class BirdNpc : Npc, ITetherReelableNpc
     {
         private enum BirdState
         {
             Patrolling,
-            Caught,
+            Tethered,
+            TetherStunned,
+            Fleeing,
             Despawning
         }
 
@@ -19,17 +22,25 @@ namespace CliffGame
         [SerializeField] private bool _setPivotToStartPos = true;
         [SerializeField] private float _flightDurationBeforeDespawn = 4f;
         [SerializeField] private float _lifeTime = 60f;
+        
+        [Header("Tether Settings")]
+        [SerializeField] private float _tetherReelStopDistanceFromPlayer = 1.5f;
+        [SerializeField] private float _tetherStunDuration = 0.5f;
 
         private Vector3 _patrolPivot;
         private FlyingAI _flyingAI;
         private BirdState _currentState;
         private float _stateTimer;
         private float _lifeTimeTimer;
+        private Coroutine _tetherStunCoroutine;
+
+        public bool CanBeTethered => _currentState == BirdState.Patrolling;
+        public float TetherReelStopDistanceFromPlayer => _tetherReelStopDistanceFromPlayer;
 
         protected override void Awake()
         {
-            base.Awake();
             _flyingAI = GetComponent<FlyingAI>();
+            base.Awake();
         }
 
         private void Start()
@@ -47,6 +58,11 @@ namespace CliffGame
         protected void OnDestroy()
         {
             NpcManager.Instance.OnNightRise -= OnNightRise;
+            if (_tetherStunCoroutine != null)
+            {
+                StopCoroutine(_tetherStunCoroutine);
+                _tetherStunCoroutine = null;
+            }
         }
 
         private void OnNightRise()
@@ -70,7 +86,12 @@ namespace CliffGame
                 case BirdState.Patrolling:
                     HandlePatrolling();
                     break;
-                case BirdState.Caught:
+                case BirdState.Tethered:
+                    break;
+                case BirdState.TetherStunned:
+                    break;
+                case BirdState.Fleeing:
+                    HandleFleeing();
                     break;
                 case BirdState.Despawning:
                     HandleDespawning();
@@ -100,8 +121,15 @@ namespace CliffGame
                     _flyingAI.SetSpeed(_patrolSpeed);
                     PickNewPatrolPoint();
                     break;
-                case BirdState.Caught:
+                case BirdState.Tethered:
                     _flyingAI.Stop();
+                    break;
+                case BirdState.TetherStunned:
+                    _flyingAI.Stop();
+                    break;
+                case BirdState.Fleeing:
+                    _flyingAI.SetSpeed(_patrolSpeed);
+                    PickNewPatrolPoint();
                     break;
                 case BirdState.Despawning:
                     _flyingAI.SetSpeed(_patrolSpeed);
@@ -124,6 +152,14 @@ namespace CliffGame
             }
         }
 
+        private void HandleFleeing()
+        {
+            if (_flyingAI.HasReachedDestination)
+            {
+                SetState(BirdState.Patrolling);
+            }
+        }
+
         private void PickNewPatrolPoint()
         {
             Vector3 randomOffset = Random.insideUnitSphere;
@@ -142,18 +178,47 @@ namespace CliffGame
             base.OnHitWithTool(damage);
         }
 
-        public void Catch(Transform hookTransform, bool preserveHitOffset = true)
+        public bool CatchByTether(Transform spearTransform, bool ignoreStateCheck = false, bool preserveHitOffset = true)
         {
-            GetComponent<Collider>().enabled = false; // Prevent further collisions
+            if (spearTransform == null) return false;
+            if (!ignoreStateCheck && !CanBeTethered) return false;
 
             // Preserve world-space hit offset so the bird stays impaled where it was struck.
-            transform.SetParent(hookTransform, preserveHitOffset);
+            transform.SetParent(spearTransform, preserveHitOffset);
             if (!preserveHitOffset)
             {
                 transform.localPosition = Vector3.zero;
             }
 
-            SetState(BirdState.Caught);
+            SetState(BirdState.Tethered);
+            return true;
+        }
+
+        public void ReleaseFromTetherAndFlee()
+        {
+            if (_currentState != BirdState.Tethered) return;
+
+            transform.SetParent(null, true);
+            SetState(BirdState.TetherStunned);
+
+            if (_tetherStunCoroutine != null)
+            {
+                StopCoroutine(_tetherStunCoroutine);
+            }
+
+            _tetherStunCoroutine = StartCoroutine(TetherStunThenFlee());
+        }
+
+        private IEnumerator TetherStunThenFlee()
+        {
+            yield return new WaitForSeconds(_tetherStunDuration);
+
+            if (_currentState == BirdState.TetherStunned)
+            {
+                SetState(BirdState.Fleeing);
+            }
+
+            _tetherStunCoroutine = null;
         }
     }
 }

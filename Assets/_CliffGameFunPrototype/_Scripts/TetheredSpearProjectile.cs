@@ -5,6 +5,7 @@ namespace CliffGame
     public class TetheredSpearProjectile : MonoBehaviour
     {
         [SerializeField] private LayerMask _solidLayerMask;
+        [SerializeField] private Collider _projectileCollider;
 
         private LineRenderer _tetherLine;
 
@@ -12,6 +13,11 @@ namespace CliffGame
         {
             _tetherLine = GetComponent<LineRenderer>();
             _tetherLine.positionCount = 2;
+
+            if (_projectileCollider == null)
+            {
+                _projectileCollider = GetComponent<Collider>();
+            }
         }
 
         private void Update()
@@ -28,6 +34,7 @@ namespace CliffGame
         private void OnTriggerEnter(Collider other)
         {
             SpearTetherHolder holder = SpearTetherManager.Instance.SpearTetherHolder;
+            if (!holder.IsOutboundPhase) return;
 
             if (((1 << other.gameObject.layer) & _solidLayerMask) != 0)
             {
@@ -37,19 +44,25 @@ namespace CliffGame
                 }
             }
 
-            if (other.TryGetComponent(out BirdNpc bird))
+            Npc hitNpc = other.GetComponentInParent<Npc>();
+            if (hitNpc is ITetherReelableNpc tetherableNpc)
             {
-                if (holder.TryQueueBirdCatch(bird))
+                if (holder.TryQueueNpcCatch(tetherableNpc, other.transform))
                 {
-                    bird.OnTetherStabbed();
+                    tetherableNpc.OnTetherStabbed();
                 }
             }
+        }
 
-            GiantBatNpc giantBat = other.GetComponentInParent<GiantBatNpc>();
-            if (giantBat != null && holder.TryQueueGiantBatCatch(giantBat))
-            {
-                giantBat.OnTetherStabbed();
-            }
+        private void OnEnable()
+        {
+            SetNpcCatchEnabled(true);
+        }
+
+        public void SetNpcCatchEnabled(bool enabled)
+        {
+            if (_projectileCollider == null) return;
+            _projectileCollider.enabled = enabled;
         }
     }
 }

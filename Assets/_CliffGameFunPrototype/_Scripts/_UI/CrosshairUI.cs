@@ -11,7 +11,7 @@ namespace CliffGame
         [SerializeField] private MMProgressBar _interactRadialBar;
         [SerializeField] private GameObject _structReqHolder;
         [SerializeField] private StructReqUI _structReqPrefab;
-        [SerializeField] private Sprite _defaultSprite, _axeSprite, _hammerSprite, _spearSprite, _rawBirdSprite, _fiberSprite;
+        [SerializeField] private Sprite _defaultSprite, _axeSprite, _hammerSprite, _spearSprite, _rawBirdSprite, _fiberSprite, _combatSprite;
         [SerializeField] private GameObject _buildInstructionTextHolder;
         [SerializeField] private GameObject _repairInstructions;
         [SerializeField] private GameObject _textAboveCrosshair;
@@ -131,6 +131,13 @@ namespace CliffGame
             // Default visuals
             _crosshairImage.sprite = _defaultSprite;
             HideTextAboveCrosshair();
+
+            if (interactable is Npc)
+            {
+                _crosshairImage.sprite = _combatSprite;
+                SetCrosshairAlpha(1f);
+                return;
+            }
 
             if (interactable is CookingStation)
             {

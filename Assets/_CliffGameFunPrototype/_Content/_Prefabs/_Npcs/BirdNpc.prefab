@@ -2835,13 +2835,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46eef5a3f226e40959b3da4dee5e346f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BirdNpc
-  _maxLife: 6
+  _maxLife: 4
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}
     MinAmount: 1
     MaxAmount: 1
-  _hitParticles: {fileID: 0}
-  _killParticles: {fileID: 0}
+  _hitParticles: {fileID: 3947636531895734693, guid: b8f6f3b74e19a4647a8cdfc0064a3558, type: 3}
+  _killParticles: {fileID: 3947636531895734693, guid: b8f6f3b74e19a4647a8cdfc0064a3558, type: 3}
   _hitSFX:
     Guid:
       Data1: -1593463993
@@ -2869,6 +2869,8 @@ MonoBehaviour:
   _setPivotToStartPos: 1
   _flightDurationBeforeDespawn: 4
   _lifeTime: 60
+  _tetherReelStopDistanceFromPlayer: 1
+  _tetherStunDuration: 0.15
 --- !u!114 &7039082888147559910
 MonoBehaviour:
   m_ObjectHideFlags: 0

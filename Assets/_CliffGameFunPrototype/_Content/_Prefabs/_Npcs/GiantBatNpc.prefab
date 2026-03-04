@@ -598,7 +598,8 @@ GameObject:
   - component: {fileID: 4456125591892038685}
   - component: {fileID: 6266436543153216246}
   - component: {fileID: 5028374058235841352}
-  m_Layer: 0
+  - component: {fileID: 9179721935616070218}
+  m_Layer: 7
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34660,6 +34661,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864101486365588382}
   m_Mesh: {fileID: 0}
+--- !u!64 &9179721935616070218
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864101486365588382}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &2164131791874889403
 GameObject:
   m_ObjectHideFlags: 0
@@ -34673,6 +34696,7 @@ GameObject:
   - component: {fileID: 5976085744931612677}
   - component: {fileID: 560773736676285352}
   - component: {fileID: 2711419342686047671}
+  - component: {fileID: 6526282710374796156}
   m_Layer: 7
   m_Name: Torso
   m_TagString: Untagged
@@ -34992,6 +35016,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2164131791874889403}
+  m_Mesh: {fileID: 0}
+--- !u!64 &6526282710374796156
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2164131791874889403}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &2242617486790922151
 GameObject:
@@ -38061,7 +38107,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7711124489041170713}
-  - component: {fileID: 433631998432969663}
   - component: {fileID: 4463847066922765951}
   - component: {fileID: 7039082888147559910}
   m_Layer: 7
@@ -38087,29 +38132,6 @@ Transform:
   - {fileID: 3274175178499447655}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &433631998432969663
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8979547436931850727}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.35
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.77, z: -0.06}
 --- !u!114 &4463847066922765951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38157,13 +38179,13 @@ MonoBehaviour:
   _patrolRadiusVertical: 5
   _patrolSpeed: 3
   _setPivotToStartPos: 1
-  _attackIntervalMin: 5
-  _attackIntervalMax: 14
-  _attackSpeed: 6
+  _attackIntervalMin: 40
+  _attackIntervalMax: 160
+  _attackSpeed: 4
   _attackDuration: 15
   _damagePerAttackDuration: 100
   _numberOfClosestPlatformsToConsider: 4
-  _warningDistance: 10
+  _warningDistance: 8
   _damageTakenForItToRetreat: 10
   _incomingSfx:
     Guid:

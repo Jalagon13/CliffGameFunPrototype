@@ -128,23 +128,26 @@ namespace CliffGame
             if (newState != CurrentHungerState)
             {
                 Debug.Log($"[HungerManager] Hunger state changed: {CurrentHungerState} → {newState} (Current: {current}/{max})");
-
-                // Stop hunger pangs when leaving Hungry state
-                if (CurrentHungerState == HungerState.Hungry && newState == HungerState.Fine)
-                {
-                    CancelInvoke(nameof(ExecuteHungerPang));
-                    Debug.Log("[HungerManager] Stopped hunger pangs");
-                }
-
-                // Start hunger pangs when entering Hungry state
-                if (newState == HungerState.Hungry)
-                {
-                    InvokeRepeating(nameof(ExecuteHungerPang), 0.1f, _stomachGrowlIntervalSeconds);
-                    Debug.Log("[HungerManager] Started hunger pangs");
-                }
+                SyncHungerWarningLoop(newState);
 
                 _previousHungerState = CurrentHungerState;
                 CurrentHungerState = newState;
+            }
+        }
+
+        private void SyncHungerWarningLoop(HungerState state)
+        {
+            // Always cancel first so repeated transitions can never stack multiple InvokeRepeating loops.
+            CancelInvoke(nameof(ExecuteHungerPang));
+
+            if (state == HungerState.Hungry || state == HungerState.Starving)
+            {
+                InvokeRepeating(nameof(ExecuteHungerPang), 0.1f, _stomachGrowlIntervalSeconds);
+                Debug.Log("[HungerManager] Started hunger pangs");
+            }
+            else
+            {
+                Debug.Log("[HungerManager] Stopped hunger pangs");
             }
         }
 

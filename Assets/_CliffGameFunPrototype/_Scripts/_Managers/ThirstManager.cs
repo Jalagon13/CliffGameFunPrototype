@@ -128,23 +128,26 @@ namespace CliffGame
             if (newState != CurrentThirstState)
             {
                 Debug.Log($"[ThirstManager] Thirst state changed: {CurrentThirstState} → {newState} (Current: {current}/{max})");
-
-                // Stop thirst pangs when leaving Thirsty
-                if (CurrentThirstState == ThirstState.Thirsty && newState == ThirstState.Fine)
-                {
-                    CancelInvoke(nameof(ExecuteThirstPang));
-                    Debug.Log("[ThirstManager] Stopped thirst pangs");
-                }
-
-                // Start thirst pangs when entering Thirsty
-                if (newState == ThirstState.Thirsty)
-                {
-                    InvokeRepeating(nameof(ExecuteThirstPang), 0.1f, _thirstPangIntervalSeconds);
-                    Debug.Log("[ThirstManager] Started thirst pangs");
-                }
+                SyncThirstWarningLoop(newState);
 
                 _previousThirstState = CurrentThirstState;
                 CurrentThirstState = newState;
+            }
+        }
+
+        private void SyncThirstWarningLoop(ThirstState state)
+        {
+            // Always cancel first so repeated transitions can never stack multiple InvokeRepeating loops.
+            CancelInvoke(nameof(ExecuteThirstPang));
+
+            if (state == ThirstState.Thirsty || state == ThirstState.Dehydrated)
+            {
+                InvokeRepeating(nameof(ExecuteThirstPang), 0.1f, _thirstPangIntervalSeconds);
+                Debug.Log("[ThirstManager] Started thirst pangs");
+            }
+            else
+            {
+                Debug.Log("[ThirstManager] Stopped thirst pangs");
             }
         }
 

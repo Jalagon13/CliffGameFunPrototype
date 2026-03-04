@@ -223,7 +223,7 @@ MonoBehaviour:
     Path: event:/Building/WoodDestroyedSFX
   _foodItemToCook: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}
   _foodItemToPickup: {fileID: 11400000, guid: 3b850cbd57d474a1cb1247f48e2710af, type: 2}
-  _cookingDuration: 90
+  _cookingDuration: 70
   _idleModel: {fileID: 1771210048780780228}
   _cookingModel: {fileID: 937143574668820952}
   _readyToPickupModel: {fileID: 2080497982785954379}

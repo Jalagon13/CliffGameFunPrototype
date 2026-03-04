@@ -5277,6 +5277,7 @@ MonoBehaviour:
   _spearSprite: {fileID: 904965497, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   _rawBirdSprite: {fileID: -2345204063719780061, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   _fiberSprite: {fileID: 393603439, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
+  _combatSprite: {fileID: 851283991, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   _buildInstructionTextHolder: {fileID: 649473752}
   _repairInstructions: {fileID: 683403628}
   _textAboveCrosshair: {fileID: 997604445}
@@ -9297,7 +9298,7 @@ PrefabInstance:
       objectReference: {fileID: 480573517}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: timeOfDay
-      value: 0.7
+      value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: 4227501200796505955, guid: b3b589db5935ca7408762ae229e5eb04, type: 3}
       propertyPath: skyTop.ctime3
@@ -10934,6 +10935,7 @@ MonoBehaviour:
   _solidLayerMask:
     serializedVersion: 2
     m_Bits: 1088
+  _projectileCollider: {fileID: 1047907302}
 --- !u!54 &1047907307
 Rigidbody:
   m_ObjectHideFlags: 0

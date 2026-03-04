@@ -18,12 +18,14 @@ namespace CliffGame
         public Transform ShootPoint => _shootPoint;
 
         public bool SequenceExecuting { get; private set; }
+        public bool IsOutboundPhase => SequenceExecuting && !_isReturningPhase;
         private bool _shouldRetractEarly;
         private bool _npcCatchLockedThisSequence;
-        private BirdNpc _pendingBirdCatch;
-        private GiantBatNpc _pendingBatCatch;
+        private ITetherReelableNpc _pendingNpcCatch;
+        private Transform _pendingStabAnchor;
         private Coroutine _pendingNpcCatchCoroutine;
         private bool _isWaitingForNpcReelDelay;
+        private bool _isReturningPhase;
 
         private void Awake()
         {
@@ -68,25 +70,16 @@ namespace CliffGame
             _shouldRetractEarly = true;
         }
 
-        public bool TryQueueBirdCatch(BirdNpc bird)
+        public bool TryQueueNpcCatch(ITetherReelableNpc npc, Transform stabAnchor)
         {
-            if (bird == null || !CanQueueNpcCatch()) return false;
+            if (npc == null || !CanQueueNpcCatch()) return false;
+            if (!npc.CanBeTethered) return false;
 
             _npcCatchLockedThisSequence = true;
-            _pendingBirdCatch = bird;
-            StickProjectileToNpcDuringDelay(bird.transform);
-            StartPendingNpcCatchDelay();
-            return true;
-        }
-
-        public bool TryQueueGiantBatCatch(GiantBatNpc bat)
-        {
-            if (bat == null || !CanQueueNpcCatch()) return false;
-            if (!bat.CanBeTethered) return false;
-
-            _npcCatchLockedThisSequence = true;
-            _pendingBatCatch = bat;
-            StickProjectileToNpcDuringDelay(bat.transform);
+            _pendingNpcCatch = npc;
+            Transform fallbackAnchor = (npc as Component)?.transform;
+            _pendingStabAnchor = stabAnchor != null ? stabAnchor : fallbackAnchor;
+            StickProjectileToAnchorDuringDelay(_pendingStabAnchor);
             StartPendingNpcCatchDelay();
             return true;
         }
@@ -99,6 +92,7 @@ namespace CliffGame
         private IEnumerator PerformSpearTetherSequence(float duration, float chargePercent, float returnSpeed, float throwSpeed, Vector3 throwDirection, float gravityMultiplier)
         {
             SequenceExecuting = true;
+            _isReturningPhase = false;
             _spearProjectile.SetActive(true);
             Transform projectileTransform = _spearProjectile.transform;
             _npcCatchLockedThisSequence = false;
@@ -142,6 +136,14 @@ namespace CliffGame
             float reelPullAcceleration = returnSpeed * 12f;
             float maxReturnSpeed = returnSpeed * 1.6f;
             float completeDistanceSqr = _reelCompleteDistance * _reelCompleteDistance;
+            _isReturningPhase = true;
+
+            TetheredSpearProjectile spearProjectileComponent = _spearProjectile.GetComponent<TetheredSpearProjectile>();
+            if (spearProjectileComponent != null && !_npcCatchLockedThisSequence)
+            {
+                // No NPC catch happened during outbound, so disable NPC catches while returning.
+                spearProjectileComponent.SetNpcCatchEnabled(false);
+            }
 
             timer = 0f;
 
@@ -150,13 +152,17 @@ namespace CliffGame
                 float deltaTime = Time.deltaTime;
                 timer += deltaTime;
 
-                GiantBatNpc tetheredBat = _spearProjectile.GetComponentInChildren<GiantBatNpc>();
-                if (tetheredBat != null && Player.Instance != null)
+                ITetherReelableNpc tetheredNpc = FindTetheredNpcOnProjectile();
+                if (tetheredNpc != null && Player.Instance != null)
                 {
-                    float distanceToPlayer = Vector3.Distance(tetheredBat.transform.position, Player.Instance.transform.position);
-                    if (distanceToPlayer <= tetheredBat.TetherReelStopDistanceFromPlayer)
+                    Transform tetheredNpcTransform = (tetheredNpc as Component)?.transform;
+                    if (tetheredNpcTransform != null)
                     {
-                        break;
+                        float distanceToPlayer = Vector3.Distance(tetheredNpcTransform.position, Player.Instance.transform.position);
+                        if (distanceToPlayer <= tetheredNpc.TetherReelStopDistanceFromPlayer)
+                        {
+                            break;
+                        }
                     }
                 }
 
@@ -179,10 +185,13 @@ namespace CliffGame
                 yield return null;
             }
 
-            GiantBatNpc[] tetheredBats = _spearProjectile.GetComponentsInChildren<GiantBatNpc>();
-            foreach (GiantBatNpc bat in tetheredBats)
+            Npc[] attachedNpcs = _spearProjectile.GetComponentsInChildren<Npc>();
+            foreach (Npc npc in attachedNpcs)
             {
-                bat.ReleaseFromTetherAndFlee();
+                if (npc is ITetherReelableNpc tetheredNpc)
+                {
+                    tetheredNpc.ReleaseFromTetherAndFlee();
+                }
             }
 
             projectileTransform.position = _shootPoint.position;
@@ -192,12 +201,7 @@ namespace CliffGame
 
             _spearProjectile.SetActive(false);
             SequenceExecuting = false;
-
-            BirdNpc[] caughtBirds = _spearProjectile.GetComponentsInChildren<BirdNpc>();
-            foreach (BirdNpc bird in caughtBirds)
-            {
-                bird.Collect();
-            }
+            _isReturningPhase = false;
 
             _npcCatchLockedThisSequence = false;
             ClearPendingNpcCatch();
@@ -245,7 +249,7 @@ namespace CliffGame
 
         private bool CanQueueNpcCatch()
         {
-            return SequenceExecuting && !_npcCatchLockedThisSequence;
+            return SequenceExecuting && !_isReturningPhase && !_npcCatchLockedThisSequence;
         }
 
         private void StartPendingNpcCatchDelay()
@@ -274,19 +278,13 @@ namespace CliffGame
             _spearProjectile.transform.SetParent(null, true);
 
             bool attachedNpc = false;
-
-            if (_pendingBirdCatch != null)
+            if (_pendingNpcCatch != null)
             {
-                _pendingBirdCatch.Catch(_spearProjectile.transform);
-                attachedNpc = true;
-            }
-            else if (_pendingBatCatch != null)
-            {
-                attachedNpc = _pendingBatCatch.CatchByTether(_spearProjectile.transform, true);
+                attachedNpc = _pendingNpcCatch.CatchByTether(_spearProjectile.transform, true);
             }
 
-            _pendingBirdCatch = null;
-            _pendingBatCatch = null;
+            _pendingNpcCatch = null;
+            _pendingStabAnchor = null;
 
             if (attachedNpc)
             {
@@ -306,17 +304,31 @@ namespace CliffGame
                 _pendingNpcCatchCoroutine = null;
             }
 
-            _pendingBirdCatch = null;
-            _pendingBatCatch = null;
+            _pendingNpcCatch = null;
+            _pendingStabAnchor = null;
             _isWaitingForNpcReelDelay = false;
         }
 
-        private void StickProjectileToNpcDuringDelay(Transform npcTransform)
+        private void StickProjectileToAnchorDuringDelay(Transform anchorTransform)
         {
-            if (npcTransform == null) return;
+            if (anchorTransform == null) return;
 
             _isWaitingForNpcReelDelay = true;
-            _spearProjectile.transform.SetParent(npcTransform, true);
+            _spearProjectile.transform.SetParent(anchorTransform, true);
+        }
+
+        private ITetherReelableNpc FindTetheredNpcOnProjectile()
+        {
+            Npc[] attachedNpcs = _spearProjectile.GetComponentsInChildren<Npc>();
+            foreach (Npc npc in attachedNpcs)
+            {
+                if (npc is ITetherReelableNpc tetheredNpc)
+                {
+                    return tetheredNpc;
+                }
+            }
+
+            return null;
         }
     }
 }

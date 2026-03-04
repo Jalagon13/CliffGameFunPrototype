@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CliffGame
 {
     [RequireComponent(typeof(FlyingAI))]
-    public class GiantBatNpc : Npc
+    public class GiantBatNpc : Npc, ITetherReelableNpc
     {
         public enum BatState
         {

@@ -17,6 +17,6 @@ MonoBehaviour:
   <UiDisplay>k__BackingField: {fileID: -1701940710063869023, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: RMB to eat
-  <HungerAmount>k__BackingField: 7
+  <HungerAmount>k__BackingField: 14
   <ThirstAmount>k__BackingField: 0
   <ConsumeDuration>k__BackingField: 1

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace CliffGame
         [SerializeField] private Sprite _defaultSprite, _axeSprite, _hammerSprite, _spearSprite, _rawBirdSprite, _fiberSprite, _combatSprite;
         [SerializeField] private GameObject _buildInstructionTextHolder;
         [SerializeField] private GameObject _repairInstructions;
+        [SerializeField] private Material _repairHoverMaterial;
         [SerializeField] private GameObject _textAboveCrosshair;
         [SerializeField] private GameObject _stairsChangeDirectionText;
         [SerializeField] private TMP_Text _textAboveCrosshairLabel;
@@ -21,6 +23,8 @@ namespace CliffGame
         private Image _crosshairImage;
         private bool _isHoldingHammer;
         private BuildPiece _lastHoveredBuildPiece;
+        private BuildPiece _lastHighlightedBuildPiece;
+        private readonly List<Material[]> _lastHighlightOriginalMaterials = new();
         
         private void Awake()
         {
@@ -44,6 +48,7 @@ namespace CliffGame
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= CheckForHammer;
             BuildingManager.Instance.OnBuildTypeChanged -= CheckForRepairState;
+            RestoreRepairHoverHighlight();
         }
 
         private void Update()
@@ -52,7 +57,9 @@ namespace CliffGame
             {
                 ShowInteractableInfo();
             }
-            else if (_isHoldingHammer && InteractionManager.Instance.CurrentlyHoveredBuildPiece != null)
+            else if (_isHoldingHammer &&
+                     BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode &&
+                     InteractionManager.Instance.CurrentlyHoveredBuildPiece != null)
             {
                 ShowBuildPieceInfo(InteractionManager.Instance.CurrentlyHoveredBuildPiece);
             }
@@ -251,6 +258,12 @@ namespace CliffGame
 
         private void ShowBuildPieceInfo(BuildPiece buildPiece)
         {
+            if (BuildingManager.Instance.CurrentBuildType != BuildOption.RepairMode)
+            {
+                HideTextAboveCrosshair();
+                return;
+            }
+
             _crosshairImage.sprite = _hammerSprite;
             BuildPieceDurability durability = buildPiece.GetComponent<BuildPieceDurability>();
             if (durability != null)
@@ -359,6 +372,7 @@ namespace CliffGame
                 {
                     _lastHoveredBuildPiece = hovered;
                     UpdateRepairRequirements(hovered);
+                    UpdateRepairHoverHighlight(hovered);
                 }
             }
             else
@@ -368,6 +382,8 @@ namespace CliffGame
                     ClearStructReqs();
                     _lastHoveredBuildPiece = null;
                 }
+
+                RestoreRepairHoverHighlight();
             }
         }
 
@@ -395,6 +411,68 @@ namespace CliffGame
                     Destroy(_structReqHolder.transform.GetChild(i).gameObject);
                 }
             }
+        }
+
+        private void UpdateRepairHoverHighlight(BuildPiece hoveredPiece)
+        {
+            if (_repairHoverMaterial == null)
+            {
+                RestoreRepairHoverHighlight();
+                return;
+            }
+
+            if (hoveredPiece == _lastHighlightedBuildPiece)
+                return;
+
+            RestoreRepairHoverHighlight();
+
+            if (hoveredPiece == null)
+                return;
+
+            MeshRenderer[] renderers = GetBuildPieceRenderers(hoveredPiece);
+            if (renderers.Length == 0)
+                return;
+
+            _lastHighlightOriginalMaterials.Clear();
+
+            foreach (MeshRenderer renderer in renderers)
+            {
+                Material[] originalMats = renderer.materials;
+                _lastHighlightOriginalMaterials.Add(originalMats);
+
+                Material[] highlightMats = new Material[originalMats.Length];
+                for (int i = 0; i < highlightMats.Length; i++)
+                {
+                    highlightMats[i] = _repairHoverMaterial;
+                }
+                renderer.materials = highlightMats;
+            }
+
+            _lastHighlightedBuildPiece = hoveredPiece;
+        }
+
+        private void RestoreRepairHoverHighlight()
+        {
+            if (_lastHighlightedBuildPiece == null)
+                return;
+
+            MeshRenderer[] renderers = GetBuildPieceRenderers(_lastHighlightedBuildPiece);
+            int count = Mathf.Min(renderers.Length, _lastHighlightOriginalMaterials.Count);
+            for (int i = 0; i < count; i++)
+            {
+                renderers[i].materials = _lastHighlightOriginalMaterials[i];
+            }
+
+            _lastHighlightOriginalMaterials.Clear();
+            _lastHighlightedBuildPiece = null;
+        }
+
+        private MeshRenderer[] GetBuildPieceRenderers(BuildPiece piece)
+        {
+            if (piece == null) return Array.Empty<MeshRenderer>();
+
+            Transform modelRoot = piece.transform.childCount > 0 ? piece.transform.GetChild(0) : piece.transform;
+            return modelRoot.GetComponentsInChildren<MeshRenderer>(true);
         }
     }
 }

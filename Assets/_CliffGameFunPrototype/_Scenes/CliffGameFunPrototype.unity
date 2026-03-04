@@ -5280,6 +5280,7 @@ MonoBehaviour:
   _combatSprite: {fileID: 851283991, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   _buildInstructionTextHolder: {fileID: 649473752}
   _repairInstructions: {fileID: 683403628}
+  _repairHoverMaterial: {fileID: 2100000, guid: c48fbbb4bc8ab45d0990f56bb25c2c09, type: 2}
   _textAboveCrosshair: {fileID: 997604445}
   _stairsChangeDirectionText: {fileID: 2116051748}
   _textAboveCrosshairLabel: {fileID: 997604447}

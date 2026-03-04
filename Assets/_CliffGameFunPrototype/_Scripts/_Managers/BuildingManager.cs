@@ -103,15 +103,28 @@ namespace CliffGame
 
         private void Update()
         {
-            if(!_isHoldingHammar) return;
+            if(!_isHoldingHammar)
+            {
+                RestoreStabilityPreview();
+                return;
+            }
 
             _placeCooldownTimer.Tick(Time.deltaTime);
-        
-            if ((_currentBuildType == BuildOption.Platform || _currentBuildType == BuildOption.Fence || _currentBuildType == BuildOption.Stairs) && 
-                Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.IsPauseMenuOpen && !BuildWheelUI.BuildWheelUIOpen)
+
+            bool isBuildPlacementMode = _currentBuildType == BuildOption.Platform ||
+                                        _currentBuildType == BuildOption.Fence ||
+                                        _currentBuildType == BuildOption.Stairs;
+            bool canProcessBuildPlacement = isBuildPlacementMode &&
+                                            Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking &&
+                                            !CraftingManager.Instance.IsCraftingUIOpen &&
+                                            !Player.Instance.PauseMenuUI.IsPauseMenuOpen &&
+                                            !BuildWheelUI.BuildWheelUIOpen;
+
+            if (canProcessBuildPlacement)
             {
                 HandleGhostBuild();
                 HandleGhostPulse();
+                HandleHoveredBuildPieceStabilityPreview();
                 
                 switch(_currentBuildType)
                 {
@@ -130,10 +143,39 @@ namespace CliffGame
                 DestroyGhostPiece();
             }
 
+            if (!canProcessBuildPlacement)
+            {
+                RestoreStabilityPreview();
+            }
+
             if (_currentBuildType == BuildOption.DestroyMode && !CraftingManager.Instance.IsCraftingUIOpen && !Player.Instance.PauseMenuUI.IsPauseMenuOpen && !BuildWheelUI.BuildWheelUIOpen)
             {
                 GhostDestroy();
                 HandleDestroyTimer();
+            }
+        }
+
+        private void HandleHoveredBuildPieceStabilityPreview()
+        {
+            BuildPiece targetPiece = null;
+
+            // If ghost is snapped, prioritize previewing the supporting piece we are attaching to.
+            if (_lastSnappedConnector != null && _lastSnappedConnector.BuildPiece != null)
+            {
+                targetPiece = _lastSnappedConnector.BuildPiece;
+            }
+            else if (InteractionManager.Instance != null)
+            {
+                targetPiece = InteractionManager.Instance.CurrentlyHoveredBuildPiece;
+            }
+
+            if (targetPiece != null)
+            {
+                PreviewStabilityOnBuildPiece(targetPiece);
+            }
+            else
+            {
+                RestoreStabilityPreview();
             }
         }
 

@@ -2869,7 +2869,7 @@ MonoBehaviour:
   _setPivotToStartPos: 1
   _flightDurationBeforeDespawn: 4
   _lifeTime: 60
-  _tetherReelStopDistanceFromPlayer: 1
+  _tetherReelStopDistanceFromPlayer: 0.6
   _tetherStunDuration: 0.15
 --- !u!114 &7039082888147559910
 MonoBehaviour:

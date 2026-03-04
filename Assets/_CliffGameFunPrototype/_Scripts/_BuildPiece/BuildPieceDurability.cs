@@ -136,24 +136,57 @@ namespace CliffGame
 
             if (crackState == 0)
             {
-                _crackDecalProjector.enabled = false;
-                _noCracksModel.SetActive(true);
+                if (_crackDecalProjector != null)
+                {
+                    _crackDecalProjector.enabled = false;
+                }
+                
+                if (_noCracksModel != null)
+                {
+                    _noCracksModel.SetActive(true);
+                }
 
                 // Disable all other crack models
                 foreach (var model in _crackModelsArray)
-                    model.SetActive(false);
+                {
+                    if (model != null)
+                    {
+                        model.SetActive(false);
+                    }
+                }
             }
             else
             {
-                _crackDecalProjector.enabled = true;
-                _noCracksModel.SetActive(false);
+                if (_crackDecalProjector != null)
+                {
+                    _crackDecalProjector.enabled = true;
+                }
+                
+                if (_noCracksModel != null)
+                {
+                    _noCracksModel.SetActive(false);
+                }
 
                 int materialIndex = crackState - 1;
                 SetCrackDecal(_crackMaterialsArray[materialIndex]);
 
-                // Enable only the current crack model
+                // Enable only the current crack model; if missing, fall back to no-cracks model.
+                bool hasValidCrackModel = materialIndex >= 0 &&
+                                          materialIndex < _crackModelsArray.Length &&
+                                          _crackModelsArray[materialIndex] != null;
+
                 for (int i = 0; i < _crackModelsArray.Length; i++)
-                    _crackModelsArray[i].SetActive(i == materialIndex);
+                {
+                    if (_crackModelsArray[i] != null)
+                    {
+                        _crackModelsArray[i].SetActive(hasValidCrackModel && i == materialIndex);
+                    }
+                }
+
+                if (!hasValidCrackModel && _noCracksModel != null)
+                {
+                    _noCracksModel.SetActive(true);
+                }
 
                 if (isDamageIncreasing)
                 {
@@ -170,6 +203,9 @@ namespace CliffGame
 
         private void SetCrackDecal(Material decal)
         {
+            if (_crackDecalProjector == null)
+                return;
+
             _crackDecalProjector.material = decal;
         }
     }

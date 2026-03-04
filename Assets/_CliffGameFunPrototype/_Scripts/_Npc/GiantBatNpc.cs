@@ -370,7 +370,7 @@ namespace CliffGame
                 int numOfBpdBuildPieces = 0;
                 foreach (BuildPiece bp in piece.GetConnectedBuildPieces())
                 {
-                    if(bp.BuildType == BuildOption.Platform || bp.BuildType == BuildOption.Stairs)
+                    if(bp.BuildType == BuildOption.Platform || bp.BuildType == BuildOption.Stairs || bp.BuildType == BuildOption.Fence)
                     {
                         numOfBpdBuildPieces++;
                     }

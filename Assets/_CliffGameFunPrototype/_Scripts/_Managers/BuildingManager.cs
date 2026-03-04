@@ -319,11 +319,14 @@ namespace CliffGame
             {
                 _ghostBuildPiece = Instantiate(currentBuild);
 
-                if (_ghostBuildPiece.TryGetComponent(out BuildPieceDurability floor))
+                if (_ghostBuildPiece.TryGetComponent(out BuildPieceDurability bpd))
                 {
-                    floor.enabled = false;
-                    floor.DecalProjector.enabled = false;
-                    floor.DecalProjector.gameObject.SetActive(false);
+                    bpd.enabled = false;
+                    if(bpd.DecalProjector != null)
+                    {
+                        bpd.DecalProjector.enabled = false;
+                        bpd.DecalProjector.gameObject.SetActive(false);
+                    }
                 }
 
                 _modelParent = _ghostBuildPiece.transform.GetChild(0);

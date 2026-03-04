@@ -252,18 +252,14 @@ namespace CliffGame
         private void ShowBuildPieceInfo(BuildPiece buildPiece)
         {
             _crosshairImage.sprite = _hammerSprite;
-
-            if (buildPiece.IsAnchored)
+            BuildPieceDurability durability = buildPiece.GetComponent<BuildPieceDurability>();
+            if (durability != null)
             {
-                ShowTextAboveCrosshair("Stability: 100%");
+                ShowTextAboveCrosshair($"HP: {durability.CurrentHitPoints}/{durability.MaxHitPoints}");
             }
             else
             {
-                int currentDist = buildPiece.DistanceFromAnchor;
-                int maxDist = BuildPieceIntegrityManager.Instance.MaxSupportedDistance;
-                float stability = Mathf.Clamp01(1.1f - ((float)currentDist / maxDist));
-                
-                ShowTextAboveCrosshair($"Stability: {stability:P0}");
+                ShowTextAboveCrosshair("HP: N/A");
             }
             SetCrosshairAlpha(1f);
         }

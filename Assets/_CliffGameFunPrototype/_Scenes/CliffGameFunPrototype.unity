@@ -4019,7 +4019,7 @@ Transform:
   m_GameObject: {fileID: 438436748}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.379, y: -0.219, z: 0.388}
+  m_LocalPosition: {x: 0.146, y: -0.317, z: -0.176}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19288,13 +19288,13 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
-    Quantity: 1
   - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 999
+  - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
+    Quantity: 1
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
     Quantity: 999
 --- !u!1 &1886760191
 GameObject:
@@ -20205,7 +20205,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: fa956aab176984369acfdf4666be7f40, type: 2}
   _connectorOverlapRadius: 1
   _maxGroundAngle: 45
-  _ghostTransparency: 0.85
+  _ghostTransparency: 0.95
   _ghostPulseDuration: 1
   _ghostPulseMinScale: 0.97
   _ghostPulseMaxScale: 1.03

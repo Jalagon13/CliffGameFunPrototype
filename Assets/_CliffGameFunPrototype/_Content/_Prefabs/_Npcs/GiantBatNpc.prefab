@@ -38179,8 +38179,8 @@ MonoBehaviour:
   _patrolRadiusVertical: 5
   _patrolSpeed: 3
   _setPivotToStartPos: 1
-  _attackIntervalMin: 4
-  _attackIntervalMax: 16
+  _attackIntervalMin: 40
+  _attackIntervalMax: 160
   _attackSpeed: 4
   _attackDuration: 15
   _damagePerAttackDuration: 100
@@ -38196,8 +38196,8 @@ MonoBehaviour:
     Path: event:/GiantBat/GiantBatIncoming
   _flyingDurationBeforeDespawn: 5
   _lifeTime: 235
-  _tetherReelStopDistanceFromPlayer: 1.75
-  _tetherStunDuration: 1.25
+  _tetherReelStopDistanceFromPlayer: 2
+  _tetherStunDuration: 1
 --- !u!114 &7039082888147559910
 MonoBehaviour:
   m_ObjectHideFlags: 0

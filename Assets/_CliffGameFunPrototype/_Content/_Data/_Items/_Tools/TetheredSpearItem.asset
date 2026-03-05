@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758ebea90039c4c65acaef5eef26b129, type: 3}
+  m_Name: TetheredSpearItem
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ToolItemSO
+  <InGameName>k__BackingField: Tethered Spear
+  <ItemWorldPrefab>k__BackingField: {fileID: 0}
+  <UiDisplay>k__BackingField: {fileID: 904965497, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
+  <Stackable>k__BackingField: 1
+  <Description>k__BackingField: A primitive spear tethered with twine for throwing
+    and retrieval.
+  <ToolType>k__BackingField: 3
+  <SwingCooldownInSeconds>k__BackingField: 0.3
+  <NpcDamageAmount>k__BackingField: 4
+  <IntValue>k__BackingField: 0
+  <HeldToolPrefab>k__BackingField: {fileID: 8993926037787366457, guid: 04308fda487da47abba0feb18a01599e, type: 3}
+  <CanThrowTethered>k__BackingField: 1
+  <TetherChargeDuration>k__BackingField: 1.1
+  <TetherRange>k__BackingField: 15
+  <TetherSequenceDuration>k__BackingField: 1.6
+  <TetherGravityMultiplier>k__BackingField: 0.3

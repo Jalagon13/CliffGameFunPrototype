@@ -57,9 +57,7 @@ namespace CliffGame
             {
                 ShowInteractableInfo();
             }
-            else if (_isHoldingHammer &&
-                     BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode &&
-                     InteractionManager.Instance.CurrentlyHoveredBuildPiece != null)
+            else if (_isHoldingHammer && BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode && InteractionManager.Instance.CurrentlyHoveredBuildPiece != null)
             {
                 ShowBuildPieceInfo(InteractionManager.Instance.CurrentlyHoveredBuildPiece);
             }

@@ -84,6 +84,8 @@ namespace CliffGame
         {
             if (_tetherStabSFX.IsNull) return;
             AudioManager.Instance.PlayOneShot(_tetherStabSFX, transform.position);
+            if (_hitParticles != null && gameObject.scene.isLoaded)
+                Instantiate(_hitParticles.gameObject, transform.position, Quaternion.identity);
         }
 
         public void OnInteractWith()

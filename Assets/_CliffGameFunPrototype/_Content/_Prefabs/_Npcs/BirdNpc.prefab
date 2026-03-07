@@ -2776,7 +2776,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7711124489041170713}
-  - component: {fileID: 4768862130705803228}
+  - component: {fileID: 5886386589020553263}
   - component: {fileID: 7309767610669660073}
   - component: {fileID: 7039082888147559910}
   m_Layer: 7
@@ -2802,8 +2802,8 @@ Transform:
   - {fileID: 5405791833839745694}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &4768862130705803228
-SphereCollider:
+--- !u!65 &5886386589020553263
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2821,7 +2821,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7309767610669660073
 MonoBehaviour:
@@ -2851,25 +2851,25 @@ MonoBehaviour:
     Path: event:/Resources/BirdCaughtSFX
   _killSFX:
     Guid:
-      Data1: 220080990
-      Data2: 1314872062
-      Data3: 688282815
-      Data4: 416755829
-    Path: event:/Resources/GutsSquishSFX
-  _tetherStabSFX:
-    Guid:
       Data1: -1593463993
       Data2: 1330785323
       Data3: 618020996
       Data4: 1295926265
     Path: event:/Resources/BirdCaughtSFX
+  _tetherStabSFX:
+    Guid:
+      Data1: 220080990
+      Data2: 1314872062
+      Data3: 688282815
+      Data4: 416755829
+    Path: event:/Resources/GutsSquishSFX
   _patrolRadiusHorizontal: 10
   _patrolRadiusVertical: 6
   _patrolSpeed: 1
   _setPivotToStartPos: 1
   _flightDurationBeforeDespawn: 4
   _lifeTime: 60
-  _tetherReelStopDistanceFromPlayer: 1
+  _tetherReelStopDistanceFromPlayer: 1.6
   _tetherStunDuration: 0.15
 --- !u!114 &7039082888147559910
 MonoBehaviour:

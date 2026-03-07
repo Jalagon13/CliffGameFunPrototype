@@ -12543,9 +12543,9 @@ MonoBehaviour:
   _pieceCollider: {fileID: 2348206916443856480}
   _itemsNeededForBuilding:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 2
+    Quantity: 1
   - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 2
+    Quantity: 1
   _itemsNeededForRepairing:
   - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
     Quantity: 1

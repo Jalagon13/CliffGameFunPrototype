@@ -16,8 +16,10 @@ MonoBehaviour:
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 904965497, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: A primitive spear tethered with twine for throwing
-    and retrieval.
+  <Description>k__BackingField: 'A corded spear for hunting. Throw to snag prey and
+    reel it back.
+
+    [LMB] Hit, [RMB] Throw / Retrieve '
   <ToolType>k__BackingField: 3
   <SwingCooldownInSeconds>k__BackingField: 0.3
   <NpcDamageAmount>k__BackingField: 4

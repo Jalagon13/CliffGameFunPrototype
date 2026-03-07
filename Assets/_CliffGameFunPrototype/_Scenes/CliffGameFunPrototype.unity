@@ -1623,7 +1623,7 @@ PrefabInstance:
       objectReference: {fileID: 242276470}
     - target: {fileID: 1823461507362849885, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 10060
+      value: 10066
       objectReference: {fileID: 0}
     - target: {fileID: 1848075474486708829, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1651,7 +1651,7 @@ PrefabInstance:
       objectReference: {fileID: 1135977428}
     - target: {fileID: 2940406766091811776, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 8137
+      value: 8143
       objectReference: {fileID: 0}
     - target: {fileID: 3029735958138288004, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1687,7 +1687,7 @@ PrefabInstance:
       objectReference: {fileID: 2062437208}
     - target: {fileID: 3910028199315015371, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 10099
+      value: 10105
       objectReference: {fileID: 0}
     - target: {fileID: 3926050539205680572, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1819,7 +1819,7 @@ PrefabInstance:
       objectReference: {fileID: 995687660}
     - target: {fileID: 8426420543582819200, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9212
+      value: 9218
       objectReference: {fileID: 0}
     - target: {fileID: 8820182912665354018, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1867,7 +1867,7 @@ PrefabInstance:
       objectReference: {fileID: 1073121114}
     - target: {fileID: 8977133306593962746, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9632
+      value: 9638
       objectReference: {fileID: 0}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_Mesh
@@ -1875,7 +1875,7 @@ PrefabInstance:
       objectReference: {fileID: 936029808}
     - target: {fileID: 9069823638254730286, guid: 9301e9cdd2a51469a9663ea8419a19ce, type: 3}
       propertyPath: m_VersionIndex
-      value: 9233
+      value: 9239
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4426,7 +4426,7 @@ GameObject:
   - component: {fileID: 465929714}
   - component: {fileID: 465929715}
   m_Layer: 5
-  m_Name: JournalMenuUI
+  m_Name: TutorialMenuUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4464,7 +4464,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9432315c2a20e4bf5b6c0825307e6ae9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.JournalMenuUI
-  _journalMenuUI: {fileID: 1902804519}
+  _tutorialMenuUI: {fileID: 1902804519}
+  _tutorialToggleText: {fileID: 1408722014}
+  _pulseTutorialToggleTextUntilFirstOpen: 1
+  _pulseMinScale: 1
+  _pulseMaxScale: 1.3
+  _pulseCycleDuration: 1.75
+  _pulsePeakColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &467658660
 GameObject:
   m_ObjectHideFlags: 0
@@ -5208,11 +5214,11 @@ MonoBehaviour:
   _attemptsPerTick: 6
   _resources:
   - resourcePrefab: {fileID: 8969057494970469643, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
-    spawnWeight: 90
+    spawnWeight: 85
   - resourcePrefab: {fileID: 8969057494970469643, guid: 58d5d0a3b19e049618593a5edd8695cb, type: 3}
-    spawnWeight: 80
+    spawnWeight: 85
   - resourcePrefab: {fileID: 8969057494970469643, guid: 285dc74de4f034239bc86a07346fb0cf, type: 3}
-    spawnWeight: 20
+    spawnWeight: 15
   - resourcePrefab: {fileID: 8969057494970469643, guid: b33445883b635420d93b380d00ff9d20, type: 3}
     spawnWeight: 10
 --- !u!1 &522399308
@@ -6324,7 +6330,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Objectives
+  m_text: Tutorial
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6958,7 +6964,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _lookDownAngle
-      value: 75
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _lookDownDelay
@@ -7018,7 +7024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114657890492222300, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: _executeStartingSequence
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114963311885979670, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
       propertyPath: speed
@@ -8232,15 +8238,15 @@ MonoBehaviour:
   _craftSlotUIPrefab: {fileID: 4398836320879300592, guid: a4b0fbe2c252a48c69c445dff71c090e, type: 3}
   _defaultRecipes:
   - {fileID: 11400000, guid: b0f05b04c91344f8da2db89156f31d8e, type: 2}
+  - {fileID: 11400000, guid: 80ebef25d0a3d4d43a1639967469cfbe, type: 2}
   - {fileID: 11400000, guid: 14d150780617d406f9b3616f7059b752, type: 2}
   - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
   _craftingTableRecipes:
   - {fileID: 11400000, guid: 06cc2b2389f1547f785c708a8af60e4b, type: 2}
-  - {fileID: 11400000, guid: 80ebef25d0a3d4d43a1639967469cfbe, type: 2}
   - {fileID: 11400000, guid: 1e3064abad23d408a8dbfa4a43f94031, type: 2}
   - {fileID: 11400000, guid: 01062f0c3296a4c759ea042e20b25548, type: 2}
-  - {fileID: 11400000, guid: 03854f3548bbb4778a3b7c68ca31593f, type: 2}
   - {fileID: 11400000, guid: c00b133f03aeb45318b659236bd1e58a, type: 2}
+  - {fileID: 11400000, guid: 03854f3548bbb4778a3b7c68ca31593f, type: 2}
 --- !u!1001 &826374936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10219,8 +10225,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "* Stay Alive\n\n* Gather Resources\n\n* Build yourself a \nsuspended home
-    \nworthy of survival\n\n* Watch out for the \nman-eating bats!"
+  m_text: "* Gather Resources\n and craft a hammer\n\n* Expand your base\nusing the
+    hammer\n\n* Craft a spear and \nhunt for food\n\n* Craft and place a\n  crafting
+    table \n\n* Watch out for \nthe man eating bats!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -15999,7 +16006,7 @@ GameObject:
   - component: {fileID: 1408722015}
   - component: {fileID: 1408722014}
   m_Layer: 5
-  m_Name: JournalToggleText
+  m_Name: TutorialToggleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16046,7 +16053,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '[T]
 
-    Journal'
+    Tutorial'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17108,7 +17115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.HungerManager
   _maxHunger: 100
   _hungerDrainPerSecond: 0.0958
-  _lowHungerThresholdPercent: 0.225
+  _lowHungerThresholdPercent: 0.25
   _stomachGrowlIntervalSeconds: 12
   _respawnHungerAmount: 75
 --- !u!114 &1628844531
@@ -17140,7 +17147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ThirstManager
   _maxThirst: 100
   _thirstDrainPerSecond: 0.1169
-  _lowThirstThresholdPercent: 0.225
+  _lowThirstThresholdPercent: 0.25
   _thirstPangIntervalSeconds: 12
   _respawnThirstAmount: 75
 --- !u!1001 &1636102964
@@ -19288,14 +19295,6 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
-    Quantity: 1
-  - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
-    Quantity: 1
-  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 999
-  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 999
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -19732,7 +19731,7 @@ GameObject:
   - component: {fileID: 1902804522}
   - component: {fileID: 1902804521}
   m_Layer: 5
-  m_Name: JournalMenu
+  m_Name: TutorialMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19756,7 +19755,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 25, y: 200}
-  m_SizeDelta: {x: 342.85715, y: 540}
+  m_SizeDelta: {x: 380, y: 600}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1902804521
 MonoBehaviour:
@@ -21369,9 +21368,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086b541bead394a5c8ead360709dff36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.WindManager
-  <WindCanPushPlayer>k__BackingField: 0
-  _windSeverity: 0.06
-  _windPushesPlayerThreshold: 0.061
+  <WindCanPushPlayer>k__BackingField: 1
+  _windSeverity: 0.061
+  _windPushesPlayerThreshold: 0.06
   _windTickInterval: 0.125
   _minRattleChance: 0.0185
   _maxRattleChance: 0.7
@@ -21400,13 +21399,13 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _playWindstorms: 0
+  _playWindstorms: 1
   _secondsPerCrack: 3
   _timeInBetweenStormsInSec: 300
   _radiusOfRattlingAroundPlayer: 15
   _damagePerCrack: 25
-  _startSeverity: 0.06
-  _peakSeverity: 0.9
+  _startSeverity: 0.061
+  _peakSeverity: 0.775
   _rampUpTime: 6
   _holdTime: 9
   _rampDownTime: 6

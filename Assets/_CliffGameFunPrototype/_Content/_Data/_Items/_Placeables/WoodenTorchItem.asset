@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructureItemSO
   <InGameName>k__BackingField: Wooden Torch
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
-  <UiDisplay>k__BackingField: {fileID: -215561803, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
+  <UiDisplay>k__BackingField: {fileID: -396669219, guid: 8c882b6e0d4b24c0aa2593a01ded4de3, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: Place to provide light
+  <Description>k__BackingField: Place to light up your home
   <PlaceablePrefab>k__BackingField: {fileID: 3282181520534882374, guid: 53711e93c0cd94c4bad1204dda54a5d5, type: 3}
   <IsCliffPlaceable>k__BackingField: 0

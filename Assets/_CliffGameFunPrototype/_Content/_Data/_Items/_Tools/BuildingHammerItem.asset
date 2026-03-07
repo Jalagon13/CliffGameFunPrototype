@@ -16,9 +16,17 @@ MonoBehaviour:
   <ItemWorldPrefab>k__BackingField: {fileID: 0}
   <UiDisplay>k__BackingField: {fileID: 1204406958, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: For building and repairing build pieces
+  <Description>k__BackingField: 'Useful for building platforms to expand your home.
+
+    [RMB]
+    for build options'
   <ToolType>k__BackingField: 0
   <SwingCooldownInSeconds>k__BackingField: 0.2
   <NpcDamageAmount>k__BackingField: 2
   <IntValue>k__BackingField: 50
   <HeldToolPrefab>k__BackingField: {fileID: 1131926571834917158, guid: 12137e5a4f0f13d45b921a301983726b, type: 3}
+  <CanThrowTethered>k__BackingField: 0
+  <TetherChargeDuration>k__BackingField: 1
+  <TetherRange>k__BackingField: 15
+  <TetherSequenceDuration>k__BackingField: 1.85
+  <TetherGravityMultiplier>k__BackingField: 1

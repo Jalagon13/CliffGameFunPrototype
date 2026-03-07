@@ -35935,7 +35935,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -37601,7 +37601,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -38147,8 +38147,8 @@ MonoBehaviour:
   _maxLife: 12
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: fc9349e4fc87e483787f81a8837b8e27, type: 2}
-    MinAmount: 1
-    MaxAmount: 2
+    MinAmount: 2
+    MaxAmount: 3
   - DropItem: {fileID: 11400000, guid: cdc3e36a2801e48d5bfcc02403891c1d, type: 2}
     MinAmount: 0
     MaxAmount: 1
@@ -38179,11 +38179,11 @@ MonoBehaviour:
   _patrolRadiusVertical: 5
   _patrolSpeed: 3
   _setPivotToStartPos: 1
-  _attackIntervalMin: 40
-  _attackIntervalMax: 160
+  _attackIntervalMin: 55
+  _attackIntervalMax: 225
   _attackSpeed: 4
   _attackDuration: 15
-  _damagePerAttackDuration: 100
+  _damagePerAttackDuration: 70
   _numberOfClosestPlatformsToConsider: 4
   _warningDistance: 8
   _damageTakenForItToRetreat: 10
@@ -38197,7 +38197,7 @@ MonoBehaviour:
   _flyingDurationBeforeDespawn: 5
   _lifeTime: 235
   _tetherReelStopDistanceFromPlayer: 2
-  _tetherStunDuration: 1
+  _tetherStunDuration: 1.5
 --- !u!114 &7039082888147559910
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -189,7 +189,7 @@ namespace CliffGame
 
         private void HandleWind()
         {
-            if (WindManager.Instance == null || !WindManager.Instance.WindCanPushPlayer)
+            if (WindManager.Instance == null || !WindManager.Instance.WindCanPushPlayer || Player.Instance.FirstPersonLook.IsSequenceOngoing)
             {
                 _accumulatedWind = Vector3.zero;
                 return;

@@ -27,6 +27,6 @@ MonoBehaviour:
   <HeldToolPrefab>k__BackingField: {fileID: 8993926037787366457, guid: 04308fda487da47abba0feb18a01599e, type: 3}
   <CanThrowTethered>k__BackingField: 1
   <TetherChargeDuration>k__BackingField: 1.1
-  <TetherRange>k__BackingField: 15
+  <TetherRange>k__BackingField: 16
   <TetherSequenceDuration>k__BackingField: 1.6
   <TetherGravityMultiplier>k__BackingField: 0.3

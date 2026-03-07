@@ -7396,7 +7396,7 @@ MonoBehaviour:
   m_CustomShadowLayers: 0
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 1
+  m_SoftShadowQuality: 2
   m_RenderingLayersMask:
     serializedVersion: 0
     m_Bits: 1
@@ -7428,7 +7428,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 0.825
+    m_Strength: 0.5
     m_Bias: 0.05
     m_NormalBias: 0
     m_NearPlane: 0.2
@@ -12845,6 +12845,13 @@ MonoBehaviour:
       Data3: 1399760783
       Data4: 2056025222
     Path: event:/Player/SFX_ToolWoosh
+  <SpearTetherReleaseSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   <EatingSFX>k__BackingField:
     Guid:
       Data1: 509036568
@@ -12852,6 +12859,27 @@ MonoBehaviour:
       Data3: -234443111
       Data4: 617818655
     Path: event:/Player/SFX_Munch
+  <GulpSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <StomachGrowlSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <ThirstPangSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   <JumpSFX>k__BackingField:
     Guid:
       Data1: -1560920118
@@ -12873,48 +12901,6 @@ MonoBehaviour:
       Data3: 902090126
       Data4: -1541084137
     Path: event:/Player/SFX_Steps
-  <ClimbingSFX>k__BackingField:
-    Guid:
-      Data1: 1077723001
-      Data2: 1080252227
-      Data3: -1910597739
-      Data4: 418058562
-    Path: event:/Player/Climbing/SFX_Climbing
-  <SlidingSFX>k__BackingField:
-    Guid:
-      Data1: 2037202664
-      Data2: 1222250136
-      Data3: -914182728
-      Data4: -1770609181
-    Path: event:/Player/Climbing/SFX_Sliding
-  <LedgeClimbSFX>k__BackingField:
-    Guid:
-      Data1: 1395557926
-      Data2: 1131074803
-      Data3: -987926617
-      Data4: 1646008892
-    Path: event:/Player/Climbing/SFX_LedgeClimb
-  <ClimbToWalkSFX>k__BackingField:
-    Guid:
-      Data1: -1003743447
-      Data2: 1204740250
-      Data3: 828931752
-      Data4: -1960018257
-    Path: event:/Player/Climbing/SFX_ClimbToWalk
-  <WalkToClimbSFX>k__BackingField:
-    Guid:
-      Data1: 1254483609
-      Data2: 1287620208
-      Data3: -1151737679
-      Data4: 1179000601
-    Path: event:/Player/Climbing/SFX_WalkToClimb
-  <StaminaWarningSFX>k__BackingField:
-    Guid:
-      Data1: 425489053
-      Data2: 1116206929
-      Data3: 555758748
-      Data4: -1305086456
-    Path: event:/Player/Climbing/SFX_StaminaWarning
   <ItemPickupSFX>k__BackingField:
     Guid:
       Data1: -2060888172
@@ -12985,13 +12971,34 @@ MonoBehaviour:
       Data3: -314509420
       Data4: -994794170
     Path: event:/Ambience/AMB_Campfire_Crackling
-  <BirdHurtSFX>k__BackingField:
+  <SplashSFX>k__BackingField:
     Guid:
-      Data1: 220080990
-      Data2: 1314872062
-      Data3: 688282815
-      Data4: 416755829
-    Path: event:/Resources/GutsSquishSFX
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <BirdCaughtSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <StoneHitSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <StoneDestroyedSFX>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   <LeafHitSFX>k__BackingField:
     Guid:
       Data1: 1936509638

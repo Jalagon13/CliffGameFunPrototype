@@ -41,6 +41,9 @@ namespace CliffGame
         private void Start()
         {
             GameInput.Instance.OnToggleJournalMenu += HandleToggleJournalMenu;
+            CraftingManager.Instance.OnCraftingUIOpened += HandleCraftingUIOpened;
+            PauseMenuUI.OnPauseMenuOpened += HandlePauseMenuOpened;
+            HealthManager.Instance.OnPlayerDeath += HandlePlayerDeath;
 
             CacheTutorialToggleTextDefaults();
             TryStartTutorialTogglePulse();
@@ -65,10 +68,18 @@ namespace CliffGame
         private void OnDestroy()
         {
             GameInput.Instance.OnToggleJournalMenu -= HandleToggleJournalMenu;
+            CraftingManager.Instance.OnCraftingUIOpened -= HandleCraftingUIOpened;
+            PauseMenuUI.OnPauseMenuOpened -= HandlePauseMenuOpened;
+            HealthManager.Instance.OnPlayerDeath -= HandlePlayerDeath;
         }
 
         private void HandleToggleJournalMenu(object sender, InputAction.CallbackContext e)
         {
+            if (!e.started || !CanToggleTutorialMenu())
+            {
+                return;
+            }
+
             if (!_hasToggledTutorialMenuOnce)
             {
                 _hasToggledTutorialMenuOnce = true;
@@ -90,11 +101,18 @@ namespace CliffGame
         private void Show()
         {
             _tutorialMenuUI.SetActive(true);
+            Time.timeScale = 0f;
         }
         
         private void Hide()
         {
             _tutorialMenuUI.SetActive(false);
+            _tutorialMenuOpen = false;
+
+            if (!Player.Instance.PauseMenuUI.IsPauseMenuOpen)
+            {
+                Time.timeScale = 1f;
+            }
         }
 
         private void CacheTutorialToggleTextDefaults()
@@ -132,6 +150,45 @@ namespace CliffGame
 
             _tutorialToggleText.rectTransform.localScale = _defaultToggleTextScale;
             _tutorialToggleText.color = _defaultToggleTextColor;
+        }
+
+        private bool CanToggleTutorialMenu()
+        {
+            if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead)
+            {
+                return false;
+            }
+
+            if (CraftingManager.Instance.IsCraftingUIOpen || Player.Instance.PauseMenuUI.IsPauseMenuOpen)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void HandleCraftingUIOpened(bool useCraftingTableRecipes)
+        {
+            if (_tutorialMenuOpen)
+            {
+                Hide();
+            }
+        }
+
+        private void HandlePauseMenuOpened()
+        {
+            if (_tutorialMenuOpen)
+            {
+                Hide();
+            }
+        }
+
+        private void HandlePlayerDeath()
+        {
+            if (_tutorialMenuOpen)
+            {
+                Hide();
+            }
         }
     }
 }

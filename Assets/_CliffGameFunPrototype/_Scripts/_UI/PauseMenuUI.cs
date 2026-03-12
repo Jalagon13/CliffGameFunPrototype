@@ -63,6 +63,11 @@ namespace CliffGame
             Loader.Load(Loader.Scene.MainMenuScene);
         }
         
+        public void SurveyButton()
+        {
+            Application.OpenURL("https://docs.google.com/forms/d/e/1FAIpQLSci_BikUHDYd5gK0aGFpBO9uqyJIpj7qYRKAGguH6i_U9S_eQ/viewform?usp=dialog");
+        }
+        
         private void Show()
         {
             OnPauseMenuOpened?.Invoke();

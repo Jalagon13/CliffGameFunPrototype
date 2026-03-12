@@ -182,13 +182,13 @@ namespace Ultrabolt.SkyEngine
 			//Moon Rise
 			if (timeOfDay > eveningLimit && timeOfDay < 1f)
 			{
-				moonLight.intensity = Mathf.MoveTowards(moonLight.intensity, moonIntensity, Time.deltaTime * lightFadeSpeed * timeSpeed);
-				sunLight.intensity = Mathf.MoveTowards(sunLight.intensity, 0f, Time.deltaTime * lightFadeSpeed * timeSpeed);
+				moonLight.intensity = /* Mathf.MoveTowards(moonLight.intensity, moonIntensity, Time.deltaTime * lightFadeSpeed * timeSpeed); */ 1.2f;
+				sunLight.intensity = /* Mathf.MoveTowards(sunLight.intensity, 0f, Time.deltaTime * lightFadeSpeed * timeSpeed); */ 1.2f;
 			}
 			else // Sun Rise
 			{
-				moonLight.intensity = Mathf.MoveTowards(moonLight.intensity, 0f, Time.deltaTime * lightFadeSpeed * timeSpeed);
-				sunLight.intensity = Mathf.MoveTowards(sunLight.intensity, sunIntensity, Time.deltaTime * lightFadeSpeed * timeSpeed);
+				moonLight.intensity = /* Mathf.MoveTowards(moonLight.intensity, 0f, Time.deltaTime * lightFadeSpeed * timeSpeed); */ 1.2f;
+				sunLight.intensity = /* Mathf.MoveTowards(sunLight.intensity, sunIntensity, Time.deltaTime * lightFadeSpeed * timeSpeed); */ 1.2f;
 			}
 
 			// Sun & Moon

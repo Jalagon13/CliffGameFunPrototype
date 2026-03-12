@@ -15,8 +15,12 @@ namespace CliffGame
     {
         public static AudioManager Instance { get; private set; }
 
+        [Header("Time Scale Audio Sync")]
+        [SerializeField] private bool _pauseWindAmbienceWhenTimeScaleIsZero = true;
+
         private EventInstance _ambienceEventInstance;
         private Bus _masterBus;
+        private bool _lastAmbiencePausedState;
 
         private void Awake()
         {
@@ -30,11 +34,25 @@ namespace CliffGame
             // Debug.Log($"Amb started");
             InitializeAmbience(FMODEvents.Instance.WindAmb);
             SetWindSeverity(0.1f);
+            SyncAmbiencePauseToTimeScale(force: true);
+        }
+
+        private void Update()
+        {
+            if (!_pauseWindAmbienceWhenTimeScaleIsZero)
+            {
+                return;
+            }
+
+            SyncAmbiencePauseToTimeScale(force: false);
         }
 
         public void OnDestroy()
         {
-            _ambienceEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            if (_ambienceEventInstance.isValid())
+            {
+                _ambienceEventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            }
         }
 
         public void SetWindSeverity(float value)
@@ -56,6 +74,23 @@ namespace CliffGame
         {
             _ambienceEventInstance = CreateInstance(ambienceEventReference);
             _ambienceEventInstance.start();
+        }
+
+        private void SyncAmbiencePauseToTimeScale(bool force)
+        {
+            if (!_ambienceEventInstance.isValid())
+            {
+                return;
+            }
+
+            bool shouldPause = Time.timeScale <= 0f;
+            if (!force && shouldPause == _lastAmbiencePausedState)
+            {
+                return;
+            }
+
+            _ambienceEventInstance.setPaused(shouldPause);
+            _lastAmbiencePausedState = shouldPause;
         }
 
         // Play a sound one time at a specific world position

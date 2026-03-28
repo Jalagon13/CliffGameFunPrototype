@@ -81,7 +81,7 @@ namespace CliffGame
                 if (col == _pieceCollider)
                     continue;
 
-                if (col is TerrainCollider)
+                if (col.gameObject.layer == 6)
                 {
                     IsAnchored = true;
                     DistanceFromAnchor = 0;

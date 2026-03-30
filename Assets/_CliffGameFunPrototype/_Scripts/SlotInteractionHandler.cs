@@ -29,7 +29,7 @@ namespace CliffGame
             {
                 if (mouseItem.HasItem) // Normal functionality
                 {
-                    if (inventoryItem.Item.InGameName == mouseItem.Item.InGameName)
+                    if (inventoryItem.CanStackWith(mouseItem))
                     {
                         inventory.InventoryItems[clickedInventorySlotIndex].Quantity += 1;
                         _mouseItemModel.MouseInventoryItem.Quantity -= 1;
@@ -54,6 +54,15 @@ namespace CliffGame
                 }
                 else
                 {
+                    if (!inventoryItem.IsStackable)
+                    {
+                        _mouseItemModel.MouseInventoryItem = inventoryItem;
+                        inventory.InventoryItems[clickedInventorySlotIndex] = new();
+                        didChange = true;
+                        Tooltip.HideUI();
+                    }
+                    else
+                    {
                     int inventoryItemQuantity = inventoryItem.Quantity;
                     int newInventoryItemQuantity = inventoryItemQuantity / 2;
                     int newMouseItemQuantity = inventoryItemQuantity - newInventoryItemQuantity;
@@ -65,30 +74,35 @@ namespace CliffGame
 
                     didChange = true;
 
-                    if (inventoryItem.Quantity == 0)
+                    if (inventory.InventoryItems[clickedInventorySlotIndex].Quantity == 0)
                     {
-
-                        inventory.InventoryItems[clickedInventorySlotIndex].Item = null;
+                        inventory.InventoryItems[clickedInventorySlotIndex] = new();
                     }
 
                     Tooltip.HideUI();
+                    }
                 }
             }
             else
             {
                 if (mouseItem.HasItem)
                 {
+                    if (mouseItem.IsStackable)
+                    {
+                        inventory.InventoryItems[clickedInventorySlotIndex].Item = mouseItem.Item;
+                        inventory.InventoryItems[clickedInventorySlotIndex].Quantity = 1;
+                        _mouseItemModel.MouseInventoryItem.Quantity -= 1;
+                    }
+                    else
+                    {
+                        inventory.InventoryItems[clickedInventorySlotIndex] = mouseItem;
+                        _mouseItemModel.MouseInventoryItem = new();
+                    }
 
-                    inventory.InventoryItems[clickedInventorySlotIndex].Item = mouseItem.Item;
-                    inventory.InventoryItems[clickedInventorySlotIndex].Quantity = 1;
-
-                    _mouseItemModel.MouseInventoryItem.Quantity -= 1;
                     didChange = true;
-                    if (_mouseItemModel.MouseInventoryItem.Quantity <= 0)
+                    if (_mouseItemModel.MouseInventoryItem.HasItem && _mouseItemModel.MouseInventoryItem.Quantity <= 0)
                     {
                         _mouseItemModel.Clear();
-
-                        ShowInventoryItemTooltip(_mouseItemModel.MouseInventoryItem);
                     }
                 }
             }
@@ -112,14 +126,12 @@ namespace CliffGame
             {
                 if (mouseItem.HasItem)
                 {
-                    if (inventoryItem.Item.InGameName == mouseItem.Item.InGameName && mouseItem.Item.Stackable)
+                    if (inventoryItem.CanStackWith(mouseItem))
                     {
                         inventory.InventoryItems[clickedInventorySlotIndex].Quantity += mouseItem.Quantity;
                         _mouseItemModel.MouseInventoryItem = new();
 
                         didChange = true;
-
-                        ShowInventoryItemTooltip(_mouseItemModel.MouseInventoryItem);
                     }
                     else
                     {
@@ -150,8 +162,6 @@ namespace CliffGame
                     _mouseItemModel.MouseInventoryItem = new();
 
                     didChange = true;
-
-                    ShowInventoryItemTooltip(inventory.InventoryItems[clickedInventorySlotIndex]);
                 }
             }
 
@@ -177,11 +187,7 @@ namespace CliffGame
             }
 
             Tooltip.ShowNew();
-
-            string quantityString = inventoryItem.Quantity > 1 ? $"[{inventoryItem.Quantity}]" : string.Empty;
-            string itemText = $"{inventoryItem.Item.InGameName} {quantityString}<br>{inventoryItem.Item.GetDescription()}";
-
-            Tooltip.JustText(itemText, Color.white, fontSize: 12f);
+            Tooltip.JustText(inventoryItem.GetTooltipText(), Color.white, fontSize: 12f);
         }
     }
 }

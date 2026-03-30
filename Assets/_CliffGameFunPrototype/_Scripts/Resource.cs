@@ -27,6 +27,8 @@ namespace CliffGame
         [SerializeField]
         private int _maxLife = 3;
         private int _currentLife;
+        public int CurrentLife => _currentLife;
+        public int MaxLife => _maxLife;
 
         [SerializeField]
         protected List<HarvestDrop> _harvestDrops = new List<HarvestDrop>();
@@ -86,14 +88,21 @@ namespace CliffGame
 
         public virtual void OnHitWithTool(int damage)
         {
-            if(Player.Instance.ToolHolder.CurrentHeldTool.ToolType != _requiredToolType) return;
+            if (Player.Instance.ToolHolder.CurrentHeldTool == null || Player.Instance.ToolHolder.CurrentHeldTool.ToolType != _requiredToolType)
+            {
+                return;
+            }
         
             if(_crackParticles != null)
             {
                 Instantiate(_crackParticles.gameObject, transform.position, Quaternion.identity);
             }
 
-            _currentLife--;
+            _currentLife -= damage;
+            _currentLife = Mathf.Clamp(_currentLife, 0, _maxLife);
+            ConsumeSelectedToolDurability();
+
+            Debug.Log($"Resource hit: {gameObject.name} took {damage} damage. HP: {_currentLife}/{_maxLife}");
 
             if (_currentLife <= 0)
             {
@@ -103,6 +112,17 @@ namespace CliffGame
             {
                 AudioManager.Instance.PlayOneShot(_hitSFX, transform.position);
             }
+        }
+
+        private void ConsumeSelectedToolDurability()
+        {
+            if (!InventoryManager.Instance.TryGetSelectedToolInventoryItem(out InventoryItem selectedToolItem, out _))
+            {
+                return;
+            }
+
+            selectedToolItem.ConsumeDurability(1);
+            InventoryManager.Instance.InventoryModel.UpdateInventory();
         }
     }
 }

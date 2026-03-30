@@ -9936,6 +9936,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.MouseItemUI
   _itemImage: {fileID: 2116898843}
   _itemQuantityText: {fileID: 289257706}
+  _autoCreateDurabilityBar: 1
+  _durabilityBarSize: {x: 58, y: 6}
+  _durabilityBarAnchoredPosition: {x: 0, y: -34}
+  _durabilityCurrentColor: {r: 0.3, g: 0.95, b: 0.3, a: 1}
+  _durabilityMissingColor: {r: 0.85, g: 0.2, b: 0.2, a: 1}
 --- !u!1 &724230221
 GameObject:
   m_ObjectHideFlags: 0
@@ -37766,12 +37771,6 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
-    Quantity: 1
-  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 999
-  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 999
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -40660,6 +40659,11 @@ MonoBehaviour:
   _itemImage: {fileID: 2029243876254159486}
   _itemQuantityText: {fileID: 0}
   _highlightedVisuals: {fileID: 0}
+  _autoCreateDurabilityBar: 1
+  _durabilityBarSize: {x: 58, y: 6}
+  _durabilityBarAnchoredPosition: {x: 0, y: 6}
+  _durabilityCurrentColor: {r: 0.3, g: 0.95, b: 0.3, a: 1}
+  _durabilityMissingColor: {r: 0.85, g: 0.2, b: 0.2, a: 1}
   _equipmentEmblemIcon: {fileID: 886652967}
   _equippedItemIcon: {fileID: 2029243876254159486}
 --- !u!1 &6031103918909031401

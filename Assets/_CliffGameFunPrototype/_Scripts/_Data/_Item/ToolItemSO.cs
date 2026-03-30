@@ -23,6 +23,17 @@ namespace CliffGame
         [field: SerializeField]
         public int NpcDamageAmount { get; private set; } = 2;
 
+        [field: Header("Resource Damage")]
+        [field: SerializeField]
+        public int ResourceDamageMin { get; private set; } = 1;
+
+        [field: SerializeField]
+        public int ResourceDamageMax { get; private set; } = 1;
+
+        [field: Header("Durability")]
+        [field: SerializeField]
+        public int MaxDurability { get; private set; } = 10;
+
         [field: SerializeField, Tooltip("Can repair amount depending on tool type")]
         public int IntValue { get; private set; }
 
@@ -52,7 +63,10 @@ namespace CliffGame
 
         public override string GetDescription()
         {
-            return GetDescriptionBreak();
+            string description = GetDescriptionBreak();
+            description += $"<br>Resource Damage: {Mathf.Min(ResourceDamageMin, ResourceDamageMax)}-{Mathf.Max(ResourceDamageMin, ResourceDamageMax)}";
+            description += $"<br>Max Durability: {Mathf.Max(1, MaxDurability)}";
+            return description;
         }
     }
 }

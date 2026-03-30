@@ -108,7 +108,7 @@ namespace CliffGame
             if(_mouseItemModel.MouseInventoryItem.HasItem)
             {
                 // If mouse has item when crafting UI closes, drop the item
-                AddItem(_mouseItemModel.MouseInventoryItem.Item, _mouseItemModel.MouseInventoryItem.Quantity);
+                AddInventoryItem(_mouseItemModel.MouseInventoryItem);
                 _mouseItemModel.Clear();
                 _inventoryModel.UpdateInventory();
             }
@@ -148,11 +148,7 @@ namespace CliffGame
             }
 
             Tooltip.ShowNew();
-
-            string quantityString = inventoryItem.Quantity > 1 ? $"[{inventoryItem.Quantity}]" : string.Empty;
-            string itemText = $"{inventoryItem.Item.InGameName} {quantityString}<br>{inventoryItem.Item.GetDescription()}";
-
-            Tooltip.JustText(itemText, Color.white, fontSize: 12f);
+            Tooltip.JustText(inventoryItem.GetTooltipText(), Color.white, fontSize: 12f);
         }
 
         private void UpdateMouseItem()
@@ -228,6 +224,17 @@ namespace CliffGame
             OnItemPickup?.Invoke(itemToAdd);
         }
 
+        public void AddInventoryItem(InventoryItem itemToAdd)
+        {
+            if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead || itemToAdd == null || !itemToAdd.HasItem)
+            {
+                return;
+            }
+
+            _inventoryModel.AddItem(itemToAdd);
+            OnItemPickup?.Invoke(itemToAdd);
+        }
+
         public void AddItems(InventoryItem[] itemsToAdd)
         {
             foreach (InventoryItem item in itemsToAdd)
@@ -239,6 +246,20 @@ namespace CliffGame
         public void RemoveItem(ItemSO ItemToAdd, int quantity)
         {
             _inventoryModel.RemoveItem(ItemToAdd, quantity);
+        }
+
+        public bool TryGetSelectedToolInventoryItem(out InventoryItem toolInventoryItem, out ToolItemSO toolItemSo)
+        {
+            toolInventoryItem = SelectedInventoryItem;
+            toolItemSo = null;
+
+            if (toolInventoryItem == null || !toolInventoryItem.HasItem || toolInventoryItem.Item is not ToolItemSO toolItem)
+            {
+                return false;
+            }
+
+            toolItemSo = toolItem;
+            return true;
         }
 
         public void RemoveItems(InventoryItem[] itemsToRemove)

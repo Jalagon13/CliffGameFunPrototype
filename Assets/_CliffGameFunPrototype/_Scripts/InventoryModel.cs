@@ -33,15 +33,21 @@ namespace CliffGame
 
         public void AddItem(InventoryItem itemToAdd)
         {
+            if (itemToAdd == null || !itemToAdd.HasItem)
+            {
+                UpdateInventory();
+                return;
+            }
+
             // If item I want to add is stackable
-            if (itemToAdd.Item.Stackable)
+            if (itemToAdd.IsStackable)
             {
                 // Check if the item already exists in the inventory
                 for (int i = 0; i < _inventoryItems.Count; i++)
                 {
                     if (!_inventoryItems[i].HasItem) continue; // If slot is empty, move on to the next slot to check
 
-                    if (_inventoryItems[i].Item.InGameName == itemToAdd.Item.InGameName)
+                    if (_inventoryItems[i].CanStackWith(itemToAdd))
                     {
                         _inventoryItems[i].Quantity += itemToAdd.Quantity;
 
@@ -59,11 +65,6 @@ namespace CliffGame
                         // Override this slot with itemToAdd
                         _inventoryItems[j] = itemToAdd;
 
-                        if (!_inventoryItems[j].Item.Stackable)
-                        {
-                            _inventoryItems[j].Quantity = 1;
-                        }
-
                         UpdateInventory();
                         return;
                     }
@@ -71,27 +72,37 @@ namespace CliffGame
             }
             else // If item is not stackable
             {
-                // Set itemToAdd quantity to 1 since all non-stackable items must be 1
-                itemToAdd.Quantity = 1;
+                int quantityToAdd = Mathf.Max(1, itemToAdd.Quantity);
 
-                // Loop through all slots
-                for (int j = 0; j < _inventoryItems.Count; j++)
+                for (int quantityIndex = 0; quantityIndex < quantityToAdd; quantityIndex++)
                 {
-                    // If the slot is empty, override this spot
-                    if (!_inventoryItems[j].HasItem)
-                    {
-                        // Override this spot with itemToAdd
-                        _inventoryItems[j] = itemToAdd;
+                    bool placedItem = false;
 
-                        if (!_inventoryItems[j].Item.Stackable)
+                    for (int j = 0; j < _inventoryItems.Count; j++)
+                    {
+                        if (_inventoryItems[j].HasItem)
                         {
-                            _inventoryItems[j].Quantity = 1;
+                            continue;
                         }
 
+                        _inventoryItems[j] = quantityIndex == 0
+                            ? itemToAdd
+                            : itemToAdd.CreateIndependentCopy(1);
+
+                        _inventoryItems[j].Quantity = 1;
+                        placedItem = true;
+                        break;
+                    }
+
+                    if (!placedItem)
+                    {
                         UpdateInventory();
                         return;
                     }
                 }
+
+                UpdateInventory();
+                return;
             }
 
             // Inventory is full functionality (implement this later) 

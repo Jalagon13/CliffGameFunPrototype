@@ -84,15 +84,16 @@ namespace CliffGame
         private void EquipTool(ToolItemSO toolItem)
         {
             // If the same tool is already equipped, do nothing
-            if (_currentHeldTool == toolItem && ToolPrefabExists()) return;
+            if (_currentHeldTool == toolItem && ToolPrefabExists())
+            {
+                RefreshSwingCooldownTimer(false);
+                return;
+            }
 
             UnequipTool();
 
             _currentHeldTool = toolItem;
-            _swingCooldownTimer = new Timer(_currentHeldTool.SwingCooldownInSeconds)
-            {
-                RemainingSeconds = 0
-            };
+            RefreshSwingCooldownTimer(false);
 
             // Instantiate as a child so the prefab's local offset is preserved
             Instantiate(toolItem.HeldToolPrefab, transform);
@@ -211,7 +212,7 @@ namespace CliffGame
             swingSequence.OnComplete(() =>
             {
                 _isSwinging = false;
-                _swingCooldownTimer.Reset();
+                RefreshSwingCooldownTimer(true);
             });
         }
 
@@ -253,8 +254,38 @@ namespace CliffGame
             {
                 transform.localPosition = _defaultLocalPosition;
                 _isSwinging = false;
-                _swingCooldownTimer.Reset();
+                RefreshSwingCooldownTimer(true);
             });
+        }
+
+        private void RefreshSwingCooldownTimer(bool startOnCooldown)
+        {
+            float cooldownDuration = GetCurrentSwingCooldownDuration();
+            _swingCooldownTimer = new Timer(cooldownDuration);
+
+            if (!startOnCooldown)
+            {
+                _swingCooldownTimer.RemainingSeconds = 0f;
+            }
+        }
+
+        private float GetCurrentSwingCooldownDuration()
+        {
+            if (_currentHeldTool == null)
+            {
+                return 0f;
+            }
+
+            float cooldownDuration = _currentHeldTool.SwingCooldownInSeconds;
+            bool isMiningContext = InteractionManager.Instance != null &&
+                                   InteractionManager.Instance.CurrentlyHoveredInteractable is Resource;
+
+            if (isMiningContext && InventoryManager.Instance.TryGetSelectedToolInventoryItem(out InventoryItem selectedToolItem, out _))
+            {
+                cooldownDuration *= selectedToolItem.GetResourceSwingCooldownMultiplier();
+            }
+
+            return cooldownDuration;
         }
 
     }

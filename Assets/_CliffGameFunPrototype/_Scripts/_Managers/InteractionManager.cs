@@ -65,7 +65,16 @@ namespace CliffGame
         {
             if(_currentlyHoveredInteractable != null)
             {
-                // Debug.Log($"Trying to hit: {_currentlyHoveredInteractable}");
+                if (_currentlyHoveredInteractable is Resource)
+                {
+                    if (InventoryManager.Instance.TryGetSelectedToolInventoryItem(out InventoryItem selectedToolItem, out _))
+                    {
+                        _currentlyHoveredInteractable.OnHitWithTool(selectedToolItem.RollResourceDamage());
+                    }
+
+                    return;
+                }
+
                 _currentlyHoveredInteractable.OnHitWithTool(Player.Instance.ToolHolder.CurrentHeldTool.NpcDamageAmount);
             }
         }

@@ -1759,7 +1759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _maxLife
-      value: 5
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2868291705064837936, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: _hitSFX.Path

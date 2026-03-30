@@ -198,7 +198,7 @@ namespace CliffGame
             GameObject newNpc = Instantiate(npcEntry.Prefab, potentialSpawnPoint, Quaternion.identity);
             _currentNpcCapacity += npcEntry.SlotCost;
             
-            Debug.Log($"Spawned NPC: {newNpc.name}, Capacity: {_currentNpcCapacity}/{_maxNpcSlotAmount}");
+            // Debug.Log($"Spawned NPC: {newNpc.name}, Capacity: {_currentNpcCapacity}/{_maxNpcSlotAmount}");
 
             // Attach a tracker to the NPC so we know when it dies/despawns
             NpcTracker tracker = newNpc.AddComponent<NpcTracker>();
@@ -208,7 +208,7 @@ namespace CliffGame
         public void UnregisterNpc(float cost)
         {
             _currentNpcCapacity = Mathf.Max(0, _currentNpcCapacity - cost);
-            Debug.Log($"Unregistered NPC, new Capacity: {_currentNpcCapacity}/{_maxNpcSlotAmount}");
+            // Debug.Log($"Unregistered NPC, new Capacity: {_currentNpcCapacity}/{_maxNpcSlotAmount}");
         }
 
         private float GetSpawnModifier()

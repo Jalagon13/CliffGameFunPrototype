@@ -27,6 +27,12 @@ MonoBehaviour:
   <ResourceDamageMax>k__BackingField: 7
   <CritStrikeChance>k__BackingField: 0.04
   <MaxDurability>k__BackingField: 60
+  <RepairIngredients>k__BackingField:
+  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 2
+  - Item: {fileID: 11400000, guid: 538f7bfaf86764bd4ac49be7107ea497, type: 2}
+    Quantity: 2
+  <RepairDurationSeconds>k__BackingField: 1.1
   <IntValue>k__BackingField: 50
   <HeldToolPrefab>k__BackingField: {fileID: 1131926571834917158, guid: 12137e5a4f0f13d45b921a301983726b, type: 3}
   <CanThrowTethered>k__BackingField: 0

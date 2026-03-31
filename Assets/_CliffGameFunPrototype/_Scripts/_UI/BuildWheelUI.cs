@@ -126,6 +126,11 @@ namespace CliffGame
         {
             if (!e.started || CraftingManager.Instance.IsCraftingUIOpen || Player.Instance.PauseMenuUI.IsPauseMenuOpen) return;
 
+            if (Grindstone.HoveredSharpeningStoneWantsSecondaryInteract())
+            {
+                return;
+            }
+
             if(InventoryManager.Instance.SelectedInventoryItem.HasItem && InventoryManager.Instance.SelectedInventoryItem.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer)
             {
                 ToggleBuildWheelUI();

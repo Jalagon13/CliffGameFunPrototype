@@ -104,12 +104,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.CraftingTable
   _requiredToolType: 1
-  _maxLife: 3
+  _maxLife: 50
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: 4fff58784637b460d927404e68c20f95, type: 2}
     MinAmount: 1
     MaxAmount: 1
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
+  _destroyParticles: {fileID: 0}
   _hitSFX:
     Guid:
       Data1: 1630036399

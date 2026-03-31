@@ -38144,7 +38144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f64022d4b070c4609a189ec3df850894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.GiantBat
-  _maxLife: 12
+  _maxLife: 100
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: fc9349e4fc87e483787f81a8837b8e27, type: 2}
     MinAmount: 2

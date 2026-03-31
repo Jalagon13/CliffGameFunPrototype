@@ -2835,7 +2835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46eef5a3f226e40959b3da4dee5e346f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.BirdNpc
-  _maxLife: 4
+  _maxLife: 14
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: a9637ff01e68f44c2bbc65c60546e0bb, type: 2}
     MinAmount: 1

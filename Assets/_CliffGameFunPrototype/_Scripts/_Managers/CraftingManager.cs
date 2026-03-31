@@ -56,6 +56,11 @@ namespace CliffGame
             {
                 return;
             }
+
+            if (Grindstone.IsAnyRepairInProgress)
+            {
+                return;
+            }
         
             if (BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen)
             {

@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace CliffGame
 {
@@ -26,7 +23,6 @@ namespace CliffGame
         Depleted
     }
 
-    // This class is the "manifestation" of the item that gets passed around in actual inventory slots
     [Serializable]
     public class InventoryItem
     {
@@ -38,6 +34,7 @@ namespace CliffGame
         public int MaxDurability { get; private set; }
         public bool UsesDurability => Item is ToolItemSO;
         public bool IsStackable => HasItem && !UsesDurability && Item.Stackable;
+        public bool IsAtMaxDurability => !UsesDurability || CurrentDurability >= MaxDurability;
         public ToolDurabilityState DurabilityState => !UsesDurability || CurrentDurability > 0
             ? ToolDurabilityState.Operational
             : ToolDurabilityState.Depleted;
@@ -78,6 +75,11 @@ namespace CliffGame
             return IsStackable &&
                    other.IsStackable &&
                    Item.InGameName == other.Item.InGameName;
+        }
+
+        public bool CanRepair()
+        {
+            return UsesDurability && CurrentDurability < MaxDurability;
         }
 
         public void AddDurability(int amount)

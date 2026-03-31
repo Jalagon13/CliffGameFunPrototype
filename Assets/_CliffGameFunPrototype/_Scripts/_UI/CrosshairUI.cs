@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using MoreMountains.Tools;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace CliffGame
 {
@@ -12,7 +12,7 @@ namespace CliffGame
         [SerializeField] private MMProgressBar _interactRadialBar;
         [SerializeField] private GameObject _structReqHolder;
         [SerializeField] private StructReqUI _structReqPrefab;
-        [SerializeField] private Sprite _defaultSprite, _axeSprite, _hammerSprite, _spearSprite, _rawBirdSprite, _fiberSprite, _combatSprite;
+        [SerializeField] private Sprite _defaultSprite, _axeSprite, _hammerSprite, _spearSprite, _rawBirdSprite, _combatSprite;
         [SerializeField] private GameObject _buildInstructionTextHolder;
         [SerializeField] private GameObject _repairInstructions;
         [SerializeField] private Material _repairHoverMaterial;
@@ -25,35 +25,36 @@ namespace CliffGame
         private BuildPiece _lastHoveredBuildPiece;
         private BuildPiece _lastHighlightedBuildPiece;
         private readonly List<Material[]> _lastHighlightOriginalMaterials = new();
-        
+        private string _lastRequirementContextId = string.Empty;
+
         private void Awake()
         {
             _crosshairImage = transform.GetChild(0).GetComponent<Image>();
             HideInteractableInfo();
             HideTextAboveCrosshair();
         }
-        
+
         private void Start()
         {
             InventoryManager.Instance.OnSelectedSlotChanged += CheckForHammer;
-            BuildingManager.Instance.OnBuildTypeChanged += CheckForRepairState;
+            BuildingManager.Instance.OnBuildTypeChanged += HandleBuildTypeChanged;
 
             _interactRadialBar.gameObject.SetActive(false);
             _repairInstructions.SetActive(false);
             _stairsChangeDirectionText.SetActive(false);
             HideTextAboveCrosshair();
         }
-        
+
         private void OnDestroy()
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= CheckForHammer;
-            BuildingManager.Instance.OnBuildTypeChanged -= CheckForRepairState;
+            BuildingManager.Instance.OnBuildTypeChanged -= HandleBuildTypeChanged;
             RestoreRepairHoverHighlight();
         }
 
         private void Update()
         {
-            if(InteractionManager.Instance.CurrentlyHoveredInteractable != null)
+            if (InteractionManager.Instance.CurrentlyHoveredInteractable != null)
             {
                 ShowInteractableInfo();
             }
@@ -66,17 +67,25 @@ namespace CliffGame
                 HideInteractableInfo();
             }
 
-            Timer activeTimer = null;
+            UpdateRadialProgressBar();
+            UpdateRequirementDisplay();
+        }
 
-            // Priority order: Destroying > Eating
+        private void UpdateRadialProgressBar()
+        {
+            Timer activeTimer = null;
             Timer destroyTimer = BuildingManager.Instance.DestroyTimer;
+            Timer repairTimer = Grindstone.ActiveRepairTimer;
             Timer spearTetherTimer = SpearTetherManager.Instance.SpearTetherChargeTimer;
             Timer eatTimer = HungerManager.Instance.EatTimer;
-            Timer drinkTimer = ThirstManager.Instance.DrinkTimer;
 
             if (IsTimerActive(destroyTimer))
             {
                 activeTimer = destroyTimer;
+            }
+            else if (IsTimerActive(repairTimer))
+            {
+                activeTimer = repairTimer;
             }
             else if (IsTimerActive(spearTetherTimer))
             {
@@ -85,10 +94,6 @@ namespace CliffGame
             else if (IsTimerActive(eatTimer))
             {
                 activeTimer = eatTimer;
-            }
-            else if (IsTimerActive(drinkTimer))
-            {
-                activeTimer = drinkTimer;
             }
 
             if (activeTimer != null)
@@ -101,39 +106,100 @@ namespace CliffGame
                 _interactRadialBar.UpdateBar(0f, 0f, 1f);
                 _interactRadialBar.gameObject.SetActive(false);
             }
-
-            HandleRepairUI();
         }
 
-        private void CheckForRepairState(BuildOption type)
+        private void UpdateRequirementDisplay()
         {
+            if (InteractionManager.Instance.CurrentlyHoveredInteractable is Grindstone sharpeningStone)
+            {
+                RestoreRepairHoverHighlight();
+                SetRequirementDisplay(sharpeningStone.GetRequirementContextId(), sharpeningStone.GetRepairRequirementsForSelectedTool(), false, false, false);
+                return;
+            }
+
+            if (_isHoldingHammer && BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode)
+            {
+                BuildPiece hoveredPiece = InteractionManager.Instance.CurrentlyHoveredBuildPiece;
+                _lastHoveredBuildPiece = hoveredPiece;
+                UpdateRepairHoverHighlight(hoveredPiece);
+                SetRequirementDisplay(
+                    hoveredPiece != null ? $"buildrepair_{hoveredPiece.GetInstanceID()}" : "buildrepair_none",
+                    hoveredPiece != null ? hoveredPiece.ItemsNeededForRepairing : null,
+                    false,
+                    true,
+                    false);
+                return;
+            }
+
+            RestoreRepairHoverHighlight();
+            _lastHoveredBuildPiece = null;
+
+            if (_isHoldingHammer && IsBuildPlacementMode())
+            {
+                BuildPiece currentBuild = BuildingManager.Instance.GetCurrentBuild();
+                SetRequirementDisplay(
+                    currentBuild != null ? $"build_{BuildingManager.Instance.CurrentBuildType}_{currentBuild.GetInstanceID()}" : "build_none",
+                    currentBuild != null ? currentBuild.ItemsNeededForBuilding : null,
+                    true,
+                    false,
+                    BuildingManager.Instance.CurrentBuildType == BuildOption.Stairs);
+                return;
+            }
+
+            SetRequirementDisplay("none", null, false, false, false);
+        }
+
+        private bool IsBuildPlacementMode()
+        {
+            BuildOption buildType = BuildingManager.Instance.CurrentBuildType;
+            return buildType == BuildOption.Platform || buildType == BuildOption.Fence || buildType == BuildOption.Stairs;
+        }
+
+        private void SetRequirementDisplay(string contextId, InventoryItem[] requirements, bool showBuildInstructions, bool showRepairInstructions, bool showStairsText)
+        {
+            _buildInstructionTextHolder.SetActive(showBuildInstructions);
+            _repairInstructions.SetActive(showRepairInstructions);
+            _stairsChangeDirectionText.SetActive(showStairsText);
+
+            bool hasRequirements = requirements != null && requirements.Length > 0;
+            if (!hasRequirements)
+            {
+                if (_lastRequirementContextId != string.Empty)
+                {
+                    ClearStructReqs();
+                    _lastRequirementContextId = string.Empty;
+                }
+                return;
+            }
+
+            if (_lastRequirementContextId == contextId)
+            {
+                return;
+            }
+
             ClearStructReqs();
+            _lastRequirementContextId = contextId;
 
-            if (type == BuildOption.RepairMode)
+            foreach (InventoryItem item in requirements)
             {
-                _repairInstructions.SetActive(true);
-                _stairsChangeDirectionText.SetActive(false);
+                StructReqUI structReq = Instantiate(_structReqPrefab, _structReqHolder.transform);
+                structReq.Initialize(item);
             }
-            else if(type == BuildOption.Fence || type == BuildOption.Platform)
-            {
-                PopulateBuildReqs();
-                _repairInstructions.SetActive(false);
-                _stairsChangeDirectionText.SetActive(false);
-            }
-            else if(type == BuildOption.Stairs)
-            {
-                PopulateBuildReqs();
-                _repairInstructions.SetActive(false);
+        }
 
-                _stairsChangeDirectionText.SetActive(true);
+        private void HandleBuildTypeChanged(BuildOption type)
+        {
+            _lastRequirementContextId = string.Empty;
+
+            if (type != BuildOption.RepairMode)
+            {
+                RestoreRepairHoverHighlight();
             }
         }
 
         private void ShowInteractableInfo()
         {
             IInteractable interactable = InteractionManager.Instance.CurrentlyHoveredInteractable;
-
-            // Default visuals
             _crosshairImage.sprite = _defaultSprite;
             HideTextAboveCrosshair();
 
@@ -152,37 +218,35 @@ namespace CliffGame
                 return;
             }
 
-            if (interactable is WaterStill waterStill)
+            if (interactable is Grindstone sharpeningStone)
             {
-                HandleWaterStillText(waterStill);
+                _crosshairImage.sprite = _defaultSprite;
+                ShowTextAboveCrosshair(sharpeningStone.GetCrosshairPrompt());
                 SetCrosshairAlpha(1f);
                 return;
             }
-            
-            if(interactable is CraftingTable craftingTable)
+
+            if (interactable is CraftingTable)
             {
                 ShowTextAboveCrosshair("[E] <br> Open Crafting Menu");
                 SetCrosshairAlpha(1f);
                 return;
             }
-            
-            
+
             if (interactable is PlanterBox planterBox)
             {
                 HandlePlanterBoxText(planterBox);
                 SetCrosshairAlpha(1f);
                 return;
             }
-            
-            
-            if(interactable is Growable growable)
+
+            if (interactable is Growable growable)
             {
                 HandleGrowableText(growable);
                 SetCrosshairAlpha(1f);
                 return;
             }
 
-            // ---- Tool-based interactables ----
             switch (interactable.BreakToolType)
             {
                 case ToolType.Axe:
@@ -204,19 +268,12 @@ namespace CliffGame
 
         private void HandleGrowableText(Growable growable)
         {
-            if(growable.CanBeHarvested)
-            {
-                ShowTextAboveCrosshair("[E] <br> Harvest");
-            }
-            else
-            {
-                ShowTextAboveCrosshair("Growing...");
-            }
+            ShowTextAboveCrosshair(growable.CanBeHarvested ? "[E] <br> Harvest" : "Growing...");
         }
 
         private void HandlePlanterBoxText(PlanterBox planterBox)
         {
-            switch(planterBox.CurrentState)
+            switch (planterBox.CurrentState)
             {
                 case PlanterBoxState.Empty:
                     ShowTextAboveCrosshair("[E] <br> Plant Cliff Seed");
@@ -226,30 +283,6 @@ namespace CliffGame
                     break;
                 case PlanterBoxState.Grown:
                     ShowTextAboveCrosshair("[E] <br> Harvest");
-                    break;
-            }       
-        }
-
-        private void HandleWaterStillText(WaterStill waterStill)
-        {
-            switch (waterStill.CurrentState)
-            {
-                case WaterStill.WaterStillState.Idle:
-                case WaterStill.WaterStillState.CollectingFiber:
-                    _crosshairImage.sprite = _fiberSprite;
-                    ShowTextAboveCrosshair(
-                        $"[E] <br> Insert Fiber ({waterStill.CurrentFiberStorage}/{waterStill.FiberNeededPerWaterUnit})"
-                    );
-                    break;
-
-                case WaterStill.WaterStillState.ProcessingWater:
-                    _crosshairImage.sprite = _defaultSprite;
-                    ShowTextAboveCrosshair("Processing Water...");
-                    break;
-
-                case WaterStill.WaterStillState.WaterReady:
-                    _crosshairImage.sprite = _defaultSprite;
-                    ShowTextAboveCrosshair("[E] <br> Drink Water");
                     break;
             }
         }
@@ -264,14 +297,9 @@ namespace CliffGame
 
             _crosshairImage.sprite = _hammerSprite;
             BuildPieceDurability durability = buildPiece.GetComponent<BuildPieceDurability>();
-            if (durability != null)
-            {
-                ShowTextAboveCrosshair($"HP: {durability.CurrentHitPoints}/{durability.MaxHitPoints}");
-            }
-            else
-            {
-                ShowTextAboveCrosshair("HP: N/A");
-            }
+            ShowTextAboveCrosshair(durability != null
+                ? $"HP: {durability.CurrentHitPoints}/{durability.MaxHitPoints}"
+                : "HP: N/A");
             SetCrosshairAlpha(1f);
         }
 
@@ -284,54 +312,16 @@ namespace CliffGame
 
         private void CheckForHammer(int arg1, InventoryItem item)
         {
-            if(item.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer) 
-            {
-                _isHoldingHammer = true;
-                if(BuildingManager.Instance.CurrentBuildType == BuildOption.DestroyMode)
-                {
-                    ClearStructReqs();
-                }
-                else if(BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode)
-                {
-                    ClearStructReqs();
+            _isHoldingHammer = item != null && item.Item is ToolItemSO toolItem && toolItem.ToolType == ToolType.Hammer;
+            _lastRequirementContextId = string.Empty;
 
-                    _repairInstructions.SetActive(true);
-                }
-                else if(BuildingManager.Instance.CurrentBuildType == BuildOption.Fence || BuildingManager.Instance.CurrentBuildType == BuildOption.Platform)
-                {
-                    PopulateBuildReqs();
-                }
-            }
-            else
+            if (!_isHoldingHammer)
             {
-                _isHoldingHammer = false;
                 ClearStructReqs();
-
-                HideBuildInstructionTexts();
+                _buildInstructionTextHolder.SetActive(false);
+                _repairInstructions.SetActive(false);
+                _stairsChangeDirectionText.SetActive(false);
             }
-        }
-
-        private void PopulateBuildReqs()
-        {
-            foreach (InventoryItem item in BuildingManager.Instance.GetCurrentBuild().ItemsNeededForBuilding)
-            {
-                StructReqUI structReq = Instantiate(_structReqPrefab, _structReqHolder.transform.position, Quaternion.identity);
-                structReq.transform.SetParent(_structReqHolder.transform);
-                
-                structReq.Initialize(item);
-            }
-
-            ShowBuildInstructionTexts();
-        }
-        
-        private void ShowBuildInstructionTexts()
-        {
-            _buildInstructionTextHolder.SetActive(true);
-        }
-        
-        private void HideBuildInstructionTexts()
-        {
-            _buildInstructionTextHolder.SetActive(false);
         }
 
         private void ShowTextAboveCrosshair(string text)
@@ -348,66 +338,22 @@ namespace CliffGame
 
         private void SetCrosshairAlpha(float alpha)
         {
-            Color c = _crosshairImage.color;
-            c.a = alpha;
-            _crosshairImage.color = c;
+            Color color = _crosshairImage.color;
+            color.a = alpha;
+            _crosshairImage.color = color;
         }
 
         private bool IsTimerActive(Timer timer)
         {
             if (timer == null) return false;
-
-            return timer.RemainingSeconds < timer.Duration &&
-                   timer.RemainingSeconds > 0f;
-        }
-
-        private void HandleRepairUI()
-        {
-            if (_isHoldingHammer && BuildingManager.Instance.CurrentBuildType == BuildOption.RepairMode)
-            {
-                BuildPiece hovered = InteractionManager.Instance.CurrentlyHoveredBuildPiece;
-                if (hovered != _lastHoveredBuildPiece)
-                {
-                    _lastHoveredBuildPiece = hovered;
-                    UpdateRepairRequirements(hovered);
-                    UpdateRepairHoverHighlight(hovered);
-                }
-            }
-            else
-            {
-                if (_lastHoveredBuildPiece != null)
-                {
-                    ClearStructReqs();
-                    _lastHoveredBuildPiece = null;
-                }
-
-                RestoreRepairHoverHighlight();
-            }
-        }
-
-        private void UpdateRepairRequirements(BuildPiece piece)
-        {
-            ClearStructReqs();
-
-            if (piece != null)
-            {
-                foreach (InventoryItem item in piece.ItemsNeededForRepairing)
-                {
-                    StructReqUI structReq = Instantiate(_structReqPrefab, _structReqHolder.transform.position, Quaternion.identity);
-                    structReq.transform.SetParent(_structReqHolder.transform);
-                    structReq.Initialize(item);
-                }
-            }
+            return timer.RemainingSeconds < timer.Duration && timer.RemainingSeconds > 0f;
         }
 
         private void ClearStructReqs()
         {
-            if (_structReqHolder.transform.childCount > 0)
+            for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
             {
-                for (int i = _structReqHolder.transform.childCount - 1; i >= 0; i--)
-                {
-                    Destroy(_structReqHolder.transform.GetChild(i).gameObject);
-                }
+                Destroy(_structReqHolder.transform.GetChild(i).gameObject);
             }
         }
 
@@ -420,30 +366,37 @@ namespace CliffGame
             }
 
             if (hoveredPiece == _lastHighlightedBuildPiece)
+            {
                 return;
+            }
 
             RestoreRepairHoverHighlight();
 
             if (hoveredPiece == null)
+            {
                 return;
+            }
 
             MeshRenderer[] renderers = GetBuildPieceRenderers(hoveredPiece);
             if (renderers.Length == 0)
+            {
                 return;
+            }
 
             _lastHighlightOriginalMaterials.Clear();
 
             foreach (MeshRenderer renderer in renderers)
             {
-                Material[] originalMats = renderer.materials;
-                _lastHighlightOriginalMaterials.Add(originalMats);
+                Material[] originalMaterials = renderer.materials;
+                _lastHighlightOriginalMaterials.Add(originalMaterials);
 
-                Material[] highlightMats = new Material[originalMats.Length];
-                for (int i = 0; i < highlightMats.Length; i++)
+                Material[] highlightMaterials = new Material[originalMaterials.Length];
+                for (int i = 0; i < highlightMaterials.Length; i++)
                 {
-                    highlightMats[i] = _repairHoverMaterial;
+                    highlightMaterials[i] = _repairHoverMaterial;
                 }
-                renderer.materials = highlightMats;
+
+                renderer.materials = highlightMaterials;
             }
 
             _lastHighlightedBuildPiece = hoveredPiece;
@@ -452,7 +405,9 @@ namespace CliffGame
         private void RestoreRepairHoverHighlight()
         {
             if (_lastHighlightedBuildPiece == null)
+            {
                 return;
+            }
 
             MeshRenderer[] renderers = GetBuildPieceRenderers(_lastHighlightedBuildPiece);
             int count = Mathf.Min(renderers.Length, _lastHighlightOriginalMaterials.Count);
@@ -467,7 +422,10 @@ namespace CliffGame
 
         private MeshRenderer[] GetBuildPieceRenderers(BuildPiece piece)
         {
-            if (piece == null) return Array.Empty<MeshRenderer>();
+            if (piece == null)
+            {
+                return Array.Empty<MeshRenderer>();
+            }
 
             Transform modelRoot = piece.transform.childCount > 0 ? piece.transform.GetChild(0) : piece.transform;
             return modelRoot.GetComponentsInChildren<MeshRenderer>(true);

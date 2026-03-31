@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Placeable
   _requiredToolType: 1
-  _maxLife: 2
+  _maxLife: 50
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: ba16adfc077834f39942abcbdcf53fd4, type: 2}
     MinAmount: 1

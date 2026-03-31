@@ -8,23 +8,18 @@ namespace CliffGame
     public class HealthManager : MonoBehaviour
     {
         public static HealthManager Instance;
-        public event Action<int, int> OnHealthChanged; // current, max
+        public event Action<int, int> OnHealthChanged;
         public event Action OnPlayerDeath;
 
-        [SerializeField]
-        private int _maxHealth = 100;
-
-        [SerializeField]
-        private float _noVitalsHealthDrainPerSecond = 1f, _passiveHealthGenPerSecond = 0.25f;
+        [SerializeField] private int _maxHealth = 100;
+        [SerializeField] private float _noVitalsHealthDrainPerSecond = 1f, _passiveHealthGenPerSecond = 0.25f;
 
         private PlayerStat _healthStat;
-
         public int CurrentHealth => _healthStat.Current;
 
         private void Awake()
         {
             Instance = this;
-
             _healthStat = new PlayerStat(_maxHealth, _noVitalsHealthDrainPerSecond, _passiveHealthGenPerSecond);
             _healthStat.OnValueChanged += HandleHealthChanged;
         }
@@ -32,7 +27,6 @@ namespace CliffGame
         private IEnumerator Start()
         {
             Player.Instance.OnPlayerRespawn += OnRespawn;
-
             yield return null;
             OnHealthChanged?.Invoke(CurrentHealth, _healthStat.Max);
         }
@@ -47,26 +41,16 @@ namespace CliffGame
         {
             if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead) return;
 
-            if (HungerManager.Instance.CurrentHungerState == HungerState.Starving || ThirstManager.Instance.CurrentThirstState == ThirstState.Dehydrated)
-            {
-                _healthStat.UpdateStat(Time.deltaTime, true);
-            }
-            else
-            {
-                _healthStat.UpdateStat(Time.deltaTime, false);
-            }
+            _healthStat.UpdateStat(Time.deltaTime, HungerManager.Instance.CurrentHungerState == HungerState.Starving);
         }
 
         private void HandleHealthChanged(int current, int max)
         {
             OnHealthChanged?.Invoke(current, max);
 
-            if (current <= 0)
+            if (current <= 0 && Player.Instance != null && Player.Instance.CurrentMoveStateType != PlayerMoveState.Dead)
             {
-                if (Player.Instance != null && Player.Instance.CurrentMoveStateType != PlayerMoveState.Dead)
-                {
-                    OnPlayerDeath?.Invoke();
-                }
+                OnPlayerDeath?.Invoke();
             }
         }
 
@@ -83,8 +67,7 @@ namespace CliffGame
         [Button("TestDamage")]
         public void DamageHealth(int amount)
         {
-            int amountToDamage = Mathf.Abs(amount);
-            _healthStat.ChangeCurrent(-amountToDamage);
+            _healthStat.ChangeCurrent(-Mathf.Abs(amount));
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerHurtSFX, Player.Instance.transform.position);
         }
     }

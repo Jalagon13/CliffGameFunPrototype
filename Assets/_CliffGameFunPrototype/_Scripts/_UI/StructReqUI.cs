@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,14 +8,14 @@ namespace CliffGame
     {
         [SerializeField] private Image _itemImage;
         [SerializeField] private TextMeshProUGUI _amountText;
-        
+
         private InventoryItem _reqs;
-        
+
         private void Start()
         {
             InventoryManager.Instance.OnInventoryUpdated += UpdateStructReqUIs;
         }
-        
+
         private void OnDestroy()
         {
             InventoryManager.Instance.OnInventoryUpdated -= UpdateStructReqUIs;
@@ -33,16 +32,20 @@ namespace CliffGame
         {
             UpdateText();
         }
-        
+
         private void UpdateText()
         {
-            if(_reqs == null) return;
-        
-            int itemAmountInInventory = InventoryManager.Instance.InventoryModel.GetAmount(_reqs.Item);
+            if (_reqs == null || _reqs.Item == null)
+            {
+                return;
+            }
 
-            _amountText.text = itemAmountInInventory >= _reqs.Quantity ?
-            $"{itemAmountInInventory}/{_reqs.Quantity}<br>" :
-            $"<color=red>{itemAmountInInventory}/{_reqs.Quantity}</color><br>";
+            int itemAmountInInventory = InventoryManager.Instance.InventoryModel.GetAmount(_reqs.Item);
+            bool hasEnough = itemAmountInInventory >= _reqs.Quantity;
+            string colorTagStart = hasEnough ? string.Empty : "<color=red>";
+            string colorTagEnd = hasEnough ? string.Empty : "</color>";
+
+            _amountText.text = $"{colorTagStart}{_reqs.Item.InGameName}<br>{itemAmountInInventory}/{_reqs.Quantity} {colorTagEnd}";
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace CliffGame
@@ -37,6 +38,14 @@ namespace CliffGame
         [field: SerializeField]
         public int MaxDurability { get; private set; } = 10;
 
+        [field: Header("Tool Repair")]
+        [field: SerializeField]
+        public InventoryItem[] RepairIngredients { get; private set; } = Array.Empty<InventoryItem>();
+
+        [field: SerializeField]
+        public float RepairDurationSeconds { get; private set; } = 1.1f;
+
+
         [field: SerializeField, Tooltip("Can repair amount depending on tool type")]
         public int IntValue { get; private set; }
 
@@ -67,7 +76,7 @@ namespace CliffGame
         public override string GetDescription()
         {
             string description = GetDescriptionBreak();
-            description += $"<br>Resource Damage: {Mathf.Min(ResourceDamageMin, ResourceDamageMax)}-{Mathf.Max(ResourceDamageMin, ResourceDamageMax)}";
+            description += $"<br>Damage: {Mathf.Min(ResourceDamageMin, ResourceDamageMax)}-{Mathf.Max(ResourceDamageMin, ResourceDamageMax)}";
             description += $"<br>Crit Chance: {Mathf.RoundToInt(Mathf.Clamp01(CritStrikeChance) * 100f)}%";
             description += $"<br>Max Durability: {Mathf.Max(1, MaxDurability)}";
             return description;

@@ -8,6 +8,8 @@ namespace CliffGame
 {
     public class PickupPanelUI : MonoBehaviour
     {
+        private static event Action<PickupPanelUI> OnPickupPanelCreated;
+
         [Header("UI References")]
         [SerializeField] private TextMeshProUGUI _amountText;
         [SerializeField] private TextMeshProUGUI _nameText;
@@ -16,36 +18,64 @@ namespace CliffGame
         [SerializeField] private float _disapearDelay = 3f;
         [SerializeField] private float _lerpDuration = 0.25f;
         [SerializeField] private float _fadeOutFraction = 0.25f;
+        [Header("Custom Message Layout")]
+        [SerializeField] private Vector2 _customNameAnchoredPosition = new Vector2(22f, 0f);
 
         private RectTransform _rectTransform;
+        private RectTransform _nameRectTransform;
         private Tween _moveTween;
         private Tween _fadeTween;
         private float _currentTargetY;
         private CanvasGroup _canvasGroup;
+        private Vector2 _defaultNameAnchoredPosition;
 
         private void InitializeVariables()
         {
             _rectTransform = GetComponent<RectTransform>();
             _canvasGroup = GetComponent<CanvasGroup>();
+            _nameRectTransform = _nameText.rectTransform;
             _currentTargetY = _rectTransform.anchoredPosition.y;
-            InventoryManager.Instance.OnItemPickup += InventoryManager_OnItemPickup;
+            _defaultNameAnchoredPosition = _nameRectTransform.anchoredPosition;
+            OnPickupPanelCreated += HandlePickupPanelCreated;
         }
         
         private void OnDestroy()
         {
             _moveTween?.Kill();
             _fadeTween?.Kill();
-            InventoryManager.Instance.OnItemPickup -= InventoryManager_OnItemPickup;
+            OnPickupPanelCreated -= HandlePickupPanelCreated;
         }
 
         public void Setup(InventoryItem item)
         {
             InitializeVariables();
+            ApplyStandardLayout();
 
+            _iconImage.gameObject.SetActive(true);
             _iconImage.sprite = item.Item.UiDisplay;
             _nameText.text = item.Item.InGameName;
             _amountText.text = $"+{item.Quantity}";
 
+            NotifyPanelCreated();
+            StartLifetime();
+        }
+
+        public void SetupCustom(Sprite icon, string nameText, string amountText = "")
+        {
+            InitializeVariables();
+            ApplyCustomLayout();
+
+            _iconImage.gameObject.SetActive(icon != null);
+            _iconImage.sprite = icon;
+            _nameText.text = nameText;
+            _amountText.text = amountText;
+
+            NotifyPanelCreated();
+            StartLifetime();
+        }
+
+        private void StartLifetime()
+        {
             float fadeDuration = _disapearDelay * _fadeOutFraction;
             float fadeStartTime = _disapearDelay - fadeDuration;
 
@@ -60,8 +90,13 @@ namespace CliffGame
             Destroy(gameObject, _disapearDelay);
         }
 
-        private void InventoryManager_OnItemPickup(InventoryItem item)
+        private void HandlePickupPanelCreated(PickupPanelUI createdPanel)
         {
+            if (createdPanel == this)
+            {
+                return;
+            }
+
             float height = _rectTransform.rect.height;
             float newTargetY = _currentTargetY + height;
 
@@ -79,6 +114,23 @@ namespace CliffGame
                 .DOAnchorPosY(_currentTargetY, remainingDuration)
                 .SetEase(Ease.OutQuad)
                 .SetLink(gameObject);       
+        }
+
+        private void NotifyPanelCreated()
+        {
+            OnPickupPanelCreated?.Invoke(this);
+        }
+
+        private void ApplyStandardLayout()
+        {
+            _amountText.gameObject.SetActive(true);
+            _nameRectTransform.anchoredPosition = _defaultNameAnchoredPosition;
+        }
+
+        private void ApplyCustomLayout()
+        {
+            _amountText.gameObject.SetActive(false);
+            _nameRectTransform.anchoredPosition = _customNameAnchoredPosition;
         }
     }
 }

@@ -61,6 +61,7 @@ namespace CliffGame
             if (Player.Instance.CurrentMoveStateType == PlayerMoveState.Dead ||
                 CraftingManager.Instance.IsCraftingUIOpen || BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
                 Player.Instance.ToolHolder.IsSwinging ||
+                Grindstone.IsAnyRepairInProgress ||
                 tetherSequenceExecuting) return;
             
             if(GameInput.Instance.IsHoldingDownPrimaryInteract)
@@ -156,6 +157,9 @@ namespace CliffGame
         {
             // Only swing if a tool is equipped, not already swinging, and cooldown is over
             if (_isSwinging || !ToolPrefabExists() || _swingCooldownTimer.RemainingSeconds > 0f || Player.Instance.PauseMenuUI.IsPauseMenuOpen || CraftingManager.Instance.IsCraftingUIOpen)
+                return;
+
+            if (Grindstone.IsAnyRepairInProgress)
                 return;
 
             if (_currentHeldTool != null && _currentHeldTool.ToolType == ToolType.Spear)

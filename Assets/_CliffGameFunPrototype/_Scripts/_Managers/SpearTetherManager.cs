@@ -63,6 +63,11 @@ namespace CliffGame
         {
             if (!context.started || _currentSpearTetherTool == null) return;
 
+            if (Grindstone.HoveredSharpeningStoneWantsSecondaryInteract())
+            {
+                return;
+            }
+
             if (_spearTetherHolder.SequenceExecuting)
             {
                 _spearTetherHolder.RequestEarlyRetract();

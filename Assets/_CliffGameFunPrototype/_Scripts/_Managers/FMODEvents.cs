@@ -14,9 +14,7 @@ namespace CliffGame
         [field: FormerlySerializedAs("HookshotReleaseSFX")]
         [field: SerializeField] public EventReference SpearTetherReleaseSFX { get; private set; }
         [field: SerializeField] public EventReference EatingSFX { get; private set; }
-        [field: SerializeField] public EventReference GulpSFX { get; private set; }
         [field: SerializeField] public EventReference StomachGrowlSFX { get; private set; }
-        [field: SerializeField] public EventReference ThirstPangSFX { get; private set; }
 
         [field: Header("Walking SFX")]
         [field: SerializeField] public EventReference JumpSFX { get; private set; }
@@ -35,19 +33,19 @@ namespace CliffGame
         [field: SerializeField] public EventReference WoodRattleSFX { get; private set; }
         [field: SerializeField] public EventReference WoodDestroyedSFX { get; private set; }
         [field: SerializeField] public EventReference BuildingRepairedSFX { get; private set; }
-        
+        [field: SerializeField] public EventReference ToolRepairLoopSFX { get; private set; }
+        [field: SerializeField] public EventReference ToolRepairCompleteSFX { get; private set; }
+
         [field: Header("Structure SFX")]
         [field: SerializeField] public EventReference StructureBuiltSFX { get; private set; }
         [field: SerializeField] public EventReference StructureDestroyedSFX { get; private set; }
         [field: SerializeField] public EventReference CampfireCooking { get; private set; }
         [field: SerializeField] public EventReference SplashSFX { get; private set; }
-        
+
         [field: Header("Resource SFX")]
         [field: SerializeField] public EventReference BirdCaughtSFX { get; private set; }
         [field: SerializeField] public EventReference CritStrikeSFX { get; private set; }
         [field: SerializeField] public EventReference LeafHitSFX { get; private set; }
-
-
 
         private void Awake()
         {

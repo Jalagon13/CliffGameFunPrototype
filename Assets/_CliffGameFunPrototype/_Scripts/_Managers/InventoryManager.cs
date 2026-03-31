@@ -288,6 +288,7 @@ namespace CliffGame
                 BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
                 Player.Instance.ToolHolder.IsSwinging || 
                 HungerManager.Instance.IsEating ||
+                Grindstone.IsAnyRepairInProgress ||
                 SpearTetherManager.Instance.SpearTetherHolder.SequenceExecuting) return;
 
             Vector2 scrollDelta = context.ReadValue<Vector2>();
@@ -327,6 +328,7 @@ namespace CliffGame
                 BuildingManager.Instance.BuildWheelUI.BuildWheelUIOpen ||
                 Player.Instance.ToolHolder.IsSwinging ||
                 HungerManager.Instance.IsEating ||
+                Grindstone.IsAnyRepairInProgress ||
                 SpearTetherManager.Instance.SpearTetherHolder.SequenceExecuting) return;
 
             var control = context.control; // The control (key/button) that triggered this

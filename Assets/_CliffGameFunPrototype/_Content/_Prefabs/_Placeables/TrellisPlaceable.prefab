@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.Trellis
   _requiredToolType: 1
-  _maxLife: 4
+  _maxLife: 50
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: 906fc7e709ae94c59bdbc7a22473cb4b, type: 2}
     MinAmount: 1

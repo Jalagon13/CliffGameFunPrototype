@@ -2299,13 +2299,6 @@ MonoBehaviour:
       Data3: -234443111
       Data4: 617818655
     Path: event:/Player/SFX_Munch
-  <GulpSFX>k__BackingField:
-    Guid:
-      Data1: 55947062
-      Data2: 1178925725
-      Data3: -247999328
-      Data4: 1576845314
-    Path: event:/Player/SFX_Gulp
   <StomachGrowlSFX>k__BackingField:
     Guid:
       Data1: -654491311
@@ -2313,13 +2306,6 @@ MonoBehaviour:
       Data3: 730776502
       Data4: -1084882911
     Path: event:/Player/SFX_StomachGrowl
-  <ThirstPangSFX>k__BackingField:
-    Guid:
-      Data1: 717975689
-      Data2: 1124778356
-      Data3: 1276860832
-      Data4: 1591290978
-    Path: event:/Player/SFX_Cough
   <JumpSFX>k__BackingField:
     Guid:
       Data1: -1560920118
@@ -2390,6 +2376,20 @@ MonoBehaviour:
       Data3: 1521861253
       Data4: -2134520381
     Path: event:/Building/RepairSFX
+  <ToolRepairLoopSFX>k__BackingField:
+    Guid:
+      Data1: -2110590935
+      Data2: 1135298387
+      Data3: -727414093
+      Data4: -1939672711
+    Path: event:/Player/SFX_Repairing
+  <ToolRepairCompleteSFX>k__BackingField:
+    Guid:
+      Data1: 810812600
+      Data2: 1148811590
+      Data3: 197892225
+      Data4: -1902399628
+    Path: event:/Resources/CritStrikeSFX
   <StructureBuiltSFX>k__BackingField:
     Guid:
       Data1: 1630036399
@@ -5369,7 +5369,6 @@ MonoBehaviour:
   _hammerSprite: {fileID: 1204406958, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   _spearSprite: {fileID: 904965497, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
   _rawBirdSprite: {fileID: -2345204063719780061, guid: 6511cf666e00b42a9afbf381e2e6cac7, type: 3}
-  _fiberSprite: {fileID: 393603439, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   _combatSprite: {fileID: 851283991, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   _buildInstructionTextHolder: {fileID: 649473752}
   _repairInstructions: {fileID: 683403628}
@@ -35528,7 +35527,6 @@ GameObject:
   - component: {fileID: 1628844531}
   - component: {fileID: 1628844529}
   - component: {fileID: 1628844530}
-  - component: {fileID: 1628844532}
   m_Layer: 0
   m_Name: StatManagers
   m_TagString: Untagged
@@ -35600,23 +35598,6 @@ MonoBehaviour:
   _maxHealth: 100
   _noVitalsHealthDrainPerSecond: 0.5
   _passiveHealthGenPerSecond: 0.25
---- !u!114 &1628844532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1628844527}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e64a7093e2884cba9bdb61da7deceac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ThirstManager
-  _maxThirst: 100
-  _thirstDrainPerSecond: 0.1161
-  _lowThirstThresholdPercent: 0.25
-  _thirstPangIntervalSeconds: 12
-  _respawnThirstAmount: 80
 --- !u!1001 &1636102964
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36602,7 +36583,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1790598794}
-  - component: {fileID: 1790598798}
   - component: {fileID: 1790598796}
   - component: {fileID: 1790598795}
   - component: {fileID: 1790598799}
@@ -36612,7 +36592,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1790598794
 RectTransform:
   m_ObjectHideFlags: 0
@@ -36912,19 +36892,6 @@ MonoBehaviour:
   BarTarget: 0
   DelayedBarIncreasingProgress: 0
   DelayedBarDecreasingProgress: 0
---- !u!114 &1790598798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1790598793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f29cc9e5343544aaea0aad65b9bf03d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ThirstBarUI
-  _thirstPangFeedback: {fileID: 1790598799}
 --- !u!114 &1790598799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37764,6 +37731,14 @@ MonoBehaviour:
   _startingItems:
   - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
     Quantity: 1
+  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
+    Quantity: 1
+  - Item: {fileID: 11400000, guid: 9bb6b4429d8a240aa89bc4c5e6b6393a, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
+    Quantity: 999
+  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
+    Quantity: 999
 --- !u!1 &1886760191
 GameObject:
   m_ObjectHideFlags: 0
@@ -38733,7 +38708,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StatsUI
   _healthBar: {fileID: 355875722}
   _hungerBar: {fileID: 301216704}
-  _thirstBar: {fileID: 1790598796}
   _staminaBar: {fileID: 1080555141}
   _staminaDropThreshold: 0.35
   _staminaDropThresholdFeedback: {fileID: 1999087963}

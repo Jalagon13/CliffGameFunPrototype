@@ -46,6 +46,7 @@ namespace CliffGame
         public virtual void OnHitWithTool(ResourceHitResult hitResult)
         {
             _currentLife -= hitResult.Damage;
+            InventoryManager.Instance.TryConsumeSelectedToolDurability();
             if(_currentLife > 0)
             {
                 AudioManager.Instance.PlayOneShot(_hitSFX, transform.position);

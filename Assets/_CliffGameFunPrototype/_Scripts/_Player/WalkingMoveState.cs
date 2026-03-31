@@ -17,6 +17,7 @@ namespace CliffGame
         [SerializeField] private float _gravity = -30f;
         [SerializeField] private float _terminalVelocity = -50f;
         [SerializeField] private float _inAirMoveMultiplier = 0.5f;
+        [SerializeField] private float _spearChargeMoveSpeedMultiplier = 0.5f;
         [SerializeField] private float _jumpCooldown = 0.2f;
         [SerializeField] private float _jumpWindStrengthMulti = 1.5f;
         [SerializeField] private float _windNegationThreshold = 0.25f;
@@ -149,6 +150,10 @@ namespace CliffGame
             {
                 Vector3 horizontalMove = transform.forward * DesiredMoveDirection.y + transform.right * DesiredMoveDirection.x;
                 float speed = GameInput.Instance.IsHoldingDownSprint ? _sprintSpeed : _walkSpeed;
+                if (SpearTetherManager.Instance != null && SpearTetherManager.Instance.IsCharging)
+                {
+                    speed *= _spearChargeMoveSpeedMultiplier;
+                }
                 horizontalMove *= speed * (_isGrounded ? 1 : _inAirMoveMultiplier) * Time.deltaTime;
                 
                 finalMove += horizontalMove;

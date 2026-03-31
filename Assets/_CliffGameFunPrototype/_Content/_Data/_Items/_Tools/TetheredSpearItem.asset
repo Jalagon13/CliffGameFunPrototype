@@ -23,8 +23,8 @@ MonoBehaviour:
   <ToolType>k__BackingField: 3
   <SwingCooldownInSeconds>k__BackingField: 0.3
   <NpcDamageAmount>k__BackingField: 4
-  <ResourceDamageMin>k__BackingField: 5
-  <ResourceDamageMax>k__BackingField: 7
+  <ResourceDamageMin>k__BackingField: 7
+  <ResourceDamageMax>k__BackingField: 10
   <CritStrikeChance>k__BackingField: 0.04
   <MaxDurability>k__BackingField: 60
   <RepairIngredients>k__BackingField:
@@ -33,6 +33,7 @@ MonoBehaviour:
   - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
     Quantity: 2
   <RepairDurationSeconds>k__BackingField: 1.1
+  <DurabilityRestoredPerRepair>k__BackingField: 10
   <IntValue>k__BackingField: 0
   <HeldToolPrefab>k__BackingField: {fileID: 8993926037787366457, guid: 04308fda487da47abba0feb18a01599e, type: 3}
   <CanThrowTethered>k__BackingField: 1

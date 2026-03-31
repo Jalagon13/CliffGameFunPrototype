@@ -294,6 +294,7 @@ namespace CliffGame
                 BuildPieceIntegrityManager.Instance.RegisterBuildPiece(newBuildPiece);
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.StructureBuiltSFX, transform.position);
                 InventoryManager.Instance.RemoveItems(GetCurrentBuild().ItemsNeededForBuilding);
+                InventoryManager.Instance.TryConsumeSelectedToolDurability();
                 _placeCooldownTimer.Reset();
             }
         }

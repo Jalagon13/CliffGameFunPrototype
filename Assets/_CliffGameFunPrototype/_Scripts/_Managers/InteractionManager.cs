@@ -117,6 +117,7 @@ namespace CliffGame
                                 }
 
                                 bpd.AddHp(toolItem.IntValue);
+                                InventoryManager.Instance.TryConsumeSelectedToolDurability();
                                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.BuildingRepairedSFX, bpd.transform.position);
                                 InventoryManager.Instance.RemoveItems(bp.ItemsNeededForRepairing);
                             }

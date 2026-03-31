@@ -45,6 +45,8 @@ namespace CliffGame
         [field: SerializeField]
         public float RepairDurationSeconds { get; private set; } = 1.1f;
 
+        [field: SerializeField]
+        public int DurabilityRestoredPerRepair { get; private set; } = 10;
 
         [field: SerializeField, Tooltip("Can repair amount depending on tool type")]
         public int IntValue { get; private set; }
@@ -79,6 +81,7 @@ namespace CliffGame
             description += $"<br>Damage: {Mathf.Min(ResourceDamageMin, ResourceDamageMax)}-{Mathf.Max(ResourceDamageMin, ResourceDamageMax)}";
             description += $"<br>Crit Chance: {Mathf.RoundToInt(Mathf.Clamp01(CritStrikeChance) * 100f)}%";
             description += $"<br>Max Durability: {Mathf.Max(1, MaxDurability)}";
+            description += $"<br>Repair Restored: {Mathf.Max(1, DurabilityRestoredPerRepair)}";
             return description;
         }
     }

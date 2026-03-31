@@ -52,10 +52,17 @@ public class FirstPersonLook : MonoBehaviour
     
     [SerializeField] 
     private float _sprintingFOV = 90f;
+
+    [SerializeField]
+    private float _spearChargeZoomFOV = 72f;
+
+    [SerializeField]
+    private float _spearChargeReleaseFOVLerpDuration = 0.12f;
     
     private Camera _cam;
     private Tween _fovTween;
     private float _walkingFOV;
+    private bool _isApplyingSpearChargeFOV;
 
     private Sequence _startingSequence;
     private CanvasGroup _blackScreen;
@@ -104,6 +111,11 @@ public class FirstPersonLook : MonoBehaviour
 
     private void OnSprintStarted(object sender, InputAction.CallbackContext e)
     {
+        if (_isApplyingSpearChargeFOV)
+        {
+            return;
+        }
+
         _fovTween?.Kill();
 
         _fovTween = DOTween.To(
@@ -116,6 +128,11 @@ public class FirstPersonLook : MonoBehaviour
 
     private void OnSprintEnded(object sender, InputAction.CallbackContext e)
     {
+        if (_isApplyingSpearChargeFOV)
+        {
+            return;
+        }
+
         _fovTween?.Kill();
 
         _fovTween = DOTween.To(
@@ -123,6 +140,38 @@ public class FirstPersonLook : MonoBehaviour
             v => _cam.fieldOfView = v,
             _walkingFOV,
             _fovLerpDuration
+        ).SetEase(Ease.OutQuad);
+    }
+
+    public void SetSpearChargeFOV(float chargePercent)
+    {
+        if (_cam == null)
+        {
+            return;
+        }
+
+        _isApplyingSpearChargeFOV = true;
+        _fovTween?.Kill();
+
+        float clampedChargePercent = Mathf.Clamp01(chargePercent);
+        _cam.fieldOfView = Mathf.Lerp(_walkingFOV, _spearChargeZoomFOV, clampedChargePercent);
+    }
+
+    public void ClearSpearChargeFOV()
+    {
+        if (_cam == null)
+        {
+            return;
+        }
+
+        _isApplyingSpearChargeFOV = false;
+        _fovTween?.Kill();
+
+        _fovTween = DOTween.To(
+            () => _cam.fieldOfView,
+            v => _cam.fieldOfView = v,
+            _walkingFOV,
+            _spearChargeReleaseFOVLerpDuration
         ).SetEase(Ease.OutQuad);
     }
 

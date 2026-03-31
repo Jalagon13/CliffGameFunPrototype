@@ -39,6 +39,7 @@ namespace CliffGame
         {
             InventoryManager.Instance.OnSelectedSlotChanged -= CheckForSpearTether;
             GameInput.Instance.OnSecondaryInteract -= TryToCharge;
+            Player.Instance?.FirstPersonLook?.ClearSpearChargeFOV();
         }
 
         private void Update()
@@ -55,7 +56,12 @@ namespace CliffGame
                     return;
                 }
 
-                _chargeTimer.Tick(Time.deltaTime);
+                Player.Instance.FirstPersonLook.SetSpearChargeFOV(_chargeTimer.PercentRemaining);
+
+                if (_chargeTimer.RemainingSeconds > 0f)
+                {
+                    _chargeTimer.Tick(Time.deltaTime);
+                }
             }
         }
 
@@ -89,8 +95,8 @@ namespace CliffGame
             if (_isCharging) return;
 
             _chargeTimer = new Timer(_currentSpearTetherTool.TetherChargeDuration);
-            _chargeTimer.OnTimerEnd += OnChargeTimerFinished;
             _isCharging = true;
+            Player.Instance.FirstPersonLook.SetSpearChargeFOV(0f);
         }
 
         private void CancelCharging()
@@ -99,20 +105,11 @@ namespace CliffGame
 
             if (_chargeTimer != null)
             {
-                _chargeTimer.OnTimerEnd -= OnChargeTimerFinished;
                 _chargeTimer = null;
             }
 
             _isCharging = false;
-        }
-
-        private void OnChargeTimerFinished(object sender, EventArgs e)
-        {
-            _chargeTimer.OnTimerEnd -= OnChargeTimerFinished;
-            _chargeTimer = null;
-            _isCharging = false;
-
-            ReleaseSpearTether(1f);
+            Player.Instance.FirstPersonLook.ClearSpearChargeFOV();
         }
 
         private void ReleaseSpearTether(float chargePercent)

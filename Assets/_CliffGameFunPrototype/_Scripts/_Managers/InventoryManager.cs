@@ -246,6 +246,23 @@ namespace CliffGame
             OnDepletedToolUsed?.Invoke(toolInventoryItem.Id);
         }
 
+        public bool TryConsumeSelectedToolDurability(int amount = 1)
+        {
+            if (amount <= 0)
+            {
+                return false;
+            }
+
+            if (!TryGetSelectedToolInventoryItem(out InventoryItem selectedToolItem, out _))
+            {
+                return false;
+            }
+
+            selectedToolItem.ConsumeDurability(amount);
+            _inventoryModel.UpdateInventory();
+            return true;
+        }
+
         public void AddItems(InventoryItem[] itemsToAdd)
         {
             foreach (InventoryItem item in itemsToAdd)

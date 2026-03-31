@@ -50,6 +50,8 @@ namespace CliffGame
             ToolItemSO currentTool = SpearTetherManager.Instance.CurrentSpearTetherTool;
             if (currentTool == null) return;
 
+            InventoryManager.Instance.TryConsumeSelectedToolDurability();
+
             float duration = currentTool.TetherSequenceDuration;
             float range = currentTool.TetherRange;
             float baseSpeed = range / (duration / 2f);

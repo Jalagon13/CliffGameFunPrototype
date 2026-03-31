@@ -88,6 +88,11 @@ namespace CliffGame
 
         public virtual void OnHitWithTool(int damage)
         {
+            OnHitWithTool(new ResourceHitResult(damage, false, false));
+        }
+
+        public virtual void OnHitWithTool(ResourceHitResult hitResult)
+        {
             if (Player.Instance.ToolHolder.CurrentHeldTool == null || Player.Instance.ToolHolder.CurrentHeldTool.ToolType != _requiredToolType)
             {
                 return;
@@ -98,11 +103,21 @@ namespace CliffGame
                 Instantiate(_crackParticles.gameObject, transform.position, Quaternion.identity);
             }
 
-            _currentLife -= damage;
+            _currentLife -= hitResult.Damage;
             _currentLife = Mathf.Clamp(_currentLife, 0, _maxLife);
             ConsumeSelectedToolDurability();
+            ResourceDamagePopup.Create(
+                GetDamagePopupSpawnPosition(),
+                hitResult.Damage,
+                hitResult.WasCriticalHit,
+                hitResult.UsedDepletedTool);
 
-            Debug.Log($"Resource hit: {gameObject.name} took {damage} damage. HP: {_currentLife}/{_maxLife}");
+            if (hitResult.WasCriticalHit)
+            {
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CritStrikeSFX, transform.position);
+            }
+
+            Debug.Log($"Resource hit: {gameObject.name} took {hitResult.Damage} damage. HP: {_currentLife}/{_maxLife}");
 
             if (_currentLife <= 0)
             {
@@ -123,6 +138,29 @@ namespace CliffGame
 
             selectedToolItem.ConsumeDurability(1);
             InventoryManager.Instance.InventoryModel.UpdateInventory();
+        }
+
+        private Vector3 GetDamagePopupSpawnPosition()
+        {
+            if (InteractionManager.Instance != null &&
+                InteractionManager.Instance.CurrentlyHoveredInteractable == this)
+            {
+                return InteractionManager.Instance.CurrentHoveredInteractableHitPoint;
+            }
+
+            Collider resourceCollider = GetComponent<Collider>();
+            if (resourceCollider == null)
+            {
+                resourceCollider = GetComponentInChildren<Collider>();
+            }
+
+            if (resourceCollider != null)
+            {
+                Bounds bounds = resourceCollider.bounds;
+                return bounds.center + Vector3.up * (bounds.extents.y + 0.1f);
+            }
+
+            return transform.position + Vector3.up * 1f;
         }
     }
 }

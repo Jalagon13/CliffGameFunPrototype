@@ -15,6 +15,7 @@ namespace CliffGame
         public bool MouseHasItem { get; private set; }
 
         public Action<InventoryItem> OnMouseItemUpdated;
+        public Action<ulong> OnDepletedToolUsed;
         public event EventHandler<OnInventoryUpdatedEventArgs> OnInventoryUpdated;
         public class OnInventoryUpdatedEventArgs : EventArgs
         {
@@ -233,6 +234,16 @@ namespace CliffGame
 
             _inventoryModel.AddItem(itemToAdd);
             OnItemPickup?.Invoke(itemToAdd);
+        }
+
+        public void NotifyDepletedToolUsed(InventoryItem toolInventoryItem)
+        {
+            if (toolInventoryItem == null || !toolInventoryItem.HasItem)
+            {
+                return;
+            }
+
+            OnDepletedToolUsed?.Invoke(toolInventoryItem.Id);
         }
 
         public void AddItems(InventoryItem[] itemsToAdd)

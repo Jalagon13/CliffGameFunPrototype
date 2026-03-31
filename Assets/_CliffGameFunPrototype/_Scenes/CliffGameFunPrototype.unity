@@ -2425,20 +2425,13 @@ MonoBehaviour:
       Data3: 618020996
       Data4: 1295926265
     Path: event:/Resources/BirdCaughtSFX
-  <StoneHitSFX>k__BackingField:
+  <CritStrikeSFX>k__BackingField:
     Guid:
-      Data1: 167909280
-      Data2: 1187346349
-      Data3: -1484573046
-      Data4: 537512351
-    Path: event:/Resources/StoneHitSFX
-  <StoneDestroyedSFX>k__BackingField:
-    Guid:
-      Data1: 1582926878
-      Data2: 1171081371
-      Data3: -1544389728
-      Data4: 1595581397
-    Path: event:/Resources/StoneDestroySFX
+      Data1: 810812600
+      Data2: 1148811590
+      Data3: 197892225
+      Data4: -1902399628
+    Path: event:/Resources/CritStrikeSFX
   <LeafHitSFX>k__BackingField:
     Guid:
       Data1: 1936509638
@@ -40664,6 +40657,9 @@ MonoBehaviour:
   _durabilityBarAnchoredPosition: {x: 0, y: 6}
   _durabilityCurrentColor: {r: 0.3, g: 0.95, b: 0.3, a: 1}
   _durabilityMissingColor: {r: 0.85, g: 0.2, b: 0.2, a: 1}
+  _depletedFlashColor: {r: 1, g: 0.25, b: 0.25, a: 1}
+  _depletedFlashDuration: 0.5
+  _depletedFlashCount: 2
   _equipmentEmblemIcon: {fileID: 886652967}
   _equippedItemIcon: {fileID: 2029243876254159486}
 --- !u!1 &6031103918909031401

@@ -24,9 +24,6 @@ namespace CliffGame
             string description = "";
             if (!string.IsNullOrWhiteSpace(Description))
                 description += $"{Description}<br>";
-                
-            if(this is ToolItemSO)
-                description += $"Npc Damage: {((ToolItemSO)this).NpcDamageAmount}";
 
             return description;
         }

@@ -277,10 +277,7 @@ namespace CliffGame
             }
 
             float cooldownDuration = _currentHeldTool.SwingCooldownInSeconds;
-            bool isMiningContext = InteractionManager.Instance != null &&
-                                   InteractionManager.Instance.CurrentlyHoveredInteractable is Resource;
-
-            if (isMiningContext && InventoryManager.Instance.TryGetSelectedToolInventoryItem(out InventoryItem selectedToolItem, out _))
+            if (InventoryManager.Instance.TryGetSelectedToolInventoryItem(out InventoryItem selectedToolItem, out _))
             {
                 cooldownDuration *= selectedToolItem.GetResourceSwingCooldownMultiplier();
             }

@@ -134,18 +134,18 @@ namespace CliffGame
             }
         }
 
-        public override void OnHitWithTool(int damage)
+        public override void OnHitWithTool(ResourceHitResult hitResult)
         {
             if (_currentState == BatState.Attacking)
             {
-                _currentDamageTaken += damage;
+                _currentDamageTaken += hitResult.Damage;
                 // Debug.Log($"GiantBat has been hit while attacking. Hits: {_currentHits}/{_numOfHitsForItToFlyAway}");
             }
 
             _lifeTimeTimer = 0f;
 
             // Still call the base method to allow it to take damage and eventually be destroyed.
-            base.OnHitWithTool(damage);
+            base.OnHitWithTool(hitResult);
         }
 
         private void OnMorningRise()

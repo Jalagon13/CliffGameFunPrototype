@@ -19,6 +19,7 @@ namespace CliffGame
 
         private IInteractable _currentlyHoveredInteractable;
         public IInteractable CurrentlyHoveredInteractable => _currentlyHoveredInteractable;
+        public Vector3 CurrentHoveredInteractableHitPoint { get; private set; }
         
         private GameObject _currentlyHoveredBuildable;
         public GameObject CurrentlyHoveredBuildable => _currentlyHoveredBuildable;
@@ -65,13 +66,27 @@ namespace CliffGame
         {
             if(_currentlyHoveredInteractable != null)
             {
+                bool selectedToolExists = InventoryManager.Instance.TryGetSelectedToolInventoryItem(out InventoryItem selectedToolItem, out _);
+                if (selectedToolExists && selectedToolItem.DurabilityState == ToolDurabilityState.Depleted)
+                {
+                    InventoryManager.Instance.NotifyDepletedToolUsed(selectedToolItem);
+                }
+
                 if (_currentlyHoveredInteractable is Resource)
                 {
-                    if (InventoryManager.Instance.TryGetSelectedToolInventoryItem(out InventoryItem selectedToolItem, out _))
+                    if (_currentlyHoveredInteractable is Resource resource && selectedToolExists)
                     {
-                        _currentlyHoveredInteractable.OnHitWithTool(selectedToolItem.RollResourceDamage());
+                        ResourceHitResult hitResult = selectedToolItem.RollResourceHit();
+                        resource.OnHitWithTool(hitResult);
                     }
 
+                    return;
+                }
+
+                if (_currentlyHoveredInteractable is Npc npc && selectedToolExists)
+                {
+                    ResourceHitResult hitResult = selectedToolItem.RollResourceHit();
+                    npc.OnHitWithTool(hitResult);
                     return;
                 }
 
@@ -118,6 +133,7 @@ namespace CliffGame
             if (hits.Length == 0)
             {
                 _currentlyHoveredInteractable = null;
+                CurrentHoveredInteractableHitPoint = Vector3.zero;
                 return false;
             }
 
@@ -131,6 +147,7 @@ namespace CliffGame
                 if (hit.collider.transform.TryGetComponent(out Resource resource))
                 {
                     _currentlyHoveredInteractable = resource;
+                    CurrentHoveredInteractableHitPoint = hit.point;
                     return true;
                 }
                 else if (((1 << hit.collider.gameObject.layer) & _buildLayer) != 0)
@@ -143,17 +160,20 @@ namespace CliffGame
                     _currentlyHoveredInteractable = hit.collider.GetComponent<IInteractable>();
                     if (_currentlyHoveredInteractable != null)
                     {
+                        CurrentHoveredInteractableHitPoint = hit.point;
                         return true;
                     }
                     else if(hit.collider.gameObject.transform.root.GetComponent<IInteractable>() != null) // Check for interactable at root (for bats)
                     {
                         _currentlyHoveredInteractable = hit.collider.gameObject.transform.root.GetComponent<IInteractable>();
+                        CurrentHoveredInteractableHitPoint = hit.point;
                         return true;
                     }
                 }
             }
 
             _currentlyHoveredInteractable = null;
+            CurrentHoveredInteractableHitPoint = Vector3.zero;
             return false;
         }
         

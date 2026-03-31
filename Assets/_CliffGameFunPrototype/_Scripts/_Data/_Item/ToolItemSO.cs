@@ -30,6 +30,9 @@ namespace CliffGame
         [field: SerializeField]
         public int ResourceDamageMax { get; private set; } = 1;
 
+        [field: SerializeField, Range(0f, 1f)]
+        public float CritStrikeChance { get; private set; } = 0f;
+
         [field: Header("Durability")]
         [field: SerializeField]
         public int MaxDurability { get; private set; } = 10;
@@ -65,6 +68,7 @@ namespace CliffGame
         {
             string description = GetDescriptionBreak();
             description += $"<br>Resource Damage: {Mathf.Min(ResourceDamageMin, ResourceDamageMax)}-{Mathf.Max(ResourceDamageMin, ResourceDamageMax)}";
+            description += $"<br>Crit Chance: {Mathf.RoundToInt(Mathf.Clamp01(CritStrikeChance) * 100f)}%";
             description += $"<br>Max Durability: {Mathf.Max(1, MaxDurability)}";
             return description;
         }

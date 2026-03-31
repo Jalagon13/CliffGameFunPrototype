@@ -44,8 +44,7 @@ namespace CliffGame
         
         [field: Header("Resource SFX")]
         [field: SerializeField] public EventReference BirdCaughtSFX { get; private set; }
-        [field: SerializeField] public EventReference StoneHitSFX { get; private set; }
-        [field: SerializeField] public EventReference StoneDestroyedSFX { get; private set; }
+        [field: SerializeField] public EventReference CritStrikeSFX { get; private set; }
         [field: SerializeField] public EventReference LeafHitSFX { get; private set; }
 
 

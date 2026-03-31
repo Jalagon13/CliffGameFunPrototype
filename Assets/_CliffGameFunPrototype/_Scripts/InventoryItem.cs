@@ -6,6 +6,20 @@ using UnityEngine;
 
 namespace CliffGame
 {
+    public readonly struct ResourceHitResult
+    {
+        public readonly int Damage;
+        public readonly bool WasCriticalHit;
+        public readonly bool UsedDepletedTool;
+
+        public ResourceHitResult(int damage, bool wasCriticalHit, bool usedDepletedTool)
+        {
+            Damage = damage;
+            WasCriticalHit = wasCriticalHit;
+            UsedDepletedTool = usedDepletedTool;
+        }
+    }
+
     public enum ToolDurabilityState
     {
         Operational,
@@ -86,23 +100,30 @@ namespace CliffGame
             CurrentDurability = Mathf.Clamp(CurrentDurability - amount, 0, MaxDurability);
         }
 
-        public int RollResourceDamage()
+        public ResourceHitResult RollResourceHit()
         {
             if (Item is not ToolItemSO toolItem)
             {
-                return 0;
+                return new ResourceHitResult(0, false, false);
             }
 
             int minDamage = Mathf.Min(toolItem.ResourceDamageMin, toolItem.ResourceDamageMax);
             int maxDamage = Mathf.Max(toolItem.ResourceDamageMin, toolItem.ResourceDamageMax);
             int rolledDamage = UnityEngine.Random.Range(minDamage, maxDamage + 1);
+            bool usedDepletedTool = DurabilityState == ToolDurabilityState.Depleted;
+            bool wasCriticalHit = !usedDepletedTool && UnityEngine.Random.value <= Mathf.Clamp01(toolItem.CritStrikeChance);
 
-            if (DurabilityState == ToolDurabilityState.Depleted)
+            if (wasCriticalHit)
+            {
+                rolledDamage *= 2;
+            }
+
+            if (usedDepletedTool)
             {
                 rolledDamage = Mathf.Max(1, Mathf.RoundToInt(rolledDamage * 0.5f));
             }
 
-            return rolledDamage;
+            return new ResourceHitResult(rolledDamage, wasCriticalHit, usedDepletedTool);
         }
 
         public float GetResourceSwingCooldownMultiplier()

@@ -109,8 +109,8 @@ namespace CliffGame
 
             _durabilityBarFillRect = fillObject.GetComponent<RectTransform>();
             _durabilityBarFillRect.anchorMin = new Vector2(0f, 0f);
-            _durabilityBarFillRect.anchorMax = new Vector2(0f, 1f);
-            _durabilityBarFillRect.pivot = new Vector2(0f, 0.5f);
+            _durabilityBarFillRect.anchorMax = new Vector2(0f, 0f);
+            _durabilityBarFillRect.pivot = new Vector2(0f, 0f);
             _durabilityBarFillRect.anchoredPosition = Vector2.zero;
             _durabilityBarFillRect.sizeDelta = _durabilityBarSize;
 

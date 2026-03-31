@@ -40,13 +40,29 @@ namespace CliffGame
 
         public virtual void OnHitWithTool(int damage)
         {
-            _currentLife -= damage;
+            OnHitWithTool(new ResourceHitResult(damage, false, false));
+        }
+
+        public virtual void OnHitWithTool(ResourceHitResult hitResult)
+        {
+            _currentLife -= hitResult.Damage;
             if(_currentLife > 0)
             {
                 AudioManager.Instance.PlayOneShot(_hitSFX, transform.position);
             }
+
+            if (hitResult.WasCriticalHit)
+            {
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CritStrikeSFX, transform.position);
+            }
             
-            Debug.Log($"Damaged {gameObject.name} for {damage}, hp: {_currentLife}/{_maxLife}");
+            ResourceDamagePopup.Create(
+                GetDamagePopupSpawnPosition(),
+                hitResult.Damage,
+                hitResult.WasCriticalHit,
+                hitResult.UsedDepletedTool);
+
+            Debug.Log($"Damaged {gameObject.name} for {hitResult.Damage}, hp: {_currentLife}/{_maxLife}");
             if(_hitParticles != null && gameObject.scene.isLoaded)
                 Instantiate(_hitParticles.gameObject, transform.position, Quaternion.identity);
 
@@ -91,6 +107,29 @@ namespace CliffGame
         public void OnInteractWith()
         {
             
+        }
+
+        private Vector3 GetDamagePopupSpawnPosition()
+        {
+            if (InteractionManager.Instance != null &&
+                InteractionManager.Instance.CurrentlyHoveredInteractable == this)
+            {
+                return InteractionManager.Instance.CurrentHoveredInteractableHitPoint;
+            }
+
+            Collider npcCollider = GetComponent<Collider>();
+            if (npcCollider == null)
+            {
+                npcCollider = GetComponentInChildren<Collider>();
+            }
+
+            if (npcCollider != null)
+            {
+                Bounds bounds = npcCollider.bounds;
+                return bounds.center + Vector3.up * (bounds.extents.y + 0.1f);
+            }
+
+            return transform.position + Vector3.up * 1f;
         }
     }
 }

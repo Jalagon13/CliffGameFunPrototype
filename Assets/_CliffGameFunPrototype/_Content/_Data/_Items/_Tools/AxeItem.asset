@@ -22,7 +22,8 @@ MonoBehaviour:
   <NpcDamageAmount>k__BackingField: 2
   <ResourceDamageMin>k__BackingField: 5
   <ResourceDamageMax>k__BackingField: 7
-  <MaxDurability>k__BackingField: 10
+  <CritStrikeChance>k__BackingField: 0.04
+  <MaxDurability>k__BackingField: 100
   <IntValue>k__BackingField: 2
   <HeldToolPrefab>k__BackingField: {fileID: 2488915889958085675, guid: c8abccebf51185b4097c6c21f9537b03, type: 3}
   <CanThrowTethered>k__BackingField: 0

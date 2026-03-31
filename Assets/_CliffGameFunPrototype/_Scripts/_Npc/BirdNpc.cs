@@ -172,10 +172,10 @@ namespace CliffGame
             _flyingAI.SetDestination(potentialPoint);
         }
 
-        public override void OnHitWithTool(int damage)
+        public override void OnHitWithTool(ResourceHitResult hitResult)
         {
             _lifeTimeTimer = 0f;
-            base.OnHitWithTool(damage);
+            base.OnHitWithTool(hitResult);
         }
 
         public bool CatchByTether(Transform spearTransform, bool ignoreStateCheck = false, bool preserveHitOffset = true)

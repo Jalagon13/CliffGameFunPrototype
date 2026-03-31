@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using AdvancedTooltips.Core;
+using DG.Tweening;
 
 namespace CliffGame
 {
@@ -27,6 +28,11 @@ namespace CliffGame
         [SerializeField] private Color _durabilityCurrentColor = new Color(0.3f, 0.95f, 0.3f, 1f);
         [SerializeField] private Color _durabilityMissingColor = new Color(0.85f, 0.2f, 0.2f, 1f);
 
+        [Header("Depleted Tool Flash")]
+        [SerializeField] private Color _depletedFlashColor = new Color(1f, 0.25f, 0.25f, 1f);
+        [SerializeField] private float _depletedFlashDuration = 0.5f;
+        [SerializeField] private int _depletedFlashCount = 2;
+
         private InventoryItem _item;
         private int _inventoryIndex;
         private InventoryModel _inventoryAssociatedWith;
@@ -35,11 +41,17 @@ namespace CliffGame
         private RectTransform _durabilityBarFillRect;
         private Image _durabilityBarFillImage;
         private float _durabilityBarFullWidth;
+        private Tween _depletedFlashTween;
 
         private void Awake()
         {
             SetHighlighted(false);
             EnsureDurabilityBarExists();
+        }
+
+        private void Start()
+        {
+            InventoryManager.Instance.OnDepletedToolUsed += HandleDepletedToolUsed;
         }
 
         private void OnDisable()
@@ -52,6 +64,12 @@ namespace CliffGame
         
         private void OnDestroy()
         {
+            _depletedFlashTween?.Kill();
+            if (InventoryManager.Instance != null)
+            {
+                InventoryManager.Instance.OnDepletedToolUsed -= HandleDepletedToolUsed;
+            }
+
             Tooltip.HideUI();
         }
 
@@ -148,8 +166,8 @@ namespace CliffGame
 
             _durabilityBarFillRect = fillObject.GetComponent<RectTransform>();
             _durabilityBarFillRect.anchorMin = new Vector2(0f, 0f);
-            _durabilityBarFillRect.anchorMax = new Vector2(0f, 1f);
-            _durabilityBarFillRect.pivot = new Vector2(0f, 0.5f);
+            _durabilityBarFillRect.anchorMax = new Vector2(0f, 0f);
+            _durabilityBarFillRect.pivot = new Vector2(0f, 0f);
             _durabilityBarFillRect.anchoredPosition = Vector2.zero;
             _durabilityBarFillRect.sizeDelta = _durabilityBarSize;
 
@@ -185,6 +203,36 @@ namespace CliffGame
 
             float normalizedDurability = item.DurabilityNormalized;
             _durabilityBarFillRect.sizeDelta = new Vector2(_durabilityBarFullWidth * normalizedDurability, _durabilityBarSize.y);
+        }
+
+        private void HandleDepletedToolUsed(ulong toolId)
+        {
+            if (_item == null || !_item.HasItem || _item.Id != toolId || _itemImage == null)
+            {
+                return;
+            }
+
+            _depletedFlashTween?.Kill();
+            _itemImage.color = Color.white;
+
+            Sequence flashSequence = DOTween.Sequence();
+            float singleFlashDuration = _depletedFlashDuration / Mathf.Max(1, _depletedFlashCount * 2);
+
+            for (int i = 0; i < Mathf.Max(1, _depletedFlashCount); i++)
+            {
+                flashSequence.Append(_itemImage.DOColor(_depletedFlashColor, singleFlashDuration).SetEase(Ease.OutQuad));
+                flashSequence.Append(_itemImage.DOColor(Color.white, singleFlashDuration).SetEase(Ease.OutQuad));
+            }
+
+            flashSequence.OnKill(() =>
+            {
+                if (_itemImage != null && _item != null && _item.HasItem)
+                {
+                    _itemImage.color = Color.white;
+                }
+            });
+
+            _depletedFlashTween = flashSequence;
         }
     }
 }

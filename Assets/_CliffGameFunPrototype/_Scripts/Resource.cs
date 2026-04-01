@@ -117,7 +117,7 @@ namespace CliffGame
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.CritStrikeSFX, transform.position);
             }
 
-            Debug.Log($"Resource hit: {gameObject.name} took {hitResult.Damage} damage. HP: {_currentLife}/{_maxLife}");
+            // Debug.Log($"Resource hit: {gameObject.name} took {hitResult.Damage} damage. HP: {_currentLife}/{_maxLife}");
 
             if (_currentLife <= 0)
             {

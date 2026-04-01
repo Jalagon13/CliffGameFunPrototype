@@ -12,8 +12,6 @@ namespace CliffGame
 
         private TextMeshProUGUI _healthText;
         private TextMeshProUGUI _hungerText;
-        private TextMeshProUGUI _staminaText;
-        private float _previousStaminaPercent = 1f;
 
         private void Awake()
         {

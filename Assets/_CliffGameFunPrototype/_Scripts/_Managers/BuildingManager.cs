@@ -341,6 +341,34 @@ namespace CliffGame
 
         private void CheckBuildPieceValidity()
         {
+            // Prioritize cliff placement for platforms and stairs if looking at a cliff within range
+            if (_currentBuildType == BuildOption.Platform || _currentBuildType == BuildOption.Stairs)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+                if (Physics.Raycast(ray, _buildRange, _cliffLayerMask))
+                {
+                    // Try cliff grid placement first
+                    GhostSeparateBuild();
+                    
+                    if (_isGhostInValidPosition)
+                    {
+                        // Perform overlap check with other build pieces using half-extents for a 1m grid
+                        Collider[] overlapColliders = Physics.OverlapBox(_ghostBuildPiece.transform.position, new Vector3(0.45f, 0.45f, 0.45f), _ghostBuildPiece.transform.rotation);
+                        foreach (Collider overlapCollider in overlapColliders)
+                        {
+                            if (overlapCollider.gameObject != _ghostBuildPiece.gameObject && overlapCollider.transform.root.CompareTag("BuildPiece"))
+                            {
+                                GhostifyModel(_modelParent, _ghostMaterialInvisible);
+                                _isGhostInValidPosition = false;
+                                RestoreStabilityPreview();
+                                return;
+                            }
+                        }
+                        return; // Successfully prioritized and validated cliff placement
+                    }
+                }
+            }
+
             Collider[] connectorColliders = Physics.OverlapSphere(_ghostBuildPiece.transform.position, _connectorOverlapRadius, _connectorLayerMask);
             if (connectorColliders.Length > 0)
             {
@@ -354,7 +382,7 @@ namespace CliffGame
 
                 if (_isGhostInValidPosition)
                 {
-                    Collider[] overlapColliders = Physics.OverlapBox(_ghostBuildPiece.transform.position, new Vector3(1f, 1f, 1f), _ghostBuildPiece.transform.rotation);
+                    Collider[] overlapColliders = Physics.OverlapBox(_ghostBuildPiece.transform.position, new Vector3(0.45f, 0.45f, 0.45f), _ghostBuildPiece.transform.rotation);
                     foreach (Collider overlapCollider in overlapColliders)
                     {
                         if (overlapCollider.gameObject != _ghostBuildPiece && overlapCollider.transform.root.CompareTag("BuildPiece"))
@@ -518,6 +546,11 @@ namespace CliffGame
                 {
                     _ghostBuildPiece.transform.Rotate(0f, 180f, 0f);
                 }
+            }
+            else if (_currentBuildType == BuildOption.Platform)
+            {
+                // Platforms always have a rotation of 0,0,0
+                _ghostBuildPiece.transform.rotation = Quaternion.identity;
             }
 
             if (!GhostConnectorOverlapsWithConnector(ghostConnector, closestConnector)) // This is such a weird bug to fix but basically makes sure the ghost connector is overlapping the real connector which should have been already handled in the above code but whatever
@@ -795,8 +828,55 @@ namespace CliffGame
 
             if (foundValidHit)
             {
-                // Only place fences on floors
-                if (_currentBuildType == BuildOption.Fence || _currentBuildType == BuildOption.Stairs)
+                bool isCliff = ((1 << validHit.transform.gameObject.layer) & _cliffLayerMask) != 0;
+                bool canPlaceOnCliff = _currentBuildType == BuildOption.Platform || _currentBuildType == BuildOption.Stairs;
+
+                if (isCliff && canPlaceOnCliff)
+                {
+                    // Snap to the world grid (1m modular increments)
+                    Vector3 snappedPos = new Vector3(
+                        Mathf.Round(validHit.point.x),
+                        Mathf.Round(validHit.point.y),
+                        Mathf.Round(validHit.point.z)
+                    );
+
+                    _ghostBuildPiece.transform.position = snappedPos;
+
+                    if (_currentBuildType == BuildOption.Platform)
+                    {
+                        // Platforms always have a rotation of 0,0,0 when placed on cliffs
+                        _ghostBuildPiece.transform.rotation = Quaternion.identity;
+                    }
+                    else
+                    {
+                        // Align rotation to the world grid based on camera cardinal direction
+                        CardinalDireciton camDir = GetCardinalDirection(Camera.main.transform.forward);
+                        float angle = camDir == CardinalDireciton.North ? 0f : 
+                                      camDir == CardinalDireciton.South ? 180f : 
+                                      camDir == CardinalDireciton.East ? 90f : 270f;
+                        
+                        _ghostBuildPiece.transform.rotation = Quaternion.Euler(0, angle, 0);
+                    }
+
+                    // Allow stairs to flip orientation using the variant key (R)
+                    if (_currentBuildType == BuildOption.Stairs && !_usingUpstairs)
+                    {
+                        _ghostBuildPiece.transform.Rotate(0, 180, 0);
+                    }
+
+                    // Check if the build piece volume intersects with the cliff geometry
+                    bool intersectsCliff = Physics.CheckBox(snappedPos, new Vector3(0.45f, 0.45f, 0.45f), _ghostBuildPiece.transform.rotation, _cliffLayerMask);
+
+                    if (intersectsCliff)
+                    {
+                        ApplyGhostValidMaterials();
+                        _isGhostInValidPosition = true;
+                        return;
+                    }
+                }
+
+                // Only place fences on existing floors (snapping required)
+                if (_currentBuildType == BuildOption.Fence || (_currentBuildType == BuildOption.Stairs && !isCliff))
                 {
                     // If we try to place a fence or stair, but haven't snapped it to anything, we won't be able to place it
                     GhostifyModel(_modelParent, _ghostMaterialInvisible);

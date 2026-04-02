@@ -48,7 +48,7 @@ namespace CliffGame
 
         public ToolType BreakToolType => _requiredToolType;
         
-        private Transform _itemDropPoint;
+        protected Transform _itemDropPoint;
 
         protected virtual void Awake()
         {

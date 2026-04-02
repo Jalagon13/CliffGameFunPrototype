@@ -47,10 +47,13 @@ namespace CliffGame
         protected EventReference _destroySFX;
 
         public ToolType BreakToolType => _requiredToolType;
+        
+        private Transform _itemDropPoint;
 
         protected virtual void Awake()
         {
             _currentLife = _maxLife;
+            _itemDropPoint = transform.GetChild(1).transform;
         }
 
         public virtual void OnInteractWith()
@@ -58,9 +61,9 @@ namespace CliffGame
             // Default resource interaction (can be empty)
         }
 
-        public virtual void Collect(bool giveItems = true)
+        public virtual void DestroyResource(bool dropItems = true)
         {
-            if(giveItems)
+            if(dropItems)
             {
                 foreach (HarvestDrop drop in _harvestDrops)
                 {
@@ -72,7 +75,7 @@ namespace CliffGame
                     if (amount <= 0)
                         continue;
 
-                    InventoryManager.Instance.AddItem(drop.DropItem, amount);
+                    InventoryManager.Instance.CreateWorldItem(drop.DropItem, amount, _itemDropPoint.position);
                 }
 
                 AudioManager.Instance.PlayOneShot(_destroySFX, transform.position);
@@ -106,11 +109,7 @@ namespace CliffGame
             _currentLife -= hitResult.Damage;
             _currentLife = Mathf.Clamp(_currentLife, 0, _maxLife);
             ConsumeSelectedToolDurability();
-            ResourceDamagePopup.Create(
-                GetDamagePopupSpawnPosition(),
-                hitResult.Damage,
-                hitResult.WasCriticalHit,
-                hitResult.UsedDepletedTool);
+            ResourceDamagePopup.Create(GetDamagePopupSpawnPosition(), hitResult.Damage, hitResult.WasCriticalHit, hitResult.UsedDepletedTool);
 
             if (hitResult.WasCriticalHit)
             {
@@ -121,7 +120,7 @@ namespace CliffGame
 
             if (_currentLife <= 0)
             {
-                Collect();
+                DestroyResource();
             }
             else
             {
@@ -142,8 +141,7 @@ namespace CliffGame
 
         private Vector3 GetDamagePopupSpawnPosition()
         {
-            if (InteractionManager.Instance != null &&
-                InteractionManager.Instance.CurrentlyHoveredInteractable == this)
+            if (InteractionManager.Instance != null)
             {
                 return InteractionManager.Instance.CurrentHoveredInteractableHitPoint;
             }

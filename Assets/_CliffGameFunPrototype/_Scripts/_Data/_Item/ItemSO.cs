@@ -9,7 +9,7 @@ namespace CliffGame
     public abstract class ItemSO : ScriptableObject
     {
         [field: SerializeField] public string InGameName { get; private set; }
-        [field: SerializeField] public GameObject ItemWorldPrefab { get; private set; }
+        [field: SerializeField] public GameObject WorldItemModel { get; private set; }
         [field: SerializeField] public Sprite UiDisplay { get; private set; }
         [field: SerializeField] public bool Stackable { get; private set; } = true;
         [field: TextArea]

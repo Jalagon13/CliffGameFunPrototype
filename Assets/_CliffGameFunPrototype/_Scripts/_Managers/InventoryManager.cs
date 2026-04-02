@@ -24,6 +24,8 @@ namespace CliffGame
         
         public Action<InventoryItem> OnItemPickup;
 
+        [SerializeField] private WorldItem _worldItemPrefab;
+
         [SerializeField]
         private int _slotAmount = 10, _hotbarSlotAmount = 9;
 
@@ -104,17 +106,6 @@ namespace CliffGame
             _inventoryModel.OnInventoryUpdate -= InventoryModel_OnInventoryUpdate;
         }
 
-        private void CheckIfMouseHasItem()
-        {
-            if(_mouseItemModel.MouseInventoryItem.HasItem)
-            {
-                // If mouse has item when crafting UI closes, drop the item
-                AddInventoryItem(_mouseItemModel.MouseInventoryItem);
-                _mouseItemModel.Clear();
-                _inventoryModel.UpdateInventory();
-            }
-        }
-
         private void Update()
         {
             if (_mouseItemModel.MouseInventoryItem.HasItem)
@@ -137,6 +128,22 @@ namespace CliffGame
                 _gotItemThisFrame = false;
 
                 MouseHasItem = false;
+            }
+        }
+
+        public void CreateWorldItem(ItemSO item, int amount, Vector3 position)
+        {
+            Instantiate(_worldItemPrefab, position, Quaternion.identity).GetComponent<WorldItem>().Initialize(item, amount);
+        }
+
+        private void CheckIfMouseHasItem()
+        {
+            if(_mouseItemModel.MouseInventoryItem.HasItem)
+            {
+                // If mouse has item when crafting UI closes, drop the item
+                AddInventoryItem(_mouseItemModel.MouseInventoryItem);
+                _mouseItemModel.Clear();
+                _inventoryModel.UpdateInventory();
             }
         }
 

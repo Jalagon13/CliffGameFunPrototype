@@ -96,7 +96,7 @@ namespace CliffGame
 
         private void OnDespawnTimerFinished(object sender, System.EventArgs e)
         {
-            Collect(false);
+            DestroyResource(false);
         }
 
         public override void OnHitWithTool(int damage)

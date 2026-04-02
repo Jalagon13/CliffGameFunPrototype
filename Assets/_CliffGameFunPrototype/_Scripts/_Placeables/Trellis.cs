@@ -17,7 +17,7 @@ namespace CliffGame
             _dirtMounts.gameObject.SetActive(false);
         }
 
-        public override void Collect(bool giveItems = true)
+        public override void DestroyResource(bool giveItems = true)
         {
             foreach (PlanterBox pb in _planterBoxes)
             {
@@ -27,11 +27,11 @@ namespace CliffGame
                 }
                 else if(pb.CurrentState == PlanterBoxState.Grown)
                 {
-                    pb.CurrentGrowableInstance.Collect(true);
+                    pb.CurrentGrowableInstance.DestroyResource(true);
                 }
             }
         
-            base.Collect(giveItems);
+            base.DestroyResource(giveItems);
         }
                 
         public override void OnInteractWith()

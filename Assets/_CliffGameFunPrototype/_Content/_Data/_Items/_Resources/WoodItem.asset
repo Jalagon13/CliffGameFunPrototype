@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WoodItem
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.ResourceDataSO
   <InGameName>k__BackingField: Wood
-  <ItemWorldPrefab>k__BackingField: {fileID: 1465330192500852548, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
+  <WorldItemModel>k__BackingField: {fileID: 1465330192500852548, guid: 0e85be825544e42e4b9d5a71a0a37594, type: 3}
   <UiDisplay>k__BackingField: {fileID: -602149933, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: 

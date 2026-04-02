@@ -881,14 +881,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.TreeResource
   _requiredToolType: 1
-  _maxLife: 50
+  _maxLife: 25
   _harvestDrops:
   - DropItem: {fileID: 11400000, guid: 04bb07b77773f4120b30c81300dc7720, type: 2}
     MinAmount: 5
     MaxAmount: 7
-  - DropItem: {fileID: 11400000, guid: ad2f70919f7d046ed8001013ac529d7d, type: 2}
-    MinAmount: 1
-    MaxAmount: 2
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
   _destroyParticles: {fileID: 3947636531895734693, guid: e5f1ccd63da2f44378d6559a1a73df60, type: 3}
   _hitSFX:

@@ -83,7 +83,7 @@ namespace CliffGame
 
             if (_destroyParticles != null && gameObject.scene.isLoaded)
             {
-                Instantiate(_destroyParticles.gameObject, transform.position, Quaternion.identity);
+                Instantiate(_destroyParticles.gameObject, GetDamagePopupSpawnPosition(), Quaternion.identity);
             }
             
             Destroy(gameObject);
@@ -100,16 +100,18 @@ namespace CliffGame
             {
                 return;
             }
+            
+            Vector3 hitPoint = GetDamagePopupSpawnPosition();
         
             if(_crackParticles != null)
             {
-                Instantiate(_crackParticles.gameObject, transform.position, Quaternion.identity);
+                Instantiate(_crackParticles.gameObject, hitPoint, Quaternion.identity);
             }
 
             _currentLife -= hitResult.Damage;
             _currentLife = Mathf.Clamp(_currentLife, 0, _maxLife);
             ConsumeSelectedToolDurability();
-            ResourceDamagePopup.Create(GetDamagePopupSpawnPosition(), hitResult.Damage, hitResult.WasCriticalHit, hitResult.UsedDepletedTool);
+            ResourceDamagePopup.Create(hitPoint, hitResult.Damage, hitResult.WasCriticalHit, hitResult.UsedDepletedTool);
 
             if (hitResult.WasCriticalHit)
             {

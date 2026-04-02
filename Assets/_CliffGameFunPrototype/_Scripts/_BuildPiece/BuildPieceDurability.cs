@@ -46,24 +46,16 @@ namespace CliffGame
             OnBuildPieceDestoyed?.Invoke();
         }
         
-        private IEnumerator Start()
+        private void Start()
         {
-            if (!_isStartingBuildPiece) yield break;
+            if (!_isStartingBuildPiece) return;
             
             BuildPieceIntegrityManager.Instance.RegisterBuildPiece(transform.GetComponent<BuildPiece>());
-            
-            if(Player.Instance.FirstPersonLook.ExecuteStartingSequence)
+
+            foreach (Connector connector in GetComponentsInChildren<Connector>())
             {
-                yield return new WaitForSeconds(2f);
+                connector.EstablishConnection(true);
             }
-
-            yield return new WaitForSeconds(4f);
-
-            TryPlayRattleFeedbacks();
-
-            yield return new WaitForSeconds(4f);
-
-            TryPlayRattleFeedbacks();
         }
 
         private void Update()

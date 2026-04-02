@@ -114,6 +114,7 @@ namespace CliffGame
             bool isBuildPlacementMode = _currentBuildType == BuildOption.Platform ||
                                         _currentBuildType == BuildOption.Fence ||
                                         _currentBuildType == BuildOption.Stairs;
+                                        
             bool canProcessBuildPlacement = isBuildPlacementMode &&
                                             Player.Instance.CurrentMoveStateType == PlayerMoveState.Walking &&
                                             !CraftingManager.Instance.IsCraftingUIOpen &&

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SaplingItem
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlantableItemSO
   <InGameName>k__BackingField: Sapling
-  <WorldItemModel>k__BackingField: {fileID: 0}
+  <WorldItemModel>k__BackingField: {fileID: 5023827496289606453, guid: 261ae2d29c98f41e6a5bb03ddd526455, type: 3}
   <UiDisplay>k__BackingField: {fileID: 811161192, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
   <Description>k__BackingField: Plant on the cliff to grow Cliff Berries

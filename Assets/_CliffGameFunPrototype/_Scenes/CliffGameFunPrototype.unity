@@ -3384,14 +3384,8 @@ MonoBehaviour:
   _initialDelay: 0.25
   _delayBetweenItemsGiven: 0.1
   _startingItems:
-  - Item: {fileID: 11400000, guid: 1474887e669074f29ac57154e0c19c9f, type: 2}
+  - Item: {fileID: 11400000, guid: 4bb662dd51a4d4e43bab61940337c15e, type: 2}
     Quantity: 1
-  - Item: {fileID: 11400000, guid: 68ac59d437f6747d9b3e86a07cc87f1b, type: 2}
-    Quantity: 1
-  - Item: {fileID: 11400000, guid: a68896e054045480da74fa0588490153, type: 2}
-    Quantity: 999
-  - Item: {fileID: 11400000, guid: 92f9e5091bd5b4ee094873ed3934e46f, type: 2}
-    Quantity: 999
 --- !u!114 &313309638
 MonoBehaviour:
   m_ObjectHideFlags: 0

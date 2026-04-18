@@ -3071,10 +3071,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 313309630}
+  - component: {fileID: 313309637}
   - component: {fileID: 313309632}
   - component: {fileID: 313309631}
   - component: {fileID: 313309638}
-  - component: {fileID: 313309637}
   - component: {fileID: 313309636}
   - component: {fileID: 313309635}
   - component: {fileID: 313309634}
@@ -3508,24 +3508,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CliffGame.NpcManager
   _npcPool:
-  - Prefab: {fileID: 8979547436931850727, guid: dc8c0753a15c24c80b45613448a65e20, type: 3}
-    SlotCost: 2
-    SpawnWeight: 100
-    SpawnDistanceFromCliff: 20
-    MinSpawnDistance: 5
-    MaxSpawnDistance: 30
-    SpawnZVarianceMin: -2
-    SpawnZVarianceMax: 4
-    AllowedSpawnTimes: 03000000
   - Prefab: {fileID: 8979547436931850727, guid: 9e0695773cad84794b5dd20ffdd664a5, type: 3}
-    SlotCost: 1.5
+    SlotCost: 1
     SpawnWeight: 100
     SpawnDistanceFromCliff: 10
     MinSpawnDistance: 5
     MaxSpawnDistance: 15
     SpawnZVarianceMin: -1
     SpawnZVarianceMax: 1
-    AllowedSpawnTimes: 000000000100000002000000
   _canSpawnNpcs: 1
   _maxNpcSlotAmount: 6
   _spawnsPerMinute: 5
@@ -27146,7 +27136,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.5
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -27189,8 +27179,8 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 5500
-  m_UseColorTemperature: 1
+  m_ColorTemperature: 6000
+  m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1

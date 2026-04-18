@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Ultrabolt.SkyEngine;
 
 namespace CliffGame
 {
@@ -23,7 +22,6 @@ namespace CliffGame
             public float MaxSpawnDistance = 40f;
             public float SpawnZVarianceMin = -2f;
             public float SpawnZVarianceMax = 2f;
-            public List<GameTime> AllowedSpawnTimes;
         }
 
         [SerializeField] 
@@ -77,12 +75,11 @@ namespace CliffGame
 
             // Calculate spawn probability per tick (Terraria-style)
             float spawnModifier = GetSpawnModifier();
-            float spawnsPerMinute = _spawnsPerMinute;
 
             // Convert spawns per minute to probability per tick
             // If we want X spawns per minute and we tick 60 times per second (3600 times per minute)
             // Then probability per tick = X / 3600 * modifier
-            float spawnProbability = (spawnsPerMinute / 3600f) * spawnModifier;
+            float spawnProbability = (_spawnsPerMinute / 3600f) * spawnModifier;
 
             if (UnityEngine.Random.value < spawnProbability)
             {
@@ -158,9 +155,6 @@ namespace CliffGame
         {
             if (_npcPool.Count == 0) return null;
 
-            if (SkyCore.Instance == null) return null;
-            
-
             int totalWeight = 0;
             foreach (var entry in _npcPool)
             {
@@ -189,8 +183,9 @@ namespace CliffGame
 
         private bool IsSpawnAllowed(NpcSpawnEntry entry)
         {
-            GameTime currentTime = SkyCore.Instance.CurrentGameTime;
-            return entry.AllowedSpawnTimes != null && entry.AllowedSpawnTimes.Contains(currentTime);
+            // GameTime currentTime = SkyCore.Instance.CurrentGameTime;
+            // return entry.AllowedSpawnTimes != null && entry.AllowedSpawnTimes.Contains(currentTime);
+            return true;
         }
 
         private void SpawnNpc(Vector3 potentialSpawnPoint, NpcSpawnEntry npcEntry)

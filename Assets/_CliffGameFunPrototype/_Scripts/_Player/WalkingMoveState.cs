@@ -78,7 +78,6 @@ namespace CliffGame
         public void StateUpdate()
         {
             WalkStateHandler();
-            HandleWind(); // Temp delete in case I need it later
             MovePlayer();
             Jump();
             HandleFallTracking();
@@ -185,40 +184,6 @@ namespace CliffGame
             {
                 _verticalVelocity = 0f;
             }
-        }
-
-        private void HandleWind()
-        {
-            if (WindManager.Instance == null || !WindManager.Instance.WindCanPushPlayer || Player.Instance.FirstPersonLook.IsSequenceOngoing)
-            {
-                _accumulatedWind = Vector3.zero;
-                return;
-            }
-
-            float windSeverity = WindManager.Instance.WindSeverity > WindManager.Instance.WindPushesPlayerThreshold ? WindManager.Instance.WindSeverity : 0f;
-
-            if (windSeverity <= 0f)
-            {
-                _accumulatedWind = Vector3.zero;
-                return;
-            }
-
-            float windSpeed = WindManager.Instance.MaxWindForceAtFullSeverity * windSeverity;
-
-            if (EquipmentSlotUI.PREVENT_WIND_WITH_BOOTS)
-            {
-                windSpeed *= 0.35f;
-                if (windSpeed < _windNegationThreshold)
-                {
-                    windSpeed = 0f;
-                }
-            }
-
-            Vector3 windDirection = Vector3.right; // test direction for now
-
-            // Optional: reduce wind effect while grounded
-            float groundedMultiplier = _isGrounded ? 1f : _jumpWindStrengthMulti;
-            _accumulatedWind += windDirection * windSpeed * groundedMultiplier * Time.deltaTime;
         }
 
         private void HandleFallTracking()

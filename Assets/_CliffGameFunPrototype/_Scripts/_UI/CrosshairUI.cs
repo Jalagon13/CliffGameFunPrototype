@@ -165,22 +165,6 @@ namespace CliffGame
                 SetCrosshairAlpha(1f);
                 return;
             }
-            
-            
-            if (interactable is PlanterBox planterBox)
-            {
-                HandlePlanterBoxText(planterBox);
-                SetCrosshairAlpha(1f);
-                return;
-            }
-            
-            
-            if(interactable is Growable growable)
-            {
-                HandleGrowableText(growable);
-                SetCrosshairAlpha(1f);
-                return;
-            }
 
             // ---- Tool-based interactables ----
             switch (interactable.BreakToolType)
@@ -200,34 +184,6 @@ namespace CliffGame
             }
 
             SetCrosshairAlpha(1f);
-        }
-
-        private void HandleGrowableText(Growable growable)
-        {
-            if(growable.CanBeHarvested)
-            {
-                ShowTextAboveCrosshair("[E] <br> Harvest");
-            }
-            else
-            {
-                ShowTextAboveCrosshair("Growing...");
-            }
-        }
-
-        private void HandlePlanterBoxText(PlanterBox planterBox)
-        {
-            switch(planterBox.CurrentState)
-            {
-                case PlanterBoxState.Empty:
-                    ShowTextAboveCrosshair("[E] <br> Plant Cliff Seed");
-                    break;
-                case PlanterBoxState.Growing:
-                    ShowTextAboveCrosshair("Growing...");
-                    break;
-                case PlanterBoxState.Grown:
-                    ShowTextAboveCrosshair("[E] <br> Harvest");
-                    break;
-            }       
         }
 
         private void HandleWaterStillText(WaterStill waterStill)

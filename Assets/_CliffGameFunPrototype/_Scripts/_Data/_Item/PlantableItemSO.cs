@@ -6,10 +6,13 @@ namespace CliffGame
     public class PlantableItemSO : ItemSO
     {
         [field: SerializeField]
-        public float GrowthTimeInSeconds { get; private set; }
-    
+        public GameObject PlantedModel { get; private set; }
+
         [field: SerializeField]
-        public Growable GrowablePrefab { get; private set; }
+        public Resource EndResultResource { get; private set; }
+
+        [field: SerializeField]
+        public float GrowthTimeInSeconds { get; private set; }
 
         public override InventoryItem CreateInventoryItem(int quantity)
         {

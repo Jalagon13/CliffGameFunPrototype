@@ -75,6 +75,9 @@
 		<property name="volume">
 			<value>-8</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{415b8732-489d-4d86-9aaf-537b1e0c35f6}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{18697743-e9d0-4540-ad79-7b83af742db0}</destination>
 		</relationship>
@@ -96,6 +99,14 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9125b358-a2d3-4b70-9b60-cb114407a15c}" />
+	<object class="RandomizerModulator" id="{415b8732-489d-4d86-9aaf-537b1e0c35f6}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>5</value>
+		</property>
+	</object>
 	<object class="MixerBusEffectChain" id="{18697743-e9d0-4540-ad79-7b83af742db0}">
 		<relationship name="effects">
 			<destination>{9b4a1f99-02ac-4886-8403-8edbb9099799}</destination>

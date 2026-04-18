@@ -24,14 +24,14 @@ namespace CliffGame
         public ToolType BreakToolType => ToolType.None;
 
         private Timer _growthTimer;
-        private Growable _currentGrowableInstance;
-        public Growable CurrentGrowableInstance => _currentGrowableInstance;
+        // private Growable _currentGrowableInstance;
+        // public Growable CurrentGrowableInstance => _currentGrowableInstance;
 
         private void Update()
         {
             if (_currentState == PlanterBoxState.Growing && _growthTimer != null)
             {
-                OnGrowthTick();
+                // OnGrowthTick();
             }
         }
 
@@ -79,7 +79,7 @@ namespace CliffGame
             _growthTimer = new Timer(plantable.GrowthTimeInSeconds);
             _growthTimer.OnTimerEnd += OnGrowthComplete;
 
-            OnGrowthStarted();
+            // OnGrowthStarted();
         }
 
         private void OnGrowthComplete(object sender, System.EventArgs e)
@@ -87,7 +87,7 @@ namespace CliffGame
             _growthTimer.OnTimerEnd -= OnGrowthComplete;
             _currentState = PlanterBoxState.Grown;
 
-            OnGrowthFinished();
+            // OnGrowthFinished();
         }
 
         public void CancelGrowth()
@@ -101,44 +101,44 @@ namespace CliffGame
             _currentPlantableItem = null;
             _currentState = PlanterBoxState.Empty;
 
-            OnGrowthCancelled();
+            // OnGrowthCancelled();
         }
 
-        public void ClearPlanterBox()
-        {
-            _growthTimer = null;
-            _currentPlantableItem = null;
-            _currentState = PlanterBoxState.Empty;
-            _currentGrowableInstance = null;
+        // public void ClearPlanterBox()
+        // {
+        //     _growthTimer = null;
+        //     _currentPlantableItem = null;
+        //     _currentState = PlanterBoxState.Empty;
+        //     _currentGrowableInstance = null;
 
-            OnPlanterCleared();
-        }
+        //     OnPlanterCleared();
+        // }
 
-        protected virtual void OnGrowthStarted()
-        {
-            // Add visuals, sounds, UI updates here
-            _currentGrowableInstance = Instantiate(_currentPlantableItem.GrowablePrefab, _growableGrowPoint.position, _growableGrowPoint.rotation);
-            _currentGrowableInstance.InitializeGrowable(this);
-        }
+        // protected virtual void OnGrowthStarted()
+        // {
+        //     // Add visuals, sounds, UI updates here
+        //     _currentGrowableInstance = Instantiate(_currentPlantableItem.GrowablePrefab, _growableGrowPoint.position, _growableGrowPoint.rotation);
+        //     _currentGrowableInstance.InitializeGrowable(this);
+        // }
 
-        protected virtual void OnGrowthTick()
-        {
-            // Update growth visuals, UI progress bars, etc.
-            _growthTimer.Tick(Time.deltaTime);
-            _currentGrowableInstance.UpdateGrowthPercentage(_growthTimer.GetPercentComplete());
-        }
+        // protected virtual void OnGrowthTick()
+        // {
+        //     // Update growth visuals, UI progress bars, etc.
+        //     _growthTimer.Tick(Time.deltaTime);
+        //     _currentGrowableInstance.UpdateGrowthPercentage(_growthTimer.GetPercentComplete());
+        // }
 
-        protected virtual void OnGrowthFinished()
-        {
-            // Spawn plant prefab, rewards, etc.
-            _currentGrowableInstance.UpdateGrowthPercentage(1f);
-        }
+        // protected virtual void OnGrowthFinished()
+        // {
+        //     // Spawn plant prefab, rewards, etc.
+        //     _currentGrowableInstance.UpdateGrowthPercentage(1f);
+        // }
 
-        protected virtual void OnGrowthCancelled()
-        {
-            // Handle cancellation effects here
-            Destroy(_currentGrowableInstance.gameObject);
-        }
+        // protected virtual void OnGrowthCancelled()
+        // {
+        //     // Handle cancellation effects here
+        //     Destroy(_currentGrowableInstance.gameObject);
+        // }
 
         protected virtual void OnPlanterCleared()
         {

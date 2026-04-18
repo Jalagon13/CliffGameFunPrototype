@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 125ebcb13b37d4c0ab7c192dcbe7694f, type: 3}
+  m_Script: {fileID: 11500000, guid: 0abd23a848c8443599fa2989c648f349, type: 3}
   m_Name: SaplingItem
-  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.PlantableItemSO
+  m_EditorClassIdentifier: Assembly-CSharp::CliffGame.StructureItemSO
   <InGameName>k__BackingField: Sapling
   <WorldItemModel>k__BackingField: {fileID: 5023827496289606453, guid: 261ae2d29c98f41e6a5bb03ddd526455, type: 3}
   <UiDisplay>k__BackingField: {fileID: 811161192, guid: 75594b36fd8cd0d409de8dacfcaf419b, type: 3}
   <Stackable>k__BackingField: 1
-  <Description>k__BackingField: Plant on the cliff to grow Cliff Berries
-  <GrowthTimeInSeconds>k__BackingField: 80
-  <GrowablePrefab>k__BackingField: {fileID: 1193042686163046655, guid: 5f11abe12d65f4ad2b909f3541c56e23, type: 3}
+  <Description>k__BackingField: Place to light up your home
+  <PlaceablePrefab>k__BackingField: {fileID: 3282181520534882374, guid: 53711e93c0cd94c4bad1204dda54a5d5, type: 3}
+  <IsCliffPlaceable>k__BackingField: 0

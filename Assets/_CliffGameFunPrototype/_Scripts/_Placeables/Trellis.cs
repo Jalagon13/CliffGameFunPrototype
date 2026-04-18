@@ -27,7 +27,7 @@ namespace CliffGame
                 }
                 else if(pb.CurrentState == PlanterBoxState.Grown)
                 {
-                    pb.CurrentGrowableInstance.DestroyResource(true);
+                    // pb.CurrentGrowableInstance.DestroyResource(true);
                 }
             }
         

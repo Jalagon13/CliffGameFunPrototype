@@ -240,13 +240,6 @@ namespace CliffGame
                 return;
             }
 
-            if (interactable is Growable growable)
-            {
-                HandleGrowableText(growable);
-                SetCrosshairAlpha(1f);
-                return;
-            }
-
             switch (interactable.BreakToolType)
             {
                 case ToolType.Axe:
@@ -264,11 +257,6 @@ namespace CliffGame
             }
 
             SetCrosshairAlpha(1f);
-        }
-
-        private void HandleGrowableText(Growable growable)
-        {
-            ShowTextAboveCrosshair(growable.CanBeHarvested ? "[E] <br> Harvest" : "Growing...");
         }
 
         private void HandlePlanterBoxText(PlanterBox planterBox)

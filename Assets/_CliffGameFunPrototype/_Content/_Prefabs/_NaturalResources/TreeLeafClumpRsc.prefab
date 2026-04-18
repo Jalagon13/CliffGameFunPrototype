@@ -2464,6 +2464,18 @@ PrefabInstance:
       value: TreeLeafClumpRsc
       objectReference: {fileID: 0}
     - target: {fileID: 6253507330619653563, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253507330619653563, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253507330619653563, guid: 207f2353357a24988826c819617406e8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6253507330619653563, guid: 207f2353357a24988826c819617406e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2565,7 +2577,7 @@ MonoBehaviour:
   - DropItem: {fileID: 11400000, guid: 59c4a22f7d25741e8ad400d6efdcc3ee, type: 2}
     MinAmount: 0
     MaxAmount: 1
-  - DropItem: {fileID: 11400000, guid: ee0dc3c91bf8548d3a155ea6f16a2f27, type: 2}
+  - DropItem: {fileID: 11400000, guid: 6e816237818e94124b75ed3e310b8580, type: 2}
     MinAmount: 0
     MaxAmount: 1
   _crackParticles: {fileID: 3947636531895734693, guid: 6b43b92035fdd4896af81e95238bda6e, type: 3}
